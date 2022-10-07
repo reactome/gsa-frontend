@@ -1,24 +1,23 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
 import {HttpClientModule} from "@angular/common/http";
-import {AnalysisToolsComponent} from "./analysis-tools/analysisTools.component";
-import { HeaderComponent } from './generalUsage/header/header.component';
-import { NavButtonComponent } from './generalUsage/navigationButtons/navButton.component';
-import { ToolEntryComponent } from './analysis-tools/toolEntry/toolEntry/toolEntry.component';
+import {GsaFormModule} from './gsa-form/gsa-form.module';
 
 @NgModule({
   declarations: [
-    AppComponent, AnalysisToolsComponent, HeaderComponent, NavButtonComponent, ToolEntryComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    GsaFormModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

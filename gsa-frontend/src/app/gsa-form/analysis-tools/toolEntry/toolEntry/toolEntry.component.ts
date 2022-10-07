@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Tool} from "../../tool";
+import {Tool} from "../../../model/tool.model";
 
 @Component({
   selector: 'app-toolEntry',
