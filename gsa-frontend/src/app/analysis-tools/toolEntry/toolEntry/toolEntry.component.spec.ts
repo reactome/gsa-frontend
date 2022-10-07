@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AnalysisToolsComponent } from './analysis-tools.component';
+import { ToolEntryComponent } from './toolEntry.component';
 
-describe('AnalysisToolsComponent', () => {
-  let component: AnalysisToolsComponent;
-  let fixture: ComponentFixture<AnalysisToolsComponent>;
+describe('ToolEntryComponent', () => {
+  let component: ToolEntryComponent;
+  let fixture: ComponentFixture<ToolEntryComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AnalysisToolsComponent ]
+      declarations: [ ToolEntryComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AnalysisToolsComponent);
+    fixture = TestBed.createComponent(ToolEntryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

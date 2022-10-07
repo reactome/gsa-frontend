@@ -1,4 +1,4 @@
-import {ToolParameter} from "./tool-parameter";
+import {ToolParameter} from "./toolParameter";
 
 export interface Tool {
   description: string

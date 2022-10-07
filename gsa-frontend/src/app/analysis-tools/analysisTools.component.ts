@@ -8,8 +8,8 @@ class Post {
 
 @Component({
   selector: 'app-analysis-tools',
-  templateUrl: './analysis-tools.component.html',
-  styleUrls: ['./analysis-tools.component.css']
+  templateUrl: './analysisTools.component.html',
+  styleUrls: ['./analysisTools.component.css']
 })
 export class AnalysisToolsComponent {
   tools_url = 'http://gsa.reactome.org/0.1/methods'
