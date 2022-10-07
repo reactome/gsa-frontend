@@ -5,10 +5,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {HttpClientModule} from "@angular/common/http";
 import {AnalysisToolsComponent} from "./analysis-tools/analysis-tools.component";
+import { HeaderComponent } from './generalUsage/header/header.component';
 
 @NgModule({
   declarations: [
-    AppComponent, AnalysisToolsComponent
+    AppComponent, AnalysisToolsComponent, HeaderComponent
   ],
   imports: [
     BrowserModule,
