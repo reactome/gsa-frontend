@@ -1,0 +1,6 @@
+<h1>Analysis tools</h1>
+<button (click)="getPosts()">Click me!</button>
+<div *ngFor="let tool of tools | async">
+  {{tool | json}}
+</div>
+
