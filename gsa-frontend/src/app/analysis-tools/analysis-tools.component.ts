@@ -12,8 +12,6 @@ class Post {
   styleUrls: ['./analysis-tools.component.css']
 })
 export class AnalysisToolsComponent {
-
-
   tools_url = 'http://gsa.reactome.org/0.1/methods'
   tools?: Observable<Tool[]>
   title = 'JSON Try';

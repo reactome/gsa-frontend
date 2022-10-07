@@ -1,0 +1,22 @@
+.snavButton:hover {
+  background-color: #177dc0;
+  cursor: pointer !important;
+}
+.navButton {
+  background-color: #1e94d0;
+  border: none;
+  border-radius: 15px;
+  color: white;
+  padding: 3px 10px 3px 10px;
+  outline: none;
+  font-size: medium !important;
+  float: left;
+  margin-left: 10px;
+}
+
+.pictogram {
+  color: white;
+  font-size: medium !important;
+  width: 20px;
+  margin-right: 10px;
+}
