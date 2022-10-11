@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable} from "rxjs";
-import {HttpClient, HttpParams} from "@angular/common/http";
 import {Method} from "../model/methods.model";
-import {environment} from "../../../environments/environment";
 import {AnalysisMethodsService} from "./analysis-methods.service";
 
 @Component({
@@ -14,7 +12,7 @@ import {AnalysisMethodsService} from "./analysis-methods.service";
 export class AnalysisMethodsComponent implements OnInit{
   methods?: Observable<Method[]>;
 
-  constructor(private http: HttpClient, private methodService: AnalysisMethodsService) {
+  constructor(private methodService: AnalysisMethodsService) {
   }
 
   ngOnInit(): void {

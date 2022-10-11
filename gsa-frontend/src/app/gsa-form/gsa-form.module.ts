@@ -14,10 +14,11 @@ import {FormsModule} from "@angular/forms";
 import {MatListModule} from "@angular/material/list";
 import {MatGridListModule} from "@angular/material/grid-list";
 import { MatInputModule } from '@angular/material/input';
+import { SelectDatasetComponent } from './select-dataset/select-dataset.component';
 
 @NgModule({
   declarations: [
-    AnalysisMethodsComponent, HeaderComponent, MethodComponent, ParameterComponent, ParameterComponent
+    AnalysisMethodsComponent, HeaderComponent, MethodComponent, ParameterComponent, ParameterComponent, SelectDatasetComponent
   ],
   exports: [
     AnalysisMethodsComponent

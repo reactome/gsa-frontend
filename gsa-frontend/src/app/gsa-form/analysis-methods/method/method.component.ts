@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Method} from "../../model/methods.model"
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'gsa-method',
@@ -10,7 +11,8 @@ export class MethodComponent implements OnInit {
   @Input() method?: Method
   showConfig = false
 
-  constructor() { }
+
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -20,6 +22,6 @@ export class MethodComponent implements OnInit {
   }
 
   selectMethod() {
-
+    this.router.navigate(['/selectDataset']);
   }
 }
