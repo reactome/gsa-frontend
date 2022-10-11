@@ -1,9 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'app-header',
+  selector: 'gsa-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
   @Input() step? : number

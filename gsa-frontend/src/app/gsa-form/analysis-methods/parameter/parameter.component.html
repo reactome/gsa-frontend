@@ -1,0 +1,46 @@
+
+<mat-grid-list  cols="2" rowHeight="10:1">
+  <mat-grid-tile>
+    <span> {{paramDef?.display_name}}</span>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <span *ngIf="paramDef?.values !== undefined; else inputField" class="float-right">
+    <mat-form-field appearance="fill">
+      <mat-select style="padding-top: 10px" [(ngModel)]="param.value">
+        <mat-option *ngFor="let value of paramDef.values" [value]="value">
+          {{value}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
+  </span>
+    <ng-template #inputField>
+    <span [ngSwitch]="paramDef?.type" class="float-right">
+      <ng-template [ngSwitchCase]="types.bool">
+        <mat-slide-toggle [(ngModel)]="param.value" color="primary"></mat-slide-toggle>
+      </ng-template>
+      <ng-template [ngSwitchCase]="types.string">
+        <mat-form-field class="example-full-width" appearance="fill">
+          <textarea matInput [(ngModel)]="param.value" type="text"></textarea>
+        </mat-form-field>
+      </ng-template>
+      <ng-template [ngSwitchCase]="types.float">
+        <mat-form-field class="example-full-width" appearance="fill">
+            <textarea matInput [(ngModel)]="param.value" type="number" ></textarea>
+        </mat-form-field>
+      </ng-template>
+      <ng-template [ngSwitchCase]="types.int">
+        <mat-form-field class="example-full-width" appearance="fill">
+          <textarea matInput [(ngModel)]="param.value" type="number" ></textarea>
+        </mat-form-field>
+      </ng-template>
+    </span>
+    </ng-template>
+  </mat-grid-tile>
+</mat-grid-list>
+
+
+
+
+

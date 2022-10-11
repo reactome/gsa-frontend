@@ -1,0 +1,7 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1vh;
+}
+
+/*# sourceMappingURL=analysisMethods.component.css.map */

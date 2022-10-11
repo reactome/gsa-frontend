@@ -1,0 +1,9 @@
+<gsa-header [step]=1></gsa-header>
+<h1>Step 1: Select one of the available analysis methods</h1>
+
+<div class="container" >
+  <div *ngFor="let method of methods | async">
+    <gsa-method [method] = "method"></gsa-method>
+  </div>
+</div>
+

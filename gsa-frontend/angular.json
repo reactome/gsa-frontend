@@ -5,10 +5,14 @@
   "projects": {
     "gsa-frontend": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "app",
+      "prefix": "gsa",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -23,6 +27,7 @@
               "src/assets"
             ],
             "styles": [
+              "src/custom-theme.scss",
               "src/styles.css"
             ],
             "scripts": []
