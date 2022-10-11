@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {AnalysisMethodsComponent} from "./analysis-methods/analysisMethods.component";
+import {AnalysisMethodsComponent} from "./analysis-methods/analysis-methods.component";
 import {HeaderComponent} from "./general-usage/header/header.component";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatCardModule} from '@angular/material/card';

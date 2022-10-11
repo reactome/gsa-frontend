@@ -3,33 +3,21 @@ import {Observable} from "rxjs";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Method} from "../model/methods.model";
 import {environment} from "../../../environments/environment";
+import {AnalysisMethodsService} from "./analysis-methods.service";
 
 @Component({
   selector: 'gsa-analysis-methods',
-  templateUrl: './analysisMethods.component.html',
-  styleUrls: ['./analysisMethods.component.scss']
+  templateUrl: './analysis-methods.component.html',
+  styleUrls: ['./analysis-methods.component.scss'],
+  providers: [AnalysisMethodsService]
 })
 export class AnalysisMethodsComponent implements OnInit{
-  methods_url = `${environment.ApiRoot}/methods`;
   methods?: Observable<Method[]>;
 
-
-
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private methodService: AnalysisMethodsService) {
   }
 
   ngOnInit(): void {
-    this.getPosts();
+    this.methods = this.methodService.getAnalysisMethods()
   }
-
-  getPosts() {
-    // let params = new HttpParams().set('id', 12)
-    this.methods = this.http.get<Method[]>(this.methods_url);
-    this.methods.subscribe(value => console.log(value))
-  }
-
-
-
-
-
 }
