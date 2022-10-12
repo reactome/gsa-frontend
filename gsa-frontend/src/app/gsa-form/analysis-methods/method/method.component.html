@@ -1,14 +1,14 @@
 <mat-card>
-  <mat-card-title>{{method?.name | titlecase}}</mat-card-title>
-  <mat-card-content>{{method?.description}}</mat-card-content>
+  <mat-card-title>{{method.name | titlecase}}</mat-card-title>
+  <mat-card-content>{{method.description}}</mat-card-content>
   <mat-card-actions align="end">
     <button mat-raised-button color="primary" (click)="toggleConfiguration()">Configure</button>
     <button mat-raised-button color="accent" (click)="selectMethod()">Continue</button>
-
   </mat-card-actions>
   <div *ngIf="this.showConfig">
-    <div *ngFor="let param of method?.parameters">
-      <gsa-parameter *ngIf="param.scope != 'common'" class="param" [paramDef]="param"></gsa-parameter>
+    <!--    The whole "isLast thing with all the ifs is just there to not have a last border-bottom-->
+    <div *ngFor="let param of getDisplayParameters(); last as isLast" class="show-param">
+      <gsa-parameter [parameter]="param"></gsa-parameter>
     </div>
   </div>
 </mat-card>

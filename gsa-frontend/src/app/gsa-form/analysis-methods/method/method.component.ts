@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Method} from "../../model/methods.model"
 import {Router} from "@angular/router";
+import {AnalysisMethodsService} from "../../services/analysis-methods.service";
 
 @Component({
   selector: 'gsa-method',
@@ -8,13 +9,20 @@ import {Router} from "@angular/router";
   styleUrls: ['./method.component.scss']
 })
 export class MethodComponent implements OnInit {
-  @Input() method?: Method
+  @Input() method: Method
   showConfig = false
 
+  filteredParameters: any;
 
-  constructor(private router: Router) { }
+
+  constructor(private router: Router, private methodService: AnalysisMethodsService) { }
+
+  getDisplayParameters() {
+    return this.method.parameters.filter(p => p.scope !== 'common');
+  }
 
   ngOnInit(): void {
+    this.filteredParameters = this.method.parameters.filter(p => p.scope !== 'common');
   }
 
   toggleConfiguration() {
@@ -22,6 +30,7 @@ export class MethodComponent implements OnInit {
   }
 
   selectMethod() {
+    this.methodService.selectedMethod = this.method;
     this.router.navigate(['/selectDataset']);
   }
 }

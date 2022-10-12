@@ -1,3 +1,17 @@
-//.param {
-//  padding: 10px;
-//}
+mat-card{
+  max-width: 600px;
+  min-width: 400px;
+  display: inline-block;
+  border-radius: 10px;
+}
+
+.container {
+  border-bottom: 1px solid #dfe2f3;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.show-param:not(:last-child) {
+  border-bottom: 1px solid #dfe2f3;
+  border-radius: 5px;
+}

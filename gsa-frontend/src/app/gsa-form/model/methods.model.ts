@@ -8,12 +8,25 @@ export interface ParameterJSON {
   values?: string[];
 }
 
-export class Parameter {
+export class Parameter implements ParameterJSON {
+  default: string;
+  description: string;
+  display_name: string;
+  scope: string;
+  type: ParameterType;
+  values: string[] | undefined;
   name: string;
   value: any;
 
   constructor(definition: ParameterJSON) {
-    this.name = definition.name;
+
+    this.display_name = definition.display_name;
+    this.description = definition.description
+    this.scope = definition.scope
+    this.type = definition.type
+    this.values = definition.values
+    this.name = definition.name
+
     switch (definition.type) {
       case ParameterType.bool:
         this.value = definition.default.toLowerCase() === "true";
@@ -38,11 +51,15 @@ export enum ParameterType {
   int = "int"
 }
 
+export class Method {
+  parameters: Parameter[];
 
-export interface Method {
-  description?: string;
-  name?: string;
-  parameters?: ParameterJSON[];
+  constructor(public name: string, public description: string, parameters: ParameterJSON[]) {
+    this.name = name;
+    this.description = description;
+    this.parameters = parameters.map(param => new Parameter(param));
+    console.log(this, parameters)
+  }
 }
 
 

@@ -9,3 +9,7 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   background-color: #f2f5fb;
 }
+
+h1 {
+  margin-bottom: 10px;
+}

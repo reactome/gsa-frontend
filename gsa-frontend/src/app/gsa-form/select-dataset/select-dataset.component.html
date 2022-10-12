@@ -1,1 +1,25 @@
-<p>select-dataset works!</p>
+
+<h1>Step 2: Add and annotate your datasets</h1>
+<div class="container">
+  <mat-card>
+    <mat-card-title>Select a file from a local folder</mat-card-title>
+    <div *ngFor="let data of localData$ | async" class="show-dataset">
+      <gsa-data [data]="data"></gsa-data>
+    </div>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-title>Select one example dataset</mat-card-title>
+    <div *ngFor="let data of exampleData$ | async" class="show-dataset">
+      <gsa-data [data]="data"></gsa-data>
+    </div>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-title>Import a dataset</mat-card-title>
+    <div *ngFor="let data of importData$ | async" class="show-dataset">
+      <gsa-data [data]="data"></gsa-data>
+    </div>
+  </mat-card>
+</div>
+

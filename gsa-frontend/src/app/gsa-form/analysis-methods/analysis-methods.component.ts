@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable} from "rxjs";
 import {Method} from "../model/methods.model";
-import {AnalysisMethodsService} from "./analysis-methods.service";
+import {AnalysisMethodsService} from "../services/analysis-methods.service";
 
 @Component({
   selector: 'gsa-analysis-methods',
@@ -10,12 +10,12 @@ import {AnalysisMethodsService} from "./analysis-methods.service";
   providers: [AnalysisMethodsService]
 })
 export class AnalysisMethodsComponent implements OnInit{
-  methods?: Observable<Method[]>;
+  methods$: Observable<Method[]>
 
-  constructor(private methodService: AnalysisMethodsService) {
+  constructor(public methodService: AnalysisMethodsService) {
   }
 
   ngOnInit(): void {
-    this.methods = this.methodService.getAnalysisMethods()
+    this.methods$ = this.methodService.getAnalysisMethods()
   }
 }

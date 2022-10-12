@@ -10,32 +10,42 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import { ParameterComponent } from './analysis-methods/parameter/parameter.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatListModule} from "@angular/material/list";
 import {MatGridListModule} from "@angular/material/grid-list";
 import { MatInputModule } from '@angular/material/input';
 import { SelectDatasetComponent } from './select-dataset/select-dataset.component';
-
+import { DataComponent } from './select-dataset/data/data.component';
+import {RouterLink} from "@angular/router";
+import { AnnotateDatasetComponent } from './annotate-dataset/annotate-dataset.component';
+import {MatIconModule} from "@angular/material/icon";
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatStepperModule} from "@angular/material/stepper";
 @NgModule({
   declarations: [
-    AnalysisMethodsComponent, HeaderComponent, MethodComponent, ParameterComponent, ParameterComponent, SelectDatasetComponent
+    AnalysisMethodsComponent, HeaderComponent, MethodComponent, ParameterComponent, ParameterComponent, SelectDatasetComponent, DataComponent, AnnotateDatasetComponent
   ],
   exports: [
     AnalysisMethodsComponent
   ],
-    imports: [
-        CommonModule,
-        MatProgressBarModule,
-        MatCardModule,
-        MatButtonModule,
-        MatSlideToggleModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        FormsModule,
-        MatListModule,
-        MatGridListModule,
-        MatInputModule
-    ]
+  imports: [
+    CommonModule,
+    MatProgressBarModule,
+    MatCardModule,
+    MatButtonModule,
+    MatSlideToggleModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    FormsModule,
+    MatListModule,
+    MatGridListModule,
+    MatInputModule,
+    RouterLink,
+    MatIconModule,
+    MatTooltipModule,
+    MatStepperModule,
+    ReactiveFormsModule
+  ]
 })
 
 export class GsaFormModule { }
