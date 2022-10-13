@@ -1,9 +1,9 @@
-<mat-card>
+<mat-card [class.chosen]="methodService.selectedMethod === method">
   <mat-card-title>{{method.name | titlecase}}</mat-card-title>
   <mat-card-content>{{method.description}}</mat-card-content>
   <mat-card-actions align="end">
     <button mat-raised-button color="primary" (click)="toggleConfiguration()">Configure</button>
-    <button mat-raised-button color="accent" (click)="selectMethod()">Continue</button>
+    <button mat-raised-button color="primary" (click)="selectMethod()">Choose</button>
   </mat-card-actions>
   <div *ngIf="this.showConfig">
     <!--    The whole "isLast thing with all the ifs is just there to not have a last border-bottom-->

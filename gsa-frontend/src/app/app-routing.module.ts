@@ -5,10 +5,7 @@ import {SelectDatasetComponent} from "./gsa-form/select-dataset/select-dataset.c
 import {AnnotateDatasetComponent} from "./gsa-form/annotate-dataset/annotate-dataset.component";
 
 const routes: Routes = [
-  { path: '', redirectTo: '/methods', pathMatch: 'full' },
-  { path: 'methods', component: AnalysisMethodsComponent },
-  { path: 'selectDataset', component: SelectDatasetComponent },
-  { path: 'annotateDataset', component: AnnotateDatasetComponent }
+  { path: '', redirectTo: '', pathMatch: 'full' },
 ];
 
 @NgModule({

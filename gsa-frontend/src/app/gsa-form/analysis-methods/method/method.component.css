@@ -5,6 +5,10 @@ mat-card {
   border-radius: 10px;
 }
 
+.chosen {
+  box-shadow: inset 0px 0px 0px 5px #3f51b5;
+}
+
 .container {
   border-bottom: 1px solid #dfe2f3;
   border-radius: 5px;

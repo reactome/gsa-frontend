@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Observable} from "rxjs";
 import {Method} from "../model/methods.model";
 import {AnalysisMethodsService} from "../services/analysis-methods.service";
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'gsa-analysis-methods',
@@ -11,11 +12,22 @@ import {AnalysisMethodsService} from "../services/analysis-methods.service";
 })
 export class AnalysisMethodsComponent implements OnInit{
   methods$: Observable<Method[]>
+  name: string;
+  form: FormGroup;
 
-  constructor(public methodService: AnalysisMethodsService) {
+  constructor(private formBuilder: FormBuilder, public methodService: AnalysisMethodsService) {
+
+    this.form = this.formBuilder.group({
+      name: ['', Validators.required]
+    });
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.form.get('name')?.valueChanges
+      .subscribe(val => {
+        this.name = val;
+      });
     this.methods$ = this.methodService.getAnalysisMethods()
   }
+
 }

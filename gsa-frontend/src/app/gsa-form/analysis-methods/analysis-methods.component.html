@@ -1,7 +1,7 @@
-<div class="container">
+<div [formGroup]="form" class="container">
 <h1>Step 1: Select one of the available analysis methods</h1>
   <div *ngFor="let method of methods$ | async">
     <gsa-method [method]="method"></gsa-method>
   </div>
+<button mat-raised-button color="accent" matStepperNext>Continue</button>
 </div>
-

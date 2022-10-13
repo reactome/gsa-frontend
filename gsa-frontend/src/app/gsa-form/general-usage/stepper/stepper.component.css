@@ -1,0 +1,9 @@
+.stepperContainer {
+  background: #f2f5fb;
+}
+
+::ng-deep .mat-horizontal-stepper-header-container {
+  width: 30% !important;
+}
+
+/*# sourceMappingURL=stepper.component.css.map */

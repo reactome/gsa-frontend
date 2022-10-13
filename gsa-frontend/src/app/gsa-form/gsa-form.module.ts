@@ -15,18 +15,22 @@ import {MatListModule} from "@angular/material/list";
 import {MatGridListModule} from "@angular/material/grid-list";
 import { MatInputModule } from '@angular/material/input';
 import { SelectDatasetComponent } from './select-dataset/select-dataset.component';
-import { DataComponent } from './select-dataset/data/data.component';
-import {RouterLink} from "@angular/router";
+import { DataComponent } from './select-dataset/example-data/data.component';
+import {RouterLink, RouterOutlet} from "@angular/router";
 import { AnnotateDatasetComponent } from './annotate-dataset/annotate-dataset.component';
 import {MatIconModule} from "@angular/material/icon";
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatStepperModule} from "@angular/material/stepper";
+import { StepperComponent } from './general-usage/stepper/stepper.component';
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {STEPPER_GLOBAL_OPTIONS} from "@angular/cdk/stepper";
 @NgModule({
   declarations: [
-    AnalysisMethodsComponent, HeaderComponent, MethodComponent, ParameterComponent, ParameterComponent, SelectDatasetComponent, DataComponent, AnnotateDatasetComponent
+    AnalysisMethodsComponent, HeaderComponent, MethodComponent, ParameterComponent, ParameterComponent, SelectDatasetComponent, DataComponent, AnnotateDatasetComponent, StepperComponent
   ],
   exports: [
-    AnalysisMethodsComponent
+    AnalysisMethodsComponent,
+    StepperComponent
   ],
   imports: [
     CommonModule,
@@ -44,7 +48,9 @@ import {MatStepperModule} from "@angular/material/stepper";
     MatIconModule,
     MatTooltipModule,
     MatStepperModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterOutlet,
+    MatProgressSpinnerModule
   ]
 })
 
