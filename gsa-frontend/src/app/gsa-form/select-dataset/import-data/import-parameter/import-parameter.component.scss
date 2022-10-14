@@ -1,0 +1,22 @@
+mat-grid-list {
+  margin-bottom: 2px
+}
+
+mat-grid-tile {
+  background: #f2f5fb;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: space-between;
+  align-items: center;
+  grid-template-rows: 70px;
+
+}
+
+i {
+  color: #b7babd;
+  margin-left: 8px;
+  vertical-align: middle;
+}

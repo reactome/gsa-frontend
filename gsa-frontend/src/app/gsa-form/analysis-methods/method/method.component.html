@@ -8,7 +8,7 @@
   <div *ngIf="this.showConfig">
     <!--    The whole "isLast thing with all the ifs is just there to not have a last border-bottom-->
     <div *ngFor="let param of getDisplayParameters(); last as isLast" class="show-param">
-      <gsa-parameter [parameter]="param"></gsa-parameter>
+      <gsa-method-parameter [parameter]="param"></gsa-method-parameter>
     </div>
   </div>
 </mat-card>

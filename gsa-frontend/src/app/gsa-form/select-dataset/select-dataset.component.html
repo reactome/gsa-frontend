@@ -4,24 +4,30 @@
     <mat-card>
       <mat-card-title>Select a file from a local folder</mat-card-title>
       <div *ngFor="let data of localData$ | async" class="show-dataset">
-        <gsa-data [data]="data"></gsa-data>
+        <gsa-local-data [data]="data"></gsa-local-data>
       </div>
     </mat-card>
 
     <mat-card>
       <mat-card-title>Select one example dataset</mat-card-title>
       <div *ngFor="let data of exampleData$ | async" class="show-dataset">
-        <gsa-data [data]="data"></gsa-data>
+        <gsa-example-data [data]="data"></gsa-example-data>
       </div>
     </mat-card>
 
     <mat-card>
       <mat-card-title>Import a dataset</mat-card-title>
       <div *ngFor="let data of importData$ | async" class="show-dataset">
-        <gsa-data [data]="data"></gsa-data>
+        <gsa-import-data [data]="data"></gsa-import-data>
       </div>
     </mat-card>
   </div>
   <br>
-  <button mat-raised-button color="primary" matStepperPrevious>Back</button>
+  <button mat-raised-button color="accent" matStepperPrevious>Back</button>
+  <span *ngIf="dataService.chooseDataset !== undefined; else inputField" class="float-right">
+      <button mat-raised-button color="accent" matStepperPrevious>Continue</button>
+  </span>
+    <ng-template #inputField>
+      <button mat-raised-button class="ineligibleButton">Continue</button>
+    </ng-template>
 </div>

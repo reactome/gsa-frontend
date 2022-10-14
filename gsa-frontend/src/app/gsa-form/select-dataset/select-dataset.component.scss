@@ -7,7 +7,7 @@
 mat-card{
   max-width: 600px;
   min-width: 400px;
-  min-height: 480px;
+  min-height: 500px;
   display: inline-block;
   border-radius: 10px;
 }
@@ -26,4 +26,9 @@ h1 {
 .show-dataset:not(:last-child) {
   border-bottom: 1px solid #dfe2f3;
   border-radius: 5px;
+}
+
+.ineligibleButton {
+  background: #9a9c9e;
+  color: white;
 }

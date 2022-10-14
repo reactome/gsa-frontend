@@ -15,7 +15,7 @@ export class MethodComponent implements OnInit {
   chooseMethod : boolean = false
 
 
-  constructor(private router: Router, public methodService: AnalysisMethodsService) { }
+  constructor(public methodService: AnalysisMethodsService) { }
 
   getDisplayParameters() {
     return this.method.parameters.filter(p => p.scope !== 'common');

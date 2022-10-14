@@ -1,0 +1,23 @@
+.dataset {
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.dataset:hover {
+  background: #3f51b5;
+  color: white;
+  cursor: pointer;
+}
+
+.dataset-title {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+mat-card-content {
+  margin-bottom: 0px !important;
+}
+
+/*# sourceMappingURL=local-data.component.css.map */

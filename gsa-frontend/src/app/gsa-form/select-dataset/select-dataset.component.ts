@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Dataset, ExampleDataset, ImportDataset, LocalDataset} from "../model/dataset.model";
-import {DatasetService} from "../services/dataset.service";
+import {FetchDatasetService} from "../services/fetchDataset.service";
 import {Observable} from "rxjs";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
@@ -14,10 +14,9 @@ export class SelectDatasetComponent implements OnInit {
   importData$: Observable<ImportDataset[]>
   localData$: Observable<LocalDataset[]>
   name: string;
-  steps: 4
   form: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private dataService: DatasetService) {
+  constructor(private formBuilder: FormBuilder, public dataService: FetchDatasetService) {
 
     this.form = this.formBuilder.group({
       name: ['', Validators.required]

@@ -2,17 +2,19 @@ import {Injectable} from '@angular/core';
 import {environment} from "../../../environments/environment";
 import {Method} from "../model/methods.model";
 import {HttpClient} from "@angular/common/http";
-import {Dataset, ExampleDataset, ImportDataset, LocalDataset, Parameter} from "../model/dataset.model";
+import {Dataset, ExampleDataset, ImportDataset, LocalDataset, importParameter} from "../model/dataset.model";
 import {map, Observable} from "rxjs";
+import {Data} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
 })
-export class DatasetService {
+export class FetchDatasetService {
   exampleDataUrl = `${environment.ApiRoot}/data/examples`;
   localDataUrl = `${environment.ApiRoot}/types`;
   inputDataUrl = `${environment.ApiRoot}/data/sources`;
   selectedData: Dataset[] = [];
+  chooseDataset: Dataset;
 
 
   constructor(private http: HttpClient) {

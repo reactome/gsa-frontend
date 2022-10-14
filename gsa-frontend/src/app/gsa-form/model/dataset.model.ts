@@ -45,12 +45,12 @@ export class ExampleDataset implements Dataset {
 }
 
 export class ImportDataset implements Dataset {
-  parameters: Parameter[];
+  parameters: importParameter[];
   private _name: string;
   description: string;
   id: string;
 
-  constructor(parameters: Parameter[], name: string, description: string, id: string) {
+  constructor(parameters: importParameter[], name: string, description: string, id: string) {
     this.parameters = parameters;
     this._name = name;
     this.description = description;
@@ -65,7 +65,7 @@ export class ImportDataset implements Dataset {
   }
 }
 
-export interface Parameter {
+export interface importParameter {
   description: string;
   display_name: string;
   name: string;

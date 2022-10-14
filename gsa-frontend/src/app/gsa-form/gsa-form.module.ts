@@ -7,7 +7,6 @@ import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from "@angular/material/button";
 import { MethodComponent } from './analysis-methods/method/method.component';
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
-import { ParameterComponent } from './analysis-methods/parameter/parameter.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -15,7 +14,7 @@ import {MatListModule} from "@angular/material/list";
 import {MatGridListModule} from "@angular/material/grid-list";
 import { MatInputModule } from '@angular/material/input';
 import { SelectDatasetComponent } from './select-dataset/select-dataset.component';
-import { DataComponent } from './select-dataset/example-data/data.component';
+import { ExampleDataComponent } from './select-dataset/example-data/example-data.component';
 import {RouterLink, RouterOutlet} from "@angular/router";
 import { AnnotateDatasetComponent } from './annotate-dataset/annotate-dataset.component';
 import {MatIconModule} from "@angular/material/icon";
@@ -23,10 +22,14 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatStepperModule} from "@angular/material/stepper";
 import { StepperComponent } from './general-usage/stepper/stepper.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import {STEPPER_GLOBAL_OPTIONS} from "@angular/cdk/stepper";
+import { LocalDataComponent } from './select-dataset/local-data/local-data.component';
+import { ImportDataComponent } from './select-dataset/import-data/import-data.component';
+import {ImportParameterComponent} from "./select-dataset/import-data/import-parameter/import-parameter.component";
+import {MethodParameterComponent} from "./analysis-methods/method-parameter/method-parameter.component";
+
 @NgModule({
   declarations: [
-    AnalysisMethodsComponent, HeaderComponent, MethodComponent, ParameterComponent, ParameterComponent, SelectDatasetComponent, DataComponent, AnnotateDatasetComponent, StepperComponent
+    AnalysisMethodsComponent, HeaderComponent, MethodComponent, MethodParameterComponent, SelectDatasetComponent, ExampleDataComponent, AnnotateDatasetComponent, StepperComponent, LocalDataComponent, ImportDataComponent, ImportParameterComponent
   ],
   exports: [
     AnalysisMethodsComponent,

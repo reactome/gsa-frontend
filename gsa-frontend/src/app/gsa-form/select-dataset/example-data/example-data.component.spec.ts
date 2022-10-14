@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ParameterComponent } from './parameter.component';
+import { ExampleDataComponent } from './example-data.component';
 
-describe('ShowParameterComponent', () => {
-  let component: ParameterComponent;
-  let fixture: ComponentFixture<ParameterComponent>;
+describe('DataComponent', () => {
+  let component: ExampleDataComponent;
+  let fixture: ComponentFixture<ExampleDataComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ParameterComponent ]
+      declarations: [ ExampleDataComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ParameterComponent);
+    fixture = TestBed.createComponent(ExampleDataComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

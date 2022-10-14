@@ -5,10 +5,23 @@
   margin-bottom: 0px;
 }
 
-.dataset:hover {
+mat-card-content:hover {
   background: #3f51b5;
   color: white;
   cursor: pointer;
+  border-radius: 10px;
+}
+
+.chosen {
+  border-style: solid;
+  border-width: 5px;
+  border-color: #3f51b5;
+  border-radius: 10px;
+}
+
+.chosen:hover {
+  background: white;
+  color: black;
 }
 
 .dataset-title {
@@ -20,4 +33,4 @@ mat-card-content {
   margin-bottom: 0px !important;
 }
 
-/*# sourceMappingURL=example-data.component.css.map */
+/*# sourceMappingURL=import-data.component.css.map */

@@ -1,23 +1,12 @@
-<div class="container" fxLayout="row" fxLayoutAlign="center none">
-  <div fxFlex="98%">
-    <mat-card class="booking-card">
-      <mat-card-content>
-        <div class="operation-detail container" fxLayout="row" fxLayoutAlign="center none">
-          <div fxFlex="98%">
-            <mat-horizontal-stepper  #stepper>
-              <mat-step [stepControl]="analysisStep!">
-                <ng-template matStepLabel>Method</ng-template>
-                <gsa-analysis-methods></gsa-analysis-methods>
-              </mat-step>
-              <mat-step [stepControl]="datasetStep!">
-                <ng-template matStepLabel>Datasets</ng-template>
-                <gsa-select-dataset></gsa-select-dataset>
-              </mat-step>
-            </mat-horizontal-stepper>
-          </div>
-        </div>
-      </mat-card-content>
-    </mat-card>
-
-  </div>
+<div class="container">
+  <mat-horizontal-stepper  #stepper>
+    <mat-step [stepControl]="analysisStep!">
+      <ng-template matStepLabel>Method</ng-template>
+      <gsa-analysis-methods></gsa-analysis-methods>
+    </mat-step>
+    <mat-step [stepControl]="datasetStep!">
+      <ng-template matStepLabel>Datasets</ng-template>
+      <gsa-select-dataset></gsa-select-dataset>
+    </mat-step>
+  </mat-horizontal-stepper>
 </div>
