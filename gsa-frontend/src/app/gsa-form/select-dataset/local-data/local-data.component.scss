@@ -5,12 +5,25 @@
   margin-bottom: 0px;
 }
 
-.dataset:hover {
+mat-card-content:hover {
   background: #3f51b5;
   color: white;
   cursor: pointer;
+  border-radius: 10px;
 }
 
+.chosen {
+  border-style: solid;
+  border-width: 5px;
+  border-color: #3f51b5;
+  border-radius: 10px;
+  //box-shadow: inset 0px 0px 0px 5px #3f51b5;
+}
+
+.chosen:hover {
+  background: white;
+  color: black;
+}
 .dataset-title {
   font-weight: bold;
   margin-bottom: 4px;
@@ -18,4 +31,13 @@
 
 mat-card-content {
   margin-bottom: 0px !important;
+}
+
+.file-input {
+  display: none;
+}
+
+.show-file {
+  font-style: italic;
+  margin-left: 12px;
 }

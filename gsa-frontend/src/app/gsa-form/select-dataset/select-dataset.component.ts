@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {Dataset, ExampleDataset, ImportDataset, LocalDataset} from "../model/dataset.model";
-import {FetchDatasetService} from "../services/fetchDataset.service";
+import {Dataset, ExampleDataset, ImportDataset, LocalDataset} from "../model/fetch-dataset.model";
+import {FetchDatasetService} from "../services/fetch-dataset.service";
 import {Observable} from "rxjs";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {LoadDatasetService} from "../services/load-dataset.service";
 
 @Component({
   selector: 'gsa-select-dataset',
@@ -16,7 +17,7 @@ export class SelectDatasetComponent implements OnInit {
   name: string;
   form: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, public dataService: FetchDatasetService) {
+  constructor(private formBuilder: FormBuilder, public dataService: FetchDatasetService, public loadDataService : LoadDatasetService) {
 
     this.form = this.formBuilder.group({
       name: ['', Validators.required]

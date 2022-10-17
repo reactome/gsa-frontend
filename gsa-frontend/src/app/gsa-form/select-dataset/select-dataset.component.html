@@ -24,10 +24,5 @@
   </div>
   <br>
   <button mat-raised-button color="accent" matStepperPrevious>Back</button>
-  <span *ngIf="dataService.chooseDataset !== undefined; else inputField" class="float-right">
-      <button mat-raised-button color="accent" matStepperPrevious>Continue</button>
-  </span>
-    <ng-template #inputField>
-      <button mat-raised-button class="ineligibleButton">Continue</button>
-    </ng-template>
+  <button mat-raised-button color="accent" matStepperPrevious [disabled]="loadDataService.dataSummary === undefined">Continue</button>
 </div>

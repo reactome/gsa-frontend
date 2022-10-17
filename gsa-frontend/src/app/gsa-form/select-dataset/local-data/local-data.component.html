@@ -1,7 +1,11 @@
-<mat-card-content (click)="doStuff()" >
-  <div class="dataset">
-    <p class="dataset-title">{{data.name | titlecase}}</p>
-    <p>{{data.description}}</p>
-  </div>
-</mat-card-content>
+<mat-card-content [class.chosen]="dataService.chooseDataset === data" (click)="select()" >
+<input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
 
+<div class="file-upload" (click)="fileUpload.click()">
+    <div class="dataset">
+      <p class="dataset-title">{{data.name | titlecase}}</p>
+      <p>{{data.description}}</p>
+    </div>
+<!--  <span class="show-file">{{fileName || "No file uploaded yet."}}</span>-->
+</div>
+</mat-card-content>

@@ -26,10 +26,11 @@ import { LocalDataComponent } from './select-dataset/local-data/local-data.compo
 import { ImportDataComponent } from './select-dataset/import-data/import-data.component';
 import {ImportParameterComponent} from "./select-dataset/import-data/import-parameter/import-parameter.component";
 import {MethodParameterComponent} from "./analysis-methods/method-parameter/method-parameter.component";
+import { UploadFileComponent } from './select-dataset/local-data/upload-file/upload-file.component';
 
 @NgModule({
   declarations: [
-    AnalysisMethodsComponent, HeaderComponent, MethodComponent, MethodParameterComponent, SelectDatasetComponent, ExampleDataComponent, AnnotateDatasetComponent, StepperComponent, LocalDataComponent, ImportDataComponent, ImportParameterComponent
+    AnalysisMethodsComponent, HeaderComponent, MethodComponent, MethodParameterComponent, SelectDatasetComponent, ExampleDataComponent, AnnotateDatasetComponent, StepperComponent, LocalDataComponent, ImportDataComponent, ImportParameterComponent, UploadFileComponent
   ],
   exports: [
     AnalysisMethodsComponent,

@@ -1,9 +1,9 @@
-<mat-card-content [class.chosen]="dataService.chooseDataset === data" (click)="doStuff()">
+<mat-card-content [class.chosen]="dataService.chooseDataset === data" (click)="select()">
   <div class="dataset">
       <p class="dataset-title">{{data.name | titlecase}}</p>
       <p>{{data.description}}</p>
-    <div *ngIf="dataService.chooseDataset === data">
-      <button mat-raised-button color="primary" >Choose</button>
-    </div>
+<!--    <div *ngIf="dataService.chooseDataset === data">-->
+<!--      <button mat-raised-button color="primary" (click)="loadData()">Choose</button>-->
+<!--    </div>-->
   </div>
 </mat-card-content>

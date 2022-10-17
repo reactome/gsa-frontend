@@ -3,5 +3,5 @@
   <div *ngFor="let method of methods$ | async">
     <gsa-method [method]="method"></gsa-method>
   </div>
-<button mat-raised-button color="accent" matStepperNext>Continue</button>
+<button mat-raised-button color="accent" matStepperNext [disabled]="methodService.selectedMethod === undefined"> Continue</button>
 </div>

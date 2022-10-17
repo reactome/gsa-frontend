@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Dataset, ExampleDataset, ImportDataset, LocalDataset} from "../../model/dataset.model";
-import {Router} from "@angular/router";
-import {FetchDatasetService} from "../../services/fetchDataset.service";
+import {ExampleDataset} from "../../model/fetch-dataset.model";
+import {FetchDatasetService} from "../../services/fetch-dataset.service";
+import {LoadDatasetService} from "../../services/load-dataset.service";
 
 @Component({
   selector: 'gsa-example-data',
@@ -12,13 +12,22 @@ export class ExampleDataComponent implements OnInit {
   @Input() data: ExampleDataset;
 
 
-  constructor(public dataService: FetchDatasetService) {
+  constructor(public dataService: FetchDatasetService, public loadDatasetService : LoadDatasetService) {
   }
 
   ngOnInit(): void {
   }
 
-  doStuff() {
+  select() {
     this.dataService.chooseDataset = this.data;
+    this.loadData()
+  }
+
+  loadData() {
+    console.log(this.data)
+    this.loadDatasetService.loadDataset([{
+      name: "dataset_id",
+      value: this.data.id
+    }])
   }
 }
