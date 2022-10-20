@@ -1,11 +1,12 @@
+@import '~handsontable/dist/handsontable.full.css';
+
 .container {
   display: flex;
   flex-direction: row;
   gap: 4vh;
   align-items: center;
 }
-
-mat-card {
+mat-card{
   max-width: 600px;
   min-width: 400px;
   min-height: 560px;
@@ -34,4 +35,8 @@ h1 {
   color: white;
 }
 
-/*# sourceMappingURL=select-dataset.component.css.map */
+.loading-progress {
+  margin: auto;
+  height: 80px;
+  padding: 10px;
+}

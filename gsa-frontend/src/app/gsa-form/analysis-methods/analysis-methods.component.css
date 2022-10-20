@@ -5,4 +5,10 @@
   align-items: center;
 }
 
+.flying-rename {
+  position: absolute;
+  z-index: 1000;
+  text-align: center;
+}
+
 /*# sourceMappingURL=analysis-methods.component.css.map */

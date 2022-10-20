@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ExampleDataset, LocalDataset} from "../../model/fetch-dataset.model";
-import {FetchDatasetService} from "../../services/fetch-dataset.service";
+import {ExampleDataset, LocalDataset} from "../../../model/fetch-dataset.model";
+import {FetchDatasetService} from "../../../services/fetch-dataset.service";
 import {HttpClient} from "@angular/common/http";
-import {LoadDatasetService} from "../../services/load-dataset.service";
+import {LoadDatasetService} from "../../../services/load-dataset.service";
 
 @Component({
   selector: 'gsa-local-data',
@@ -31,7 +31,7 @@ export class LocalDataComponent implements OnInit {
     if (file) {
       this.fileName = file.name;
       const formData = new FormData();
-      formData.append("thumbnail", file);
+      formData.append('', file, file.name);
       this.loadDataService.uploadFile(formData)
     }
   }

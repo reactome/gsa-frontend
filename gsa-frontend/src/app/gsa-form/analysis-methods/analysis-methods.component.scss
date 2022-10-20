@@ -4,3 +4,9 @@
   gap: 1vh;
   align-items: center;
 }
+
+.flying-rename {
+  position: absolute;
+  z-index: 1000;
+  text-align: center;
+}

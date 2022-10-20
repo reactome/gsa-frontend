@@ -6,7 +6,7 @@
       <div *ngFor="let param of data.parameters">
         <gsa-import-parameter [parameter]="param"></gsa-import-parameter>
       </div>
-      <button mat-raised-button color="primary" >Choose</button>
+      <button mat-raised-button color="primary" (click)="loadData()">Choose</button>
     </div>
   </div>
 </mat-card-content>

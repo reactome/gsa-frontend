@@ -1,12 +1,16 @@
 <div class="container">
   <mat-horizontal-stepper  #stepper>
-    <mat-step [stepControl]="analysisStep!">
-      <ng-template matStepLabel>Method</ng-template>
-      <gsa-analysis-methods></gsa-analysis-methods>
+    <mat-step [stepControl]="analysisStep!" #methodStep>
+      <ng-template matStepLabel >Method</ng-template>
+      <gsa-analysis-methods *ngIf="stepper.selected == null || stepper.selected == methodStep"></gsa-analysis-methods>
     </mat-step>
-    <mat-step [stepControl]="datasetStep!">
-      <ng-template matStepLabel>Datasets</ng-template>
-      <gsa-select-dataset></gsa-select-dataset>
+    <mat-step [stepControl]="datasetStep!" #dataStep >
+      <ng-template matStepLabel >Datasets</ng-template>
+      <gsa-select-dataset *ngIf="stepper.selected == dataStep"></gsa-select-dataset>
+    </mat-step>
+    <mat-step [stepControl]="annotateStep!" #annotate>
+      <ng-template matStepLabel >Annotate</ng-template>
+      <gsa-annotate-dataset *ngIf="stepper.selected == annotate"></gsa-annotate-dataset>
     </mat-step>
   </mat-horizontal-stepper>
 </div>

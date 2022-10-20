@@ -5,12 +5,15 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {map, Observable, tap} from "rxjs";
 import {Method} from "../model/methods.model";
 import {DataSummary, LoadingStatus} from "../model/load-dataset.model";
+import {UploadData} from "../model/upload-dataset-model";
+import {Validators} from "@angular/forms";
+import {CellValue} from "handsontable/common";
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoadDatasetService {
-  exampleDataUrl = `${environment.ApiRoot}/data/load/example_datasets`;
+  loadDataUrl = `${environment.ApiRoot}/data/load/`;
   loadingStatusUrl = `${environment.ApiRoot}/data/status/`;
   summaryDataUrl = `${environment.ApiRoot}/data/summary/`;
   uploadDataUrl = `${environment.ApiRoot}/upload`;
@@ -18,19 +21,24 @@ export class LoadDatasetService {
   loadingStatus: LoadingStatus
   dataSummary: DataSummary
   private timer: NodeJS.Timer;
+  columns: string[] = []
+  rows: string[] = []
+  dataset: CellValue[][] = []
+  loadingProgress: string = 'not started'
   chosenDatasets: Dataset[];
 
   constructor(private http: HttpClient) {
   }
 
-  loadDataset(postParameters: any): void {
+  loadDataset(resourceId: string, postParameters: any): void {
+    this.loadingProgress = 'loading'
     this.timer = setInterval(() => this.getLoadingStatus(), 1000)
-    this.getLoadingId(postParameters)
-
+    this.getLoadingId(resourceId, postParameters)
   }
 
-  getLoadingId(postParameters: any): void {
-    this.http.post(this.exampleDataUrl, postParameters, {responseType: 'text'}).subscribe(
+  getLoadingId(resourceId: string, postParameters: any): void {
+    console.log(typeof postParameters)
+    this.http.post(this.loadDataUrl + resourceId, postParameters, {responseType: 'text'}).subscribe(
       response => this.loadingId = response)
   }
 
@@ -41,16 +49,36 @@ export class LoadDatasetService {
     if (this.loadingStatus !== undefined && this.loadingStatus.status === 'complete') {
       clearInterval(this.timer);
       this.getDataSummary()
+      this.loadingProgress = 'completed'
+
+    }
+    if (this.loadingStatus !== undefined && this.loadingStatus.status === 'failed') {
+      clearInterval(this.timer);
+      this.loadingProgress = 'failed'
     }
   }
 
   getDataSummary(): void {
+    console.log(this.loadingStatus.dataset_id)
     this.http.get<DataSummary>(this.summaryDataUrl + this.loadingStatus.dataset_id)
       .subscribe((summary) => this.dataSummary = summary)
   }
 
-  uploadFile(formData : FormData): void {
-    this.http.post(this.exampleDataUrl, formData, {responseType: 'text'}).subscribe(
-      response => console.log(response))
+  uploadFile(formData: FormData): Observable<UploadData> {
+    let uploadDataObservable = this.http.post<UploadData>(this.uploadDataUrl, formData);
+    uploadDataObservable.subscribe(response => console.log(response))
+    return uploadDataObservable
+  }
+
+  computeTableValues() {
+    this.rows = this.dataSummary.sample_ids.map(id => id.toLowerCase());
+    this.dataset = this.dataSummary.sample_metadata[0].values.map(() => []);
+    this.columns = this.dataSummary.sample_metadata.map(data => {
+      data.values.forEach((value, i) => this.dataset[i % this.rows.length].push(value))
+      return data.name.toLowerCase();
+    })
+    console.log(this.dataset)
+    console.log(this.rows)
+    console.log(this.columns)
   }
 }

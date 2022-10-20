@@ -6,6 +6,20 @@ export interface LoadingStatus {
   status : string
 }
 
+export interface LoadParameter {
+  name: string
+  value: any
+}
+
+export class LoadParameterClass implements LoadParameter{
+  name: string
+  value: any
+
+  constructor(name:string, value:any) {
+    this.name = name
+    this.value = value
+  }
+}
 
 export interface SampleMetadata {
   name: string;

@@ -1,0 +1,16 @@
+<div class="table-conatainer">
+  <hot-table [settings]="settings"></hot-table>
+  <input #flyingRename class="flying-rename" (change)="renameColumn()" (blur)="renameColumn()"
+         *ngIf="renameVisible" [(ngModel)]="renameValue"
+         [style.left.px]="renameCoords.left" [style.top.px]="renameCoords.top"
+         [style.width.px]="renameCoords.width - 8" [style.height.px]="renameCoords.height - 5">
+</div>
+<button (click)="addColumn()">Click me</button>
+<!--<ag-grid-angular-->
+<!--  style="width: 500px; height: 150px;"-->
+<!--  class="ag-theme-alpine"-->
+<!--  [rowData]="rowData"-->
+<!--  [columnDefs]="columnDefs">-->
+
+<!--</ag-grid-angular>-->
+

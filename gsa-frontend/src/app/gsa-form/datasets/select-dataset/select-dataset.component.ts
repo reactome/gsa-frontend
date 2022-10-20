@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import {Dataset, ExampleDataset, ImportDataset, LocalDataset} from "../model/fetch-dataset.model";
-import {FetchDatasetService} from "../services/fetch-dataset.service";
+import {Component, OnInit} from '@angular/core';
+import {Dataset, ExampleDataset, ImportDataset, LocalDataset} from "../../model/fetch-dataset.model";
+import {FetchDatasetService} from "../../services/fetch-dataset.service";
 import {Observable} from "rxjs";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {LoadDatasetService} from "../services/load-dataset.service";
+import {LoadDatasetService} from "../../services/load-dataset.service";
+import Handsontable from "handsontable";
 
 @Component({
   selector: 'gsa-select-dataset',
@@ -17,21 +18,26 @@ export class SelectDatasetComponent implements OnInit {
   name: string;
   form: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, public dataService: FetchDatasetService, public loadDataService : LoadDatasetService) {
 
+
+  constructor(private formBuilder: FormBuilder, public dataService: FetchDatasetService, public loadDataService: LoadDatasetService) {
     this.form = this.formBuilder.group({
       name: ['', Validators.required]
     });
   }
 
   ngOnInit() {
-    this.form.get('name')?.valueChanges
-      .subscribe(val => {
-        this.name = val;
-      });
+    this.form = this.formBuilder.group({
+      name: ['', Validators.required]
+    });
+
     this.exampleData$ = this.dataService.fetchExampleData()
     this.importData$ = this.dataService.fetchImportData()
     this.localData$ = this.dataService.fetchLocalData()
+  }
+
+  reloadData() {
+    this.loadDataService.computeTableValues()
   }
 }
 

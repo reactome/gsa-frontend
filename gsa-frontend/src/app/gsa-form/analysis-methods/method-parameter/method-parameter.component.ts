@@ -15,7 +15,6 @@ export class MethodParameterComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.parameter)
   }
 
 }

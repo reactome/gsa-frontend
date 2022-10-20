@@ -22,7 +22,20 @@
       </div>
     </mat-card>
   </div>
-  <br>
+  <div class="loading-progress" >
+    <div *ngIf="loadDataService.loadingProgress === 'loading'">
+      <mat-spinner  diameter="50"></mat-spinner>
+      <span>Dataset is loading</span>
+    </div>
+    <div *ngIf="loadDataService.loadingProgress === 'failed'">
+      <span class="material-icons" style="color: rgb(255, 0, 0); font-size: 50px;">error</span>
+      <span>Dataset not found!</span>
+    </div>
+    <div *ngIf="loadDataService.loadingProgress === 'completed'">
+      <span class="material-icons" style="color: rgb(0, 128, 55); font-size: 50px;"> check_circle </span>
+      <span>Dataset '{{loadDataService.dataSummary.title}}' loaded!</span>
+    </div>
+  </div>
   <button mat-raised-button color="accent" matStepperPrevious>Back</button>
-  <button mat-raised-button color="accent" matStepperPrevious [disabled]="loadDataService.dataSummary === undefined">Continue</button>
+  <button mat-raised-button color="accent" (click)="reloadData()" matStepperNext [disabled]="loadDataService.dataSummary === undefined">Continue</button>
 </div>
