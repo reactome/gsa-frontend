@@ -1,9 +1,7 @@
 <mat-card-content [class.chosen]="dataService.chooseDataset === data" (click)="select()">
   <div class="dataset">
-      <p class="dataset-title">{{data.name | titlecase}}</p>
-      <p>{{data.description}}</p>
-<!--    <div *ngIf="dataService.chooseDataset === data">-->
-<!--      <button mat-raised-button color="primary" (click)="loadData()">Choose</button>-->
-<!--    </div>-->
+    <p class="dataset-title">{{data.name | titlecase}}</p>
+    <p>{{data.description}}</p>
+    <gsa-loading-progress *ngIf="dataService.chooseDataset === data"></gsa-loading-progress>
   </div>
 </mat-card-content>

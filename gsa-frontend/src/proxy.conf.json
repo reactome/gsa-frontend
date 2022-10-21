@@ -5,7 +5,7 @@
     "changeOrigin": true,
     "logLevel": "debug",
     "pathRewrite": {
-      "^/GSAServer": "/0.1"
+      "^/GSAServer": "/"
     }
   }
 }

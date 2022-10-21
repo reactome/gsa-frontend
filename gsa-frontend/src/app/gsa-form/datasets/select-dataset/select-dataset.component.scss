@@ -5,10 +5,10 @@
   flex-direction: row;
   gap: 4vh;
   align-items: center;
+  margin-bottom:  1vh;
 }
 mat-card{
-  max-width: 600px;
-  min-width: 400px;
+  width: 30%;
   min-height: 560px;
   display: inline-block;
   border-radius: 10px;

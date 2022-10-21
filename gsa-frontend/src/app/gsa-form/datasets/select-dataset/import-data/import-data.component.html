@@ -7,6 +7,7 @@
         <gsa-import-parameter [parameter]="param"></gsa-import-parameter>
       </div>
       <button mat-raised-button color="primary" (click)="loadData()">Choose</button>
+      <gsa-loading-progress *ngIf="dataService.chooseDataset === data"></gsa-loading-progress>
     </div>
   </div>
 </mat-card-content>

@@ -4,6 +4,7 @@ import {LoadDatasetService} from "../../services/load-dataset.service";
 import Handsontable from "handsontable";
 import {CellValue} from "handsontable/common";
 import {HotTableComponent} from "@handsontable/angular";
+import {FetchDatasetService} from "../../services/fetch-dataset.service";
 
 
 @Component({
@@ -11,8 +12,15 @@ import {HotTableComponent} from "@handsontable/angular";
   templateUrl: './annotate-dataset.component.html',
   styleUrls: ['./annotate-dataset.component.scss']
 })
-export class AnnotateDatasetComponent implements OnInit {
+export class AnnotateDatasetComponentHandson implements OnInit {
   form: FormGroup;
+  frmStepThree: FormGroup;
+
+  constructor(private formBuilder: FormBuilder, public dataService: FetchDatasetService, public loadDataService: LoadDatasetService) {
+    this.frmStepThree = this.formBuilder.group({
+      address: ['', Validators.required]
+    });
+  }
 
 
   @ViewChild('flyingRename') input: ElementRef<HTMLInputElement>;
@@ -48,8 +56,6 @@ export class AnnotateDatasetComponent implements OnInit {
     },
   };
 
-  constructor(private formBuilder: FormBuilder, public loadDataService: LoadDatasetService) {
-  }
 
   ngOnInit() {
     this.form = this.formBuilder.group({

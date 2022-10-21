@@ -33,12 +33,13 @@ import {AgGridModule} from "ag-grid-angular";
 import {HotTableModule} from "@handsontable/angular";
 import {BrowserModule} from '@angular/platform-browser';
 import {registerAllModules} from 'handsontable/registry';
+import { LoadingProgressComponent } from './datasets/select-dataset/loading-progress/loading-progress.component';
 
 registerAllModules();
 
 @NgModule({
   declarations: [
-    AnalysisMethodsComponent, HeaderComponent, MethodComponent, MethodParameterComponent, SelectDatasetComponent, ExampleDataComponent, AnnotateDatasetComponent, StepperComponent, LocalDataComponent, ImportDataComponent, ImportParameterComponent, UploadFileComponent
+    AnalysisMethodsComponent, HeaderComponent, MethodComponent, MethodParameterComponent, SelectDatasetComponent, ExampleDataComponent, AnnotateDatasetComponent, StepperComponent, LocalDataComponent, ImportDataComponent, ImportParameterComponent, UploadFileComponent, LoadingProgressComponent
   ],
   exports: [
     AnalysisMethodsComponent,

@@ -20,3 +20,7 @@ h1 {
 textarea {
   height: 12px;
 }
+
+.stepper {
+  background-color: #f2f5fb;
+}

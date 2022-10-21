@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Dataset, ExampleDataset, ImportDataset, LocalDataset} from "../../model/fetch-dataset.model";
 import {FetchDatasetService} from "../../services/fetch-dataset.service";
-import {Observable} from "rxjs";
+import {BehaviorSubject, delay, Observable} from "rxjs";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {LoadDatasetService} from "../../services/load-dataset.service";
 import Handsontable from "handsontable";
@@ -16,21 +16,15 @@ export class SelectDatasetComponent implements OnInit {
   importData$: Observable<ImportDataset[]>
   localData$: Observable<LocalDataset[]>
   name: string;
-  form: FormGroup;
-
-
+  frmStepTwo: FormGroup;
 
   constructor(private formBuilder: FormBuilder, public dataService: FetchDatasetService, public loadDataService: LoadDatasetService) {
-    this.form = this.formBuilder.group({
-      name: ['', Validators.required]
+    this.frmStepTwo = this.formBuilder.group({
+      address: ['', Validators.required]
     });
   }
 
   ngOnInit() {
-    this.form = this.formBuilder.group({
-      name: ['', Validators.required]
-    });
-
     this.exampleData$ = this.dataService.fetchExampleData()
     this.importData$ = this.dataService.fetchImportData()
     this.localData$ = this.dataService.fetchLocalData()

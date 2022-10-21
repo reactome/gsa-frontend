@@ -12,7 +12,7 @@ export class ExampleDataComponent implements OnInit {
   @Input() data: ExampleDataset;
 
 
-  constructor(public dataService: FetchDatasetService, public loadDatasetService : LoadDatasetService) {
+  constructor(public dataService: FetchDatasetService, public loadDataService : LoadDatasetService) {
   }
 
   ngOnInit(): void {
@@ -24,7 +24,7 @@ export class ExampleDataComponent implements OnInit {
   }
 
   loadData() {
-    this.loadDatasetService.loadDataset('example_datasets', [{
+    this.loadDataService.loadDataset('example_datasets', [{
       name: "dataset_id",
       value: this.data.id
     }])

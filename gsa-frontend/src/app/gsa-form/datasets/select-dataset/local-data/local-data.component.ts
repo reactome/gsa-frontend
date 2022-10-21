@@ -30,9 +30,7 @@ export class LocalDataComponent implements OnInit {
     const file: File = event.target.files[0];
     if (file) {
       this.fileName = file.name;
-      const formData = new FormData();
-      formData.append('', file, file.name);
-      this.loadDataService.uploadFile(formData)
+      this.loadDataService.uploadFile(file)
     }
   }
 }

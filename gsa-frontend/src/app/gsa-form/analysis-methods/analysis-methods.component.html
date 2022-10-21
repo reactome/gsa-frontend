@@ -8,12 +8,14 @@
 <!--<button (click)="addColumn()">Click me</button>-->
 
 
-<div [formGroup]="form" class="container">
+<div [formGroup]="frmStepOne" class="stepper">
   <h1>Step 1: Select one of the available analysis methods</h1>
-  <div *ngFor="let method of methods$ | async">
-    <gsa-method [method]="method"></gsa-method>
+  <div class="container">
+    <div *ngFor="let method of methods$ | async">
+      <gsa-method [method]="method"></gsa-method>
+    </div>
+    <button mat-raised-button color="accent" matStepperNext [disabled]="methodService.selectedMethod === undefined">
+      Continue
+    </button>
   </div>
-  <button mat-raised-button color="accent" matStepperNext [disabled]="methodService.selectedMethod === undefined">
-    Continue
-  </button>
 </div>

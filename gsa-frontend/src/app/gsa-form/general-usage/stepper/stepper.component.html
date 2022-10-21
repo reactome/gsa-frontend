@@ -1,16 +1,34 @@
-<div class="container">
-  <mat-horizontal-stepper  #stepper>
-    <mat-step [stepControl]="analysisStep!" #methodStep>
-      <ng-template matStepLabel >Method</ng-template>
-      <gsa-analysis-methods *ngIf="stepper.selected == null || stepper.selected == methodStep"></gsa-analysis-methods>
+<div class="stepper">
+  <mat-vertical-stepper #stepper>
+    <mat-step [stepControl]="form1">
+      <ng-template matStepLabel>Select method</ng-template>
+      <gsa-analysis-methods #selectMethod></gsa-analysis-methods>
     </mat-step>
-    <mat-step [stepControl]="datasetStep!" #dataStep >
-      <ng-template matStepLabel >Datasets</ng-template>
-      <gsa-select-dataset *ngIf="stepper.selected == dataStep"></gsa-select-dataset>
+    <mat-step [stepControl]="form2">
+      <ng-template matStepLabel >Select dataset</ng-template>
+      <gsa-select-dataset #selectData></gsa-select-dataset>
     </mat-step>
-    <mat-step [stepControl]="annotateStep!" #annotate>
-      <ng-template matStepLabel >Annotate</ng-template>
-      <gsa-annotate-dataset *ngIf="stepper.selected == annotate"></gsa-annotate-dataset>
+    <mat-step [stepControl]="form3" >
+      <ng-template matStepLabel >Annotate dataset</ng-template>
+      <gsa-annotate-dataset #annotateData></gsa-annotate-dataset>
     </mat-step>
-  </mat-horizontal-stepper>
+  </mat-vertical-stepper>
 </div>
+
+
+<!--<div class="container">-->
+<!--  <mat-horizontal-stepper  #stepper>-->
+<!--    <mat-step [stepControl]="analysisStep!" #methodStep>-->
+<!--      <ng-template matStepLabel >Method</ng-template>-->
+<!--      <gsa-analysis-methods *ngIf="stepper.selected == null || stepper.selected == methodStep"></gsa-analysis-methods>-->
+<!--    </mat-step>-->
+<!--    <mat-step [stepControl]="datasetStep!" #dataStep >-->
+<!--      <ng-template matStepLabel >Datasets</ng-template>-->
+<!--      <gsa-select-dataset *ngIf="stepper.selected == dataStep"></gsa-select-dataset>-->
+<!--    </mat-step>-->
+<!--    <mat-step [stepControl]="annotateStep!" #annotate>-->
+<!--      <ng-template matStepLabel >Annotate</ng-template>-->
+<!--      <gsa-annotate-dataset *ngIf="stepper.selected == annotate"></gsa-annotate-dataset>-->
+<!--    </mat-step>-->
+<!--  </mat-horizontal-stepper>-->
+<!--</div>-->

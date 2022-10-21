@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AnnotateDatasetComponent } from './annotate-dataset.component';
+import { AnnotateDatasetComponentHandson } from './annotate-dataset.component';
 
 describe('AnnotateDatasetComponent', () => {
-  let component: AnnotateDatasetComponent;
-  let fixture: ComponentFixture<AnnotateDatasetComponent>;
+  let component: AnnotateDatasetComponentHandson;
+  let fixture: ComponentFixture<AnnotateDatasetComponentHandson>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AnnotateDatasetComponent ]
+      declarations: [ AnnotateDatasetComponentHandson ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AnnotateDatasetComponent);
+    fixture = TestBed.createComponent(AnnotateDatasetComponentHandson);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

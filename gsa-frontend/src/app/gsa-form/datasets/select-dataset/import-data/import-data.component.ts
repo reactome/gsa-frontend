@@ -12,7 +12,7 @@ import {LoadParameter, LoadParameterClass} from "../../../model/load-dataset.mod
 export class ImportDataComponent implements OnInit {
   @Input() data: ImportDataset;
 
-  constructor(public dataService: FetchDatasetService, public loadDatasetService : LoadDatasetService) {
+  constructor(public dataService: FetchDatasetService, public loadDataService : LoadDatasetService) {
   }
 
   ngOnInit(): void {
@@ -30,7 +30,7 @@ export class ImportDataComponent implements OnInit {
     for (let param in this.data.parameters) {
       loadParams[param] = new LoadParameterClass(this.data.parameters[param].name, this.data.parameters[param].value.toString())
     }
-    this.loadDatasetService.loadDataset(this.data.id, loadParams)
+    this.loadDataService.loadDataset(this.data.id, loadParams)
   }
 }
 

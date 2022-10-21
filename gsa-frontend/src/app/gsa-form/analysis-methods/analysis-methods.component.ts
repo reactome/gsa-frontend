@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {Observable} from "rxjs";
+import {BehaviorSubject, delay, Observable} from "rxjs";
 import {Method} from "../model/methods.model";
 import {AnalysisMethodsService} from "../services/analysis-methods.service";
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -16,20 +16,21 @@ import {HotTableComponent, HotTableRegisterer} from "@handsontable/angular";
 export class AnalysisMethodsComponent implements OnInit {
   methods$: Observable<Method[]>;
   name: string;
-  form: FormGroup;
+  frmStepOne: FormGroup;
 
 
   constructor(private formBuilder: FormBuilder, public methodService: AnalysisMethodsService) {
 
-    this.form = this.formBuilder.group({
+    this.frmStepOne = this.formBuilder.group({
       name: ['', Validators.required]
     });
   }
 
-  ngOnInit() {
-    this.form = this.formBuilder.group({
-      name: ['', Validators.required]
-    });
+  ngOnInit() : void{
+
+    // this.form = this.formBuilder.group({
+    //   name: ['', Validators.required]
+    // });
     this.methods$ = this.methodService.getAnalysisMethods()
   }
 

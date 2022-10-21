@@ -8,6 +8,7 @@ import {DataSummary, LoadingStatus} from "../model/load-dataset.model";
 import {UploadData} from "../model/upload-dataset-model";
 import {Validators} from "@angular/forms";
 import {CellValue} from "handsontable/common";
+import {CellInfo} from "../model/table.model";
 
 @Injectable({
   providedIn: 'root'
@@ -16,15 +17,16 @@ export class LoadDatasetService {
   loadDataUrl = `${environment.ApiRoot}/data/load/`;
   loadingStatusUrl = `${environment.ApiRoot}/data/status/`;
   summaryDataUrl = `${environment.ApiRoot}/data/summary/`;
-  uploadDataUrl = `${environment.ApiRoot}/upload`;
+  uploadDataUrl = `${environment.ApiSecretRoot}/upload`;
   loadingId: string
   loadingStatus: LoadingStatus
   dataSummary: DataSummary
   private timer: NodeJS.Timer;
   columns: string[] = []
   rows: string[] = []
-  dataset: CellValue[][] = []
+  dataset: CellInfo[][] = []
   loadingProgress: string = 'not started'
+
   chosenDatasets: Dataset[];
 
   constructor(private http: HttpClient) {
@@ -32,6 +34,7 @@ export class LoadDatasetService {
 
   loadDataset(resourceId: string, postParameters: any): void {
     this.loadingProgress = 'loading'
+    console.log(postParameters)
     this.timer = setInterval(() => this.getLoadingStatus(), 1000)
     this.getLoadingId(resourceId, postParameters)
   }
@@ -59,12 +62,13 @@ export class LoadDatasetService {
   }
 
   getDataSummary(): void {
-    console.log(this.loadingStatus.dataset_id)
     this.http.get<DataSummary>(this.summaryDataUrl + this.loadingStatus.dataset_id)
       .subscribe((summary) => this.dataSummary = summary)
   }
 
-  uploadFile(formData: FormData): Observable<UploadData> {
+  uploadFile(file: File): Observable<UploadData> {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
     let uploadDataObservable = this.http.post<UploadData>(this.uploadDataUrl, formData);
     uploadDataObservable.subscribe(response => console.log(response))
     return uploadDataObservable
@@ -74,7 +78,7 @@ export class LoadDatasetService {
     this.rows = this.dataSummary.sample_ids.map(id => id.toLowerCase());
     this.dataset = this.dataSummary.sample_metadata[0].values.map(() => []);
     this.columns = this.dataSummary.sample_metadata.map(data => {
-      data.values.forEach((value, i) => this.dataset[i % this.rows.length].push(value))
+      data.values.forEach((value, i) => this.dataset[i % this.rows.length].push(new CellInfo(value, false)))
       return data.name.toLowerCase();
     })
     console.log(this.dataset)
