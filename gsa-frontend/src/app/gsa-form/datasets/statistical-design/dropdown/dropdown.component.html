@@ -1,0 +1,5 @@
+<mat-form-field>
+  <mat-select [(value)]="selection" (selectionChange)="saveValue()" placeholder={{default}}>
+    <mat-option *ngFor="let pos of options" [value]="pos">{{pos}}</mat-option>
+  </mat-select>
+</mat-form-field>

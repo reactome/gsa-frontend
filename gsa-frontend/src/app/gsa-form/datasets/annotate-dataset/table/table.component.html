@@ -1,0 +1,34 @@
+<div class="container">
+  <table #root (mousedown)="mousedown($event)" (mouseup)="mouseup()" (mouseover)="mousemove($event)" (click)="changeValueMouseClick($event)" (keydown)="navigateTableDefault($event)">
+    <thead>
+    <tr>
+      <th></th>
+      <th class="columns" *ngFor="let col of settings.columns; let y = index" [attr.y]="y" [attr.x]="-1">
+        <span>{{col}}</span>
+        <button mat-icon-button (click)="deleteColumn($event, y)" color="primary" aria-label="Example icon button with a vertical three dot icon">
+          <span class="material-icons">delete</span>
+        </button>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let row of settings.rows; let x = index"  >
+      <th class="rows" [attr.x]="x"  [attr.y]="-1">{{row}}</th >
+      <td *ngFor="let rowVal of settings.data[x]; let y = index" [attr.x]="x" [attr.y]="y">
+        {{rowVal.value}}
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <input #flyingRename class="flying-rename" (change)="renameCell()" (blur)="renameCell()"
+         *ngIf="renameVisible" [(ngModel)]="renameValue" [ngModelOptions]="{standalone: true}" (keydown)="navigateTable($event)"
+         [style.left.px]="modifiedCell.coordinate.x" [style.top.px]="modifiedCell.coordinate.y"
+         [style.width.px]="modifiedCell.coordinate.width" [style.height.px]="modifiedCell.coordinate.height" >
+  <button mat-fab color="primary" (click)="addColumn()">
+    <mat-icon>plus_one</mat-icon>
+  </button>
+</div>
+
+
+
+

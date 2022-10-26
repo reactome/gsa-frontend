@@ -29,9 +29,5 @@ export class SelectDatasetComponent implements OnInit {
     this.importData$ = this.dataService.fetchImportData()
     this.localData$ = this.dataService.fetchLocalData()
   }
-
-  reloadData() {
-    this.loadDataService.computeTableValues()
-  }
 }
 

@@ -21,6 +21,20 @@ textarea {
   height: 12px;
 }
 
+mat-vertical-stepper, mat-horizontal-stepper{
+  background: #f2f5fb !important;
+}
+
+
+
 .stepper {
   background-color: #f2f5fb;
+  min-height: 500px;
+}
+
+h1 {
+  display: flex;
+  flex-direction: column;
+  gap: 1vh;
+  align-items: center;
 }

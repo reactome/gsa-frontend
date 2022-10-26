@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {AnalysisMethodsComponent} from "./analysis-methods/analysis-methods.component";
-import {HeaderComponent} from "./general-usage/header/header.component";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from "@angular/material/button";
@@ -20,7 +19,7 @@ import {AnnotateDatasetComponent} from './datasets/annotate-dataset/annotate-dat
 import {MatIconModule} from "@angular/material/icon";
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatStepperModule} from "@angular/material/stepper";
-import {StepperComponent} from './general-usage/stepper/stepper.component';
+import {StepperComponent} from './stepper/stepper.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {LocalDataComponent} from './datasets/select-dataset/local-data/local-data.component';
 import {ImportDataComponent} from './datasets/select-dataset/import-data/import-data.component';
@@ -28,46 +27,51 @@ import {
   ImportParameterComponent
 } from "./datasets/select-dataset/import-data/import-parameter/import-parameter.component";
 import {MethodParameterComponent} from "./analysis-methods/method-parameter/method-parameter.component";
-import {UploadFileComponent} from './datasets/select-dataset/local-data/upload-file/upload-file.component';
 import {AgGridModule} from "ag-grid-angular";
 import {HotTableModule} from "@handsontable/angular";
 import {BrowserModule} from '@angular/platform-browser';
 import {registerAllModules} from 'handsontable/registry';
 import { LoadingProgressComponent } from './datasets/select-dataset/loading-progress/loading-progress.component';
+import { TableComponent } from './datasets/annotate-dataset/table/table.component';
+import { StatisticalDesignComponent } from './datasets/statistical-design/statistical-design.component';
+import { DropdownComponent } from './datasets/statistical-design/dropdown/dropdown.component';
+import {MatMenuModule} from "@angular/material/menu";
+import { NestedStepperComponent } from './stepper/nested-stepper/nested-stepper.component';
 
 registerAllModules();
 
 @NgModule({
   declarations: [
-    AnalysisMethodsComponent, HeaderComponent, MethodComponent, MethodParameterComponent, SelectDatasetComponent, ExampleDataComponent, AnnotateDatasetComponent, StepperComponent, LocalDataComponent, ImportDataComponent, ImportParameterComponent, UploadFileComponent, LoadingProgressComponent
+    AnalysisMethodsComponent, MethodComponent, MethodParameterComponent, SelectDatasetComponent, ExampleDataComponent, AnnotateDatasetComponent, StepperComponent, LocalDataComponent, ImportDataComponent, ImportParameterComponent, LoadingProgressComponent, TableComponent, StatisticalDesignComponent, DropdownComponent, NestedStepperComponent
   ],
   exports: [
     AnalysisMethodsComponent,
     StepperComponent
   ],
-  imports: [
-    CommonModule,
-    MatProgressBarModule,
-    MatCardModule,
-    MatButtonModule,
-    MatSlideToggleModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    FormsModule,
-    MatListModule,
-    MatGridListModule,
-    MatInputModule,
-    RouterLink,
-    MatIconModule,
-    MatTooltipModule,
-    MatStepperModule,
-    ReactiveFormsModule,
-    RouterOutlet,
-    MatProgressSpinnerModule,
-    AgGridModule,
-    HotTableModule,
-    BrowserModule
-  ],
+    imports: [
+        CommonModule,
+        MatProgressBarModule,
+        MatCardModule,
+        MatButtonModule,
+        MatSlideToggleModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        FormsModule,
+        MatListModule,
+        MatGridListModule,
+        MatInputModule,
+        RouterLink,
+        MatIconModule,
+        MatTooltipModule,
+        MatStepperModule,
+        ReactiveFormsModule,
+        RouterOutlet,
+        MatProgressSpinnerModule,
+        AgGridModule,
+        HotTableModule,
+        BrowserModule,
+        MatMenuModule
+    ],
   // bootstrap: [SelectDatasetComponent]
 })
 

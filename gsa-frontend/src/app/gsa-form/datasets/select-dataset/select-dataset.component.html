@@ -1,5 +1,5 @@
 <div class="stepper" [formGroup]="frmStepTwo">
-  <h1>Step 2: Add and annotate your datasets</h1>
+  <h1>Step 2.1: Add and annotate your datasets</h1>
   <div class="container">
     <mat-card>
       <mat-card-title>Select a file from a local folder</mat-card-title>
@@ -23,5 +23,6 @@
     </mat-card>
   </div>
   <button mat-raised-button color="accent" matStepperPrevious>Back</button>
-  <button style="margin-left: 20px" mat-raised-button color="accent" (click)="reloadData()" matStepperNext [disabled]="loadDataService.dataSummary === undefined">Continue</button>
+  <button style="margin-left: 20px" mat-raised-button color="accent" matStepperNext >Continue</button>
+<!--  [disabled]="loadDataService.dataSummary === undefined"-->
 </div>

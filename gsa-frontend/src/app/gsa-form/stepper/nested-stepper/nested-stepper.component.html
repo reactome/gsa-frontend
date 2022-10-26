@@ -1,0 +1,16 @@
+<div class="stepper">
+  <mat-horizontal-stepper #stepper>
+    <mat-step [stepControl]="form2">
+      <ng-template matStepLabel >Add dataset</ng-template>
+      <gsa-select-dataset #selectData></gsa-select-dataset>
+    </mat-step>
+    <mat-step [stepControl]="form3" >
+      <ng-template matStepLabel >Annotate dataset</ng-template>
+      <gsa-annotate-dataset #annotateData></gsa-annotate-dataset>
+    </mat-step>
+    <mat-step [stepControl]="form4" >
+      <ng-template matStepLabel >Statistical Design</ng-template>
+      <gsa-statistical-design #statisticalDesign></gsa-statistical-design>
+    </mat-step>
+  </mat-horizontal-stepper>
+</div>

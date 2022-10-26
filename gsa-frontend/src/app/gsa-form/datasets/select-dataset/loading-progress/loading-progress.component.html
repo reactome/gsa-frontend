@@ -1,0 +1,14 @@
+<div class="loading-progress" >
+  <div *ngIf="loadDataService.loadingProgress === 'loading'">
+    <mat-spinner  diameter="25"></mat-spinner>
+    <div style="margin-top: 5px;">Loading Dataset</div>
+  </div>
+  <div *ngIf="loadDataService.loadingProgress === 'failed'">
+    <div class="material-icons mat-error">error</div>
+    <div>Dataset not found</div>
+  </div>
+  <div *ngIf="loadDataService.loadingProgress === 'completed'">
+    <div class="material-icons" style=" color: rgb(0, 128, 55); font-size: 25px;"> check_circle </div>
+    <div >Dataset loaded</div>
+  </div>
+</div>

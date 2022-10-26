@@ -1,0 +1,34 @@
+<div [formGroup]="frmStepThree" class="stepper">
+  <h1>Step 2.2: Annotate your data</h1>
+  <div class="container">
+    <table #root (mousedown)="mousedown($event)" (mouseup)="mouseup()" (mouseover)="mousemove($event)" (click)="changeValue($event)">
+      <thead>
+      <tr>
+        <th></th>
+        <th class="columns" *ngFor="let col of loadDataService.columns; let y = index" [attr.y]="y" [attr.x]="-1">
+          {{col}}
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let row of loadDataService.rows; let x = index"  >
+        <th class="rows" [attr.x]="x"  [attr.y]="-1">{{row}}</th >
+        <td *ngFor="let rowVal of loadDataService.dataset[x]; let y = index" [attr.x]="x" [attr.y]="y">
+          {{rowVal.value}}
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <input #flyingRename class="flying-rename" (change)="renameCell()" (blur)="renameCell()"
+           *ngIf="renameVisible" [(ngModel)]="renameValue" [ngModelOptions]="{standalone: true}"
+           [style.left.px]="modifiedCell.coordinate.x" [style.top.px]="modifiedCell.coordinate.y"
+           [style.width.px]="modifiedCell.coordinate.width" [style.height.px]="modifiedCell.coordinate.height" >
+    <button mat-fab color="primary" (click)="addColumn()">
+      <mat-icon>plus_one</mat-icon>
+    </button>
+  </div>
+  <button mat-raised-button  color="accent" matStepperPrevious>Back</button>
+  <button mat-raised-button color="accent" matStepperNext >Continue</button>
+</div>
+
+

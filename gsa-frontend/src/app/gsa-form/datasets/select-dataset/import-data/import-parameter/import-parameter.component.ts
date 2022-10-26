@@ -14,11 +14,9 @@ export class ImportParameterComponent implements OnInit {
   types = ParameterType;
 
   constructor() {
-
   }
 
   ngOnInit(): void {
-    console.log(this.parameter)
   }
 
 }
