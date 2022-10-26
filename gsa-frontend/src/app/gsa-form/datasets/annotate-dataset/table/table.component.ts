@@ -102,15 +102,15 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   changeValueMouseClick($event: MouseEvent) {
-    console.log(this.firstSelected)
     this.getCell(this.firstSelected.x, this.firstSelected.y)?.classList.remove('firstSelected')
-    let cellCoord = this.extractCoordsFromEvent($event);
-    this.modifiedCell = new CellInfo(undefined, cellCoord.x, cellCoord.y, this.getRelativeCoords(cellCoord.parentElement))
+    let cell = this.extractCoordsFromEvent($event);
+    this.modifiedCell = new CellInfo(undefined, cell.x, cell.y, this.getRelativeCoords(cell.parentElement))
     this.firstSelected = this.modifiedCell
-    this.changeValue()
+    this.showChangeInput()
   }
 
-  changeValue() {
+  showChangeInput() {
+    console.log(this.modifiedCell)
     let type: string = this.modifiedCell.x === -1 ? "col" : this.modifiedCell.y === -1 ? "row" : "cell";
     if (type === "col") { // It is a column
       this.renameValue = this.settings.columns[this.modifiedCell.y]
@@ -119,7 +119,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     } else  { // It is a cell
       this.renameValue = this.settings.data[this.modifiedCell.x][this.modifiedCell.y].value
     }
-    console.log(type)
     if ((type === "col" && this.settings.rename_cols) || (type === "row" && this.settings.rename_rows) || (type === "cell" && this.settings.change_cells)) {
       this.renameVisible = true
       setTimeout(() => this.input.nativeElement.focus());
@@ -161,21 +160,26 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   navigateTable($event: KeyboardEvent) {
+    this.renameCell()
     let x = this.firstSelected.x
     let y = this.firstSelected.y
-
+    // $event.preventDefault()
     this.getCell(x, y)?.classList.remove('firstSelected')
     if ($event.key == "ArrowRight") {
       y = y + 1 === this.settings.columns.length ? -1 : y + 1;
+      if (this.settings.rename_rows === false && y === -1) y += 1
     }
     else if ($event.key == "ArrowLeft") {
       y = y - 1 === -2 ? this.settings.columns.length - 1 : y - 1
+      if (this.settings.rename_rows === false && y === -1) y = this.settings.columns.length - 1
     }
     else if ($event.key == "ArrowUp") {
       x = x - 1 === -2 ? this.settings.rows.length - 1 : x - 1
+      if (this.settings.rename_cols === false && x === -1) x = this.settings.rows.length - 1
     }
     else if ($event.key == "ArrowDown") {
       x = x + 1 === this.settings.rows.length ? -1 : x + 1;
+      if (this.settings.rename_cols === false && x === -1) x += 1
     }
     else if ($event.key == "Tab") {
       if (x + 1 === this.settings.rows.length) {
@@ -185,15 +189,28 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       else {
         x += 1
       }
+      if (this.settings.rename_cols === false && x === -1) x += 1
+      if (this.settings.rename_rows === false && y === -1) y += 1
     }
     else if ($event.key == "Enter") {
 
     }
-
+    console.log(x, y)
+    if (this.settings.rename_rows === false && y === -1) {
+      y += 1
+    }
+    if (this.settings.rename_cols === false && x === -1) {
+      x += 1
+    }
+    console.log(x, y)
     this.getCell(x, y)?.classList.add('firstSelected')
     this.firstSelected = new CellInfo(undefined, x, y)
-    let parentElement = this.rootRef.nativeElement.querySelector("[x = \'" + x?.toString() + "\'][y = \'" + y?.toString() + "\']");
+    let parentElement = this.rootRef.nativeElement.querySelector("[x = \'" + x?.toString() + "\'][y = \'" + y?.toString() + "\']")
     this.modifiedCell = new CellInfo(undefined, x, y, this.getRelativeCoords(parentElement as HTMLElement))
-    this.changeValue()
+    this.showChangeInput()
+  }
+
+  navigateTableInput($event: any) {
+    this.navigateTable($event)
   }
 }

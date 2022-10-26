@@ -21,7 +21,9 @@
     </tbody>
   </table>
   <input #flyingRename class="flying-rename" (change)="renameCell()" (blur)="renameCell()"
-         *ngIf="renameVisible" [(ngModel)]="renameValue" [ngModelOptions]="{standalone: true}" (keydown)="navigateTable($event)"
+         *ngIf="renameVisible" [(ngModel)]="renameValue" [ngModelOptions]="{standalone: true}"
+         (keydown.arrowUp)="navigateTableInput($event)" (keydown.arrowDown)="navigateTableInput($event)" (keydown.arrowLeft)="navigateTableInput($event)"
+         (keydown.arrowRight)="navigateTableInput($event)" (keydown.Tab)="navigateTableInput($event)" (keydown.Enter)="navigateTableInput($event)"
          [style.left.px]="modifiedCell.coordinate.x" [style.top.px]="modifiedCell.coordinate.y"
          [style.width.px]="modifiedCell.coordinate.width" [style.height.px]="modifiedCell.coordinate.height" >
   <button mat-fab color="primary" (click)="addColumn()">
