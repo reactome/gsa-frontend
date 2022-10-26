@@ -1,12 +1,12 @@
 <div class="stepper">
   <mat-vertical-stepper #stepper>
-    <mat-step [stepControl]="form1">
+    <mat-step [stepControl]="form1" #addMethod>
       <ng-template matStepLabel>Select method</ng-template>
-      <gsa-analysis-methods #selectMethod></gsa-analysis-methods>
+      <gsa-analysis-methods #selectMethod *ngIf="stepper.selected == null || stepper.selected == selectMethod"></gsa-analysis-methods>
     </mat-step>
-    <mat-step [stepControl]="form2">
-      <ng-template matStepLabel>Select datasets</ng-template>
-      <gsa-nested-stepper #selectDataset></gsa-nested-stepper>
+    <mat-step [stepControl]="form2" #addData>
+      <ng-template matStepLabel>Add datasets</ng-template>
+      <gsa-nested-stepper #selectDataset *ngIf="stepper.selected == addData"></gsa-nested-stepper>
     </mat-step>
   </mat-vertical-stepper>
 </div>

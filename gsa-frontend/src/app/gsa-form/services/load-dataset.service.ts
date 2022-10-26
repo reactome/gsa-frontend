@@ -65,8 +65,8 @@ export class LoadDatasetService {
   loadDataset(resourceId: string, postParameters: any): void {
     this.loadingProgress = 'loading';
     this.loadingStatus = undefined;
-    this.timer = setInterval(() => this.getLoadingStatus(), 1000)
     this.getLoadingId(resourceId, postParameters)
+    this.timer = setInterval(() => this.getLoadingStatus(), 1000)
   }
 
   private getLoadingStatus(): void {
@@ -95,6 +95,7 @@ export class LoadDatasetService {
     this.http.get<DataSummary>(this.summaryDataUrl + this.loadingStatus?.dataset_id)
       .subscribe((summary) => {
         this.dataSummary = summary;
+        console.log(this.dataSummary)
         this.computeTableValues();
       })
   }

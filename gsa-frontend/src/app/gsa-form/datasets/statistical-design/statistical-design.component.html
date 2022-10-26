@@ -3,8 +3,10 @@
   <h1>Step 2.3 Statistical design of your data</h1>
   <h2>Select comparison factor:</h2>
   <gsa-dropdown [options]="loadDataService.columns" (value)="statisticalDesignService.analysisGroup = $event"></gsa-dropdown>
-<!--  {{statisticalDesignService.comparisonFactor}}-->
   <div *ngIf="statisticalDesignService.analysisGroup !== undefined">
-    test
+    <h2>Select comparison factor:</h2>
+    <gsa-dropdown [options]="loadDataService.columns" (value)="statisticalDesignService.analysisGroup = $event"></gsa-dropdown>
+    <h2>Select comparison factor:</h2>
+    <gsa-dropdown [options]="loadDataService.columns" (value)="statisticalDesignService.analysisGroup = $event"></gsa-dropdown>
   </div>
 </div>

@@ -10,14 +10,13 @@ import {StatisticalDesignComponent} from "../../datasets/statistical-design/stat
   templateUrl: './nested-stepper.component.html',
   styleUrls: ['./nested-stepper.component.scss']
 })
-export class NestedStepperComponent implements AfterViewInit {
+export class NestedStepperComponent implements AfterViewInit, OnInit {
 
   frmStepTwo: FormGroup;
 
-  form2: FormGroup;
-  form3: FormGroup;
-  form4: FormGroup;
-  @ViewChild('selectMethod') analysisMethodsComponent: AnalysisMethodsComponent;
+  form2_1: FormGroup;
+  form2_2: FormGroup;
+  form2_3: FormGroup;
   @ViewChild('selectData') selectDatasetComponent: SelectDatasetComponent;
   @ViewChild('annotateData') annotateDatasetComponent: AnnotateDatasetComponent;
   @ViewChild("statisticalDesign") statisticalDesignComponent: StatisticalDesignComponent
@@ -28,16 +27,17 @@ export class NestedStepperComponent implements AfterViewInit {
     });
   }
 
+
+
   ngAfterViewInit() {
-    this.form2 = this.selectDatasetComponent.frmStepTwo
-    this.form3 = this.annotateDatasetComponent.frmStepThree
-    this.form4 = this.statisticalDesignComponent.frmStepFour
+    this.form2_1 = this.selectDatasetComponent.frmStepTwo
+    this.form2_2 = this.annotateDatasetComponent.frmStepThree
+    this.form2_3 = this.statisticalDesignComponent.frmStepFour
 
     this.cdr.detectChanges();
   }
 
   ngOnInit(): void {
-
   }
 
 
