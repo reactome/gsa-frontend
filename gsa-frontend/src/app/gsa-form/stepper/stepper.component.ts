@@ -34,6 +34,4 @@ export class StepperComponent implements AfterViewInit {
   ngOnInit() {
 
   }
-
-
 }

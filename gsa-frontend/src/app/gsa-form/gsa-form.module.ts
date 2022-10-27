@@ -37,6 +37,7 @@ import { StatisticalDesignComponent } from './datasets/statistical-design/statis
 import { DropdownComponent } from './datasets/statistical-design/dropdown/dropdown.component';
 import {MatMenuModule} from "@angular/material/menu";
 import { NestedStepperComponent } from './stepper/nested-stepper/nested-stepper.component';
+import {MatCheckboxModule} from "@angular/material/checkbox";
 
 registerAllModules();
 
@@ -48,30 +49,31 @@ registerAllModules();
     AnalysisMethodsComponent,
     StepperComponent
   ],
-    imports: [
-        CommonModule,
-        MatProgressBarModule,
-        MatCardModule,
-        MatButtonModule,
-        MatSlideToggleModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        FormsModule,
-        MatListModule,
-        MatGridListModule,
-        MatInputModule,
-        RouterLink,
-        MatIconModule,
-        MatTooltipModule,
-        MatStepperModule,
-        ReactiveFormsModule,
-        RouterOutlet,
-        MatProgressSpinnerModule,
-        AgGridModule,
-        HotTableModule,
-        BrowserModule,
-        MatMenuModule
-    ],
+  imports: [
+    CommonModule,
+    MatProgressBarModule,
+    MatCardModule,
+    MatButtonModule,
+    MatSlideToggleModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    FormsModule,
+    MatListModule,
+    MatGridListModule,
+    MatInputModule,
+    RouterLink,
+    MatIconModule,
+    MatTooltipModule,
+    MatStepperModule,
+    ReactiveFormsModule,
+    RouterOutlet,
+    MatProgressSpinnerModule,
+    AgGridModule,
+    HotTableModule,
+    BrowserModule,
+    MatMenuModule,
+    MatCheckboxModule
+  ],
   // bootstrap: [SelectDatasetComponent]
 })
 

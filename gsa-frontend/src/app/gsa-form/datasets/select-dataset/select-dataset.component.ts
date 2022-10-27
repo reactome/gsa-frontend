@@ -16,10 +16,10 @@ export class SelectDatasetComponent implements OnInit {
   importData$: Observable<ImportDataset[]>
   localData$: Observable<LocalDataset[]>
   name: string;
-  frmStepTwo: FormGroup;
+  frmStepTwoOne: FormGroup;
 
   constructor(private formBuilder: FormBuilder, public dataService: FetchDatasetService, public loadDataService: LoadDatasetService) {
-    this.frmStepTwo = this.formBuilder.group({
+    this.frmStepTwoOne = this.formBuilder.group({
       address: ['', Validators.required]
     });
   }

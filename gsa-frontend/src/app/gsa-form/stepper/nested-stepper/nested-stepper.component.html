@@ -1,17 +1,16 @@
-test
-<!--<div class="stepper">-->
-<!--  <mat-horizontal-stepper #stepper>-->
-<!--    <mat-step [stepControl]="form2_1">-->
-<!--      <ng-template matStepLabel >Choose dataset</ng-template>-->
-<!--      <gsa-select-dataset #selectData></gsa-select-dataset>-->
-<!--    </mat-step>-->
-<!--    <mat-step [stepControl]="form2_2" >-->
-<!--      <ng-template matStepLabel >Annotate dataset</ng-template>-->
-<!--      <gsa-annotate-dataset #annotateData></gsa-annotate-dataset>-->
-<!--    </mat-step>-->
-<!--    <mat-step [stepControl]="form2_3" >-->
-<!--      <ng-template matStepLabel >Statistical Design</ng-template>-->
-<!--      <gsa-statistical-design #statisticalDesign></gsa-statistical-design>-->
-<!--    </mat-step>-->
-<!--  </mat-horizontal-stepper>-->
-<!--</div>-->
+<div class="stepper">
+  <mat-horizontal-stepper #stepper>
+    <mat-step [stepControl]="form2_1" #select>
+      <ng-template matStepLabel >Choose dataset</ng-template>
+      <gsa-select-dataset #selectData *ngIf="stepper.selected == null || stepper.selected == select"></gsa-select-dataset>
+    </mat-step>
+    <mat-step [stepControl]="form2_2" #annotate>
+      <ng-template matStepLabel >Annotate dataset</ng-template>
+      <gsa-annotate-dataset #selectData *ngIf="stepper.selected == null || stepper.selected == annotate"></gsa-annotate-dataset>
+    </mat-step>
+    <mat-step [stepControl]="form2_3" #statistic>
+      <ng-template matStepLabel >Statistical Design</ng-template>
+      <gsa-statistical-design #selectData *ngIf="stepper.selected == null || stepper.selected == statistic"></gsa-statistical-design>
+    </mat-step>
+  </mat-horizontal-stepper>
+</div>

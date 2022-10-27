@@ -11,10 +11,10 @@ import {StatisticalDesignService} from "../../services/statistical-design.servic
 })
 export class StatisticalDesignComponent implements OnInit {
 
-  frmStepFour: FormGroup;
+  frmStepTwoThree: FormGroup;
 
   constructor(private formBuilder: FormBuilder, public loadDataService: LoadDatasetService, public statisticalDesignService: StatisticalDesignService) {
-    this.frmStepFour = this.formBuilder.group({
+    this.frmStepTwoThree = this.formBuilder.group({
       address: ['', Validators.required]
     });
   }
@@ -22,4 +22,14 @@ export class StatisticalDesignComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  computeColumnValues(): any[] {
+    let colIndex = this.loadDataService.columns.indexOf(this.statisticalDesignService.analysisGroup)
+    let colValues : any[] = []
+    this.loadDataService.dataset.forEach((row) => {
+      if (colValues.indexOf(row[colIndex].value) === -1) {
+        colValues.push(row[colIndex].value)
+      }
+    })
+    return colValues;
+  }
 }

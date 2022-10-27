@@ -95,12 +95,12 @@ export class LoadDatasetService {
     this.http.get<DataSummary>(this.summaryDataUrl + this.loadingStatus?.dataset_id)
       .subscribe((summary) => {
         this.dataSummary = summary;
-        console.log(this.dataSummary)
         this.computeTableValues();
       })
   }
 
   computeTableValues() {
+    console.log(this.dataSummary)
     this.rows = this.dataSummary.sample_ids.map(id => id);
     this.dataset = this.dataSummary.sample_metadata[0].values.map(() => []);
     this.columns = this.dataSummary.sample_metadata.map(data => {

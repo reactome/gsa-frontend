@@ -11,9 +11,7 @@ import {CellInfo, Settings} from "../../model/table.model";
 })
 export class AnnotateDatasetComponent implements OnInit, AfterViewInit, AfterContentInit{
 
-  frmStepThree: FormGroup;
-  firstSelected: string = ''
-
+  frmStepTwoTwo: FormGroup;
   settings: Settings = {
 
     columns: this.loadDataService.columns,
@@ -24,21 +22,18 @@ export class AnnotateDatasetComponent implements OnInit, AfterViewInit, AfterCon
 
 
   constructor(private formBuilder: FormBuilder, public loadDataService: LoadDatasetService) {
-    this.frmStepThree = this.formBuilder.group({
+    this.frmStepTwoTwo = this.formBuilder.group({
       address: ['', Validators.required]
     });
   }
 
   ngOnInit(): void {
-    console.log(this.loadDataService.rows)
   }
 
   ngAfterViewInit() {
-    console.log(this.loadDataService.rows)
   }
 
   ngAfterContentInit() {
-    console.log(this.loadDataService.rows)
   }
 }
 

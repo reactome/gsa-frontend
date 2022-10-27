@@ -30,9 +30,9 @@ export class NestedStepperComponent implements AfterViewInit, OnInit {
 
 
   ngAfterViewInit() {
-    this.form2_1 = this.selectDatasetComponent.frmStepTwo
-    this.form2_2 = this.annotateDatasetComponent.frmStepThree
-    this.form2_3 = this.statisticalDesignComponent.frmStepFour
+    this.form2_1 = this.selectDatasetComponent.frmStepTwoOne
+    this.form2_2 = this.annotateDatasetComponent.frmStepTwoTwo
+    this.form2_3 = this.statisticalDesignComponent.frmStepTwoThree
 
     this.cdr.detectChanges();
   }

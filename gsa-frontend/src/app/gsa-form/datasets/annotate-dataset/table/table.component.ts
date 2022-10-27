@@ -110,7 +110,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   showChangeInput() {
-    console.log(this.modifiedCell)
     let type: string = this.modifiedCell.x === -1 ? "col" : this.modifiedCell.y === -1 ? "row" : "cell";
     if (type === "col") { // It is a column
       this.renameValue = this.settings.columns[this.modifiedCell.y]
@@ -195,14 +194,12 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     else if ($event.key == "Enter") {
 
     }
-    console.log(x, y)
     if (this.settings.rename_rows === false && y === -1) {
       y += 1
     }
     if (this.settings.rename_cols === false && x === -1) {
       x += 1
     }
-    console.log(x, y)
     this.getCell(x, y)?.classList.add('firstSelected')
     this.firstSelected = new CellInfo(undefined, x, y)
     let parentElement = this.rootRef.nativeElement.querySelector("[x = \'" + x?.toString() + "\'][y = \'" + y?.toString() + "\']")

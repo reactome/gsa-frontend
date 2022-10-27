@@ -4,7 +4,7 @@
     <tr>
       <th></th>
       <th class="columns" *ngFor="let col of settings.columns; let y = index" [attr.y]="y" [attr.x]="-1">
-        <span>{{col}}</span>
+        {{col}}
         <button mat-icon-button (click)="deleteColumn($event, y)" color="primary" aria-label="Example icon button with a vertical three dot icon">
           <span class="material-icons">delete</span>
         </button>
