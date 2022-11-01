@@ -1,0 +1,14 @@
+<div class="loading-progress" >
+  <div *ngIf="analysisService.loadingProgress === 'loading'">
+    <mat-spinner  diameter="25"></mat-spinner>
+    <div style="margin-top: 5px;">Loading Analysis</div>
+  </div>
+  <div *ngIf="analysisService.loadingProgress === 'failed'">
+    <div class="material-icons mat-error">error</div>
+    <div>Analysis failed</div>
+  </div>
+  <div *ngIf="analysisService.loadingProgress === 'completed'">
+    <div class="material-icons" style=" color: rgb(0, 128, 55); font-size: 25px;">check_circle</div>
+    <div >Analysis loaded</div>
+  </div>
+</div>

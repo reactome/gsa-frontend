@@ -1,16 +1,41 @@
-<div class="stepper">
-  <mat-horizontal-stepper #stepper>
+<mat-expansion-panel hideToggle [expanded]="true">
+  <mat-expansion-panel-header>
+    <div *ngIf="analysisInformation.datasets[numberDataset] === undefined">Add Dataset</div>
+    <div class="header"  *ngIf="analysisInformation.datasets[numberDataset] !== undefined">
+    <div>{{analysisInformation.datasets[numberDataset].name}}</div>
+    <div>{{analysisInformation.analysisGroup}}</div>
+    <div>{{analysisInformation.datasets[numberDataset].design.comparison.group1}}
+      vs. {{analysisInformation.datasets[numberDataset].design.comparison.group2}}</div>
+    <button mat-icon-button color="primary" (click)="deleteDataset()" aria-label="Example icon button with a vertical three dot icon"><span
+      class="material-icons">delete</span>
+    </button>
+    </div>
+  </mat-expansion-panel-header>
+
+
+  <mat-horizontal-stepper #nestedStepper>
     <mat-step [stepControl]="form2_1" #select>
-      <ng-template matStepLabel >Choose dataset</ng-template>
-      <gsa-select-dataset #selectData *ngIf="stepper.selected == null || stepper.selected == select"></gsa-select-dataset>
+      <ng-template matStepLabel>Choose dataset</ng-template>
+      <gsa-select-dataset
+        *ngIf="nestedStepper.selected == null || nestedStepper.selected == select"></gsa-select-dataset>
+      <button mat-raised-button color="accent" matStepperPrevious>Back</button>
+      <button mat-raised-button color="accent" matStepperNext [disabled]="loadData.dataSummary === undefined">
+        Continue
+      </button>
     </mat-step>
     <mat-step [stepControl]="form2_2" #annotate>
-      <ng-template matStepLabel >Annotate dataset</ng-template>
-      <gsa-annotate-dataset #selectData *ngIf="stepper.selected == null || stepper.selected == annotate"></gsa-annotate-dataset>
+      <ng-template matStepLabel>Annotate dataset</ng-template>
+      <gsa-annotate-dataset
+        *ngIf="nestedStepper.selected == annotate"></gsa-annotate-dataset>
+      <button mat-raised-button color="accent" matStepperPrevious>Back</button>
+      <button mat-raised-button color="accent" matStepperNext>Continue</button>
     </mat-step>
     <mat-step [stepControl]="form2_3" #statistic>
-      <ng-template matStepLabel >Statistical Design</ng-template>
-      <gsa-statistical-design #selectData *ngIf="stepper.selected == null || stepper.selected == statistic"></gsa-statistical-design>
+      <ng-template matStepLabel>Statistical Design</ng-template>
+      <gsa-statistical-design
+        *ngIf="nestedStepper.selected == statistic"></gsa-statistical-design>
+      <button mat-raised-button color="accent" matStepperPrevious>Back</button>
+      <button mat-raised-button color="primary" (click)="analysisInformation.saveDataset()">Add Dataset</button>
     </mat-step>
   </mat-horizontal-stepper>
-</div>
+</mat-expansion-panel>

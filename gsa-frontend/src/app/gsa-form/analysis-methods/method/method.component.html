@@ -1,14 +1,28 @@
-<mat-card [class.chosen]="methodService.selectedMethod === method" (click)="selectMethod()">
-  <mat-card-title>{{method.name | titlecase}}</mat-card-title>
-  <mat-card-content>{{method.description}}</mat-card-content>
-  <mat-card-actions align="end">
-    <button mat-raised-button color="primary" (click)="toggleConfiguration()">Configure</button>
-<!--    <button mat-raised-button color="primary" (click)="selectMethod()">Choose</button>-->
-  </mat-card-actions>
-  <div *ngIf="this.showConfig">
-    <!--    The whole "isLast thing with all the ifs is just there to not have a last border-bottom-->
-    <div *ngFor="let param of getDisplayParameters(); last as isLast" class="show-param">
-      <gsa-method-parameter [parameter]="param"></gsa-method-parameter>
-    </div>
+<mat-expansion-panel [class.chosen]="methodService.selectedMethod === method" (click)="selectMethod()" hideToggle>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      {{method.name | titlecase}}
+    </mat-panel-title>
+    <mat-panel-description>
+      {{method.description}}
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <div *ngFor="let param of getDisplayParameters(); last as isLast" class="show-param">
+    <gsa-method-parameter [parameter]="param"></gsa-method-parameter>
   </div>
-</mat-card>
+</mat-expansion-panel>
+
+<!--<mat-card [class.chosen]="methodService.selectedMethod === method" (click)="selectMethod()">-->
+<!--  <mat-card-title>{{method.name | titlecase}}</mat-card-title>-->
+<!--  <mat-card-content>{{method.description}}</mat-card-content>-->
+<!--  <mat-card-actions align="end">-->
+<!--    <button mat-raised-button color="primary" (click)="toggleConfiguration()">Configure</button>-->
+<!--&lt;!&ndash;    <button mat-raised-button color="primary" (click)="selectMethod()">Choose</button>&ndash;&gt;-->
+<!--  </mat-card-actions>-->
+<!--  <div *ngIf="this.showConfig">-->
+<!--    &lt;!&ndash;    The whole "isLast thing with all the ifs is just there to not have a last border-bottom&ndash;&gt;-->
+<!--    <div *ngFor="let param of getDisplayParameters(); last as isLast" class="show-param">-->
+<!--      <gsa-method-parameter [parameter]="param"></gsa-method-parameter>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</mat-card>-->

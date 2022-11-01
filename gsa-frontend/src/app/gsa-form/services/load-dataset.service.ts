@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, ViewChild} from '@angular/core';
 import {environment} from "../../../environments/environment";
 import {Dataset, ExampleDataset} from "../model/fetch-dataset.model";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
@@ -9,11 +9,13 @@ import {UploadData} from "../model/upload-dataset-model";
 import {Validators} from "@angular/forms";
 import {CellValue} from "handsontable/common";
 import {CellInfo} from "../model/table.model";
+import {MatStepper} from "@angular/material/stepper";
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoadDatasetService {
+  stepper: MatStepper
   loadDataUrl = `${environment.ApiRoot}/data/load/`;
   loadingStatusUrl = `${environment.ApiRoot}/data/status/`;
   summaryDataUrl = `${environment.ApiRoot}/data/summary/`;
@@ -57,7 +59,7 @@ export class LoadDatasetService {
     [new CellInfo("Memory 2"), new CellInfo("Normal 2")],
   ]
   loadingProgress: string = 'not started'
-  chosenDatasets: Dataset[];
+
 
   constructor(private http: HttpClient) {
   }
@@ -100,26 +102,39 @@ export class LoadDatasetService {
   }
 
   computeTableValues() {
-    console.log(this.dataSummary)
     this.rows = this.dataSummary.sample_ids.map(id => id);
     this.dataset = this.dataSummary.sample_metadata[0].values.map(() => []);
     this.columns = this.dataSummary.sample_metadata.map(data => {
       data.values.forEach((value, i) => this.dataset[i % this.rows.length].push(new CellInfo(value)))
       return data.name;
     })
+    this.stepper.next()
   }
 
-  uploadFile(file: File): Observable<UploadData> {
+
+  uploadFile(file: File): void {
     const formData = new FormData();
     formData.append('file', file, file.name);
     let uploadDataObservable = this.http.post<UploadData>(this.uploadDataUrl, formData);
     uploadDataObservable.subscribe(response => {
-      this.rows = response.sample_names
-      this.columns = [""]
-      this.dataset = []
-      this.rows.forEach((row) => this.dataset.push([new CellInfo()]))
-    }
-      )
-    return uploadDataObservable
+        this.rows = response.sample_names
+        this.columns = ["Annotation1"]
+        this.dataset = []
+        this.rows.forEach((row) => this.dataset.push([new CellInfo()]))
+        this.stepper.next()
+      }
+    )
+
+  }
+
+  getColumn(colName: any): any[] {
+    let colIndex = this.columns.indexOf(colName)
+    let colValues: any[] = []
+    this.dataset.forEach((row) => {
+      {
+        colValues.push(row[colIndex].value)
+      }
+    })
+    return colValues
   }
 }

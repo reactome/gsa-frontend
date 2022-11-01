@@ -1,0 +1,11 @@
+<div [formGroup]="frmStepThree" class="stepper">
+  <h1>Step 3: Analysis Options</h1>
+  <div *ngFor="let param of getDisplayParameters(); last as isLast" class="show-param">
+    <gsa-method-parameter [parameter]="param"></gsa-method-parameter>
+  </div>
+  <div>Disclaimer: We use your email address to send you a message when your Gene Set Analysis request is completed, and
+    your results are available to download. After this analysis is finished, we do not store your email address.
+    Furthermore, we do not share your email addresses with any third parties and we do not subscribe your email address
+    to any Reactome mailing list.
+  </div>
+</div>

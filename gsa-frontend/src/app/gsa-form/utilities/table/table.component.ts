@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {CellInfo, Settings} from "../../../model/table.model";
+import {CellInfo, Settings} from "../../model/table.model";
 import {MatIcon} from "@angular/material/icon";
 import {log} from "handsontable/helpers";
 
@@ -97,7 +97,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   addColumn() {
-    this.settings.columns.push("")
+    this.settings.columns.push("Annotation" + (this.settings.columns.length+1))
     this.settings.data.forEach((row) => row.push(new CellInfo()))
   }
 
@@ -173,7 +173,11 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       if (this.settings.rename_rows === false && y === -1) y = this.settings.columns.length - 1
     }
     else if ($event.key == "ArrowUp") {
-      x = x - 1 === -2 ? this.settings.rows.length - 1 : x - 1
+      if (x - 1 === -2) {
+        x = this.settings.rows.length - 1
+      } else {
+        x = x - 1
+      }
       if (this.settings.rename_cols === false && x === -1) x = this.settings.rows.length - 1
     }
     else if ($event.key == "ArrowDown") {
@@ -181,6 +185,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       if (this.settings.rename_cols === false && x === -1) x += 1
     }
     else if ($event.key == "Tab") {
+      $event.preventDefault()
       if (x + 1 === this.settings.rows.length) {
         x = -1
         y = y + 1 === this.settings.columns.length ? -1 : y + 1;

@@ -21,7 +21,7 @@ textarea {
   height: 12px;
 }
 
-mat-vertical-stepper, mat-horizontal-stepper{
+mat-vertical-stepper{
   background: #f2f5fb !important;
 }
 
@@ -37,4 +37,8 @@ h1 {
   flex-direction: column;
   gap: 1vh;
   align-items: center;
+}
+
+.step-container {
+  min-height: 800px;
 }

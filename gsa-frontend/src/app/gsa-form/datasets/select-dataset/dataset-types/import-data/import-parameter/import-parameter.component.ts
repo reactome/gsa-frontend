@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {importParameter} from "../../../../model/fetch-dataset.model";
-import {ParameterType} from "../../../../model/methods.model";
+import {importParameter} from "../../../../../model/fetch-dataset.model";
+import {ParameterType} from "../../../../../model/methods.model";
 
 
 @Component({

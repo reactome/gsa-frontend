@@ -6,7 +6,10 @@ mat-card {
 }
 
 .chosen {
-  box-shadow: inset 0px 0px 0px 5px #3f51b5;
+  box-sizing: border-box;
+  border-style: solid;
+  border-width: 5px;
+  border-color: #3f51b5;
 }
 
 .container {
@@ -18,6 +21,10 @@ mat-card {
 .show-param:not(:last-child) {
   border-bottom: 1px solid #dfe2f3;
   border-radius: 5px;
+}
+
+mat-panel-title {
+  font-weight: bold;
 }
 
 /*# sourceMappingURL=method.component.css.map */

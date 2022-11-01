@@ -15,11 +15,9 @@ type CellCoord = { x: number, y: number, parentElement: any };
 @Component({
   selector: 'gsa-analysis-methods',
   templateUrl: './analysis-methods.component.html',
-  styleUrls: ['./analysis-methods.component.scss'],
-  providers: [AnalysisMethodsService]
+  styleUrls: ['./analysis-methods.component.scss']
 })
 export class AnalysisMethodsComponent implements OnInit {
-  methods$: Observable<Method[]>;
   name: string;
   frmStepOne: FormGroup;
   @ViewChild('flyingRename') input: ElementRef<HTMLInputElement>;
@@ -34,11 +32,11 @@ export class AnalysisMethodsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.methodService.getAnalysisMethods()
+  }
 
-    // this.form = this.formBuilder.group({
-    //   name: ['', Validators.required]
-    // });
-    this.methods$ = this.methodService.getAnalysisMethods()
+  debug() {
+
   }
 }
 

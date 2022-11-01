@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ExampleDataset} from "../../../model/fetch-dataset.model";
-import {FetchDatasetService} from "../../../services/fetch-dataset.service";
-import {LoadDatasetService} from "../../../services/load-dataset.service";
+import {ExampleDataset} from "../../../../model/fetch-dataset.model";
+import {FetchDatasetService} from "../../../../services/fetch-dataset.service";
+import {LoadDatasetService} from "../../../../services/load-dataset.service";
 
 @Component({
   selector: 'gsa-example-data',

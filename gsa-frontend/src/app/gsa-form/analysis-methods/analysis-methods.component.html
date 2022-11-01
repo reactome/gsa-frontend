@@ -1,11 +1,12 @@
 <div [formGroup]="frmStepOne" class="stepper">
-  <h1>Step 1: Select one of the available analysis methods</h1>
-  <div class="container">
-    <div *ngFor="let method of methods$ | async">
-      <gsa-method [method]="method"></gsa-method>
+  <div class="step-container">
+    <h1>Step 1: Select one of the available analysis methods</h1>
+    <div class="container">
+      <mat-accordion multi="false">
+        <div *ngFor="let method of methodService.methods">
+          <gsa-method [method]="method"></gsa-method>
+        </div>
+      </mat-accordion>
     </div>
-    <button mat-raised-button color="accent" matStepperNext [disabled]="methodService.selectedMethod === undefined">
-      Continue
-    </button>
   </div>
 </div>
