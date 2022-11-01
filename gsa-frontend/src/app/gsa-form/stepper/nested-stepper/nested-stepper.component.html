@@ -1,14 +1,14 @@
 <mat-expansion-panel hideToggle [expanded]="true">
-  <mat-expansion-panel-header>
+  <mat-expansion-panel-header (click)="setCurrentDataset()">
     <div *ngIf="analysisInformation.datasets[numberDataset] === undefined">Add Dataset</div>
     <div class="header"  *ngIf="analysisInformation.datasets[numberDataset] !== undefined">
-    <div>{{analysisInformation.datasets[numberDataset].name}}</div>
-    <div>{{analysisInformation.analysisGroup}}</div>
-    <div>{{analysisInformation.datasets[numberDataset].design.comparison.group1}}
-      vs. {{analysisInformation.datasets[numberDataset].design.comparison.group2}}</div>
-    <button mat-icon-button color="primary" (click)="deleteDataset()" aria-label="Example icon button with a vertical three dot icon"><span
-      class="material-icons">delete</span>
-    </button>
+      <div>{{analysisInformation.datasets[numberDataset].name}}</div>
+      <div>{{analysisInformation.analysisGroup}}</div>
+      <div>{{analysisInformation.datasets[numberDataset].design.comparison.group1}}
+        vs. {{analysisInformation.datasets[numberDataset].design.comparison.group2}}</div>
+      <button mat-icon-button color="primary" (click)="deleteDataset()" aria-label="Example icon button with a vertical three dot icon"><span
+        class="material-icons">delete</span>
+      </button>
     </div>
   </mat-expansion-panel-header>
 
@@ -35,7 +35,15 @@
       <gsa-statistical-design
         *ngIf="nestedStepper.selected == statistic"></gsa-statistical-design>
       <button mat-raised-button color="accent" matStepperPrevious>Back</button>
-      <button mat-raised-button color="primary" (click)="analysisInformation.saveDataset()">Add Dataset</button>
+
+      <div *ngIf="toBeAdded; else changeDataset" >
+        <button mat-raised-button color="primary" (click)="addData(); nestedStepper.selected = annotate">Add Dataset</button>
+      </div>
+      <ng-template #changeDataset>
+        <button mat-raised-button color="primary" (click)="changeData(); nestedStepper.selected = annotate">Change Dataset</button>
+
+      </ng-template>
+
     </mat-step>
   </mat-horizontal-stepper>
 </mat-expansion-panel>

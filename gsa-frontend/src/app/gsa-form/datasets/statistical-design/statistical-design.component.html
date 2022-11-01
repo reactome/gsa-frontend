@@ -3,15 +3,15 @@
     <h1>Step 2.3 Statistical design of your data</h1>
   <mat-card>
     <h2>Select comparison factor:</h2>
-    <gsa-dropdown [options]="loadDataService.columns" (value)="statisticalDesignService.analysisGroup = $event"></gsa-dropdown>
+    <gsa-dropdown [options]="computeValidColumns()" [selection]="defaultValue(0)" (value)="statisticalDesignService.analysisGroup[loadDataService.currentDataset] = $event"></gsa-dropdown>
     <div *ngIf="statisticalDesignService.analysisGroup !== undefined">
       <h2>Set 1st group:</h2>
-      <gsa-dropdown [options]="computeColumnValues()" (value)="statisticalDesignService.comparisonGroup1 = $event"></gsa-dropdown>
+      <gsa-dropdown [options]="computeColumnValues(statisticalDesignService.analysisGroup[loadDataService.currentDataset])" [selection]="defaultValue(1)" (value)="statisticalDesignService.comparisonGroup1[loadDataService.currentDataset] = $event"></gsa-dropdown>
       <h2>Set 2nd group:</h2>
-      <gsa-dropdown [options]="computeColumnValues()" (value)="statisticalDesignService.comparisonGroup2 = $event"></gsa-dropdown>
+      <gsa-dropdown [options]="computeColumnValues(statisticalDesignService.analysisGroup[loadDataService.currentDataset])" [selection]="defaultValue(2)" (value)="statisticalDesignService.comparisonGroup2[loadDataService.currentDataset] = $event"></gsa-dropdown>
       <h2>Select covariates:</h2>
-      <section class="example-section" *ngFor="let col of loadDataService.columns">
-        <mat-checkbox *ngIf="col !== statisticalDesignService.analysisGroup" color="primary" class="example-margin">{{col}}</mat-checkbox>
+      <section class="example-section" *ngFor="let col of computeValidColumns()">
+        <mat-checkbox *ngIf="col !== statisticalDesignService.analysisGroup[loadDataService.currentDataset]" [checked]=defaultCovariate(col) color="primary" class="example-margin">{{col}}</mat-checkbox>
       </section>
     </div>
   </mat-card>

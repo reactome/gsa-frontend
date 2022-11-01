@@ -181,25 +181,49 @@ export class AnalysisService {
   }
 
   saveDataset() {
-    this.analysisGroup = this.statisticalDesignService.analysisGroup
+    this.analysisGroup = this.statisticalDesignService.analysisGroup[this.loadDataService.currentDataset]
     let statisticalDesign: Comparison = {
-      group1: this.statisticalDesignService.comparisonGroup1,
-      group2: this.statisticalDesignService.comparisonGroup2
+      group1: this.statisticalDesignService.comparisonGroup1[this.loadDataService.currentDataset],
+      group2: this.statisticalDesignService.comparisonGroup2[this.loadDataService.currentDataset]
     }
     let dataInfo: DataInformation = {
-      analysisGroup: this.loadDataService.getColumn(this.statisticalDesignService.analysisGroup),
+      analysisGroup: this.loadDataService.getColumn(this.statisticalDesignService.analysisGroup[this.loadDataService.currentDataset]),
       comparison: statisticalDesign,
-      samples: this.loadDataService.rows
+      samples: this.loadDataService.rows[this.loadDataService.currentDataset]
     }
 
     let dataset: Dataset = {
-      data: this.loadDataService.dataSummary.id,
+      data: this.loadDataService.dataSummary[this.loadDataService.currentDataset].id,
       design: dataInfo,
-      name: this.loadDataService.dataSummary.title,
-      type: this.loadDataService.dataSummary.type
+      name: this.loadDataService.dataSummary[this.loadDataService.currentDataset].title,
+      type: this.loadDataService.dataSummary[this.loadDataService.currentDataset].type
     }
 
     this.datasets.push(dataset)
+    console.log(this.datasets)
+    // this.loadDataService.currentDataset += 1
+  }
+
+  changeDataset(changedData: number) {
+    this.analysisGroup = this.statisticalDesignService.analysisGroup[changedData]
+    let statisticalDesign: Comparison = {
+      group1: this.statisticalDesignService.comparisonGroup1[changedData],
+      group2: this.statisticalDesignService.comparisonGroup2[changedData]
+    }
+    let dataInfo: DataInformation = {
+      analysisGroup: this.loadDataService.getColumn(this.statisticalDesignService.analysisGroup[changedData]),
+      comparison: statisticalDesign,
+      samples: this.loadDataService.rows[changedData]
+    }
+
+    let dataset: Dataset = {
+      data: this.loadDataService.dataSummary[changedData].id,
+      design: dataInfo,
+      name: this.loadDataService.dataSummary[changedData].title,
+      type: this.loadDataService.dataSummary[changedData].type
+    }
+
+    this.datasets[changedData] = dataset
   }
 
 
@@ -234,7 +258,6 @@ export class AnalysisService {
       .subscribe((status) => {
         this.loadingStatus = status;
         if (this.loadingStatus?.status === 'complete') {
-          console.log(this.loadingStatus, status)
           clearInterval(this.timer);
           if (this.createReports) {
             // this.processReport()
@@ -259,9 +282,9 @@ export class AnalysisService {
     this.http.get<any>(this.analysisResultUrl + this.analysisID)
       .subscribe((result) => {
         // this.visualizeAnalysis()
-        console.log(result)
       })
   }
+
 
 
 }

@@ -22,42 +22,46 @@ export class LoadDatasetService {
   uploadDataUrl = `${environment.ApiSecretRoot}/upload`;
   loadingId?: string
   loadingStatus?: LoadingStatus;
-  dataSummary: DataSummary
+  dataSummary: DataSummary[] = []
   private timer: NodeJS.Timer;
-  columns: string[] = [
-    "cell.type",
-    "cell.group",
-  ]
-  rows: string[] = [
-    "cluster 1",
-    "cluster 2",
-    "cluster 3",
-    "cluster 4",
-    "cluster 5",
-    "cluster 6",
-    "cluster 7",
-    "cluster 8",
-    "cluster 9",
-    "cluster 10",
-    "cluster 11",
-    "cluster 12",
-    "cluster 13"
-  ]
-  dataset: CellInfo[][] = [
-    [new CellInfo("Memory 0"), new CellInfo("Normal 0")],
-    [new CellInfo("Memory 1"), new CellInfo("Normal 1")],
-    [new CellInfo("Memory 2"), new CellInfo("Normal 2")],
-    [new CellInfo("Memory 3"), new CellInfo("Normal 3")],
-    [new CellInfo("Memory 4"), new CellInfo("Normal 4")],
-    [new CellInfo("Memory 5"), new CellInfo("Normal 5")],
-    [new CellInfo("Memory 6"), new CellInfo("Normal 6")],
-    [new CellInfo("Memory 7"), new CellInfo("Normal 7")],
-    [new CellInfo("Memory 8"), new CellInfo("Normal 8")],
-    [new CellInfo("Memory 9"), new CellInfo("Normal 9")],
-    [new CellInfo("Memory 0"), new CellInfo("Normal 0")],
-    [new CellInfo("Memory 1"), new CellInfo("Normal 1")],
-    [new CellInfo("Memory 2"), new CellInfo("Normal 2")],
-  ]
+  // columns: string[] = [
+  //   "cell.type",
+  //   "cell.group",
+  // ]
+  // rows: string[] = [
+  //   "cluster 1",
+  //   "cluster 2",
+  //   "cluster 3",
+  //   "cluster 4",
+  //   "cluster 5",
+  //   "cluster 6",
+  //   "cluster 7",
+  //   "cluster 8",
+  //   "cluster 9",
+  //   "cluster 10",
+  //   "cluster 11",
+  //   "cluster 12",
+  //   "cluster 13"
+  // ]
+  // dataset: CellInfo[][] = [
+  //   [new CellInfo("Memory 0"), new CellInfo("Normal 0")],
+  //   [new CellInfo("Memory 1"), new CellInfo("Normal 1")],
+  //   [new CellInfo("Memory 2"), new CellInfo("Normal 2")],
+  //   [new CellInfo("Memory 3"), new CellInfo("Normal 3")],
+  //   [new CellInfo("Memory 4"), new CellInfo("Normal 4")],
+  //   [new CellInfo("Memory 5"), new CellInfo("Normal 5")],
+  //   [new CellInfo("Memory 6"), new CellInfo("Normal 6")],
+  //   [new CellInfo("Memory 7"), new CellInfo("Normal 7")],
+  //   [new CellInfo("Memory 8"), new CellInfo("Normal 8")],
+  //   [new CellInfo("Memory 9"), new CellInfo("Normal 9")],
+  //   [new CellInfo("Memory 0"), new CellInfo("Normal 0")],
+  //   [new CellInfo("Memory 1"), new CellInfo("Normal 1")],
+  //   [new CellInfo("Memory 2"), new CellInfo("Normal 2")],
+  // ]
+  columns : string[][] = []
+  rows : string [][] = []
+  dataset : CellValue[][][] = []
+  currentDataset : number
   loadingProgress: string = 'not started'
 
 
@@ -96,18 +100,23 @@ export class LoadDatasetService {
   processDataSummary(): void {
     this.http.get<DataSummary>(this.summaryDataUrl + this.loadingStatus?.dataset_id)
       .subscribe((summary) => {
-        this.dataSummary = summary;
+        this.dataSummary.push(summary);
         this.computeTableValues();
       })
   }
 
   computeTableValues() {
-    this.rows = this.dataSummary.sample_ids.map(id => id);
-    this.dataset = this.dataSummary.sample_metadata[0].values.map(() => []);
-    this.columns = this.dataSummary.sample_metadata.map(data => {
-      data.values.forEach((value, i) => this.dataset[i % this.rows.length].push(new CellInfo(value)))
+    if (this.currentDataset === undefined) {
+      this.currentDataset = 0
+    }
+    else this.currentDataset += 1
+    this.rows.push(this.dataSummary[this.currentDataset].sample_ids.map(id => id));
+    this.dataset.push(this.dataSummary[this.currentDataset].sample_metadata[0].values.map(() => []));
+    this.columns.push(this.dataSummary[this.currentDataset].sample_metadata.map(data => {
+      data.values.forEach((value, i) =>
+        this.dataset[this.currentDataset][i % this.rows[this.currentDataset].length].push(new CellInfo(value)))
       return data.name;
-    })
+    }))
     this.stepper.next()
   }
 
@@ -117,10 +126,11 @@ export class LoadDatasetService {
     formData.append('file', file, file.name);
     let uploadDataObservable = this.http.post<UploadData>(this.uploadDataUrl, formData);
     uploadDataObservable.subscribe(response => {
-        this.rows = response.sample_names
-        this.columns = ["Annotation1"]
-        this.dataset = []
-        this.rows.forEach((row) => this.dataset.push([new CellInfo()]))
+        this.rows.push(response.sample_names)
+        this.columns.push(["Annotation1"])
+        this.dataset = [[]]
+        this.rows.forEach((row) =>
+          this.dataset[this.currentDataset].push([new CellInfo()]))
         this.stepper.next()
       }
     )
@@ -128,9 +138,9 @@ export class LoadDatasetService {
   }
 
   getColumn(colName: any): any[] {
-    let colIndex = this.columns.indexOf(colName)
+    let colIndex = this.columns[this.currentDataset].indexOf(colName)
     let colValues: any[] = []
-    this.dataset.forEach((row) => {
+    this.dataset[this.currentDataset].forEach((row) => {
       {
         colValues.push(row[colIndex].value)
       }

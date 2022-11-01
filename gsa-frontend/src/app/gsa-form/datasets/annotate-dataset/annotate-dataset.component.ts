@@ -9,14 +9,14 @@ import {CellInfo, Settings} from "../../model/table.model";
   templateUrl: './annotate-dataset.component.html',
   styleUrls: ['./annotate-dataset.component.scss']
 })
-export class AnnotateDatasetComponent implements OnInit, AfterViewInit, AfterContentInit{
+export class AnnotateDatasetComponent {
 
   frmStepTwoTwo: FormGroup;
   settings: Settings = {
 
-    columns: this.loadDataService.columns,
-    rows: this.loadDataService.rows,
-    data: this.loadDataService.dataset,
+    columns: this.loadDataService.columns[this.loadDataService.currentDataset],
+    rows: this.loadDataService.rows[this.loadDataService.currentDataset],
+    data: this.loadDataService.dataset[this.loadDataService.currentDataset],
     rename_rows: false
   }
 
@@ -26,14 +26,6 @@ export class AnnotateDatasetComponent implements OnInit, AfterViewInit, AfterCon
       address: ['', Validators.required]
     });
   }
-
-  ngOnInit(): void {
-  }
-
-  ngAfterViewInit() {
-  }
-
-  ngAfterContentInit() {
-  }
 }
+
 

@@ -8,6 +8,7 @@ import {AnalysisService} from "../../services/analysis.service";
 import {AnalysisMethodsService} from "../../services/analysis-methods.service";
 import {LoadDatasetService} from "../../services/load-dataset.service";
 import {MatStepper} from "@angular/material/stepper";
+import {StatisticalDesignService} from "../../services/statistical-design.service";
 
 @Component({
   selector: 'gsa-nested-stepper',
@@ -25,8 +26,10 @@ export class NestedStepperComponent implements AfterViewInit {
   @ViewChild('selectData') selectDatasetComponent: SelectDatasetComponent;
   @ViewChild('annotateData') annotateDatasetComponent: AnnotateDatasetComponent;
   @ViewChild("statisticalDesign") statisticalDesignComponent: StatisticalDesignComponent
+  toBeAdded: boolean = true;
+  deletedDatasets: number = 0
 
-  constructor(public loadData: LoadDatasetService, private cdr: ChangeDetectorRef, private formBuilder: FormBuilder, public analysisInformation: AnalysisService) {
+  constructor(public loadData: LoadDatasetService, private cdr: ChangeDetectorRef, private formBuilder: FormBuilder, public analysisInformation: AnalysisService, public loadDataService : LoadDatasetService, public statisticalDesignService: StatisticalDesignService) {
     this.frmStepTwo = this.formBuilder.group({
       name: ['', Validators.required]
     });
@@ -42,8 +45,31 @@ export class NestedStepperComponent implements AfterViewInit {
 
 
   deleteDataset() {
-    console.log(this.analysisInformation.datasets, this.numberDataset)
-    this.analysisInformation.datasets.splice(this.numberDataset, 1)
+    delete this.analysisInformation.datasets[this.numberDataset]
+    // this.analysisInformation.datasets.splice(this.numberDataset, 1)
+    // this.loadDataService.dataset.splice(this.numberDataset, 1)
+    // this.loadDataService.columns.splice(this.numberDataset, 1)
+    // this.loadDataService.rows.splice(this.numberDataset, 1)
+    // this.loadDataService.dataSummary.splice(this.numberDataset, 1)
+    // this.statisticalDesignService.analysisGroup.splice(this.numberDataset, 1)
+    // this.statisticalDesignService.comparisonGroup1.splice(this.numberDataset, 1)
+    // this.statisticalDesignService.comparisonGroup2.splice(this.numberDataset, 1)
     console.log(this.analysisInformation.datasets)
+    this.deletedDatasets += 1
+  }
+
+  setCurrentDataset() {
+    console.log(this.numberDataset, this.deletedDatasets)
+    this.loadDataService.currentDataset = this.numberDataset
+    console.log(this.loadDataService.currentDataset, this.loadDataService.dataset)
+  }
+
+  addData() {
+    this.analysisInformation.saveDataset();
+    this.toBeAdded = false
+  }
+
+  changeData() {
+    this.analysisInformation.changeDataset(this.numberDataset);
   }
 }
