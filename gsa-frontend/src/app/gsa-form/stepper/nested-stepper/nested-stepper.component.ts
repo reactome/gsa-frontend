@@ -45,23 +45,23 @@ export class NestedStepperComponent implements AfterViewInit {
 
 
   deleteDataset() {
-    delete this.analysisInformation.datasets[this.numberDataset]
-    // this.analysisInformation.datasets.splice(this.numberDataset, 1)
-    // this.loadDataService.dataset.splice(this.numberDataset, 1)
-    // this.loadDataService.columns.splice(this.numberDataset, 1)
-    // this.loadDataService.rows.splice(this.numberDataset, 1)
-    // this.loadDataService.dataSummary.splice(this.numberDataset, 1)
-    // this.statisticalDesignService.analysisGroup.splice(this.numberDataset, 1)
-    // this.statisticalDesignService.comparisonGroup1.splice(this.numberDataset, 1)
-    // this.statisticalDesignService.comparisonGroup2.splice(this.numberDataset, 1)
-    console.log(this.analysisInformation.datasets)
+    // delete this.analysisInformation.datasets[this.numberDataset]
+    this.analysisInformation.datasets.splice(this.numberDataset, 1)
+    this.loadDataService.datasets.splice(this.numberDataset, 1)
+    this.loadDataService.columns.splice(this.numberDataset, 1)
+    this.loadDataService.rows.splice(this.numberDataset, 1)
+    this.loadDataService.dataSummary.splice(this.numberDataset, 1)
+    this.statisticalDesignService.analysisGroup.splice(this.numberDataset, 1)
+    this.statisticalDesignService.comparisonGroup1.splice(this.numberDataset, 1)
+    this.statisticalDesignService.comparisonGroup2.splice(this.numberDataset, 1)
+    console.log(this.loadDataService.currentDataset)
+    this.loadDataService.currentDataset -= 1
+    this.toBeAdded = true
     this.deletedDatasets += 1
   }
 
   setCurrentDataset() {
-    console.log(this.numberDataset, this.deletedDatasets)
     this.loadDataService.currentDataset = this.numberDataset
-    console.log(this.loadDataService.currentDataset, this.loadDataService.dataset)
   }
 
   addData() {

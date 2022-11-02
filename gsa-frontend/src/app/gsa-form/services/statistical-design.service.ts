@@ -7,8 +7,7 @@ export class StatisticalDesignService {
   analysisGroup: string[] = [];
   comparisonGroup1: string[] = [];
   comparisonGroup2: string[] = [];
-  covariances: string[][];
-  fields: Map<StatisticalField, string | string[]> = new Map();
+  covariances: string[][] = [];
 
   constructor() {
   }

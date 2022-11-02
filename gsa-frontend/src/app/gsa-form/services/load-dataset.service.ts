@@ -58,11 +58,11 @@ export class LoadDatasetService {
   //   [new CellInfo("Memory 1"), new CellInfo("Normal 1")],
   //   [new CellInfo("Memory 2"), new CellInfo("Normal 2")],
   // ]
-  columns : string[][] = []
-  rows : string [][] = []
-  dataset : CellValue[][][] = []
-  currentDataset : number
-  loadingProgress: string = 'not started'
+  columns : string[][] = [];
+  rows : string [][] = [];
+  datasets : CellValue[][][] = [];
+  currentDataset : number;
+  loadingProgress: string = 'not started';
 
 
   constructor(private http: HttpClient) {
@@ -111,10 +111,10 @@ export class LoadDatasetService {
     }
     else this.currentDataset += 1
     this.rows.push(this.dataSummary[this.currentDataset].sample_ids.map(id => id));
-    this.dataset.push(this.dataSummary[this.currentDataset].sample_metadata[0].values.map(() => []));
+    this.datasets.push(this.dataSummary[this.currentDataset].sample_metadata[0].values.map(() => []));
     this.columns.push(this.dataSummary[this.currentDataset].sample_metadata.map(data => {
       data.values.forEach((value, i) =>
-        this.dataset[this.currentDataset][i % this.rows[this.currentDataset].length].push(new CellInfo(value)))
+        this.datasets[this.currentDataset][i % this.rows[this.currentDataset].length].push(new CellInfo(value)))
       return data.name;
     }))
     this.stepper.next()
@@ -128,9 +128,9 @@ export class LoadDatasetService {
     uploadDataObservable.subscribe(response => {
         this.rows.push(response.sample_names)
         this.columns.push(["Annotation1"])
-        this.dataset = [[]]
+        this.datasets = [[]]
         this.rows.forEach((row) =>
-          this.dataset[this.currentDataset].push([new CellInfo()]))
+          this.datasets[this.currentDataset].push([new CellInfo()]))
         this.stepper.next()
       }
     )
@@ -140,7 +140,7 @@ export class LoadDatasetService {
   getColumn(colName: any): any[] {
     let colIndex = this.columns[this.currentDataset].indexOf(colName)
     let colValues: any[] = []
-    this.dataset[this.currentDataset].forEach((row) => {
+    this.datasets[this.currentDataset].forEach((row) => {
       {
         colValues.push(row[colIndex].value)
       }

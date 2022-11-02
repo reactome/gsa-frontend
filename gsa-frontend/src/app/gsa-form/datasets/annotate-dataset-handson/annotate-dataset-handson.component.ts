@@ -71,7 +71,7 @@ export class AnnotateDatasetHandsonComponent implements OnInit {
     this.form = this.formBuilder.group({
       name: ['', Validators.required]
     });
-    this.dataset = this.loadDataService.dataset
+    this.dataset = this.loadDataService.datasets
     this.rows = this.loadDataService.rows
     this.columns = this.loadDataService.columns
   }

@@ -1,12 +1,10 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {AnalysisParameter, Comparison, DataInformation, Dataset, Parameter} from "../model/analysis.model";
-import {FormBuilder} from "@angular/forms";
 import {LoadDatasetService} from "./load-dataset.service";
 import {StatisticalDesignService} from "./statistical-design.service";
 import {AnalysisMethodsService} from "./analysis-methods.service";
-import {DataSummary, LoadingStatus} from "../model/load-dataset.model";
+import {LoadingStatus} from "../model/load-dataset.model";
 import {environment} from "../../../environments/environment";
-import {CellInfo} from "../model/table.model";
 import {HttpClient} from "@angular/common/http";
 
 @Injectable({
@@ -200,7 +198,6 @@ export class AnalysisService {
     }
 
     this.datasets.push(dataset)
-    console.log(this.datasets)
     // this.loadDataService.currentDataset += 1
   }
 
@@ -237,12 +234,11 @@ export class AnalysisService {
       }
       this.parameters.push(analysisParam)
     })
-    let analysisParam: AnalysisParameter = {
-      methodName : this.methodName,
-      datasets : this.datasets,
-      parameters : this.parameters
+    this.analysisParam = {
+      methodName: this.methodName,
+      datasets: this.datasets,
+      parameters: this.parameters
     }
-    this.analysisParam = analysisParam
     this.parameters.forEach((param) => {
       if (param.name === "create_reports" && param.value === "true") {
         this.createReports = true

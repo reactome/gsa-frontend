@@ -3,6 +3,7 @@ export interface AnalysisParameter {
   datasets: Dataset[]
   parameters: Parameter[]
 }
+
 export interface Dataset {
   data: string
   design: DataInformation
