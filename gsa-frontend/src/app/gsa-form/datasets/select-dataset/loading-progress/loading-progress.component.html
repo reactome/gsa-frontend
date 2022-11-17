@@ -9,6 +9,6 @@
   </div>
   <div *ngIf="loadDataService.loadingProgress === 'completed'">
     <div class="material-icons" style=" color: rgb(0, 128, 55); font-size: 25px;">check_circle</div>
-    <div >Dataset loaded</div>
+    <div >Dataset "{{analysisObject.dataset?.title}}" loaded</div>
   </div>
 </div>

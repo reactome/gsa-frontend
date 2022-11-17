@@ -6,226 +6,65 @@ import {AnalysisMethodsService} from "./analysis-methods.service";
 import {LoadingStatus} from "../model/load-dataset.model";
 import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
+import {AnalysisObject} from "../model/analysisObject.model";
+import {AnalysisResult} from "../model/analysis-result.model";
+import {ReportStatus} from "../model/report-status.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AnalysisService {
-  // datasets: Dataset[] = [
-  //   {
-  //     "data": "EXAMPLE_MEL_PROT",
-  //     "design": {
-  //       "analysisGroup": [
-  //         "P3",
-  //         "P3",
-  //         "P4",
-  //         "P4",
-  //         "P1",
-  //         "P1",
-  //         "P2",
-  //         "P2",
-  //         "all",
-  //         "all",
-  //         "P3",
-  //         "P3",
-  //         "P4",
-  //         "P4",
-  //         "P1",
-  //         "P1",
-  //         "P2",
-  //         "P2",
-  //         "all",
-  //         "all"
-  //       ],
-  //       "cell.type": [
-  //         "PBMCB",
-  //         "PBMCB",
-  //         "PBMCB",
-  //         "PBMCB",
-  //         "PBMCB",
-  //         "PBMCB",
-  //         "PBMCB",
-  //         "PBMCB",
-  //         "PBMCB",
-  //         "PBMCB",
-  //         "TIBC",
-  //         "TIBC",
-  //         "TIBC",
-  //         "TIBC",
-  //         "TIBC",
-  //         "TIBC",
-  //         "TIBC",
-  //         "TIBC",
-  //         "TIBC",
-  //         "TIBC"
-  //       ],
-  //       "comparison": {
-  //         "group1": "P4",
-  //         "group2": "P1"
-  //       },
-  //       "condition": [
-  //         "MOCK",
-  //         "MCM",
-  //         "MOCK",
-  //         "MCM",
-  //         "MOCK",
-  //         "MCM",
-  //         "MOCK",
-  //         "MCM",
-  //         "MOCK",
-  //         "MCM",
-  //         "MOCK",
-  //         "MCM",
-  //         "MOCK",
-  //         "MCM",
-  //         "MOCK",
-  //         "MCM",
-  //         "MOCK",
-  //         "MCM",
-  //         "MOCK",
-  //         "MCM"
-  //       ],
-  //       "samples": [
-  //         "M.D.MOCK.PBMCB",
-  //         "M.D.MCM.PBMCB",
-  //         "M.K.MOCK.PBMCB",
-  //         "M.K.MCM.PBMCB",
-  //         "P.A.MOCK.PBMCB",
-  //         "P.A.MCM.PBMCB",
-  //         "P.W.MOCK.PBMCB",
-  //         "P.W.MCM.PBMCB",
-  //         "all.MOCK.PBMCB",
-  //         "all.MCM.PBMCB",
-  //         "M.D.MOCK.TIBC",
-  //         "M.D.MCM.TIBC",
-  //         "M.K.MOCK.TIBC",
-  //         "M.K.MCM.TIBC",
-  //         "P.A.MOCK.TIBC",
-  //         "P.A.MCM.TIBC",
-  //         "P.W.MOCK.TIBC",
-  //         "P.W.MCM.TIBC",
-  //         "all.MOCK.TIBC",
-  //         "all.MCM.TIBC"
-  //       ]
-  //     },
-  //     "name": "Melanoma proteomics example",
-  //     "type": "proteomics_int"
-  //   }
-  // ]
-  // methodName: string = "PADOG"
-  // parameters: Parameter[] = [
-  //   {
-  //     "name": "use_interactors",
-  //     "value": "false"
-  //   },
-  //   {
-  //     "name": "include_disease_pathways",
-  //     "value": "true"
-  //   },
-  //   {
-  //     "name": "max_missing_values",
-  //     "value": "0.5"
-  //   },
-  //   {
-  //     "name": "sample_groups",
-  //     "value": ""
-  //   },
-  //   {
-  //     "name": "discrete_norm_function",
-  //     "value": "TMM"
-  //   },
-  //   {
-  //     "name": "continuous_norm_function",
-  //     "value": "none"
-  //   },
-  //   {
-  //     "name": "create_reactome_visualization",
-  //     "value": "true"
-  //   },
-  //   {
-  //     "name": "create_reports",
-  //     "value": "true"
-  //   },
-  //   {
-  //     "name": "email",
-  //     "value": ""
-  //   },
-  //   {
-  //     "name": "reactome_server",
-  //     "value": "production"
-  //   }
-  // ]
-  // analysisGroup: string = "cell.group"
-  datasets: Dataset[] = []
-  methodName: string
-  parameters: Parameter[] = []
-  analysisGroup: string
-  analysisParam: AnalysisParameter
-  createReports: boolean = false
-
-
   submitAnalysisUrl = `${environment.ApiRoot}/analysis`;
   analysisStatusUrl = `${environment.ApiRoot}/status/`;
   analysisResultUrl = `${environment.ApiRoot}/result/`;
   visualizeAnalysisUrl = `${environment.ApiRoot}/status/`;
-  reportStatusUrl = `${environment.ApiSecretRoot}/report_status/`;
+  reportStatusUrl = `${environment.ApiRoot}/report_status/`;
+  datasetObjects : AnalysisObject[] = []
+  analysisDatasets: Dataset[] = []
+  methodName: string
+  parameters: Parameter[] = []
+  analysisParam: AnalysisParameter
+  createReports: boolean = false
   analysisID?: string
-  loadingStatus?: LoadingStatus;
+  analysisLoadingStatus?: LoadingStatus;
+  reportLoadingStatus?: LoadingStatus;
   private timer: NodeJS.Timer;
-  loadingProgress: string = 'not started'
+  analysisLoadingProgress: string = 'not started'
+  reportLoadingProgress: string = 'not started'
+  resultURL: string
+  savedDatasets: number = 0;
 
 
   constructor(private analysisMethodService: AnalysisMethodsService, private loadDataService: LoadDatasetService, private statisticalDesignService: StatisticalDesignService, private http: HttpClient) {
   }
 
-  saveDataset() {
-    this.analysisGroup = this.statisticalDesignService.analysisGroup[this.loadDataService.currentDataset]
-    let statisticalDesign: Comparison = {
-      group1: this.statisticalDesignService.comparisonGroup1[this.loadDataService.currentDataset],
-      group2: this.statisticalDesignService.comparisonGroup2[this.loadDataService.currentDataset]
-    }
-    let dataInfo: DataInformation = {
-      analysisGroup: this.loadDataService.getColumn(this.statisticalDesignService.analysisGroup[this.loadDataService.currentDataset]),
-      comparison: statisticalDesign,
-      samples: this.loadDataService.rows[this.loadDataService.currentDataset]
-    }
 
-    let dataset: Dataset = {
-      data: this.loadDataService.dataSummary[this.loadDataService.currentDataset].id,
-      design: dataInfo,
-      name: this.loadDataService.dataSummary[this.loadDataService.currentDataset].title,
-      type: this.loadDataService.dataSummary[this.loadDataService.currentDataset].type
-    }
+  private buildAnalysisDatasets() {
+    for (let dataObject of this.datasetObjects) {
+      let statisticalDesign: Comparison = {
+        group1: dataObject.statisticalDesign!.comparisonGroup1,
+        group2: dataObject.statisticalDesign!.comparisonGroup2
+      }
+      let dataInfo: DataInformation = {
+        analysisGroup: this.loadDataService.getColumn(dataObject.statisticalDesign!.analysisGroup, dataObject),
+        comparison: statisticalDesign,
+        samples: dataObject.datasetTable!.rows
+      }
 
-    this.datasets.push(dataset)
-    // this.loadDataService.currentDataset += 1
-  }
-
-  changeDataset(changedData: number) {
-    this.analysisGroup = this.statisticalDesignService.analysisGroup[changedData]
-    let statisticalDesign: Comparison = {
-      group1: this.statisticalDesignService.comparisonGroup1[changedData],
-      group2: this.statisticalDesignService.comparisonGroup2[changedData]
+      let dataset: Dataset = {
+        data: dataObject.dataset!.id,
+        design: dataInfo,
+        name: dataObject.dataset!.title,
+        type: dataObject.dataset!.type
+      }
+      this.analysisDatasets.push(dataset)
     }
-    let dataInfo: DataInformation = {
-      analysisGroup: this.loadDataService.getColumn(this.statisticalDesignService.analysisGroup[changedData]),
-      comparison: statisticalDesign,
-      samples: this.loadDataService.rows[changedData]
-    }
-
-    let dataset: Dataset = {
-      data: this.loadDataService.dataSummary[changedData].id,
-      design: dataInfo,
-      name: this.loadDataService.dataSummary[changedData].title,
-      type: this.loadDataService.dataSummary[changedData].type
-    }
-
-    this.datasets[changedData] = dataset
   }
 
 
   loadAnalysis(): void {
-    this.loadingProgress = 'loading'
+    this.buildAnalysisDatasets();
+    this.analysisLoadingProgress = 'loading'
     this.methodName = this.analysisMethodService.selectedMethod.name
     this.analysisMethodService.selectedMethod.parameters.forEach((param) => {
       let analysisParam: Parameter = {
@@ -236,11 +75,13 @@ export class AnalysisService {
     })
     this.analysisParam = {
       methodName: this.methodName,
-      datasets: this.datasets,
+      datasets: this.analysisDatasets,
       parameters: this.parameters
     }
     this.parameters.forEach((param) => {
-      if (param.name === "create_reports" && param.value === "true") {
+      console.log(param)
+      if (param.name === "create_reports" && param.value === true) {
+        console.log("test")
         this.createReports = true
       }
     })
@@ -252,18 +93,20 @@ export class AnalysisService {
   private getAnalysisLoadingStatus(): void {
     this.http.get<LoadingStatus>(this.analysisStatusUrl + this.analysisID)
       .subscribe((status) => {
-        this.loadingStatus = status;
-        if (this.loadingStatus?.status === 'complete') {
+        this.analysisLoadingStatus = status;
+        if (this.analysisLoadingStatus?.status === 'complete') {
           clearInterval(this.timer);
+          console.log(this.createReports)
           if (this.createReports) {
-            // this.processReport()
+            this.reportLoadingProgress = 'loading'
+            this.timer = setInterval(() => this.getReportLoadingStatus(), 1000)
           }
           this.processAnalysisResult()
-          this.loadingProgress = 'completed'
+          this.analysisLoadingProgress = 'completed'
         }
-        if (this.loadingStatus?.status === 'failed') {
+        if (this.analysisLoadingStatus?.status === 'failed') {
           clearInterval(this.timer);
-          this.loadingProgress = 'failed'
+          this.analysisLoadingProgress = 'failed'
         }
       })
   }
@@ -276,11 +119,30 @@ export class AnalysisService {
 
   processAnalysisResult(): void {
     this.http.get<any>(this.analysisResultUrl + this.analysisID)
-      .subscribe((result) => {
-        // this.visualizeAnalysis()
+      .subscribe((result: AnalysisResult) => {
+        this.resultURL = result.reactome_links[0].url
       })
   }
 
+  addDataset() {
+    this.datasetObjects.push({})
+  }
 
+  private getReportLoadingStatus(): void {
+    this.http.get<LoadingStatus>(this.reportStatusUrl + this.analysisID)
+      .subscribe((status) => {
+        console.log(status)
+        this.reportLoadingStatus = status;
+        if (this.reportLoadingStatus?.status === 'complete') {
+          clearInterval(this.timer);
+          console.log(this.reportLoadingStatus?.reports)
+          this.reportLoadingProgress = 'completed'
+        }
+        if (this.analysisLoadingStatus?.status === 'failed') {
+          clearInterval(this.timer);
+          this.reportLoadingProgress = 'failed'
+        }
+      })
+  }
 
 }

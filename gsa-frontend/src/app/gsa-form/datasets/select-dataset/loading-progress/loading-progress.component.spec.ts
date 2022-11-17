@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { LoadingProgressComponent } from './loading-progress.component';
+import {LoadingProgressComponent} from './loading-progress.component';
 
 describe('LoadingProgressComponent', () => {
   let component: LoadingProgressComponent;

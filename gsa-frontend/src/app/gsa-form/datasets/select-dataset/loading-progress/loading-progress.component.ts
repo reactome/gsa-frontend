@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {LoadDatasetService} from "../../../services/load-dataset.service";
+import {AnalysisObject} from "../../../model/analysisObject.model";
 
 @Component({
   selector: 'gsa-loading-progress',
@@ -7,7 +8,7 @@ import {LoadDatasetService} from "../../../services/load-dataset.service";
   styleUrls: ['./loading-progress.component.scss']
 })
 export class LoadingProgressComponent implements OnInit {
-
+  @Input() analysisObject : AnalysisObject
   constructor(public loadDataService : LoadDatasetService) { }
 
   ngOnInit(): void {

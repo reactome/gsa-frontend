@@ -1,25 +1,27 @@
-<div class="nestedStepper" [formGroup]="frmStepTwoOne">
-  <h1>Step 2.1: Add and annotate your datasets</h1>
-  <div class="container">
-    <mat-card>
+<div class="flex-container vertical" [formGroup]="frmStepTwoOne">
+  <div class="flex-data-container horizontal">
+
+    <mat-card class="chosen">
       <mat-card-title>Select a file from a local folder</mat-card-title>
       <div *ngFor="let data of localData$ | async" class="show-dataset">
-        <gsa-local-data [data]="data"></gsa-local-data>
+        <gsa-local-data [analysisObject]="analysisObject" [data]="data"></gsa-local-data>
       </div>
     </mat-card>
 
-    <mat-card>
+    <mat-card class="chosen">
       <mat-card-title>Select one example dataset</mat-card-title>
       <div *ngFor="let data of exampleData$ | async" class="show-dataset">
-        <gsa-example-data [data]="data"></gsa-example-data>
+        <gsa-example-data [analysisObject]="analysisObject" [data]="data"></gsa-example-data>
       </div>
     </mat-card>
 
-    <mat-card>
+    <mat-card class="chosen">
       <mat-card-title>Import a dataset</mat-card-title>
       <div *ngFor="let data of importData$ | async" class="show-dataset">
-        <gsa-import-data [data]="data"></gsa-import-data>
+        <gsa-import-data [analysisObject]="analysisObject" [data]="data"></gsa-import-data>
       </div>
     </mat-card>
+
   </div>
+  <gsa-loading-progress class="nav-btn-margin" [analysisObject]="analysisObject"></gsa-loading-progress>
 </div>

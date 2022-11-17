@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Method} from "../../model/methods.model"
-import {Router} from "@angular/router";
 import {AnalysisMethodsService} from "../../services/analysis-methods.service";
 
 @Component({

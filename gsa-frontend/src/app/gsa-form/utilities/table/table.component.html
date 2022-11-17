@@ -1,35 +1,42 @@
 <div class="container">
-  <table #root (mousedown)="mousedown($event)" (mouseup)="mouseup()" (mouseover)="mousemove($event)" (click)="changeValueMouseClick($event)" (keydown)="navigateTableDefault($event)">
+  <table #root (mousedown)="mousedown($event)" (mouseup)="mouseup()" (mouseover)="mousemove($event)"
+          (click)="changeValueMouseClick($event)" (keydown)="navigateTableDefault($event)">
     <thead>
     <tr>
-      <th></th>
+      <th style="z-index: 2000;"></th>
       <th class="columns" *ngFor="let col of settings.columns; let y = index" [attr.y]="y" [attr.x]="-1">
         {{col}}
-        <button mat-icon-button (click)="deleteColumn($event, y)" color="primary" aria-label="Example icon button with a vertical three dot icon">
+        <button mat-icon-button (click)="deleteColumn($event, y)" color="primary">
           <span class="material-icons">delete</span>
         </button>
       </th>
+      <th class="background-grey no-border"></th>
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let row of settings.rows; let x = index"  >
-      <th class="rows" [attr.x]="x"  [attr.y]="-1">{{row}}</th >
+    <tr *ngFor="let row of settings.rows; let x = index">
+
+      <th class="rows" [attr.x]="x" [attr.y]="-1">{{row}}</th>
       <td *ngFor="let rowVal of settings.data[x]; let y = index" [attr.x]="x" [attr.y]="y">
         {{rowVal.value}}
+      </td>
+      <td *ngIf="x===0" rowspan="0" height="100px" style="padding:0px">
+        <button mat-raised-button style="width:100%;height:100%;margin: 0px" color="primary" (click)="addColumn()">
+          Add column
+        </button>
       </td>
     </tr>
     </tbody>
   </table>
-  <input #flyingRename class="flying-rename" (change)="renameCell()" (blur)="renameCell()"
+  <input #flyingRename class="flying-rename cursor-visible" (change)="renameCell()" (blur)="renameCell()"
          *ngIf="renameVisible" [(ngModel)]="renameValue" [ngModelOptions]="{standalone: true}"
-         (keydown.arrowUp)="navigateTableInput($event)" (keydown.arrowDown)="navigateTableInput($event)" (keydown.arrowLeft)="navigateTableInput($event)"
-         (keydown.arrowRight)="navigateTableInput($event)" (keydown.Tab)="navigateTableInput($event)" (keydown.Enter)="navigateTableInput($event)"
+         (keydown.arrowUp)="navigateTableInput($event)" (keydown.arrowDown)="navigateTableInput($event)"
+         (keydown.arrowLeft)="navigateTableInput($event)"
+         (keydown.arrowRight)="navigateTableInput($event)" (keydown.Tab)="navigateTableInput($event)"
+         (keydown.Enter)="navigateTableInput($event)"
+         (paste)="pasteValues($event)" (mouseup)="mouseup()"
          [style.left.px]="modifiedCell.coordinate.x" [style.top.px]="modifiedCell.coordinate.y"
-         [style.width.px]="modifiedCell.coordinate.width" [style.height.px]="modifiedCell.coordinate.height" >
-  <button mat-fab color="primary" (click)="addColumn()">
-    <mat-icon>plus_one</mat-icon>
-  </button>
-</div>
+         [style.width.px]="modifiedCell.coordinate.width - 3" [style.height.px]="modifiedCell.coordinate.height">
 
 
 

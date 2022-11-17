@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { SelectDatasetComponent } from './select-dataset.component';
+import {SelectDatasetComponent} from './select-dataset.component';
 
 describe('SelectDatasetComponent', () => {
   let component: SelectDatasetComponent;

@@ -1,37 +1,8 @@
-@import '~handsontable/dist/handsontable.full.css';
-.container {
-  display: flex;
-  flex-direction: row;
-  gap: 4vh;
-  align-items: center;
-  margin-bottom: 1vh;
-}
-
 mat-card {
   width: 30%;
-  min-height: 560px;
-  display: inline-block;
+  height: 100% !important;
   border-radius: 10px;
-}
-
-mat-card-title {
-  margin-bottom: 25px;
-}
-
-.show-dataset:not(:last-child) {
-  border-bottom: 1px solid #dfe2f3;
-  border-radius: 5px;
-}
-
-.ineligibleButton {
-  background: #9a9c9e;
-  color: white;
-}
-
-.loading-progress {
-  margin: auto;
-  height: 80px;
-  padding: 10px;
+  box-sizing: border-box;
 }
 
 /*# sourceMappingURL=select-dataset.component.css.map */

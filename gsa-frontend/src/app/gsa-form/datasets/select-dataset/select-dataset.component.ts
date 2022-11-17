@@ -1,13 +1,11 @@
-import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
-import {Dataset, ExampleDataset, ImportDataset, LocalDataset} from "../../model/fetch-dataset.model";
+import {Component, Input, OnInit} from '@angular/core';
+import {ExampleDataset, ImportDataset, LocalDataset} from "../../model/fetch-dataset.model";
 import {FetchDatasetService} from "../../services/fetch-dataset.service";
-import {BehaviorSubject, delay, Observable} from "rxjs";
+import {Observable} from "rxjs";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {LoadDatasetService} from "../../services/load-dataset.service";
-import Handsontable from "handsontable";
 import {AnalysisMethodsService} from "../../services/analysis-methods.service";
-import {MatStepper} from "@angular/material/stepper";
-import {AnalysisService} from "../../services/analysis.service";
+import {AnalysisObject} from "../../model/analysisObject.model";
 
 @Component({
   selector: 'gsa-select-dataset',
@@ -20,6 +18,7 @@ export class SelectDatasetComponent implements OnInit {
   localData$: Observable<LocalDataset[]>
   name: string;
   frmStepTwoOne: FormGroup;
+  @Input() analysisObject : AnalysisObject
 
   constructor(
     private anal: AnalysisMethodsService, private formBuilder: FormBuilder, public dataService: FetchDatasetService, public loadDataService: LoadDatasetService) {

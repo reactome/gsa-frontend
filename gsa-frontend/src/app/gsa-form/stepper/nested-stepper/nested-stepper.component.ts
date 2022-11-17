@@ -1,14 +1,13 @@
-import {AfterViewInit, ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, Input, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {AnalysisMethodsComponent} from "../../analysis-methods/analysis-methods.component";
 import {SelectDatasetComponent} from "../../datasets/select-dataset/select-dataset.component";
 import {AnnotateDatasetComponent} from "../../datasets/annotate-dataset/annotate-dataset.component";
 import {StatisticalDesignComponent} from "../../datasets/statistical-design/statistical-design.component";
 import {AnalysisService} from "../../services/analysis.service";
-import {AnalysisMethodsService} from "../../services/analysis-methods.service";
 import {LoadDatasetService} from "../../services/load-dataset.service";
 import {MatStepper} from "@angular/material/stepper";
 import {StatisticalDesignService} from "../../services/statistical-design.service";
+import {AnalysisObject} from "../../model/analysisObject.model";
 
 @Component({
   selector: 'gsa-nested-stepper',
@@ -16,9 +15,7 @@ import {StatisticalDesignService} from "../../services/statistical-design.servic
   styleUrls: ['./nested-stepper.component.scss']
 })
 export class NestedStepperComponent implements AfterViewInit {
-  @Input() numberDataset : number
   frmStepTwo: FormGroup;
-
   form2_1: FormGroup;
   form2_2: FormGroup;
   form2_3: FormGroup;
@@ -26,16 +23,14 @@ export class NestedStepperComponent implements AfterViewInit {
   @ViewChild('selectData') selectDatasetComponent: SelectDatasetComponent;
   @ViewChild('annotateData') annotateDatasetComponent: AnnotateDatasetComponent;
   @ViewChild("statisticalDesign") statisticalDesignComponent: StatisticalDesignComponent
-  toBeAdded: boolean = true;
-  deletedDatasets: number = 0
+  dataSaved: boolean = false;
+  @Input() analysisObject: AnalysisObject;
 
-  constructor(public loadData: LoadDatasetService, private cdr: ChangeDetectorRef, private formBuilder: FormBuilder, public analysisInformation: AnalysisService, public loadDataService : LoadDatasetService, public statisticalDesignService: StatisticalDesignService) {
+  constructor(public loadData: LoadDatasetService, private cdr: ChangeDetectorRef, private formBuilder: FormBuilder, public analysisInformation: AnalysisService, public loadDataService: LoadDatasetService, public statisticalDesignService: StatisticalDesignService) {
     this.frmStepTwo = this.formBuilder.group({
       name: ['', Validators.required]
     });
-
   }
-
 
 
   ngAfterViewInit() {
@@ -45,31 +40,32 @@ export class NestedStepperComponent implements AfterViewInit {
 
 
   deleteDataset() {
-    // delete this.analysisInformation.datasets[this.numberDataset]
-    this.analysisInformation.datasets.splice(this.numberDataset, 1)
-    this.loadDataService.datasets.splice(this.numberDataset, 1)
-    this.loadDataService.columns.splice(this.numberDataset, 1)
-    this.loadDataService.rows.splice(this.numberDataset, 1)
-    this.loadDataService.dataSummary.splice(this.numberDataset, 1)
-    this.statisticalDesignService.analysisGroup.splice(this.numberDataset, 1)
-    this.statisticalDesignService.comparisonGroup1.splice(this.numberDataset, 1)
-    this.statisticalDesignService.comparisonGroup2.splice(this.numberDataset, 1)
-    console.log(this.loadDataService.currentDataset)
-    this.loadDataService.currentDataset -= 1
-    this.toBeAdded = true
-    this.deletedDatasets += 1
+    let indexAnalysisObject = this.analysisInformation.datasetObjects.indexOf(this.analysisObject)
+    this.analysisInformation.datasetObjects.splice(indexAnalysisObject, 1)
+    this.analysisInformation.savedDatasets -= 1
   }
 
-  setCurrentDataset() {
-    this.loadDataService.currentDataset = this.numberDataset
+  enableAddData() {
+    let statisticalDesign = this.analysisObject.statisticalDesign
+    return statisticalDesign?.analysisGroup !== 'Select One' &&
+      statisticalDesign?.comparisonGroup1 !== 'Select One' &&
+      statisticalDesign?.comparisonGroup2 !== 'Select One'
   }
 
-  addData() {
-    this.analysisInformation.saveDataset();
-    this.toBeAdded = false
+  log() {
+    let statisticalDesign = this.analysisObject.statisticalDesign
+    console.log(this.analysisObject.statisticalDesign?.analysisGroup, this.analysisObject.statisticalDesign?.comparisonGroup1, this.analysisObject.statisticalDesign?.comparisonGroup2)
+    console.log(statisticalDesign?.analysisGroup !== 'Select One' && statisticalDesign?.comparisonGroup1 !== 'Select One' && statisticalDesign?.comparisonGroup2 !== 'Select One')
   }
 
-  changeData() {
-    this.analysisInformation.changeDataset(this.numberDataset);
+  nextStep() {
+    // @ts-ignore
+    this.stepper.selected.completed = true;
+    this.stepper.next();
+  }
+
+  saveData() {
+    this.dataSaved = true;
+    this.analysisInformation.savedDatasets += 1
   }
 }

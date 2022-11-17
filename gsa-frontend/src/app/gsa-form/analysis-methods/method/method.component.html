@@ -1,6 +1,6 @@
 <mat-expansion-panel [class.chosen]="methodService.selectedMethod === method" (click)="selectMethod()" hideToggle>
   <mat-expansion-panel-header>
-    <mat-panel-title>
+    <mat-panel-title class="bold">
       {{method.name | titlecase}}
     </mat-panel-title>
     <mat-panel-description>

@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ImportDataComponent } from './import-data.component';
+import {ImportDataComponent} from './import-data.component';
 
 describe('ImportDataComponent', () => {
   let component: ImportDataComponent;

@@ -1,49 +1,66 @@
-<mat-expansion-panel hideToggle [expanded]="true">
-  <mat-expansion-panel-header (click)="setCurrentDataset()">
-    <div *ngIf="analysisInformation.datasets[numberDataset] === undefined">Add Dataset</div>
-    <div class="header"  *ngIf="analysisInformation.datasets[numberDataset] !== undefined">
-      <div>{{analysisInformation.datasets[numberDataset].name}}</div>
-      <div>{{analysisInformation.analysisGroup}}</div>
-      <div>{{analysisInformation.datasets[numberDataset].design.comparison.group1}}
-        vs. {{analysisInformation.datasets[numberDataset].design.comparison.group2}}</div>
-      <button mat-icon-button color="primary" (click)="deleteDataset()" aria-label="Example icon button with a vertical three dot icon"><span
-        class="material-icons">delete</span>
-      </button>
-    </div>
+<mat-expansion-panel hideToggle [expanded]="true" #mep="matExpansionPanel">
+  <mat-expansion-panel-header>
+    <div class="italic" *ngIf="!dataSaved; else title">New Dataset</div>
+    <ng-template #title>
+      <div class="flex-container horizontal flex-center">
+        <div class="flex-container vertical">
+          <span class="bold">{{analysisObject.dataset?.title}}</span>
+          <span> {{analysisObject.statisticalDesign?.analysisGroup}} :
+            <span>
+            {{analysisObject.statisticalDesign?.comparisonGroup1}}
+              vs. {{analysisObject.statisticalDesign?.comparisonGroup2}}
+          </span></span>
+        </div>
+        <button mat-icon-button color="primary" (click)="deleteDataset()"
+                aria-label="Example icon button with a vertical three dot icon"><span
+          class="material-icons">delete</span>
+        </button>
+      </div>
+    </ng-template>
   </mat-expansion-panel-header>
 
 
-  <mat-horizontal-stepper #nestedStepper>
-    <mat-step [stepControl]="form2_1" #select>
-      <ng-template matStepLabel>Choose dataset</ng-template>
-      <gsa-select-dataset
-        *ngIf="nestedStepper.selected == null || nestedStepper.selected == select"></gsa-select-dataset>
-      <button mat-raised-button color="accent" matStepperPrevious>Back</button>
-      <button mat-raised-button color="accent" matStepperNext [disabled]="loadData.dataSummary === undefined">
-        Continue
-      </button>
-    </mat-step>
-    <mat-step [stepControl]="form2_2" #annotate>
-      <ng-template matStepLabel>Annotate dataset</ng-template>
-      <gsa-annotate-dataset
-        *ngIf="nestedStepper.selected == annotate"></gsa-annotate-dataset>
-      <button mat-raised-button color="accent" matStepperPrevious>Back</button>
-      <button mat-raised-button color="accent" matStepperNext>Continue</button>
-    </mat-step>
-    <mat-step [stepControl]="form2_3" #statistic>
-      <ng-template matStepLabel>Statistical Design</ng-template>
-      <gsa-statistical-design
-        *ngIf="nestedStepper.selected == statistic"></gsa-statistical-design>
-      <button mat-raised-button color="accent" matStepperPrevious>Back</button>
-
-      <div *ngIf="toBeAdded; else changeDataset" >
-        <button mat-raised-button color="primary" (click)="addData(); nestedStepper.selected = annotate">Add Dataset</button>
+  <mat-vertical-stepper #nestedStepper linear>
+    <mat-step [stepControl]="form2_1" #select completed="false">
+      <ng-template matStepLabel>Select a dataset</ng-template>
+      <div class="flex-container flex-center vertical">
+        <gsa-select-dataset [analysisObject]="analysisObject"
+                            *ngIf="nestedStepper.selected == null || nestedStepper.selected == select"></gsa-select-dataset>
+        <button mat-fab color="accent" (click)="nextStep()"
+                [disabled]="analysisObject.datasetTable === undefined">
+          <mat-icon>keyboard_arrow_down</mat-icon>
+        </button>
       </div>
-      <ng-template #changeDataset>
-        <button mat-raised-button color="primary" (click)="changeData(); nestedStepper.selected = annotate">Change Dataset</button>
-
-      </ng-template>
-
     </mat-step>
-  </mat-horizontal-stepper>
+
+    <mat-step [stepControl]="form2_2" #annotate completed="false">
+      <ng-template matStepLabel>Annotate your dataset</ng-template>
+      <div class="flex-container flex-center vertical">
+        <button class="nav-btn-margin" mat-fab color="accent" matStepperPrevious>
+          <mat-icon>keyboard_arrow_up</mat-icon>
+        </button>
+        <gsa-annotate-dataset class="full-width" [analysisObject]="analysisObject"
+                              *ngIf="nestedStepper.selected == annotate"></gsa-annotate-dataset>
+        <button class="nav-btn-margin" mat-fab color="accent" (click)="nextStep()">
+          <mat-icon>keyboard_arrow_down</mat-icon>
+        </button>
+      </div>
+    </mat-step>
+
+    <mat-step [stepControl]="form2_3" #statistic completed="false">
+      <ng-template matStepLabel>Statistical Design</ng-template>
+      <div class="flex-container flex-center vertical">
+        <button class="nav-btn-margin" mat-fab color="accent" matStepperPrevious>
+          <mat-icon>keyboard_arrow_up</mat-icon>
+        </button>
+        <gsa-statistical-design class="full-width" [analysisObject]="analysisObject"
+                                *ngIf="nestedStepper.selected == statistic"></gsa-statistical-design>
+        <button class="nav-btn-margin" mat-raised-button color="accent"
+                (click)="saveData(); nestedStepper.selected = annotate; mep.expanded = false;"
+                [disabled]="this.analysisObject.statisticalDesign?.analysisGroup === '-Select One-' || this.analysisObject.statisticalDesign?.comparisonGroup1 === '-Select One-' || this.analysisObject.statisticalDesign?.comparisonGroup2 === '-Select One-'">
+          Save Dataset
+        </button>
+      </div>
+    </mat-step>
+  </mat-vertical-stepper>
 </mat-expansion-panel>

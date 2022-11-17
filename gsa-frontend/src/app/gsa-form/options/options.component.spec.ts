@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { OptionsComponent } from './analysis.component';
+import {OptionsComponent} from './analysis.component';
 
 describe('AnalysisComponent', () => {
   let component: OptionsComponent;

@@ -1,7 +1,5 @@
 import {AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {CellInfo, Settings} from "../../model/table.model";
-import {MatIcon} from "@angular/material/icon";
-import {log} from "handsontable/helpers";
 
 type CellCoord = { x: number, y: number, parentElement: any };
 
@@ -51,15 +49,24 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   mousedown($event: MouseEvent) {
+    // this.changeValueMouseClick($event)
+    // $event.preventDefault()
     this.getCell(this.firstSelected.x, this.firstSelected.y)?.classList.remove('firstSelected')
+    console.log(this.getCell(-1, this.firstSelected.y)?.classList)
+
+    this.getCell(-1, this.firstSelected.y)?.classList.remove('chosen-th')
+    this.getCell(this.firstSelected.x, -1)?.classList.remove('chosen-th')
+    console.log(this.getCell(-1, this.firstSelected.y)?.classList)
     //Don't select text when dragging
     let {x, y, parentElement} = this.extractCoordsFromEvent($event);
-    // parentElement?.classList.add("selected");
     this.deselect()
     this.firstSelected = new CellInfo(undefined, x, y)
     this.getCell(x, y)?.classList.add('firstSelected')
     this.selectedCells = [`(${x}, ${y})`];
     this.isDragging = true;
+    //Select row and column
+    this.getCell(-1, y)?.classList.add('chosen-th')
+    this.getCell(x, -1)?.classList.add('chosen-th')
   }
 
   private getCell(x: number, y: number): HTMLTableCellElement {
@@ -75,12 +82,12 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   mouseup() {
+    console.log("MouseUp")
     this.isDragging = false;
   }
 
 
   private extractCoordsFromEvent($event: MouseEvent): CellCoord {
-
     let x = parseInt(($event.target as HTMLTableCellElement).getAttribute("x") as string);
     let y = parseInt(($event.target as HTMLTableCellElement).getAttribute("y") as string);
     const parentElement = this.rootRef.nativeElement.querySelector("[x = \'" + x?.toString() + "\'][y = \'" + y?.toString() + "\']");
@@ -96,9 +103,18 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
+  focusOnCell(x: number, y: number) {
+    const parentElement = this.rootRef.nativeElement.querySelector("[x = \'" + x?.toString() + "\'][y = \'" + y?.toString() + "\']");
+    this.modifiedCell = new CellInfo(undefined, x, y, this.getRelativeCoords(<HTMLElement>parentElement))
+    this.firstSelected = this.modifiedCell
+    this.showChangeInput()
+  }
+
   addColumn() {
     this.settings.columns.push("Annotation" + (this.settings.columns.length+1))
     this.settings.data.forEach((row) => row.push(new CellInfo()))
+    setTimeout(() =>  this.focusOnCell(-1, this.settings.columns.length - 1));
+
   }
 
   changeValueMouseClick($event: MouseEvent) {
@@ -127,7 +143,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   getRelativeCoords(element: HTMLElement): DOMRect {
     let child = element.getBoundingClientRect();
     let parent = this.rootRef.nativeElement.getBoundingClientRect();
-    let row = element.parentElement?.parentElement?.parentElement?.getBoundingClientRect() as DOMRect
     child.x -= parent.x;
     child.y -= parent.y
     return child
@@ -153,6 +168,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       row.splice(y, 1)
     })
   }
+
   navigateTableDefault($event: KeyboardEvent) {
     $event.preventDefault()
     this.navigateTable($event)
@@ -214,5 +230,27 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
 
   navigateTableInput($event: any) {
     this.navigateTable($event)
+  }
+
+  pasteValues($event: ClipboardEvent) {
+    $event.preventDefault()
+    let pastedData = $event.clipboardData?.getData('text')
+    console.log(pastedData)
+    let rows = pastedData?.split('\n')
+    let pasteData: string[][] = []
+    rows?.forEach(row => {
+      pasteData.push(row.split('\t'))
+    })
+    console.log(pasteData)
+    let x = this.firstSelected.x
+    let y_orig = this.firstSelected.y
+    let y = y_orig
+    pasteData.forEach((row, indexX) => {
+      row.forEach((cell, indexY) => {
+        this.settings.data[x + indexX][y + indexY].value = cell
+      })
+    })
+    this.renameValue = pasteData[0][0]
+    console.log(this.settings.data[x][y].value)
   }
 }

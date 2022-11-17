@@ -1,8 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ExampleDataset, ImportDataset} from "../../../../model/fetch-dataset.model";
+import {ImportDataset} from "../../../../model/fetch-dataset.model";
 import {FetchDatasetService} from "../../../../services/fetch-dataset.service";
 import {LoadDatasetService} from "../../../../services/load-dataset.service";
 import {LoadParameter, LoadParameterClass} from "../../../../model/load-dataset.model";
+import {AnalysisObject} from "../../../../model/analysisObject.model";
 
 @Component({
   selector: 'gsa-import-data',
@@ -10,6 +11,7 @@ import {LoadParameter, LoadParameterClass} from "../../../../model/load-dataset.
   styleUrls: ['./import-data.component.scss']
 })
 export class ImportDataComponent implements OnInit {
+  @Input() analysisObject : AnalysisObject
   @Input() data: ImportDataset;
   showLoadingProgress: boolean = false
 
@@ -31,7 +33,7 @@ export class ImportDataComponent implements OnInit {
     for (let param in this.data.parameters) {
       loadParams[param] = new LoadParameterClass(this.data.parameters[param].name, this.data.parameters[param].value.toString())
     }
-    this.loadDataService.loadDataset(this.data.id, loadParams)
+    this.loadDataService.loadDataset(this.data.id, loadParams, this.analysisObject)
 
     this.showLoadingProgress = true
   }

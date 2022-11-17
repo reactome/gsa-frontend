@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { MethodParameterComponent } from './method-parameter.component';
+import {MethodParameterComponent} from './method-parameter.component';
 
 describe('ShowParameterComponent', () => {
   let component: MethodParameterComponent;

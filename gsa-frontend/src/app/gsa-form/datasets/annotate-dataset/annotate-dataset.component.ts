@@ -1,15 +1,8 @@
-import {
-  AfterContentInit,
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild
-} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {LoadDatasetService} from "../../services/load-dataset.service";
-import {CellInfo, Settings} from "../../model/table.model";
+import {Settings} from "../../model/table.model";
+import {AnalysisObject} from "../../model/analysisObject.model";
 
 
 @Component({
@@ -20,13 +13,15 @@ import {CellInfo, Settings} from "../../model/table.model";
 export class AnnotateDatasetComponent{
 
   frmStepTwoTwo: FormGroup;
-  settings: Settings = {
-
-    columns: this.loadDataService.columns[this.loadDataService.currentDataset],
-    rows: this.loadDataService.rows[this.loadDataService.currentDataset],
-    data: this.loadDataService.datasets[this.loadDataService.currentDataset],
-    rename_rows: false
-  }
+  @Input() analysisObject : AnalysisObject
+  settings : Settings
+  // settings: Settings = {
+  //
+  //   columns: this.analysisObject.datasetTable.columns,
+  //   rows: this.analysisObject.datasetTable.rows,
+  //   data: this.analysisObject.datasetTable.dataset,
+  //   rename_rows: false
+  // }
 
 
   constructor(private formBuilder: FormBuilder, public loadDataService: LoadDatasetService) {
@@ -36,8 +31,12 @@ export class AnnotateDatasetComponent{
   }
 
   ngOnInit() {
-  // , private ref:ChangeDetectorRef
-    // this.ref.detectChanges();
+    this.settings = {
+      columns: this.analysisObject.datasetTable!.columns,
+      rows: this.analysisObject.datasetTable!.rows,
+      data: this.analysisObject.datasetTable!.dataset,
+      rename_rows: false
+    }
   }
 }
 

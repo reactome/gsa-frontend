@@ -1,8 +1,11 @@
+import {Report} from "./report-status.model";
+
 export interface LoadingStatus {
   completed: number
   dataset_id : string
   description: string
   id : string
+  reports: Report[]
   status : string
 }
 

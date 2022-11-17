@@ -4,10 +4,7 @@ import {Injectable} from '@angular/core';
   providedIn: 'root'
 })
 export class StatisticalDesignService {
-  analysisGroup: string[] = [];
-  comparisonGroup1: string[] = [];
-  comparisonGroup2: string[] = [];
-  covariances: string[][] = [];
+
 
   constructor() {
   }

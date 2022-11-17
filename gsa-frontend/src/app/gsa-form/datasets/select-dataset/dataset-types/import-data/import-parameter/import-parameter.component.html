@@ -9,12 +9,12 @@
     <span [ngSwitch]="parameter.type" class="float-right">
       <ng-template [ngSwitchCase]="types.string">
         <mat-form-field class="example-full-width">
-          <textarea matInput [(ngModel)]="parameter.value" type="text"></textarea>
+          <textarea style="background: white; color: black" matInput [(ngModel)]="parameter.value" type="text"></textarea>
         </mat-form-field>
       </ng-template>
       <ng-template [ngSwitchCase]="types.int">
         <mat-form-field class="example-full-width">
-          <input matInput [(ngModel)]="parameter.value" type="number" step="1">
+          <input style="background: white" matInput [(ngModel)]="parameter.value" type="number" step="1">
         </mat-form-field>
       </ng-template>
     </span>

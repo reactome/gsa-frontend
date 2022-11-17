@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { TableHelperService } from './table-helper.service';
+import {TableHelperService} from './table-helper.service';
 
 describe('TableHelperService', () => {
   let service: TableHelperService;

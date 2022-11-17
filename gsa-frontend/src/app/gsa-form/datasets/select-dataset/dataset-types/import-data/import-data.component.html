@@ -1,13 +1,14 @@
-<mat-card-content [class.chosen]="dataService.chooseDataset === data" (click)="select()">
+<mat-card-content class="dataset-card-content" *ngIf="data.name !== 'Example datasets'"  (click)="select()">
   <div class="dataset">
-    <p class="dataset-title">{{data.name | titlecase}}</p>
+    <p class="bold">{{data.name | titlecase}}</p>
     <p>{{data.description}}</p>
     <div *ngIf="dataService.chooseDataset === data" (click)="doNothing()">
       <div *ngFor="let param of data.parameters">
         <gsa-import-parameter [parameter]="param"></gsa-import-parameter>
       </div>
-      <button mat-raised-button color="primary" (click)="loadData()">Choose</button>
-        <gsa-loading-progress *ngIf="showLoadingProgress"></gsa-loading-progress>
+      <div class="flex-container horizontal">
+      <button mat-raised-button color="primary" (click)="loadData()">Import</button>
+      </div>
     </div>
   </div>
 </mat-card-content>

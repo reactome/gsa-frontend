@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { LocalDataComponent } from './local-data.component';
+import {LocalDataComponent} from './local-data.component';
 
 describe('LocalDataComponent', () => {
   let component: LocalDataComponent;

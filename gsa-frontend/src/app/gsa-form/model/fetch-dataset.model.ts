@@ -1,5 +1,3 @@
-import {LoadParameter} from "./load-dataset.model";
-
 export interface Dataset {
   description: string;
   id: string;

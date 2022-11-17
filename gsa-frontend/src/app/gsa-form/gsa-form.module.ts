@@ -40,8 +40,10 @@ import {NestedStepperComponent} from './stepper/nested-stepper/nested-stepper.co
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {OptionsComponent} from "./options/options.component";
-import { AnalysisComponent } from './analysis/analysis.component';
-import { AnalysisLoadingProgressComponent } from './analysis/analysis-loading-progress/analysis-loading-progress.component';
+import {AnalysisComponent} from './analysis/analysis.component';
+import {
+  AnalysisLoadingProgressComponent
+} from './analysis/analysis-loading-progress/analysis-loading-progress.component';
 
 
 registerAllModules();

@@ -1,6 +1,7 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AnalysisMethodsService} from "../services/analysis-methods.service";
+import {methodParameter} from "../model/methods.model";
 
 @Component({
   selector: 'gsa-options',
@@ -19,7 +20,7 @@ export class OptionsComponent implements OnInit {
     });
   }
 
-  getDisplayParameters() {
+  getDisplayParameters() : methodParameter[]{
     return this.methodService.selectedMethod.parameters.filter(p => p.scope === 'common');
   }
 

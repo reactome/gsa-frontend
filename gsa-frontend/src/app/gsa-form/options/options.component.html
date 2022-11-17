@@ -1,11 +1,17 @@
-<div [formGroup]="frmStepThree" class="stepper">
-  <h1>Step 3: Analysis Options</h1>
-  <div *ngFor="let param of getDisplayParameters(); last as isLast" class="show-param">
-    <gsa-method-parameter [parameter]="param"></gsa-method-parameter>
-  </div>
-  <div>Disclaimer: We use your email address to send you a message when your Gene Set Analysis request is completed, and
-    your results are available to download. After this analysis is finished, we do not store your email address.
-    Furthermore, we do not share your email addresses with any third parties and we do not subscribe your email address
-    to any Reactome mailing list.
-  </div>
+<div [formGroup]="frmStepThree" class="flex-container horizontal">
+
+  <mat-card style="width: 80%">
+    <div *ngFor="let param of getDisplayParameters()" class="show-param">
+      <gsa-method-parameter *ngIf="param.display_name !== 'Reactome server'" [parameter]="param"></gsa-method-parameter>
+    </div>
+    <br><br>
+    <div>Disclaimer: We use your email address to send you a message when your Gene Set Analysis request is completed,
+      and
+      your results are available to download. After this analysis is finished, we do not store your email address.
+      Furthermore, we do not share your email addresses with any third parties and we do not subscribe your email
+      address
+      to any Reactome mailing list.
+    </div>
+
+  </mat-card>
 </div>

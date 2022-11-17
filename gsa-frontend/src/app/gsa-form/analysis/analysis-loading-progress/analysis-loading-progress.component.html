@@ -1,14 +1,31 @@
-<div class="loading-progress" >
-  <div *ngIf="analysisService.loadingProgress === 'loading'">
-    <mat-spinner  diameter="25"></mat-spinner>
+<div class="loading-progress">
+  <div *ngIf="analysisService.analysisLoadingProgress === 'loading'">
+    <mat-spinner diameter="25"></mat-spinner>
     <div style="margin-top: 5px;">Loading Analysis</div>
   </div>
-  <div *ngIf="analysisService.loadingProgress === 'failed'">
+  <div *ngIf="analysisService.analysisLoadingProgress === 'failed'">
     <div class="material-icons mat-error">error</div>
     <div>Analysis failed</div>
   </div>
-  <div *ngIf="analysisService.loadingProgress === 'completed'">
+  <div *ngIf="analysisService.analysisLoadingProgress === 'completed'">
     <div class="material-icons" style=" color: rgb(0, 128, 55); font-size: 25px;">check_circle</div>
-    <div >Analysis loaded</div>
+    <div>Analysis loaded</div>
+    <a href="{{analysisService.resultURL}}" target="_blank">Click to visualise the result of the Gene Set Analysis</a>
   </div>
+  <div *ngIf="analysisService.reportLoadingProgress === 'loading'">
+    <mat-spinner diameter="25"></mat-spinner>
+    <div style="margin-top: 5px;">Loading Report</div>
+  </div>
+  <div *ngIf="analysisService.reportLoadingProgress === 'failed'">
+    <div class="material-icons mat-error">error</div>
+    <div>Report failed</div>
+  </div>
+  <div *ngIf="analysisService.reportLoadingProgress === 'completed'">
+    <div class="material-icons" style=" color: rgb(0, 128, 55); font-size: 25px;">check_circle</div>
+    <div>Report loaded</div>
+    <div *ngFor="let report of analysisService.reportLoadingStatus?.reports">
+      <a href="{{report.url}}" target="_blank">{{report.name}}</a>
+    </div>
+  </div>
+
 </div>

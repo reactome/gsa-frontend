@@ -1,15 +1,13 @@
-import {Injectable, ViewChild} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {environment} from "../../../environments/environment";
-import {Dataset, ExampleDataset} from "../model/fetch-dataset.model";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {map, Observable, tap} from "rxjs";
-import {Method} from "../model/methods.model";
+import {HttpClient} from "@angular/common/http";
 import {DataSummary, LoadingStatus} from "../model/load-dataset.model";
 import {UploadData} from "../model/upload-dataset-model";
-import {Validators} from "@angular/forms";
 import {CellValue} from "handsontable/common";
-import {CellInfo} from "../model/table.model";
+
+import {AnalysisObject} from "../model/analysisObject.model";
 import {MatStepper} from "@angular/material/stepper";
+import {CellInfo} from "../model/table.model";
 
 @Injectable({
   providedIn: 'root'
@@ -22,8 +20,8 @@ export class LoadDatasetService {
   uploadDataUrl = `${environment.ApiSecretRoot}/upload`;
   loadingId?: string
   loadingStatus?: LoadingStatus;
-  dataSummary: DataSummary[] = []
   private timer: NodeJS.Timer;
+  loadingProgress: string = 'not started';
   // columns: string[] = [
   //   "cell.type",
   //   "cell.group",
@@ -58,30 +56,25 @@ export class LoadDatasetService {
   //   [new CellInfo("Memory 1"), new CellInfo("Normal 1")],
   //   [new CellInfo("Memory 2"), new CellInfo("Normal 2")],
   // ]
-  columns : string[][] = [];
-  rows : string [][] = [];
-  datasets : CellValue[][][] = [];
-  currentDataset : number;
-  loadingProgress: string = 'not started';
 
 
   constructor(private http: HttpClient) {
   }
 
-  loadDataset(resourceId: string, postParameters: any): void {
+  loadDataset(resourceId: string, postParameters: any, analysisObject: AnalysisObject): void {
     this.loadingProgress = 'loading';
     this.loadingStatus = undefined;
     this.getLoadingId(resourceId, postParameters)
-    this.timer = setInterval(() => this.getLoadingStatus(), 1000)
+    this.timer = setInterval(() => this.getLoadingStatus(analysisObject), 1000)
   }
 
-  private getLoadingStatus(): void {
+  private getLoadingStatus(analysisObject: AnalysisObject): void {
     this.http.get<LoadingStatus>(this.loadingStatusUrl + this.loadingId)
       .subscribe((status) => {
         this.loadingStatus = status;
         if (this.loadingStatus?.status === 'complete') {
           clearInterval(this.timer);
-          this.processDataSummary()
+          this.processDataSummary(analysisObject)
           this.loadingProgress = 'completed'
         }
         if (this.loadingStatus?.status === 'failed') {
@@ -97,50 +90,60 @@ export class LoadDatasetService {
   }
 
 
-  processDataSummary(): void {
+  processDataSummary(analysisObject: AnalysisObject): void {
     this.http.get<DataSummary>(this.summaryDataUrl + this.loadingStatus?.dataset_id)
       .subscribe((summary) => {
-        this.dataSummary.push(summary);
-        this.computeTableValues();
+        analysisObject.dataset = summary
+        this.computeTableValues(analysisObject);
       })
   }
 
-  computeTableValues() {
-    if (this.currentDataset === undefined) {
-      this.currentDataset = 0
-    }
-    else this.currentDataset += 1
-    this.rows.push(this.dataSummary[this.currentDataset].sample_ids.map(id => id));
-    this.datasets.push(this.dataSummary[this.currentDataset].sample_metadata[0].values.map(() => []));
-    this.columns.push(this.dataSummary[this.currentDataset].sample_metadata.map(data => {
+  computeTableValues(analysisObject: AnalysisObject) {
+    let rows: string[] = analysisObject.dataset!.sample_ids.map(id => id);
+    let dataset: CellValue[][] = analysisObject.dataset!.sample_metadata[0].values.map(() => []);
+    let columns: string[] = analysisObject.dataset!.sample_metadata.map(data => {
       data.values.forEach((value, i) =>
-        this.datasets[this.currentDataset][i % this.rows[this.currentDataset].length].push(new CellInfo(value)))
+        dataset[i % rows.length].push(new CellInfo(value)))
       return data.name;
-    }))
+    })
+    analysisObject.datasetTable = {
+      rows: rows,
+      columns: columns,
+      dataset: dataset
+    }
+    // @ts-ignore
+    this.stepper.selected.completed = true;
     this.stepper.next()
   }
 
 
-  uploadFile(file: File): void {
+  uploadFile(file: File, analysisObject: AnalysisObject): void {
     const formData = new FormData();
     formData.append('file', file, file.name);
     let uploadDataObservable = this.http.post<UploadData>(this.uploadDataUrl, formData);
     uploadDataObservable.subscribe(response => {
-        this.rows.push(response.sample_names)
-        this.columns.push(["Annotation1"])
-        this.datasets = [[]]
-        this.rows.forEach((row) =>
-          this.datasets[this.currentDataset].push([new CellInfo()]))
+        let rows: string[] = response.sample_names
+        let columns: string[] = ["Annotation1"]
+        let dataset: CellValue[][] = []
+        rows.forEach((row) =>
+          dataset.push([new CellInfo()]))
+        analysisObject.datasetTable = {
+          rows: rows,
+          columns: columns,
+          dataset: dataset
+        }
+        // @ts-ignore
+        this.stepper.selected.completed = true;
         this.stepper.next()
       }
     )
 
   }
 
-  getColumn(colName: any): any[] {
-    let colIndex = this.columns[this.currentDataset].indexOf(colName)
+  getColumn(colName: any, analysisObject: AnalysisObject): any[] {
+    let colIndex = analysisObject.datasetTable!.columns.indexOf(colName)
     let colValues: any[] = []
-    this.datasets[this.currentDataset].forEach((row) => {
+    analysisObject.datasetTable!.dataset.forEach((row) => {
       {
         colValues.push(row[colIndex].value)
       }

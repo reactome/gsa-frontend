@@ -25,5 +25,5 @@ export interface Comparison {
 
 export interface Parameter {
   name: string
-  value: string
+  value: any
 }

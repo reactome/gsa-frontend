@@ -1,10 +1,8 @@
 import {Injectable} from '@angular/core';
 import {environment} from "../../../environments/environment";
-import {Method} from "../model/methods.model";
 import {HttpClient} from "@angular/common/http";
-import {Dataset, ExampleDataset, ImportDataset, LocalDataset, importParameter} from "../model/fetch-dataset.model";
+import {Dataset, ExampleDataset, ImportDataset, LocalDataset} from "../model/fetch-dataset.model";
 import {map, Observable} from "rxjs";
-import {Data} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
