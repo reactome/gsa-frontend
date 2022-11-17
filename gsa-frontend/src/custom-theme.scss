@@ -9,11 +9,46 @@
 // Be sure that you only ever include this mixin once!
 @include mat.core();
 
+/* For use in src/lib/core/theming/_palette.scss */
+$reactome-color: (
+  50 : #e3eff7,
+  100 : #b9d8ec,
+  200 : #8bbee0,
+  300 : #5da4d3,
+  400 : #3a91c9,
+  500 : #177dc0,
+  600 : #1475ba,
+  700 : #116ab2,
+  800 : #0d60aa,
+  900 : #074d9c,
+  A100 : #c9dfff,
+  A200 : #96c1ff,
+  A400 : #63a4ff,
+  A700 : #4995ff,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #ffffff,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #000000,
+    A700 : #000000,
+  )
+);
+
+
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$gsa-frontend-primary: mat.define-palette(mat.$indigo-palette);
+$gsa-frontend-primary: mat.define-palette($reactome-color);
 $gsa-frontend-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).

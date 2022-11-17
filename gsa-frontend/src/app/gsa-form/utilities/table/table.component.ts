@@ -78,6 +78,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       this.firstSelected = new CellInfo(undefined, x, y)
       this.getCell(-1, y)?.classList.add('chosen-th')
       this.getCell(x, -1)?.classList.add('chosen-th')
+      console.log(x, this.getCell(x, -1)?.classList)
       this.changeValueMouseClick($event)
     }
   }

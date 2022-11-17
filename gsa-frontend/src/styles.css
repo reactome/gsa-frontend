@@ -100,13 +100,13 @@ h1 {
 }
 
 .dataset-card-content:hover {
-  background: #1e95cf;
+  background: #6aceee;
   cursor: pointer;
   color: white;
 }
 
 .dataset-card-content {
-  background: #0e7cb3;
+  background: #58c3e5;
   color: white;
   padding: 10px;
   margin: 3px !important;
