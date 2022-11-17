@@ -1,14 +1,14 @@
-<!--<button style="position: sticky; top: 50%">test</button>-->
 <mat-horizontal-stepper class="background-grey" #stepper linear>
   <mat-step [stepControl]="form1" #addMethod completed="false">
+
     <ng-template matStepLabel>Select method</ng-template>
     <h1>Step 1: Select one of the available analysis methods</h1>
     <div class="flex-container flex-center horizontal">
       <div class="nav-button-container"></div>
       <gsa-analysis-methods class="content-container"
                             *ngIf="stepper.selected == null || stepper.selected == addMethod"></gsa-analysis-methods>
-      <div class="nav-button-container flex-container flex-center">
-        <button mat-fab style="top: 0; position: sticky" color="primary"
+      <div class="nav-button-container">
+        <button mat-fab class="nav-btn-position" color="primary"
                 [disabled]="methods.selectedMethod === undefined"
                 (click)="nextStep()">
           <mat-icon>keyboard_arrow_right</mat-icon>
@@ -21,7 +21,7 @@
     <h1>Step 2: Add and annotate your datasets</h1>
     <div class="flex-container flex-center horizontal">
       <div class="nav-button-container flex-center flex-container">
-        <button mat-fab color="primary" matStepperPrevious>
+        <button class="nav-btn-position" mat-fab color="primary" matStepperPrevious>
           <mat-icon>keyboard_arrow_left</mat-icon>
         </button>
       </div>
@@ -34,7 +34,7 @@
         <button mat-raised-button color="primary" class="nav-btn-margin" (click)="addDataset()">Add Dataset</button>
       </div>
       <div class="nav-button-container flex-center flex-container">
-        <button mat-fab color="primary" (click)="nextStep()"
+        <button mat-fab class="nav-btn-position" color="primary" (click)="nextStep()"
                 [disabled]="analysisInformation.savedDatasets === 0">
           <mat-icon>keyboard_arrow_right</mat-icon>
         </button>
@@ -46,14 +46,15 @@
     <h1>Step 3: Analysis Options</h1>
     <div class="flex-container flex-center horizontal">
       <div class="nav-button-container flex-center flex-container">
-        <button mat-fab color="primary" matStepperPrevious>
+        <button mat-fab class="nav-btn-position" color="primary" matStepperPrevious>
           <mat-icon>keyboard_arrow_left</mat-icon>
         </button>
       </div>
       <gsa-options class="content-container" *ngIf="stepper.selected == options"></gsa-options>
 
       <div class="nav-button-container flex-center flex-container">
-        <button mat-fab color="primary" (click)="this.analysisInformation.loadAnalysis(); nextStep()">
+        <button mat-fab class="nav-btn-position" color="primary"
+                (click)="this.analysisInformation.loadAnalysis(); nextStep()">
           <mat-icon>keyboard_arrow_right</mat-icon>
         </button>
       </div>

@@ -1,6 +1,6 @@
 <div class="container">
   <table #root (mousedown)="mousedown($event)" (mouseup)="mouseup()" (mouseover)="mousemove($event)"
-          (click)="changeValueMouseClick($event)" (keydown)="navigateTableDefault($event)">
+           (keydown)="navigateTableDefault($event)">
     <thead>
     <tr>
       <th style="z-index: 2000;"></th>
@@ -10,7 +10,7 @@
           <span class="material-icons">delete</span>
         </button>
       </th>
-      <th class="background-grey no-border"></th>
+      <th class="background-white no-border"></th>
     </tr>
     </thead>
     <tbody>
@@ -31,10 +31,10 @@
   <input #flyingRename class="flying-rename cursor-visible" (change)="renameCell()" (blur)="renameCell()"
          *ngIf="renameVisible" [(ngModel)]="renameValue" [ngModelOptions]="{standalone: true}"
          (keydown.arrowUp)="navigateTableInput($event)" (keydown.arrowDown)="navigateTableInput($event)"
-         (keydown.arrowLeft)="navigateTableInput($event)"
+         (keydown.arrowLeft)="navigateTableInput($event)" (keydown.delete)="deleteMarkedArea($event)"
          (keydown.arrowRight)="navigateTableInput($event)" (keydown.Tab)="navigateTableInput($event)"
-         (keydown.Enter)="navigateTableInput($event)"
-         (paste)="pasteValues($event)" (mouseup)="mouseup()"
+
+         (paste)="pasteValues($event)" (mouseup)="mouseup()" (mouseover)="mousemove($event)"
          [style.left.px]="modifiedCell.coordinate.x" [style.top.px]="modifiedCell.coordinate.y"
          [style.width.px]="modifiedCell.coordinate.width - 3" [style.height.px]="modifiedCell.coordinate.height">
 

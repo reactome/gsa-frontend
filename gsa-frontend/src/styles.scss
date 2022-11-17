@@ -19,7 +19,6 @@ $button-blue: #1e94d0;
 body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   background-color: $background-grey;
-  height: 4000px;
 }
 
 
@@ -31,6 +30,14 @@ textarea {
   background-color: $background-grey !important;
 }
 
+.background-white {
+  background-color: white !important;
+}
+
+.nav-btn-position {
+  position: fixed !important;
+  top: 50% !important;
+}
 
 h1 {
   margin-bottom: 10px;
@@ -38,7 +45,8 @@ h1 {
   flex-direction: column;
   gap: 1vh;
   align-items: center;
-  font-weight: bold;
+  font-weight: bold !important;
+  //text-decoration: underline;
 }
 
 .relative {

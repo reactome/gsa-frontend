@@ -9,7 +9,6 @@ html, body {
 body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   background-color: #eff2ff;
-  height: 4000px;
 }
 
 textarea {
@@ -20,13 +19,22 @@ textarea {
   background-color: #eff2ff !important;
 }
 
+.background-white {
+  background-color: white !important;
+}
+
+.nav-btn-position {
+  position: fixed !important;
+  top: 50% !important;
+}
+
 h1 {
   margin-bottom: 10px;
   display: flex;
   flex-direction: column;
   gap: 1vh;
   align-items: center;
-  font-weight: bold;
+  font-weight: bold !important;
 }
 
 .relative {

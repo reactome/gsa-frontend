@@ -1,14 +1,14 @@
-<!--<div [formGroup]="frmStepOne" class="stepper">-->
-<!--  <div class="flex-container flex-center">-->
-<!--    <div class="container">-->
-<!--      <mat-accordion multi="false">-->
-<!--        <div *ngFor="let method of methodService.methods">-->
-<!--          <gsa-method [method]="method"></gsa-method>-->
-<!--        </div>-->
-<!--      </mat-accordion>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
+<div [formGroup]="frmStepOne" class="stepper">
+  <div class="flex-container flex-center">
+    <div class="container">
+      <mat-accordion multi="false">
+        <div *ngFor="let method of methodService.methods">
+          <gsa-method [method]="method"></gsa-method>
+        </div>
+      </mat-accordion>
+    </div>
+  </div>
+</div>
 
 
-<gsa-table [userSettings]="settings"></gsa-table>
+<!--<gsa-table [userSettings]="settings"></gsa-table>-->
