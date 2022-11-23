@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {AnalysisObject} from "../../../model/analysisObject.model";
 
 @Component({
   selector: 'gsa-dropdown',
@@ -8,8 +9,10 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 export class DropdownComponent implements OnInit {
   @Input() options: any[];
   @Output() value: EventEmitter<string> = new EventEmitter<string>();
-  @Input() selection: string;
-  default: string = 'Select one';
+  @Input() selection: string | undefined;
+  @Input() disabled: boolean = false;
+  default?: string;
+
 
   constructor() {
   }

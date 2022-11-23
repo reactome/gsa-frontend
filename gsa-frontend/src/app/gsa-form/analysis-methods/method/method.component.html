@@ -1,4 +1,4 @@
-<mat-expansion-panel [class.chosen]="methodService.selectedMethod === method" (click)="selectMethod()" hideToggle>
+<mat-expansion-panel [class.unchosen]="methodService.selectedMethod?.name !== method.name" [class.chosen]="methodService.selectedMethod?.name === method.name" expanded="false" (click)="selectMethod()" hideToggle>
   <mat-expansion-panel-header>
     <mat-panel-title class="bold">
       {{method.name | titlecase}}
@@ -7,8 +7,10 @@
       {{method.description}}
     </mat-panel-description>
   </mat-expansion-panel-header>
-  <div *ngFor="let param of getDisplayParameters(); last as isLast" class="show-param">
+  <div class="grey-border">
+  <div *ngFor="let param of getDisplayParameters()" >
     <gsa-method-parameter [parameter]="param"></gsa-method-parameter>
+  </div>
   </div>
 </mat-expansion-panel>
 

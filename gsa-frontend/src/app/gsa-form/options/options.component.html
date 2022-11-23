@@ -1,6 +1,6 @@
 <div [formGroup]="frmStepThree" class="flex-container horizontal">
 
-  <mat-card style="width: 80%">
+  <mat-card class="width-sixty">
     <div *ngFor="let param of getDisplayParameters()" class="show-param">
       <gsa-method-parameter *ngIf="param.display_name !== 'Reactome server'" [parameter]="param"></gsa-method-parameter>
     </div>

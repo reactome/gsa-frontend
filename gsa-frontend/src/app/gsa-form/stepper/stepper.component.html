@@ -4,11 +4,13 @@
     <ng-template matStepLabel>Select method</ng-template>
     <h1>Step 1: Select one of the available analysis methods</h1>
     <div class="flex-container flex-center horizontal">
-      <div class="nav-button-container"></div>
-      <gsa-analysis-methods class="content-container"
-                            *ngIf="stepper.selected == null || stepper.selected == addMethod"></gsa-analysis-methods>
-      <div class="nav-button-container">
-        <button mat-fab class="nav-btn-position" color="primary"
+      <div class="nav-button-container flex-center flex-container"></div>
+      <div class="content-container flex-center flex-container">
+        <gsa-analysis-methods class="fixed-center-position content-container"
+                              *ngIf="stepper.selected == null || stepper.selected == addMethod"></gsa-analysis-methods>
+      </div>
+      <div class="nav-button-container flex-center flex-container">
+        <button mat-fab class="fixed-center-position" color="primary"
                 [disabled]="methods.selectedMethod === undefined"
                 (click)="nextStep()">
           <mat-icon>keyboard_arrow_right</mat-icon>
@@ -21,20 +23,23 @@
     <h1>Step 2: Add and annotate your datasets</h1>
     <div class="flex-container flex-center horizontal">
       <div class="nav-button-container flex-center flex-container">
-        <button class="nav-btn-position" mat-fab color="primary" matStepperPrevious>
+        <button class="fixed-center-position" mat-fab color="primary" matStepperPrevious>
           <mat-icon>keyboard_arrow_left</mat-icon>
         </button>
       </div>
-      <div class="flex-container flex-center vertical content-container">
-        <mat-accordion multi="false" class="full-width">
+      <div class="content-container flex-container vertical">
+        <mat-accordion multi="false" class="content-container">
           <div *ngFor="let data of analysisInformation.datasetObjects; let i = index ">
             <gsa-nested-stepper [analysisObject]="data" *ngIf="stepper.selected == addData"></gsa-nested-stepper>
           </div>
         </mat-accordion>
-        <button mat-raised-button color="primary" class="nav-btn-margin" (click)="addDataset()">Add Dataset</button>
+        <button *ngIf="analysisInformation.savedDatasets === loadService.addedDatasets" mat-raised-button
+                color="primary" class="nav-btn-margin" (click)="addDataset()">Add Dataset
+        </button>
       </div>
+
       <div class="nav-button-container flex-center flex-container">
-        <button mat-fab class="nav-btn-position" color="primary" (click)="nextStep()"
+        <button mat-fab class="fixed-center-position" color="primary" (click)="nextStep()"
                 [disabled]="analysisInformation.savedDatasets === 0">
           <mat-icon>keyboard_arrow_right</mat-icon>
         </button>
@@ -46,14 +51,15 @@
     <h1>Step 3: Analysis Options</h1>
     <div class="flex-container flex-center horizontal">
       <div class="nav-button-container flex-center flex-container">
-        <button mat-fab class="nav-btn-position" color="primary" matStepperPrevious>
+        <button mat-fab class="fixed-center-position" color="primary" matStepperPrevious>
           <mat-icon>keyboard_arrow_left</mat-icon>
         </button>
       </div>
-      <gsa-options class="content-container" *ngIf="stepper.selected == options"></gsa-options>
-
+      <div class="content-container flex-center flex-container">
+        <gsa-options class="fixed-center-position content-container" *ngIf="stepper.selected == options"></gsa-options>
+      </div>
       <div class="nav-button-container flex-center flex-container">
-        <button mat-fab class="nav-btn-position" color="primary"
+        <button mat-fab class="fixed-center-position content-container" color="primary"
                 (click)="this.analysisInformation.loadAnalysis(); nextStep()">
           <mat-icon>keyboard_arrow_right</mat-icon>
         </button>
@@ -63,8 +69,17 @@
   <mat-step [stepControl]="form4" #analysis>
     <ng-template matStepLabel>Analysis</ng-template>
     <h1>Step 4: Analysis</h1>
-
-    <gsa-analysis *ngIf="stepper.selected == analysis"></gsa-analysis>
+    <div class="flex-container flex-center horizontal">
+      <div class="nav-button-container flex-center flex-container">
+        <button mat-fab class="fixed-center-position" color="primary" matStepperPrevious>
+          <mat-icon>keyboard_arrow_left</mat-icon>
+        </button>
+      </div>
+      <div class="content-container flex-center flex-container">
+        <gsa-analysis class="fixed-center-position content-container" *ngIf="stepper.selected == analysis"></gsa-analysis>
+      </div>
+      <div class="nav-button-container flex-center flex-container"></div>
+    </div>
   </mat-step>
 </mat-horizontal-stepper>
 

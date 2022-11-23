@@ -12,9 +12,9 @@ type CellCoord = { x: number, y: number, parentElement: any };
   styleUrls: ['./analysis-methods.component.scss']
 })
 export class AnalysisMethodsComponent implements OnInit {
+  test: any = "test"
   name: string;
   frmStepOne: FormGroup;
-
 
 
   constructor(private formBuilder: FormBuilder, public methodService: AnalysisMethodsService) {
@@ -25,8 +25,11 @@ export class AnalysisMethodsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.methodService.getAnalysisMethods()
+    if (this.methodService.selectedMethod === undefined) {
+      this.methodService.getAnalysisMethods()
+    }
   }
+
   //
   // @ViewChild('flyingRename') input: ElementRef<HTMLInputElement>;
   // @ViewChild('root') rootRef: ElementRef<HTMLDivElement>;

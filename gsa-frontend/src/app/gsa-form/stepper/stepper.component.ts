@@ -44,6 +44,7 @@ export class StepperComponent implements AfterViewInit, OnInit {
 
   addDataset() {
     this.analysisInformation.addDataset();
+    this.loadService.addedDatasets += 1
   }
 
   nextStep() {

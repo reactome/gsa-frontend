@@ -23,7 +23,7 @@ export class NestedStepperComponent implements AfterViewInit {
   @ViewChild('selectData') selectDatasetComponent: SelectDatasetComponent;
   @ViewChild('annotateData') annotateDatasetComponent: AnnotateDatasetComponent;
   @ViewChild("statisticalDesign") statisticalDesignComponent: StatisticalDesignComponent
-  dataSaved: boolean = false;
+
   @Input() analysisObject: AnalysisObject;
 
   constructor(public loadData: LoadDatasetService, private cdr: ChangeDetectorRef, private formBuilder: FormBuilder, public analysisInformation: AnalysisService, public loadDataService: LoadDatasetService, public statisticalDesignService: StatisticalDesignService) {
@@ -43,20 +43,9 @@ export class NestedStepperComponent implements AfterViewInit {
     let indexAnalysisObject = this.analysisInformation.datasetObjects.indexOf(this.analysisObject)
     this.analysisInformation.datasetObjects.splice(indexAnalysisObject, 1)
     this.analysisInformation.savedDatasets -= 1
+    this.loadDataService.addedDatasets -= 1
   }
 
-  enableAddData() {
-    let statisticalDesign = this.analysisObject.statisticalDesign
-    return statisticalDesign?.analysisGroup !== 'Select One' &&
-      statisticalDesign?.comparisonGroup1 !== 'Select One' &&
-      statisticalDesign?.comparisonGroup2 !== 'Select One'
-  }
-
-  log() {
-    let statisticalDesign = this.analysisObject.statisticalDesign
-    console.log(this.analysisObject.statisticalDesign?.analysisGroup, this.analysisObject.statisticalDesign?.comparisonGroup1, this.analysisObject.statisticalDesign?.comparisonGroup2)
-    console.log(statisticalDesign?.analysisGroup !== 'Select One' && statisticalDesign?.comparisonGroup1 !== 'Select One' && statisticalDesign?.comparisonGroup2 !== 'Select One')
-  }
 
   nextStep() {
     // @ts-ignore
@@ -64,8 +53,19 @@ export class NestedStepperComponent implements AfterViewInit {
     this.stepper.next();
   }
 
-  saveData() {
-    this.dataSaved = true;
-    this.analysisInformation.savedDatasets += 1
+  statisticalDesignValid() {
+    if (this.analysisObject.statisticalDesign?.analysisGroup !== undefined) {
+      if (this.analysisObject.datasetTable?.columns.indexOf(this.analysisObject.statisticalDesign!.analysisGroup) === -1) {
+        this.analysisObject.statisticalDesign!.analysisGroup = undefined
+      }
+    }
   }
+
+  saveData() {
+    this.analysisObject.saved = true
+    this.analysisInformation.savedDatasets += 1
+    this.loadDataService.loadingProgress = 'not started';
+  }
+
+
 }

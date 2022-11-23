@@ -1,5 +1,7 @@
 import {AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {CellInfo, Settings} from "../../model/table.model";
+import {Clipboard} from '@angular/cdk/clipboard';
+import {MatButton} from "@angular/material/button";
 
 type CellCoord = { x: number, y: number, parentElement: any };
 
@@ -15,16 +17,17 @@ interface SelectedCellRange {
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss']
 })
-export class TableComponent implements OnInit, OnChanges, AfterViewInit {
+export class TableComponent implements OnInit, OnChanges {
   @ViewChild('flyingRename') input: ElementRef<HTMLInputElement>;
   @ViewChild('root') rootRef: ElementRef<HTMLDivElement>;
+  @ViewChild('addCol') columnButton: MatButton;
+
   lastSelected: CellInfo
   selectedCells: SelectedCellRange
   renameVisible: boolean = false;
   renameValue: string;
   isDragging = false;
   modifiedCell: CellInfo;
-  selectedCell: HTMLElement
   firstSelected: CellInfo;
   @Input() userSettings?: Settings;
   private defaultSettings: Settings = {
@@ -37,24 +40,23 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   }
   settings: Settings
 
-  constructor() {
+  constructor(private clipboard: Clipboard) {
   }
 
   ngOnInit(): void {
+    this.lastSelected = new CellInfo(undefined, 0, 0)
+    // this.modifiedCell = new CellInfo(undefined, 0, 0, this.getRelativeCoords(this.getCell(0, 0)));
     this.firstSelected = new CellInfo(undefined, 0, 0)
     this.modifiedCell = new CellInfo(undefined, 0, 0)
+
     this.renameValue = this.settings.data[0][0].value
     this.settings = {...this.defaultSettings, ...this.userSettings}
     this.selectedCells = {
       maxX: 0, maxY: 0, minX: 0, minY: 0
     }
-    this.lastSelected = new CellInfo(undefined, 0, 0)
-
+    // this.showChangeInput()
   }
 
-  ngAfterViewInit() {
-    this.getCell(0, 0)?.classList.add('firstSelected')
-  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['userSettings']) {
@@ -72,13 +74,11 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       // $event.preventDefault()
       this.deselect()
       this.isDragging = true;
-      this.getCell(-1, this.firstSelected.y)?.classList.remove('chosen-th')
-      this.getCell(this.firstSelected.x, -1)?.classList.remove('chosen-th')
       let {x, y, parentElement} = this.extractCoordsFromEvent($event);
       this.firstSelected = new CellInfo(undefined, x, y)
+      this.lastSelected = new CellInfo(undefined, x, y)
       this.getCell(-1, y)?.classList.add('chosen-th')
       this.getCell(x, -1)?.classList.add('chosen-th')
-      console.log(x, this.getCell(x, -1)?.classList)
       this.changeValueMouseClick($event)
     }
   }
@@ -87,15 +87,16 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     if (this.isDragging) {
       this.deselect()
       let {x, y, parentElement} = this.extractCoordsFromEvent($event);
-      this.lastSelected = new CellInfo(undefined, x, y)
-      this.input.nativeElement.classList.add("selected")
-      if (isNaN(this.lastSelected.x)) {
-        this.input.nativeElement.classList.remove("selected")
+      if (isNaN(x) && isNaN(y)) { // Cell is the same as first selected cell
+        this.lastSelected = new CellInfo(undefined, this.firstSelected.x, this.firstSelected.y)
+      } else {
+        this.input.nativeElement.classList.add("selected")
+        this.lastSelected = new CellInfo(undefined, x, y)
       }
       let {minX, maxX, minY, maxY} = this.computeExtrema();
       for (let x = minX; x <= maxX; x++) {
         for (let y = minY; y <= maxY; y++) {
-          let parentElement = this.rootRef.nativeElement.querySelector("[x = \'" + x?.toString() + "\'][y = \'" + y?.toString() + "\']");
+          let parentElement = this.getCell(x, y)
           parentElement?.classList.add("selected");
           this.getCell(-1, y)?.classList.add('chosen-th')
           this.getCell(x, -1)?.classList.add('chosen-th')
@@ -117,19 +118,12 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
 
-  private extractCoordsFromEvent($event: MouseEvent): CellCoord {
-    let x = parseInt(($event.target as HTMLTableCellElement).getAttribute("x") as string);
-    let y = parseInt(($event.target as HTMLTableCellElement).getAttribute("y") as string);
-    const parentElement = this.rootRef.nativeElement.querySelector("[x = \'" + x?.toString() + "\'][y = \'" + y?.toString() + "\']");
-    return {x, y, parentElement};
-  }
-
   deselect() {
     let {minX, maxX, minY, maxY} = this.computeExtrema();
     for (let x = minX; x <= maxX; x++) {
       for (let y = minY; y <= maxY; y++) {
-        let parentElement = this.rootRef.nativeElement.querySelector("[x = \'" + x?.toString() + "\'][y = \'" + y?.toString() + "\']");
-        parentElement?.classList.remove("selected", "firstSelected")
+        let parentElement = this.getCell(x, y)
+        parentElement?.classList.remove("selected")
         this.getCell(-1, y)?.classList.remove('chosen-th')
         this.getCell(x, -1)?.classList.remove('chosen-th')
       }
@@ -137,13 +131,14 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   focusOnCell(x: number, y: number) {
-    const parentElement = this.rootRef.nativeElement.querySelector("[x = \'" + x?.toString() + "\'][y = \'" + y?.toString() + "\']");
+    const parentElement = this.getCell(x, y)
     this.modifiedCell = new CellInfo(undefined, x, y, this.getRelativeCoords(<HTMLElement>parentElement))
     this.firstSelected = this.modifiedCell
     this.showChangeInput()
   }
 
   addColumn() {
+    this.deselect()
     this.settings.columns.push("Annotation" + (this.settings.columns.length + 1))
     this.settings.data.forEach((row) => row.push(new CellInfo()))
     setTimeout(() => this.focusOnCell(-1, this.settings.columns.length - 1));
@@ -152,12 +147,28 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
 
   changeValueMouseClick($event: MouseEvent) {
     $event.preventDefault()
-    this.getCell(this.firstSelected.x, this.firstSelected.y)?.classList.remove('firstSelected')
     let cell = this.extractCoordsFromEvent($event);
     this.modifiedCell = new CellInfo(undefined, cell.x, cell.y, this.getRelativeCoords(cell.parentElement))
     this.firstSelected = this.modifiedCell
     this.showChangeInput()
+  }
 
+  private extractCoordsFromEvent($event: MouseEvent): CellCoord {
+    let x = parseInt(($event.target as HTMLTableCellElement).getAttribute("x") as string);
+    let y = parseInt(($event.target as HTMLTableCellElement).getAttribute("y") as string);
+    const parentElement = this.getCell(x, y)
+    return {x, y, parentElement};
+  }
+
+  getRelativeCoords(element: HTMLElement): DOMRect {
+    let child = element.getBoundingClientRect();
+    let parent = this.rootRef.nativeElement
+    let parentCoords = parent.getBoundingClientRect();
+    child.x -= parentCoords.x;
+    child.y -= parentCoords.y
+    child.x += parent.scrollLeft
+    child.y += parent.scrollTop
+    return child
   }
 
   showChangeInput() {
@@ -175,13 +186,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
-  getRelativeCoords(element: HTMLElement): DOMRect {
-    let child = element.getBoundingClientRect();
-    let parent = this.rootRef.nativeElement.getBoundingClientRect();
-    child.x -= parent.x;
-    child.y -= parent.y
-    return child
-  }
+
 
 
   renameCell() {
@@ -202,14 +207,16 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     this.settings.data.forEach((row) => {
       row.splice(y, 1)
     })
+
   }
 
   navigateTableDefault($event: KeyboardEvent) {
-    $event.preventDefault()
-    this.navigateTable($event)
+    // $event.preventDefault()
+    // this.navigateTable($event)
   }
 
   navigateTable($event: KeyboardEvent) {
+    this.deselect()
     this.renameCell()
     let x = this.firstSelected.x
     let y = this.firstSelected.y
@@ -232,16 +239,28 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     } else if ($event.key == "ArrowDown") {
       x = x + 1 === this.settings.rows.length ? -1 : x + 1;
       if (this.settings.rename_cols === false && x === -1) x += 1
-    } else if ($event.key == "Tab") {
-      $event.preventDefault()
-      if (x + 1 === this.settings.rows.length) {
-        x = -1
-        y = y + 1 === this.settings.columns.length ? -1 : y + 1;
-      } else {
-        x += 1
+    } else if ($event.key == "Tab" && $event.shiftKey === false) {
+      if (x + 1 === this.settings.rows.length && y + 1 === this.settings.columns.length) {
+        setTimeout(() => this.columnButton.focus())
+        return
       }
-      if (this.settings.rename_cols === false && x === -1) x += 1
-      if (this.settings.rename_rows === false && y === -1) y += 1
+      x += 1
+      if (x === this.settings.rows.length) {
+        x = -1
+        y += 1
+      }
+      if (y === this.settings.columns.length) {
+        y = -1
+      }
+    } else if ($event.key == "Tab" && $event.shiftKey) {
+      x -= 1
+      if (this.settings.rename_cols === false && x === -1 || x === -2) {
+        x = this.settings.rows.length - 1
+        y -= 1
+      }
+      if (this.settings.rename_rows === false && y === -1 || y === -2) {
+        y = this.settings.columns.length - 1
+      }
     }
     if (this.settings.rename_rows === false && y === -1) {
       y += 1
@@ -252,7 +271,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     this.firstSelected = new CellInfo(undefined, x, y)
     this.getCell(-1, y)?.classList.add('chosen-th')
     this.getCell(x, -1)?.classList.add('chosen-th')
-    let parentElement = this.rootRef.nativeElement.querySelector("[x = \'" + x?.toString() + "\'][y = \'" + y?.toString() + "\']")
+    let parentElement = this.getCell(x, y)
     this.modifiedCell = new CellInfo(undefined, x, y, this.getRelativeCoords(parentElement as HTMLElement))
     this.showChangeInput()
   }
@@ -288,5 +307,22 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       }
     }
     this.renameValue = ""
+  }
+
+  copyValues($event: ClipboardEvent) {
+    let copyText: string = ""
+    let {minX, maxX, minY, maxY} = this.computeExtrema();
+    for (let x = minX; x <= maxX; x++) {
+      for (let y = minY; y <= maxY; y++) {
+        copyText += this.settings.data[x][y].value
+        if (y < maxY) {
+          copyText += "\t"
+        }
+      }
+      if (x < maxX) {
+        copyText += "\n"
+      }
+    }
+    this.clipboard.copy(copyText)
   }
 }

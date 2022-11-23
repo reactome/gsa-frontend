@@ -1,31 +1,52 @@
-<div class="loading-progress">
-  <div *ngIf="analysisService.analysisLoadingProgress === 'loading'">
-    <mat-spinner diameter="25"></mat-spinner>
-    <div style="margin-top: 5px;">Loading Analysis</div>
-  </div>
-  <div *ngIf="analysisService.analysisLoadingProgress === 'failed'">
-    <div class="material-icons mat-error">error</div>
-    <div>Analysis failed</div>
-  </div>
-  <div *ngIf="analysisService.analysisLoadingProgress === 'completed'">
-    <div class="material-icons" style=" color: rgb(0, 128, 55); font-size: 25px;">check_circle</div>
-    <div>Analysis loaded</div>
-    <a href="{{analysisService.resultURL}}" target="_blank">Click to visualise the result of the Gene Set Analysis</a>
-  </div>
-  <div *ngIf="analysisService.reportLoadingProgress === 'loading'">
-    <mat-spinner diameter="25"></mat-spinner>
-    <div style="margin-top: 5px;">Loading Report</div>
-  </div>
-  <div *ngIf="analysisService.reportLoadingProgress === 'failed'">
-    <div class="material-icons mat-error">error</div>
-    <div>Report failed</div>
-  </div>
-  <div *ngIf="analysisService.reportLoadingProgress === 'completed'">
-    <div class="material-icons" style=" color: rgb(0, 128, 55); font-size: 25px;">check_circle</div>
-    <div>Report loaded</div>
-    <div *ngFor="let report of analysisService.reportLoadingStatus?.reports">
-      <a href="{{report.url}}" target="_blank">{{report.name}}</a>
+<div class="flex-analysis-container horizontal">
+  <mat-card class="width-forty">
+    <div style="min-height: 200px" class="flex-analysis vertical full-width">
+      <h2>Analysis:</h2>
+      <div class="height-eighty">
+        <div *ngIf="analysisService.analysisLoadingProgress === 'loading'">
+          <div class="flex-loading-container horizontal">
+            <mat-spinner diameter="25"></mat-spinner>
+            <div class="margin-left-10">Loading Analysis</div>
+          </div>
+          <div>{{analysisService.analysisLoadingStatus?.description}}</div>
+        </div>
+        <div class="flex-loading-container horizontal"
+             *ngIf="analysisService.analysisLoadingProgress === 'failed'">
+          <div class="material-icons mat-error">error</div>
+          <div class="margin-left-10">Analysis failed</div>
+        </div>
+        <div class="height-eighty" *ngIf="analysisService.analysisLoadingProgress === 'completed'">
+          <div>Click to visualise the result of the Gene Set Analysis</div>
+          <a href="{{analysisService.resultURL}}" target="_blank">Results</a>
+        </div>
+      </div>
     </div>
-  </div>
+  </mat-card>
 
+  <mat-card class="width-forty" *ngIf="analysisService.createReports === true">
+    <div style="min-height: 200px" class="flex-analysis vertical full-width">
+      <h2>Reports:</h2>
+      <div class="height-eighty">
+        <div *ngIf="analysisService.reportLoadingProgress === 'loading'">
+          <div class="flex-loading-container horizontal">
+            <mat-spinner diameter="25"></mat-spinner>
+            <div class="margin-left-10">Loading Report</div>
+          </div>
+          <div>{{analysisService.reportLoadingStatus?.description}}</div>
+        </div>
+        <div class="flex-loading-container horizontal"
+             *ngIf="analysisService.reportLoadingProgress === 'failed'">
+          <div class="material-icons mat-error">error</div>
+          <div class="margin-left-10">Report failed</div>
+        </div>
+        <div *ngIf="analysisService.reportLoadingProgress === 'completed'">
+          <div>Click to download a report</div>
+          <div *ngFor="let report of analysisService.reportLoadingStatus?.reports">
+            <a href="{{report.url}}" target="_blank">{{report.name}}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-card>
 </div>
+

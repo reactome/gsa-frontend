@@ -3,10 +3,12 @@
   position: relative;
   display: flex;
   flex-direction: row;
-  overflow: scroll;
+  overflow: auto;
+  //justify-content: safe center;
 }
 
 table {
+  margin: auto;
   background: white;
   position: relative;
   align-content: center;
@@ -19,6 +21,21 @@ th, td,
   min-width: 200px;
   border-bottom: 1px solid lightgray;
   border-right: 1px solid lightgray;
+}
+
+.title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+}
+
+.bin-button:focus-visible {
+  outline: none !important;
+}
+
+td {
+  padding-left: 10px;
 }
 
 .no-border {
@@ -41,6 +58,7 @@ th {
 
 .columns {
   text-align: left;
+  padding-left: 10px;
 }
 
 .delete-col-button {

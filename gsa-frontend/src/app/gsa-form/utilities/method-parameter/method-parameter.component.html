@@ -1,7 +1,7 @@
 <div class="grid-container">
-  <div class="flex-container flex-center horizontal">
+  <div class="flex-container horizontal">
     <span> {{parameter.display_name}}</span>
-    <i class="material-icons" matTooltip="{{parameter.description}}">info_outline</i>
+    <i class="material-icons nav-btn-margin grey-color" matTooltip="{{parameter.description}}">info_outline</i>
   </div>
   <div>
     <span *ngIf="parameter.values !== undefined; else inputField" class="float-right">
@@ -20,7 +20,8 @@
       </ng-template>
       <ng-template [ngSwitchCase]="types.string">
         <mat-form-field class="example-full-width">
-          <textarea matInput [(ngModel)]="parameter.value" type="text"></textarea>
+          {{parameter.value}}
+          <input matInput [(ngModel)]="parameter.value" type="text">
         </mat-form-field>
       </ng-template>
       <ng-template [ngSwitchCase]="types.float">
@@ -30,7 +31,7 @@
       </ng-template>
       <ng-template [ngSwitchCase]="types.int">
         <mat-form-field class="example-full-width">
-          <textarea matInput [(ngModel)]="parameter.value" type="number"></textarea>
+          <input matInput [(ngModel)]="parameter.value" type="number">
         </mat-form-field>
       </ng-template>
     </span>

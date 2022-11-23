@@ -6,18 +6,27 @@
                   (value)="this.analysisObject.statisticalDesign!.analysisGroup = $event"></gsa-dropdown>
   </div>
 
-  <div *ngIf="this.analysisObject.statisticalDesign?.analysisGroup !== '-Select One-'">
+  <div *ngIf="this.analysisObject.statisticalDesign?.analysisGroup !== undefined else disableGroupSelection">
     <h2>Set 1st group</h2>
     <gsa-dropdown [options]="computeColumnValues(this.analysisObject.statisticalDesign!.analysisGroup)"
-                  [selection]="this.analysisObject.statisticalDesign!.comparisonGroup1"
+                  [selection]="defaultValue(1)"
                   (value)="this.analysisObject.statisticalDesign!.comparisonGroup1 = $event"></gsa-dropdown>
     <h2>Set 2nd group</h2>
     <gsa-dropdown [options]="computeColumnValues(this.analysisObject.statisticalDesign!.analysisGroup)"
-                  [selection]="this.analysisObject.statisticalDesign!.comparisonGroup2"
+                  [selection]="defaultValue(2)"
                   (value)="this.analysisObject.statisticalDesign!.comparisonGroup2 = $event"></gsa-dropdown>
   </div>
 
-  <div *ngIf="this.analysisObject.statisticalDesign?.analysisGroup !== '-Select One-'">
+  <ng-template #disableGroupSelection>
+    <div>
+      <h2 class="disabled">Set 1st group</h2>
+      <gsa-dropdown [disabled]="true"></gsa-dropdown>
+      <h2 class="disabled">Set 2nd group</h2>
+      <gsa-dropdown [disabled]="true"></gsa-dropdown>
+    </div>
+  </ng-template>
+
+  <div *ngIf="this.analysisObject.statisticalDesign?.analysisGroup !== undefined else disableCovariateSelection">
     <h2>Select covariates</h2>
     <section class="example-section" *ngFor="let col of computeValidColumns()">
       <mat-checkbox *ngIf="col !== this.analysisObject.statisticalDesign?.analysisGroup"
@@ -26,4 +35,12 @@
                     class="example-margin">{{col}}</mat-checkbox>
     </section>
   </div>
+  <ng-template #disableCovariateSelection>
+    <div>
+      <h2 class="disabled">Select covariates</h2>
+      <section class="example-section" *ngFor="let col of computeValidColumns()">
+        <mat-checkbox disabled="true">{{col}}</mat-checkbox>
+      </section>
+    </div>
+  </ng-template>
 </div>

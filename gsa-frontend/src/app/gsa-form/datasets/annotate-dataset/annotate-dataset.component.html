@@ -1,5 +1,22 @@
 <div [formGroup]="frmStepTwoTwo" class="nestedStepper">
+    <div class="width-sixty">
+      <div class="flex-container vertical margin-bottom-20">
+        <div class="horizontal flex-loading-container">
+          <div>Dataset name:</div>
+          <mat-form-field [ngStyle]="{'width.ch': datasetName.value.length, 'min-width.ch': 10}"
+                          class="example-full-width margin-left-10">
+            <input matInput #datasetName [(ngModel)]="analysisObject.dataset!.title"
+                   [ngModelOptions]="{standalone: true}"
+                   type="text">
+          </mat-form-field>
+        </div>
+        <p >Please add the annotations for the given dataset. The minimum requirement is to specify one annotation
+          (comparison
+          group). For example, "Group" with values "Treatment" and "Control").</p>
+      </div>
+    </div>
     <gsa-table [userSettings]="settings"></gsa-table>
+
 </div>
 
 

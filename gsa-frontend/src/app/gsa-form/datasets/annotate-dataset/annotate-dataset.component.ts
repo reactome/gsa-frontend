@@ -10,11 +10,11 @@ import {AnalysisObject} from "../../model/analysisObject.model";
   templateUrl: './annotate-dataset.component.html',
   styleUrls: ['./annotate-dataset.component.scss']
 })
-export class AnnotateDatasetComponent{
-
+export class AnnotateDatasetComponent {
+  public test: string = "test"
   frmStepTwoTwo: FormGroup;
-  @Input() analysisObject : AnalysisObject
-  settings : Settings
+  @Input() analysisObject: AnalysisObject
+  settings: Settings
   // settings: Settings = {
   //
   //   columns: this.analysisObject.datasetTable.columns,

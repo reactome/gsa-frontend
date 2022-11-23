@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {LoadDatasetService} from "../../services/load-dataset.service";
 import {StatisticalDesignService} from "../../services/statistical-design.service";
@@ -37,7 +37,8 @@ export class StatisticalDesignComponent implements OnInit {
     }
   }
 
-  computeColumnValues(colName: string): any[] {
+
+  computeColumnValues(colName: string | undefined): any[] {
     let colValues: any[] = this.loadDataService.getColumn(colName, this.analysisObject);
     colValues = colValues.filter((item, index) => colValues.indexOf(item) === index)
     return colValues
@@ -47,23 +48,56 @@ export class StatisticalDesignComponent implements OnInit {
     let cols: string[]
     cols = this.analysisObject.datasetTable!.columns
     cols = cols.filter((colName) => this.computeColumnValues(colName).length > 1)
+
     return cols;
   }
 
   defaultValue(index: number) {
-    return this.analysisObject.dataset?.default_parameters[1] !== undefined ?
-      this.analysisObject.dataset?.default_parameters[index].value :
-      "-Select One-";
+    let defaultValue: string | undefined;
+    if (this.analysisObject.dataset?.default_parameters[1] !== undefined && this.defaultStillThere(index)) {
+      defaultValue = this.analysisObject.dataset?.default_parameters[index].value;
+      if (this.analysisObject.statisticalDesign?.analysisGroup !== undefined) {
+        if (this.computeColumnValues(this.analysisObject.statisticalDesign?.analysisGroup).indexOf(defaultValue) === -1 && index !== 0) {
+          defaultValue = undefined;
+
+        }
+      }
+    } else {
+      defaultValue = undefined;
+    }
+    console.log(defaultValue)
+    return defaultValue
+  }
+
+  defaultStillThere(index
+                      :
+                      number
+  ):
+    boolean {
+    let defaultValue = this.analysisObject.dataset?.default_parameters[index].value
+    if (index === 0) {
+      return this.analysisObject.datasetTable!.columns.indexOf(<string>defaultValue) !== -1
+    }
+    // return this.computeColumnValues(this.analysisObject.statisticalDesign!.analysisGroup).indexOf(defaultValue) !== -1
+    return true
   }
 
 
-  defaultCovariate(covariate: string) {
+  defaultCovariate(covariate
+                     :
+                     string
+  ) {
     let covariates = this.analysisObject.dataset?.default_parameters[3] !== undefined ? this.analysisObject.dataset!.default_parameters[3].value : "";
     let defaultCov: string[] = covariates.split(",")
     return defaultCov.indexOf(covariate) !== -1
   }
 
-  addCovariant($event: MatCheckboxChange, covariate: string) {
+  addCovariant($event
+                 :
+                 MatCheckboxChange, covariate
+                 :
+                 string
+  ) {
     if ($event.checked === true) {
       this.analysisObject.statisticalDesign!.covariances.push(covariate)
     } else {

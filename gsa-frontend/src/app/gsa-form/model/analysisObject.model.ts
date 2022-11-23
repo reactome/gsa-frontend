@@ -8,13 +8,14 @@ export interface DatasetTable {
 }
 
 export interface StatisticalDesign {
-  analysisGroup: string;
-  comparisonGroup1: string;
-  comparisonGroup2: string;
+  analysisGroup: string | undefined;
+  comparisonGroup1: string | undefined;
+  comparisonGroup2: string | undefined;
   covariances: string[];
 }
 
 export interface AnalysisObject {
+  saved: boolean;
   dataset?: DataSummary;
   datasetTable?: DatasetTable;
   statisticalDesign?: StatisticalDesign;

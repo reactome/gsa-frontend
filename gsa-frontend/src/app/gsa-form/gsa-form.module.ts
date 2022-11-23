@@ -34,7 +34,7 @@ import {registerAllModules} from 'handsontable/registry';
 import {LoadingProgressComponent} from './datasets/select-dataset/loading-progress/loading-progress.component';
 import {TableComponent} from './utilities/table/table.component';
 import {StatisticalDesignComponent} from './datasets/statistical-design/statistical-design.component';
-import {DropdownComponent} from './utilities/dropdown/dropdown.component';
+import {DropdownComponent} from './datasets/statistical-design/dropdown/dropdown.component';
 import {MatMenuModule} from "@angular/material/menu";
 import {NestedStepperComponent} from './stepper/nested-stepper/nested-stepper.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";

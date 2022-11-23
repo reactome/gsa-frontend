@@ -1,3 +1,11 @@
+.flex-analysis {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
 
+.height-eighty {
+  min-height: 80px;
+}
 
 /*# sourceMappingURL=analysis-loading-progress.component.css.map */

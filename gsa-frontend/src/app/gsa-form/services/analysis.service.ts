@@ -42,8 +42,8 @@ export class AnalysisService {
   private buildAnalysisDatasets() {
     for (let dataObject of this.datasetObjects) {
       let statisticalDesign: Comparison = {
-        group1: dataObject.statisticalDesign!.comparisonGroup1,
-        group2: dataObject.statisticalDesign!.comparisonGroup2
+        group1: dataObject.statisticalDesign!.comparisonGroup1!,
+        group2: dataObject.statisticalDesign!.comparisonGroup2!
       }
       let dataInfo: DataInformation = {
         analysisGroup: this.loadDataService.getColumn(dataObject.statisticalDesign!.analysisGroup, dataObject),
@@ -79,9 +79,7 @@ export class AnalysisService {
       parameters: this.parameters
     }
     this.parameters.forEach((param) => {
-      console.log(param)
       if (param.name === "create_reports" && param.value === true) {
-        console.log("test")
         this.createReports = true
       }
     })
@@ -96,7 +94,6 @@ export class AnalysisService {
         this.analysisLoadingStatus = status;
         if (this.analysisLoadingStatus?.status === 'complete') {
           clearInterval(this.timer);
-          console.log(this.createReports)
           if (this.createReports) {
             this.reportLoadingProgress = 'loading'
             this.timer = setInterval(() => this.getReportLoadingStatus(), 1000)
@@ -125,17 +122,15 @@ export class AnalysisService {
   }
 
   addDataset() {
-    this.datasetObjects.push({})
+    this.datasetObjects.push({saved: false})
   }
 
   private getReportLoadingStatus(): void {
     this.http.get<LoadingStatus>(this.reportStatusUrl + this.analysisID)
       .subscribe((status) => {
-        console.log(status)
         this.reportLoadingStatus = status;
         if (this.reportLoadingStatus?.status === 'complete') {
           clearInterval(this.timer);
-          console.log(this.reportLoadingStatus?.reports)
           this.reportLoadingProgress = 'completed'
         }
         if (this.analysisLoadingStatus?.status === 'failed') {
