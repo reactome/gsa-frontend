@@ -1,0 +1,5 @@
+<div class="flex-container vertical" [formGroup]="form2_2_2">
+  <gsa-dropdown class="flex-one" [options]="settings.columns" [selection]="settings.columns[0]"
+                (value)="selectColumn($event)"></gsa-dropdown>
+  <gsa-table [userSettings]="tableSettings"></gsa-table>
+</div>

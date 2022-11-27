@@ -44,13 +44,16 @@ import {AnalysisComponent} from './analysis/analysis.component';
 import {
   AnalysisLoadingProgressComponent
 } from './analysis/analysis-loading-progress/analysis-loading-progress.component';
+import { EditColumnsComponent } from './datasets/annotate-dataset/table-alternative/edit-columns/edit-columns.component';
+import { EditCellsComponent } from './datasets/annotate-dataset/table-alternative/edit-cells/edit-cells.component';
+import { StepperAnnotateComponent } from './datasets/annotate-dataset/table-alternative/stepper-annotate/stepper-annotate.component';
 
 
 registerAllModules();
 
 @NgModule({
   declarations: [
-    AnalysisMethodsComponent, MethodComponent, MethodParameterComponent, SelectDatasetComponent, ExampleDataComponent, AnnotateDatasetComponent, StepperComponent, LocalDataComponent, ImportDataComponent, ImportParameterComponent, LoadingProgressComponent, TableComponent, StatisticalDesignComponent, DropdownComponent, NestedStepperComponent, OptionsComponent, AnalysisComponent, AnalysisLoadingProgressComponent
+    AnalysisMethodsComponent, MethodComponent, MethodParameterComponent, SelectDatasetComponent, ExampleDataComponent, AnnotateDatasetComponent, StepperComponent, LocalDataComponent, ImportDataComponent, ImportParameterComponent, LoadingProgressComponent, TableComponent, StatisticalDesignComponent, DropdownComponent, NestedStepperComponent, OptionsComponent, AnalysisComponent, AnalysisLoadingProgressComponent, EditColumnsComponent, EditCellsComponent, StepperAnnotateComponent
   ],
   exports: [
     StepperComponent

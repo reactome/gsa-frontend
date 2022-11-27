@@ -1,0 +1,37 @@
+<mat-horizontal-stepper class="background-grey" #stepper linear>
+  <mat-step [stepControl]="form2_2_1" #editCols completed="false">
+
+    <div class="flex-container vertical">
+      <h2>Enter column names:</h2>
+      <div class="flex-container flex-center horizontal gap-one">
+        <div class="Aligner">
+          <gsa-edit-columns class="full-width" *ngIf="stepper.selected == null || stepper.selected == editCols"
+                            [userSettings]="settings"></gsa-edit-columns>
+        </div>
+      </div>
+      <button class="nav-btn-margin"  mat-raised-button color="primary" (click)="nextStep()">
+        <mat-icon>keyboard_arrow_right</mat-icon> Change cells
+      </button>
+    </div>
+
+
+  </mat-step>
+  <mat-step [stepControl]="form2_2_2" #editCells completed="false">
+    <div class="flex-container vertical">
+      <h2>Change cells:</h2>
+      <div class="flex-container flex-center horizontal gap-one">
+        <div class="nav-button-container flex-center flex-container">
+        </div>
+        <div class="Aligner">
+          <div class="flex-container vertical gap-one full-width">
+            <gsa-edit-cells class="full-width" *ngIf="stepper.selected == null || stepper.selected == editCells"
+                            [userSettings]="settings"></gsa-edit-cells>
+          </div>
+        </div>
+      </div>
+      <button class="nav-btn-margin" mat-raised-button color="primary" matStepperPrevious>
+        <mat-icon>keyboard_arrow_left</mat-icon> Change columns
+      </button>
+    </div>
+  </mat-step>
+</mat-horizontal-stepper>

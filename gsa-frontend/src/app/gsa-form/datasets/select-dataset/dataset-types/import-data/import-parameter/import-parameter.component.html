@@ -1,11 +1,9 @@
-<div class="grid-container">
+<div class="flex-parameter-container horizontal">
   <div>
     <span> {{parameter.display_name}}</span>
     <i class="material-icons" matTooltip="{{parameter.description}}">info_outline</i>
   </div>
   <div>
-
-
     <span [ngSwitch]="parameter.type" class="float-right">
       <ng-template [ngSwitchCase]="types.string">
         <mat-form-field class="example-full-width">
@@ -18,7 +16,6 @@
         </mat-form-field>
       </ng-template>
     </span>
-
   </div>
 </div>
 

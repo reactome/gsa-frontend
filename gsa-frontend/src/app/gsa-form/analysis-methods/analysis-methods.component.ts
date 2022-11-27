@@ -3,6 +3,7 @@ import {AnalysisMethodsService} from "../services/analysis-methods.service";
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CellInfo, Settings} from "../model/table.model";
 import {LoadDatasetService} from "../services/load-dataset.service";
+import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
 
 type CellCoord = { x: number, y: number, parentElement: any };
 
@@ -15,9 +16,10 @@ export class AnalysisMethodsComponent implements OnInit {
   test: any = "test"
   name: string;
   frmStepOne: FormGroup;
+  isXSmall: boolean = false
 
 
-  constructor(private formBuilder: FormBuilder, public methodService: AnalysisMethodsService) {
+  constructor(private formBuilder: FormBuilder, public methodService: AnalysisMethodsService, private responsive: BreakpointObserver) {
 
     this.frmStepOne = this.formBuilder.group({
       name: ['', Validators.required]
@@ -28,6 +30,15 @@ export class AnalysisMethodsComponent implements OnInit {
     if (this.methodService.selectedMethod === undefined) {
       this.methodService.getAnalysisMethods()
     }
+
+    this.responsive.observe(Breakpoints.XSmall)
+      .subscribe(result => {
+
+        if (result.matches) {
+          this.isXSmall = true
+        }
+        else this.isXSmall = false
+      });
   }
 
   //

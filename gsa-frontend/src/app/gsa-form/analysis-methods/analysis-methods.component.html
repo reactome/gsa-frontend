@@ -1,20 +1,17 @@
 <div [formGroup]="frmStepOne" class="stepper">
-  <div class="flex-container flex-center">
-    <div class="container">
-      <mat-accordion multi="false">
 
-        <div *ngFor="let method of methodService.methods; let i = index">
-          <gsa-method *ngIf="i === 0 else margin" [method]="method"></gsa-method>
-          <ng-template #margin>
-            <div class="expansion-panel-margin">
+  <mat-accordion multi="false">
+      <div *ngFor="let method of methodService.methods; let i = index">
+        <gsa-method *ngIf="i === 0 else margin" [method]="method"></gsa-method>
+        <ng-template #margin>
+          <div class="expansion-panel-margin">
 
-              <gsa-method [method]="method"></gsa-method>
-            </div>
-          </ng-template>
-        </div>
-      </mat-accordion>
-    </div>
-  </div>
+            <gsa-method [method]="method"></gsa-method>
+          </div>
+        </ng-template>
+      </div>
+  </mat-accordion>
+
 </div>
 
 <!--<div *ngIf="true" class="flex-analysis-container horizontal">-->

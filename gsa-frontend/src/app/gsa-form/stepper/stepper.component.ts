@@ -1,5 +1,5 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AnalysisMethodsComponent} from "../analysis-methods/analysis-methods.component";
 import {NestedStepperComponent} from "./nested-stepper/nested-stepper.component";
 import {AnalysisMethodsService} from "../services/analysis-methods.service";
@@ -8,6 +8,7 @@ import {LoadDatasetService} from "../services/load-dataset.service";
 import {OptionsComponent} from "../options/options.component";
 import {AnalysisComponent} from "../analysis/analysis.component";
 import {MatStepper} from "@angular/material/stepper";
+import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
 
 
 @Component({
@@ -30,7 +31,7 @@ export class StepperComponent implements AfterViewInit, OnInit {
   @ViewChild('analysis') analysisComponent: AnalysisComponent
 
 
-  constructor(private cdr: ChangeDetectorRef, public methods: AnalysisMethodsService, public loadService: LoadDatasetService, public analysisInformation : AnalysisService) {
+  constructor(private responsive: BreakpointObserver, private cdr: ChangeDetectorRef, public methods: AnalysisMethodsService, public loadService: LoadDatasetService, public analysisInformation: AnalysisService) {
   }
 
 
@@ -48,9 +49,9 @@ export class StepperComponent implements AfterViewInit, OnInit {
   }
 
   nextStep() {
-      // @ts-ignore
+    // @ts-ignore
     this.stepper.selected.completed = true;
-      this.stepper.next();
-    }
+    this.stepper.next();
+  }
 
 }

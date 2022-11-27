@@ -65,7 +65,6 @@ export class StatisticalDesignComponent implements OnInit {
     } else {
       defaultValue = undefined;
     }
-    console.log(defaultValue)
     return defaultValue
   }
 

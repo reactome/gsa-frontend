@@ -3,6 +3,7 @@ import {ExampleDataset} from "../../../../model/fetch-dataset.model";
 import {FetchDatasetService} from "../../../../services/fetch-dataset.service";
 import {LoadDatasetService} from "../../../../services/load-dataset.service";
 import {AnalysisObject} from "../../../../model/analysisObject.model";
+import {LoadingProgressComponent} from "../../loading-progress/loading-progress.component";
 
 @Component({
   selector: 'gsa-example-data',
@@ -23,6 +24,15 @@ export class ExampleDataComponent implements OnInit {
   select() {
     this.dataService.chooseDataset = this.data;
     this.loadData()
+    // const dialogRef = this.dialog.open(LoadingProgressComponent, {
+    //   width: '250px'
+    //   // data: {name: this.name, animal: this.animal},
+    // });
+    //
+    // dialogRef.afterClosed().subscribe(result => {
+    //   console.log('The dialog was closed');
+    //   // this.animal = result;
+    // });
   }
 
   loadData() {

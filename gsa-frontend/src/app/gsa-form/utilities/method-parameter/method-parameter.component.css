@@ -1,9 +1,26 @@
 .grid-container {
   display: grid;
-  grid-template-columns: auto auto;
   justify-content: space-between;
   align-items: center;
   grid-template-rows: 70px;
+}
+
+.information {
+  grid-template-columns: 3fr 2fr 8fr;
+}
+
+.no-information {
+  grid-template-columns: 1.5fr 4fr;
+}
+
+.param-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+mat-form-field {
+  flex: 2;
 }
 
 /*# sourceMappingURL=method-parameter.component.css.map */

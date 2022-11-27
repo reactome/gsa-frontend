@@ -1,3 +1,9 @@
-
+.Aligner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 200px);
+  width: 70%;
+}
 
 /*# sourceMappingURL=stepper.component.css.map */

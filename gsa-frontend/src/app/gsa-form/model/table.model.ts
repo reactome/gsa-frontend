@@ -19,6 +19,9 @@ export interface Settings {
   rename_cols?: boolean;
   rename_rows?: boolean;
   change_cells?: boolean;
+  addColumnButton?: boolean;
+  show_cols?: boolean;
+  show_rows?: boolean;
 }
 
 

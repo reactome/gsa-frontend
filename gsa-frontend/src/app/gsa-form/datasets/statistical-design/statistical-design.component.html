@@ -1,18 +1,18 @@
-<div class="flex-container  horizontal full-width" style="align-items: flex-start" [formGroup]="frmStepTwoThree">
+<div class="flex-container gap-one horizontal full-width" style="align-items: flex-start" [formGroup]="frmStepTwoThree">
 
   <div>
     <h2>Select comparison factor</h2>
-    <gsa-dropdown [options]="computeValidColumns()" [selection]="defaultValue(0)"
+    <gsa-dropdown class="flex-one" [options]="computeValidColumns()" [selection]="defaultValue(0)"
                   (value)="this.analysisObject.statisticalDesign!.analysisGroup = $event"></gsa-dropdown>
   </div>
 
   <div *ngIf="this.analysisObject.statisticalDesign?.analysisGroup !== undefined else disableGroupSelection">
     <h2>Set 1st group</h2>
-    <gsa-dropdown [options]="computeColumnValues(this.analysisObject.statisticalDesign!.analysisGroup)"
+    <gsa-dropdown class="flex-one" [options]="computeColumnValues(this.analysisObject.statisticalDesign!.analysisGroup)"
                   [selection]="defaultValue(1)"
                   (value)="this.analysisObject.statisticalDesign!.comparisonGroup1 = $event"></gsa-dropdown>
     <h2>Set 2nd group</h2>
-    <gsa-dropdown [options]="computeColumnValues(this.analysisObject.statisticalDesign!.analysisGroup)"
+    <gsa-dropdown class="flex-one" [options]="computeColumnValues(this.analysisObject.statisticalDesign!.analysisGroup)"
                   [selection]="defaultValue(2)"
                   (value)="this.analysisObject.statisticalDesign!.comparisonGroup2 = $event"></gsa-dropdown>
   </div>

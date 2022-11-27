@@ -6,7 +6,7 @@
         <div *ngIf="analysisService.analysisLoadingProgress === 'loading'">
           <div class="flex-loading-container horizontal">
             <mat-spinner diameter="25"></mat-spinner>
-            <div class="margin-left-10">Loading Analysis</div>
+            <div>Loading Analysis</div>
           </div>
           <div>{{analysisService.analysisLoadingStatus?.description}}</div>
         </div>

@@ -1,4 +1,4 @@
-<mat-card-content class="dataset-card-content" *ngIf="data.name !== 'Example datasets'"  (click)="select()">
+<div class="dataset-card-content" *ngIf="data.name !== 'Example datasets'"  (click)="select()">
   <div class="dataset">
     <p class="bold">{{data.name | titlecase}}</p>
     <p>{{data.description}}</p>
@@ -11,5 +11,5 @@
       </div>
     </div>
   </div>
-</mat-card-content>
+</div>
 

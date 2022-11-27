@@ -6,13 +6,19 @@ mat-grid-tile {
   background: #f2f5fb;
 }
 
+//.grid-container {
+//  display: grid;
+//  grid-template-columns: auto auto;
+//  justify-content: space-between;
+//  align-items: center;
+//  grid-template-rows: 70px;
+//  flex-wrap: wrap;
+//}
+
 .grid-container {
   display: grid;
-  grid-template-columns: auto auto;
-  justify-content: space-between;
-  align-items: center;
+  grid-template-columns: repeat(3, auto);
   grid-template-rows: 70px;
-
 }
 
 i {

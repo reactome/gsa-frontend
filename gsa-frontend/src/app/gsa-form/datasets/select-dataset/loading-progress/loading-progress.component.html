@@ -1,14 +1,15 @@
-<div class="flex-container horizontal" *ngIf="loadDataService.loadingProgress === 'loading'">
-  <mat-spinner diameter="25"></mat-spinner>
-  <div class="margin-left-10">Loading Dataset</div>
-</div>
-<div class="flex-container horizontal" *ngIf="loadDataService.loadingProgress === 'failed'">
-  <div class="material-icons mat-error">error</div>
-  <div class="margin-left-10">Dataset not found</div>
-</div>
-<div class="flex-container horizontal" *ngIf="loadDataService.loadingProgress === 'completed'">
-  <div class="material-icons" style=" color: rgb(0, 128, 55); font-size: 25px;">check_circle</div>
-  <div class="margin-left-10">Dataset "{{analysisObject.dataset?.title}}" loaded</div>
-</div>
+<!--<div class="flex-container horizontal" *ngIf="loadDataService.loadingProgress === 'loading'">-->
+<!--  <mat-spinner diameter="25"></mat-spinner>-->
+<!--  <div class="margin-left-10">Loading Dataset</div>-->
+<!--</div>-->
+<!--<div class="flex-container horizontal" *ngIf="loadDataService.loadingProgress === 'failed'">-->
+<!--  <div class="material-icons mat-error">error</div>-->
+<!--  <div class="margin-left-10">Dataset not found</div>-->
+<!--</div>-->
+<!--<div class="flex-container horizontal" *ngIf="loadDataService.loadingProgress === 'completed'">-->
+<!--  <div class="material-icons" style=" color: rgb(0, 128, 55); font-size: 25px;">check_circle</div>-->
+<!--  <div class="margin-left-10">Dataset "{{analysisObject.dataset?.title}}" loaded</div>-->
+<!--</div>-->
 
 
+<h1>Loading!</h1>

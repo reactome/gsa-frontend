@@ -1,10 +1,10 @@
-<div class="grid-container">
-  <div class="flex-container horizontal">
-    <span> {{parameter.display_name}}</span>
-    <i class="material-icons nav-btn-margin grey-color" matTooltip="{{parameter.description}}">info_outline</i>
-  </div>
-  <div>
-    <span *ngIf="parameter.values !== undefined; else inputField" class="float-right">
+<div class="grid-container" [ngClass]="{'no-information': isSmall, 'information': !isSmall}">
+  <div *ngIf="isSmall"
+       matTooltip="{{parameter.description}}">{{parameter.display_name}}</div>
+  <div *ngIf="!isSmall">{{parameter.display_name}}</div>
+  <i *ngIf="!isSmall" class="material-icons nav-btn-margin grey-color" matTooltip="{{parameter.description}}">info_outline</i>
+  <div style="justify-self: end">
+    <div *ngIf="parameter.values !== undefined; else inputField" class="float-right">
       <mat-form-field>
         <mat-select style="padding-top: 10px" [(ngModel)]="parameter.value">
           <mat-option *ngFor="let value of parameter.values" [value]="value">
@@ -12,7 +12,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-    </span>
+    </div>
     <ng-template #inputField>
     <span [ngSwitch]="parameter.type" class="float-right">
       <ng-template [ngSwitchCase]="types.bool">

@@ -8,9 +8,7 @@ mat-grid-tile {
 
 .grid-container {
   display: grid;
-  grid-template-columns: auto auto;
-  justify-content: space-between;
-  align-items: center;
+  grid-template-columns: repeat(3, auto);
   grid-template-rows: 70px;
 }
 

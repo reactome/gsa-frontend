@@ -26,7 +26,7 @@ export class TableComponent implements OnInit, OnChanges {
   selectedCells: SelectedCellRange
   renameVisible: boolean = false;
   renameValue: string;
-  isDragging = false;
+  isDragging: boolean = false;
   modifiedCell: CellInfo;
   firstSelected: CellInfo;
   @Input() userSettings?: Settings;
@@ -36,7 +36,10 @@ export class TableComponent implements OnInit, OnChanges {
     data: [[new CellInfo()]],
     rename_cols: true,
     rename_rows: true,
-    change_cells: true
+    change_cells: true,
+    addColumnButton : true,
+    show_rows: true,
+    show_cols: true
   }
   settings: Settings
 
@@ -48,7 +51,6 @@ export class TableComponent implements OnInit, OnChanges {
     // this.modifiedCell = new CellInfo(undefined, 0, 0, this.getRelativeCoords(this.getCell(0, 0)));
     this.firstSelected = new CellInfo(undefined, 0, 0)
     this.modifiedCell = new CellInfo(undefined, 0, 0)
-
     this.renameValue = this.settings.data[0][0].value
     this.settings = {...this.defaultSettings, ...this.userSettings}
     this.selectedCells = {
@@ -62,6 +64,7 @@ export class TableComponent implements OnInit, OnChanges {
     if (changes['userSettings']) {
       this.settings = {...this.settings, ...this.userSettings}
     }
+    console.log(this.settings)
   }
 
   private getCell(x: number, y: number): HTMLTableCellElement {
@@ -128,6 +131,10 @@ export class TableComponent implements OnInit, OnChanges {
         this.getCell(x, -1)?.classList.remove('chosen-th')
       }
     }
+
+      this.input?.nativeElement?.classList.remove("selected")
+
+
   }
 
   focusOnCell(x: number, y: number) {
@@ -183,10 +190,9 @@ export class TableComponent implements OnInit, OnChanges {
     if ((type === "col" && this.settings.rename_cols) || (type === "row" && this.settings.rename_rows) || (type === "cell" && this.settings.change_cells)) {
       this.renameVisible = true
       setTimeout(() => this.input.nativeElement.focus());
+      // setTimeout(() => this.input.nativeElement.scrollIntoView());
     }
   }
-
-
 
 
   renameCell() {
@@ -207,7 +213,6 @@ export class TableComponent implements OnInit, OnChanges {
     this.settings.data.forEach((row) => {
       row.splice(y, 1)
     })
-
   }
 
   navigateTableDefault($event: KeyboardEvent) {
