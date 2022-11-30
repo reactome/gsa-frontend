@@ -159,7 +159,6 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   showChangeInput() {
-    console.log(this.firstSelected)
     let type: string = this.firstSelected.x === -1 ? "row" : this.firstSelected.y === -1 ? "col" : "cell";
     if (type === "col") { // It is a column
       this.renameValue = this.settings.columns[this.firstSelected.x];
@@ -168,9 +167,7 @@ export class TableComponent implements OnInit, OnChanges {
     } else { // It is a cell
       this.renameValue = this.settings.data[this.firstSelected.y][this.firstSelected.x].value;
     }
-    console.log(type, this.settings.renameRows)
     if ((type === "col" && this.settings.renameCols) || (type === "row" && this.settings.renameRows) || (type === "cell" && this.settings.changeCells)) {
-      console.log("hier")
       this.renameVisible = true
       setTimeout(() => this.input.nativeElement.focus());
     } else {
@@ -307,10 +304,13 @@ export class TableComponent implements OnInit, OnChanges {
 
     }
     let parentElement = this.getHTMLCellElement(x, y);
-    this.firstSelected = new CellInfo(undefined, x, y, this.getRelativeCoords(parentElement as HTMLElement));
-    this.lastSelected = new CellInfo(undefined, x, y);
-    this.showSelectedColsRows("add")
-    this.showChangeInput();
+    setTimeout(() => {
+
+      this.firstSelected = new CellInfo(undefined, x, y, this.getRelativeCoords(parentElement as HTMLElement));
+      this.lastSelected = new CellInfo(undefined, x, y);
+      this.showSelectedColsRows("add")
+      this.showChangeInput();
+    }, 0);
   }
 
   navigateTableInput($event: any) {
@@ -331,6 +331,12 @@ export class TableComponent implements OnInit, OnChanges {
         this.settings.data[y + indexY][x + indexX].value = cell
       })
     })
+    setTimeout(() => {
+      const firstSelectedHTML = this.getHTMLCellElement(x, y);
+      this.firstSelected.coordinate = this.getRelativeCoords(firstSelectedHTML);
+      this.showChangeInput()
+    }, 0);
+
   }
 
   deleteSelectedArea() {
@@ -379,4 +385,6 @@ export class TableComponent implements OnInit, OnChanges {
     const parentElement = this.getHTMLCellElement(x, y);
     return {x, y, parentElement};
   }
+
+
 }

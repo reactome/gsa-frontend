@@ -1,9 +1,37 @@
-
-
 mat-expansion-panel-header {
   min-height: 48px !important;
   height: 100% !important;
 }
 
+.chosen {
+  box-sizing: border-box;
+  border-style: solid;
+  border-width: 5px;
+  border-radius: 20px;
+  border-color: #0e7cb3;
+}
 
+.chosen:hover {
+  background: white;
+  color: black;
+}
 
+.unchosen {
+  box-sizing: border-box;
+  border-style: solid;
+  border-width: 5px;
+  border-radius: 20px;
+  border-color: white;
+}
+
+.unchosen:hover {
+  box-sizing: border-box;
+  border-style: solid;
+  border-width: 5px;
+  border-radius: 20px;
+  border-color: rgba(0, 0, 0, 0.04);
+}
+
+.grey-border {
+  border-top: 1px solid lightgray;
+}

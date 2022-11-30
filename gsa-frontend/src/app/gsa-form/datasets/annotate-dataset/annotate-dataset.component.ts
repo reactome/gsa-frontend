@@ -1,6 +1,5 @@
 import {Component, Input} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {LoadDatasetService} from "../../services/load-dataset.service";
 import {Settings} from "../../model/table.model";
 // import {currentDataset} from "../../model/analysisObject.model";
 import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
@@ -20,7 +19,7 @@ export class AnnotateDatasetComponent {
   screenIsSmall: boolean = false;
 
 
-  constructor(private formBuilder: FormBuilder, public loadDataService: LoadDatasetService, private responsive: BreakpointObserver) {
+  constructor(private formBuilder: FormBuilder, private responsive: BreakpointObserver) {
     this.annotateDataStep = this.formBuilder.group({
       address: ['', Validators.required]
     });
@@ -33,7 +32,7 @@ export class AnnotateDatasetComponent {
       data: this.currentDataset.table!.dataset,
       renameRows: false
     };
-    this.responsive.observe(Breakpoints.XSmall)
+    this.responsive.observe(Breakpoints.Small)
       .subscribe(result => {
         if (result.matches) {
           this.screenIsSmall = true;

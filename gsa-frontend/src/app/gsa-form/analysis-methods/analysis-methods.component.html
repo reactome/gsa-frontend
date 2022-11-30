@@ -1,30 +1,27 @@
-<!--<div [formGroup]="analysisMethodStep" class="stepper">-->
+<div [formGroup]="analysisMethodStep">
+  <mat-accordion multi="false">
+    <div *ngFor="let method of analysisMethodsService.methods; let i = index">
+      <gsa-method *ngIf="i === 0 else margin" [method]="method"></gsa-method>
+      <ng-template #margin>
+        <div class="expansion-panel-margin">
+          <gsa-method [method]="method"></gsa-method>
+        </div>
+      </ng-template>
+    </div>
+  </mat-accordion>
+</div>
 
-<!--  <mat-accordion multi="false">-->
-<!--      <div *ngFor="let method of analysisMethodsService.methods; let i = index">-->
-<!--        <gsa-method *ngIf="i === 0 else margin" [method]="method"></gsa-method>-->
-<!--        <ng-template #margin>-->
-<!--          <div class="expansion-panel-margin">-->
-
-<!--            <gsa-method [method]="method"></gsa-method>-->
-<!--          </div>-->
-<!--        </ng-template>-->
-<!--      </div>-->
-<!--  </mat-accordion>-->
-
-<!--</div>-->
-
-<!--<div *ngIf="true" class="flex-analysis-container horizontal">-->
-<!--  <mat-card style="width: 40%">-->
+<!--<div *ngIf="true" class="flex-container horizontal">-->
+<!--  <mat-card >-->
 <!--    <h2>Analysis:</h2>-->
-<!--    <div class="material-icons" style=" color: rgb(0, 128, 55); font-size: 25px;">check_circle</div>-->
+<!--    <div class="material-icons" ">check_circle</div>-->
 <!--    <div>Analysis loaded</div>-->
 <!--    <a href="test" target="_blank">Click to visualise the result of the Gene Set Analysis</a>-->
 <!--  </mat-card>-->
 
-<!--  <mat-card *ngIf="true" style="width: 40%">-->
+<!--  <mat-card *ngIf="true" >-->
 <!--    <h2>Reports:</h2>-->
-<!--    <div class="material-icons" style=" color: rgb(0, 128, 55); font-size: 25px;">check_circle</div>-->
+<!--    <div class="material-icons">check_circle</div>-->
 <!--    <div>Report loaded</div>-->
 <!--    <div>-->
 <!--      <a href="testttt" target="_blank">name1</a>-->
@@ -40,4 +37,4 @@
 <!--</div>-->
 
 
-<gsa-table [userSettings]="settings"></gsa-table>
+<!--<gsa-table [userSettings]="settings"></gsa-table>-->

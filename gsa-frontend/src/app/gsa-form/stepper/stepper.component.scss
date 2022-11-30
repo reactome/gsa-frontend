@@ -1,8 +1,5 @@
 
-.aligner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.center-vertical {
   min-height: calc(100vh - 200px);
   max-width: 70%;
   overflow: auto;
@@ -13,8 +10,13 @@
 
   button {
     position: fixed;
-    top: 50vh;
-    //transform: translateY(-50%);
+    top: calc(50vh - 12px);
   }
+}
+
+.fixed-center-position {
+  position: fixed;
+  top: calc(50% + 20px);
+  transform: translateY(-50%);
 }
 

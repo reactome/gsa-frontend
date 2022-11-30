@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {AnalysisMethodsService} from "../services/analysis-methods.service";
+import {AnalysisService} from "../services/analysis.service";
 
 @Component({
   selector: 'gsa-analysis',
@@ -10,7 +10,7 @@ import {AnalysisMethodsService} from "../services/analysis-methods.service";
 export class AnalysisComponent {
   analysisStep: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, public analysisService: AnalysisService) {
     this.analysisStep = this.formBuilder.group({
       name: ['', Validators.required]
     });

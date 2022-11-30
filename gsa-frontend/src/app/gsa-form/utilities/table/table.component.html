@@ -1,11 +1,11 @@
-<div #root class="container">
+<div #root class="table-container flex horizontal relative background-white in-front">
   <table (keydown)="navigateTableDefault()" (mousedown)="mousedown($event)" (mouseover)="mousemove($event)"
-         (mouseup)="mouseup()">
+         (mouseup)="mouseup()" class="relative align-center background-white">
     <thead *ngIf="settings.showCols">
     <tr>
-      <th></th>
+      <th class="in-front"></th>
       <th *ngFor="let col of settings.columns; let x = index" [attr.x]="x" [attr.y]="-1" class="columns">
-        <div [attr.x]="x" [attr.y]="-1" class="title-container">
+        <div [attr.x]="x" [attr.y]="-1" class="flex horizontal align-center justify-between">
           {{col}}
           <button (click)="deleteColumn($event, x)" [attr.addCol]="true" class="bin-button" color="primary"
                   mat-icon-button>
@@ -22,10 +22,9 @@
       <td *ngFor="let rowVal of settings.data[y]; let x = index" [attr.x]="x" [attr.y]="y">
         {{rowVal.value}}
       </td>
-      <td *ngIf="y===0 && settings.addColumnButton" height="100px" rowspan="0" style="padding:0px">
-        <button #addCol (click)="addColumn()" color="primary"
-                mat-stroked-button
-                style="width:100%;height:100%;margin: 0px; border-radius: 0px">
+      <td *ngIf="y===0 && settings.addColumnButton" class="no-padding" height="100px" rowspan="0">
+        <button #addCol (click)="addColumn()" class="add-column-button" color="primary"
+                mat-stroked-button>
           Add column
         </button>
       </td>

@@ -1,36 +1,40 @@
-<mat-horizontal-stepper class="background-grey" #stepper linear>
-  <mat-step [stepControl]="columnStep" #editCols completed="false">
+<mat-horizontal-stepper #stepper class="background-white">
+  <mat-step #editCols [stepControl]="columnStep">
 
-    <div class="flex-container vertical">
+    <div class="flex-container vertical justify-center align-center">
       <h2>Enter column names:</h2>
       <div class="flex-container flex-center horizontal gap-one">
-        <div class="aligner">
-          <gsa-edit-columns class="full-width" *ngIf="stepper.selected == null || stepper.selected == editCols"
-                            [tableSettings] = "tableSettings"></gsa-edit-columns>
+        <div class="center-vertical">
+          <gsa-edit-columns *ngIf="stepper.selected == null || stepper.selected == editCols"
+                            [tableSettings]="tableSettings"
+                            class="full-width"></gsa-edit-columns>
         </div>
       </div>
-      <button class="nav-btn-margin"  mat-raised-button color="primary" matStepperNext>
-        <mat-icon>keyboard_arrow_right</mat-icon> Change cells
+      <button class="nav-btn-margin" color="primary" mat-raised-button matStepperNext>
+        <mat-icon>keyboard_arrow_right</mat-icon>
+        Change cells
       </button>
     </div>
 
 
   </mat-step>
-  <mat-step [stepControl]="cellStep" #editCells completed="false">
-    <div class="flex-container vertical">
+  <mat-step #editCells [stepControl]="cellStep">
+    <div class="flex-container vertical justify-center align-center">
       <h2>Change cells:</h2>
       <div class="flex-container flex-center horizontal gap-one">
         <div class="nav-button-container flex-center flex-container">
         </div>
-        <div class="aligner">
+        <div class="center-vertical">
           <div class="flex-container vertical gap-one full-width">
-            <gsa-edit-cells class="full-width" *ngIf="stepper.selected == null || stepper.selected == editCells"
-                            [tableSettings]="tableSettings"></gsa-edit-cells>
+            <gsa-edit-cells *ngIf="stepper.selected == null || stepper.selected == editCells"
+                            [tableSettings]="tableSettings"
+                            class="full-width"></gsa-edit-cells>
           </div>
         </div>
       </div>
-      <button class="nav-btn-margin" mat-raised-button color="primary" matStepperPrevious>
-        <mat-icon>keyboard_arrow_left</mat-icon> Change columns
+      <button class="nav-btn-margin" color="primary" mat-raised-button matStepperPrevious>
+        <mat-icon>keyboard_arrow_left</mat-icon>
+        Change columns
       </button>
     </div>
   </mat-step>

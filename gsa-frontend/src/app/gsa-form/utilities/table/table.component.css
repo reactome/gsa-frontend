@@ -1,31 +1,29 @@
-.container {
-  position: relative;
-  display: flex;
-  flex-direction: row;
+.table-container {
   overflow: auto;
-  padding: 10px;
 }
 
 table {
   margin: auto;
-  background: white;
-  position: relative;
-  align-content: center;
   border-collapse: collapse;
 }
 
 th, td {
   min-height: 50px;
   padding: 0.25em;
+  min-width: 5%;
   border-bottom: 1px solid lightgray;
   border-right: 1px solid lightgray;
 }
 
-.title-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-direction: row;
+.no-padding {
+  padding: 0px;
+}
+
+.add-column-button {
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+  border-radius: 0px;
 }
 
 .bin-button:focus-visible {
@@ -40,6 +38,10 @@ td {
   border-right: 1px solid white;
 }
 
+.in-front {
+  z-index: 3000;
+}
+
 th {
   position: sticky;
   left: 0;
@@ -48,7 +50,7 @@ th {
 }
 
 .rows {
-  z-index: 1000;
+  z-index: 3000;
   margin-right: 20px;
 }
 
@@ -87,14 +89,6 @@ input {
 
 .chosen-th {
   background-color: #e2e2e5;
-}
-
-.cursor-transparent {
-  caret-color: transparent;
-}
-
-.cursor-visible {
-  caret-color: black;
 }
 
 /*# sourceMappingURL=table.component.css.map */

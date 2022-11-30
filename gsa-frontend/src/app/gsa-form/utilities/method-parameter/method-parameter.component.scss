@@ -14,12 +14,9 @@
   grid-template-columns: 1.5fr 4fr;
 }
 
-.param-container {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+.justify-end {
+  justify-self: end;
 }
-
 
 mat-form-field {
   flex: 2;

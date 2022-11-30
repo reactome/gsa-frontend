@@ -1,7 +1,7 @@
 <div [formGroup]="analysisOptionsStep" class="flex-container horizontal">
 
   <mat-card>
-    <div *ngFor="let param of getDisplayParameters()" class="show-param">
+    <div *ngFor="let param of getDisplayParameters()">
       <gsa-method-parameter *ngIf="param.display_name !== 'Reactome server'" [parameter]="param"></gsa-method-parameter>
     </div>
     <br><br>

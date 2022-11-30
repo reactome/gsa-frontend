@@ -49,4 +49,10 @@ export class NestedStepperComponent implements AfterViewInit {
   }
 
 
+  checkStatisticalDesign(): boolean {
+    return this.currentDataset.statisticalDesign?.analysisGroup !== undefined ||
+      this.currentDataset.statisticalDesign?.comparisonGroup1 !== undefined ||
+      this.currentDataset.statisticalDesign?.comparisonGroup2 !== undefined;
+
+  }
 }

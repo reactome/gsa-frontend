@@ -1,12 +1,3 @@
-.grid-container {
-  display: grid;
-  grid-template-columns: auto auto;
-  justify-content: space-between;
-  align-items: center;
-  grid-template-rows: 70px;
-  flex-wrap: wrap;
-  flex-direction: row-reverse;
-  gap: 1em;
-}
+
 
 /*# sourceMappingURL=analysis-methods.component.css.map */

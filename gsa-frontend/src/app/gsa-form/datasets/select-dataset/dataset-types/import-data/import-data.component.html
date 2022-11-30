@@ -1,8 +1,8 @@
 <div (click)="select()" *ngIf="data.name !== 'Example datasets'" class="dataset-card-content">
-  <div class="dataset">
-    <p class="card-title">{{data.name | titlecase}}</p>
+  <div>
+    <p class="bold">{{data.name | titlecase}}</p>
     <p>{{data.description}}</p>
-    <form *ngIf="fetchDatasetService.chosenDataset === data" class="parameters">
+    <form *ngIf="fetchDatasetService.chosenDataset === data">
       <div *ngFor="let param of data.parameters">
         <gsa-import-parameter [parameter]="param"></gsa-import-parameter>
       </div>

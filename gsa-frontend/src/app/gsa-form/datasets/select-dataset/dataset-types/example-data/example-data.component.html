@@ -1,7 +1,6 @@
-<div class="dataset-card-content"  (click)="select()">
-  <div class="dataset">
-    <p class="card-title">{{data.name | titlecase}}</p>
+<div (click)="select()" class="dataset-card-content">
+  <div>
+    <p class="bold">{{data.name | titlecase}}</p>
     <p>{{data.description}}</p>
-<!--    <gsa-loading-progress *ngIf="dataService.chooseDataset === data"></gsa-loading-progress>-->
   </div>
 </div>

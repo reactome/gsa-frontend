@@ -1,21 +1,21 @@
-<div class="flex-analysis-container horizontal">
+<div class="flex-container horizontal">
   <mat-card class="width-forty">
-    <div style="min-height: 200px" class="flex-analysis vertical full-width">
+    <div class="flex-container justify-center vertical full-width">
       <h2>Analysis:</h2>
       <div class="height-eighty">
         <div *ngIf="analysisService.analysisLoadingStatus?.status === 'running'">
-          <div class="flex-loading-container horizontal">
+          <div class="flex-container horizontal">
             <mat-spinner diameter="25"></mat-spinner>
             <div>Loading Analysis</div>
           </div>
           <div>{{analysisService.analysisLoadingStatus?.description}}</div>
         </div>
-        <div class="flex-loading-container horizontal"
-             *ngIf="analysisService.analysisLoadingStatus?.status === 'failed'">
+        <div *ngIf="analysisService.analysisLoadingStatus?.status === 'failed'"
+             class="flex-container horizontal">
           <div class="material-icons mat-error">error</div>
           <div class="margin-left-10">Analysis failed</div>
         </div>
-        <div class="height-eighty" *ngIf="analysisService.analysisLoadingStatus?.status === 'complete'">
+        <div *ngIf="analysisService.analysisLoadingStatus?.status === 'complete'" class="height-eighty">
           <div>Click to visualise the result of the Gene Set Analysis</div>
           <a href="{{analysisService.resultURL}}" target="_blank">Results</a>
         </div>
@@ -23,19 +23,19 @@
     </div>
   </mat-card>
 
-  <mat-card class="width-forty" *ngIf="analysisService.createReports === true">
-    <div style="min-height: 200px" class="flex-analysis vertical full-width">
+  <mat-card *ngIf="analysisService.createReports === true" class="width-forty">
+    <div class="flex-analysis vertical full-width">
       <h2>Reports:</h2>
       <div class="height-eighty">
         <div *ngIf="analysisService.reportLoadingStatus?.status === 'running'">
-          <div class="flex-loading-container horizontal">
+          <div class="flex-container horizontal">
             <mat-spinner diameter="25"></mat-spinner>
             <div class="margin-left-10">Loading Report</div>
           </div>
           <div>{{analysisService.reportLoadingStatus?.description}}</div>
         </div>
-        <div class="flex-loading-container horizontal"
-             *ngIf="analysisService.reportLoadingStatus?.status === 'failed'">
+        <div *ngIf="analysisService.reportLoadingStatus?.status === 'failed'"
+             class="flex-container horizontal">
           <div class="material-icons mat-error">error</div>
           <div class="margin-left-10">Report failed</div>
         </div>

@@ -1,16 +1,16 @@
-<div class="flex-container vertical" [formGroup]="columnStep">
-  <div class="flex-container horizontal">
+<div [formGroup]="columnStep" class="flex-container vertical">
+  <div class="flex-container horizontal align-center justify-center">
     <div>
       <div *ngFor="let col of tableSettings.columns; let i = index" class="flex-container horizontal">
         <mat-form-field>
-          <input matInput [(ngModel)]="tableSettings.columns[i]" [ngModelOptions]="{standalone: true}" type="text">
+          <input [(ngModel)]="tableSettings.columns[i]" [ngModelOptions]="{standalone: true}" matInput type="text">
         </mat-form-field>
-        <button (click)="deleteColumn(col)" class="bin-button" mat-icon-button color="primary">
+        <button (click)="deleteColumn(col)" class="bin-button" color="primary" mat-icon-button>
           <span class="material-icons">delete</span>
         </button>
       </div>
     </div>
-    <button (click)="addColumn()" class="nav-btn-margin" mat-raised-button color="accent">
+    <button (click)="addColumn()" class="add-button" color="primary" mat-stroked-button>
       Add column
     </button>
   </div>

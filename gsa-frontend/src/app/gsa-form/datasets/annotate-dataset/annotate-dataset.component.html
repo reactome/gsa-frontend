@@ -1,10 +1,9 @@
-<div [formGroup]="annotateDataStep" class="nestedStepper">
-  <div class="flex-container horizontal margin-bottom-20">
-    <div class="content-container flex-container vertical">
-      <div class="horizontal flex-rename-container">
+<div [formGroup]="annotateDataStep">
+  <div class="flex-container horizontal justify-center">
+    <div class="width-eighty flex-container vertical">
+      <div class="horizontal justify-center">
         <span>Dataset name:</span>
-        <mat-form-field [ngStyle]="{'width.ch': datasetName.value.length, 'min-width.ch': 10}"
-                        class="example-full-width">
+        <mat-form-field [ngStyle]="{'width.ch': datasetName.value.length, 'min-width.ch': 10}" class="margin-left-10">
           <input #datasetName [(ngModel)]="currentDataset.summary!.title" [ngModelOptions]="{standalone: true}"
                  matInput
                  type="text">

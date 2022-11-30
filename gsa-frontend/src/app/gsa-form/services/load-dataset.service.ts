@@ -27,9 +27,13 @@ export class LoadDatasetService {
   }
 
   loadDataset(resourceId: string, postParameters: any, currentDataset: currentDataset): void {
-    this.showLoadingDialog();
-    this.loadingStatus = undefined;
+    // this.loadingStatus = undefined;
+    // @ts-ignore
+    this.loadingStatus = {
+      status: "running"
+    }
     this.submitQuery(resourceId, postParameters);
+    this.showLoadingDialog()
     this.timer = setInterval(() => this.waitForResult(currentDataset), 1000);
   }
 
@@ -70,7 +74,7 @@ export class LoadDatasetService {
     console.log(this.stepper.selected?.completed)
     setTimeout(() => {
       this.stepper.next();
-    }, 100);
+    }, 0);
   }
 
   uploadFile(file: File, currentDataset: currentDataset): void {
@@ -84,7 +88,7 @@ export class LoadDatasetService {
         currentDataset.table = new DatasetTable(columns, rows, dataset);
         setTimeout(() => {
           this.stepper.next();
-        }, 100);
+        }, 0);
 
       }
     )

@@ -1,3 +1,54 @@
-<div [formGroup]="analysisStep" class="stepper">
-  <gsa-analysis-loading-progress></gsa-analysis-loading-progress>
+<div [formGroup]="analysisStep">
+  <div class="flex-container horizontal gap-one">
+
+    <mat-card class="flex-one">
+      <div class="flex-container justify-center align-start vertical width-hundred">
+        <h2>Analysis:</h2>
+        <div [ngSwitch]="analysisService.analysisLoadingStatus?.status" class="height-eighty">
+          <div *ngSwitchCase="'running'">
+            <div class="flex-container horizontal">
+              <mat-spinner diameter="25"></mat-spinner>
+              <div class="margin-left-10">Loading Analysis</div>
+            </div>
+            <div class="grey">{{analysisService.analysisLoadingStatus?.description}}</div>
+          </div>
+          <div *ngSwitchCase="'failed'"
+               class="flex-container horizontal">
+            <div class="material-icons mat-error">error</div>
+            <div class="margin-left-10">Analysis failed</div>
+          </div>
+          <div *ngSwitchCase="'complete'" class="height-eighty">
+            <div>Click to visualise the result of the Gene Set Analysis</div>
+            <a href="{{analysisService.resultURL}}" target="_blank">Results</a>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card *ngIf="analysisService.createReports === true" class="flex-one">
+      <div class="flex-analysis vertical width-hundred">
+        <h2>Reports:</h2>
+        <div [ngSwitch]="analysisService.reportLoadingStatus?.status" class="height-eighty">
+          <div *ngSwitchCase="'running'">
+            <div class="flex-container horizontal">
+              <mat-spinner diameter="25"></mat-spinner>
+              <div class="margin-left-10">Loading Report</div>
+            </div>
+            <div class="grey">{{analysisService.reportLoadingStatus?.description}}</div>
+          </div>
+          <div *ngSwitchCase="'failed'"
+               class="flex-container horizontal">
+            <div class="material-icons mat-error">error</div>
+            <div class="margin-left-10">Report failed</div>
+          </div>
+          <div *ngSwitchCase="'complete'">
+            <div>Click to download a report</div>
+            <div *ngFor="let report of analysisService.reportLoadingStatus?.reports">
+              <a href="{{report.url}}" target="_blank">{{report.name}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  </div>
 </div>

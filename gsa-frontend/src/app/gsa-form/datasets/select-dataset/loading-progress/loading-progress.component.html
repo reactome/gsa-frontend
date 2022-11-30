@@ -1,14 +1,24 @@
-<div *ngIf="loadDataService.loadingStatus?.status === 'running'" class="flex-rename-container horizontal">
-  <mat-spinner class="flex-one" diameter="150"></mat-spinner>
-  <div class="flex-one">Loading Dataset</div>
-</div>
-<div *ngIf="loadDataService.loadingStatus?.status === 'failed'" class="flex-rename-container horizontal">
-  <div class="flex-container horizontal flex-one">
-    <div class="material-icons mat-error">error</div>
+<div class="flex-container justify-center align-center">
+  <div [ngSwitch]="loadDataService.loadingStatus?.status">
+    <div *ngSwitchCase="'running'" class="flex-container horizontal align-center">
+      <div class="flex-container vertical align-center">
+        <div class="spinner-box">
+          <mat-spinner diameter="140"></mat-spinner>
+        </div>
+        <h2 class="text-margin">Loading Dataset</h2>
+      </div>
+    </div>
+    <div *ngSwitchCase="'failed'" class="flex-container horizontal align-center">
+      <div class="flex-container vertical align-center">
+        <div class="material-icons mat-error big-size">error</div>
+        <h2 class="text-margin">{{loadDataService.loadingStatus!.description}}</h2>
+      </div>
+    </div>
+    <div *ngSwitchCase="'complete'" class="flex-container horizontal align-center">
+      <div class="flex-container vertical align-center">
+        <div class="material-icons big-size green">check_circle</div>
+        <h2 class="text-margin">Dataset loaded</h2>
+      </div>
+    </div>
   </div>
-  <div class="flex-one">{{loadDataService.loadingStatus!.description}}</div>
-</div>
-<div *ngIf="loadDataService.loadingStatus?.status === 'complete'" class="flex-rename-container horizontal">
-  <div class="material-icons flex-one" style=" color: rgb(0, 128, 55); font-size: 25px;">check_circle</div>
-  <div class="flex-one" flex-one>Dataset loaded</div>
 </div>
