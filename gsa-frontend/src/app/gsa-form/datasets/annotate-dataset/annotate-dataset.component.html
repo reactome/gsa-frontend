@@ -1,24 +1,25 @@
-<div [formGroup]="frmStepTwoTwo" class="nestedStepper">
+<div [formGroup]="annotateDataStep" class="nestedStepper">
   <div class="flex-container horizontal margin-bottom-20">
     <div class="content-container flex-container vertical">
       <div class="horizontal flex-rename-container">
         <span>Dataset name:</span>
         <mat-form-field [ngStyle]="{'width.ch': datasetName.value.length, 'min-width.ch': 10}"
                         class="example-full-width">
-          <input matInput #datasetName [(ngModel)]="analysisObject.dataset!.title"
-                 [ngModelOptions]="{standalone: true}"
+          <input #datasetName [(ngModel)]="currentDataset.summary!.title" [ngModelOptions]="{standalone: true}"
+                 matInput
                  type="text">
         </mat-form-field>
       </div>
       <p class="grey">Please add the annotations for the given dataset. The minimum requirement is to specify one
-        annotation
-        (comparison
-        group). For example, "Group" with values "Treatment" and "Control").</p>
+        annotation (comparison group). For example, "Group" with values "Treatment" and "Control").</p>
     </div>
   </div>
-<!--  <gsa-table [userSettings]="settings"></gsa-table>-->
-  <gsa-stepper-annotate [settings]="settings"></gsa-stepper-annotate>
-
+  <ng-container *ngIf="!screenIsSmall; else big">
+    <gsa-table [userSettings]="tableSettings"></gsa-table>
+  </ng-container>
+  <ng-template #big>
+    <gsa-stepper-annotate [tableSettings]="tableSettings"></gsa-stepper-annotate>
+  </ng-template>
 </div>
 
 

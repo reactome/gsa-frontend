@@ -28,9 +28,7 @@ import {
 } from "./datasets/select-dataset/dataset-types/import-data/import-parameter/import-parameter.component";
 import {MethodParameterComponent} from "./utilities/method-parameter/method-parameter.component";
 import {AgGridModule} from "ag-grid-angular";
-import {HotTableModule} from "@handsontable/angular";
 import {BrowserModule} from '@angular/platform-browser';
-import {registerAllModules} from 'handsontable/registry';
 import {LoadingProgressComponent} from './datasets/select-dataset/loading-progress/loading-progress.component';
 import {TableComponent} from './utilities/table/table.component';
 import {StatisticalDesignComponent} from './datasets/statistical-design/statistical-design.component';
@@ -47,9 +45,8 @@ import {
 import { EditColumnsComponent } from './datasets/annotate-dataset/table-alternative/edit-columns/edit-columns.component';
 import { EditCellsComponent } from './datasets/annotate-dataset/table-alternative/edit-cells/edit-cells.component';
 import { StepperAnnotateComponent } from './datasets/annotate-dataset/table-alternative/stepper-annotate/stepper-annotate.component';
+import {MatDialogModule} from "@angular/material/dialog";
 
-
-registerAllModules();
 
 @NgModule({
   declarations: [
@@ -78,11 +75,11 @@ registerAllModules();
         RouterOutlet,
         MatProgressSpinnerModule,
         AgGridModule,
-        HotTableModule,
         BrowserModule,
         MatMenuModule,
         MatCheckboxModule,
-        MatExpansionModule
+        MatExpansionModule,
+        MatDialogModule
     ],
   // bootstrap: [SelectDatasetComponent]
 })

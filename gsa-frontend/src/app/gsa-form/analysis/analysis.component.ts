@@ -7,18 +7,12 @@ import {AnalysisMethodsService} from "../services/analysis-methods.service";
   templateUrl: './analysis.component.html',
   styleUrls: ['./analysis.component.scss']
 })
-export class AnalysisComponent implements OnInit {
-  frmStepFour: FormGroup;
+export class AnalysisComponent {
+  analysisStep: FormGroup;
 
-
-
-  constructor(private formBuilder: FormBuilder, public methodService: AnalysisMethodsService) {
-
-    this.frmStepFour = this.formBuilder.group({
+  constructor(private formBuilder: FormBuilder) {
+    this.analysisStep = this.formBuilder.group({
       name: ['', Validators.required]
     });
-  }
-
-  ngOnInit() {
   }
 }

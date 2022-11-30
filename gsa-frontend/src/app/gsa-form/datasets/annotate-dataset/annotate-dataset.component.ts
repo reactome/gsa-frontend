@@ -2,7 +2,9 @@ import {Component, Input} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {LoadDatasetService} from "../../services/load-dataset.service";
 import {Settings} from "../../model/table.model";
-import {AnalysisObject} from "../../model/analysisObject.model";
+// import {currentDataset} from "../../model/analysisObject.model";
+import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
+import {currentDataset} from "../../model/analysisObject.model";
 
 
 @Component({
@@ -11,33 +13,35 @@ import {AnalysisObject} from "../../model/analysisObject.model";
   styleUrls: ['./annotate-dataset.component.scss']
 })
 export class AnnotateDatasetComponent {
-  public test: string = "test"
-  frmStepTwoTwo: FormGroup;
-  @Input() analysisObject: AnalysisObject
-  settings: Settings
-  // settings: Settings = {
-  //
-  //   columns: this.analysisObject.datasetTable.columns,
-  //   rows: this.analysisObject.datasetTable.rows,
-  //   data: this.analysisObject.datasetTable.dataset,
-  //   rename_rows: false
-  // }
+
+  @Input() currentDataset: currentDataset;
+  annotateDataStep: FormGroup;
+  tableSettings: Settings;
+  screenIsSmall: boolean = false;
 
 
-  constructor(private formBuilder: FormBuilder, public loadDataService: LoadDatasetService) {
-    this.frmStepTwoTwo = this.formBuilder.group({
+  constructor(private formBuilder: FormBuilder, public loadDataService: LoadDatasetService, private responsive: BreakpointObserver) {
+    this.annotateDataStep = this.formBuilder.group({
       address: ['', Validators.required]
     });
   }
 
   ngOnInit() {
-    this.settings = {
-      columns: this.analysisObject.datasetTable!.columns,
-      rows: this.analysisObject.datasetTable!.rows,
-      data: this.analysisObject.datasetTable!.dataset,
-      rename_rows: false
-    }
+    this.tableSettings = {
+      columns: this.currentDataset.table!.columns,
+      rows: this.currentDataset.table!.rows,
+      data: this.currentDataset.table!.dataset,
+      renameRows: false
+    };
+    this.responsive.observe(Breakpoints.XSmall)
+      .subscribe(result => {
+        if (result.matches) {
+          this.screenIsSmall = true;
+        } else this.screenIsSmall = false;
+      });
   }
+
+
 }
 
 

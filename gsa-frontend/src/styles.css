@@ -1,7 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "../node_modules/ag-grid-community/dist/styles/ag-grid.css";
 @import "../node_modules/ag-grid-community/dist/styles/ag-theme-alpine.css";
-@import '~handsontable/dist/handsontable.full.css';
 html, body {
   height: 100%;
 }
@@ -48,6 +47,10 @@ h1 {
 
 .width-forty {
   width: 40%;
+}
+
+.width-fifty {
+  width: 50%;
 }
 
 .relative {
@@ -121,7 +124,7 @@ mat-icon {
 /*Flexbox*/
 .flex-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
   flex-wrap: wrap;
 }
@@ -179,9 +182,13 @@ mat-icon {
   flex-direction: column;
 }
 
-.nav-button-container {
-  width: 10%;
-  height: 100%;
+.mat-vertical-content {
+  padding-right: 0 !important;
+}
+
+.card-title {
+  white-space: nowrap;
+  font-weight: bold;
 }
 
 .content-container {
@@ -196,18 +203,17 @@ mat-icon {
   margin: 25px !important;
 }
 
-.dataset-card-content:hover {
-  background: #1e95cf;
-  cursor: pointer;
-  color: white;
-}
-
 .dataset-card-content {
-  background: #0e7cb3;
-  color: white;
+  color: #0e7cb3;
   padding: 10px;
   margin: 3px !important;
   border-radius: 10px;
+  border: 1px solid #0e7cb3;
+}
+
+.dataset-card-content:hover {
+  background: rgba(14, 124, 179, 0.2);
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=styles.css.map */

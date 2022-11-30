@@ -1,4 +1,4 @@
-<mat-expansion-panel [class.unchosen]="methodService.selectedMethod?.name !== method.name" [class.chosen]="methodService.selectedMethod?.name === method.name" expanded="false" (click)="selectMethod()" hideToggle>
+<mat-expansion-panel [class.unchosen]="analysisMethodService.selectedMethod?.name !== method.name" [class.chosen]="analysisMethodService.selectedMethod?.name === method.name" expanded="false" (click)="selectMethod()" hideToggle>
   <mat-expansion-panel-header>
     <mat-panel-title class="bold">
       {{method.name | titlecase}}

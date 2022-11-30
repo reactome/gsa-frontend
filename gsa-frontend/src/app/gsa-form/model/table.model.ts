@@ -16,12 +16,12 @@ export interface Settings {
   columns: string[];
   rows: string[];
   data: CellInfo[][];
-  rename_cols?: boolean;
-  rename_rows?: boolean;
-  change_cells?: boolean;
+  renameCols?: boolean;
+  renameRows?: boolean;
+  changeCells?: boolean;
   addColumnButton?: boolean;
-  show_cols?: boolean;
-  show_rows?: boolean;
+  showCols?: boolean;
+  showRows?: boolean;
 }
 
 

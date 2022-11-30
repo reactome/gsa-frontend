@@ -10,14 +10,13 @@ import {AnalysisMethodsService} from "../../services/analysis-methods.service";
 export class MethodComponent {
   @Input() method: Method
 
-
-  constructor(public methodService: AnalysisMethodsService) { }
+  constructor(public analysisMethodService: AnalysisMethodsService) { }
 
   getDisplayParameters() {
     return this.method.parameters.filter(p => p.scope !== 'common');
   }
 
   selectMethod() {
-    this.methodService.selectedMethod = this.method;
+    this.analysisMethodService.selectedMethod = this.method;
   }
 }

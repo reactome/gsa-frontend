@@ -1,31 +1,29 @@
-<div class="flex-container vertical" [formGroup]="frmStepTwoOne">
+<div [formGroup]="selectDatasetStep" class="flex-container vertical">
   <div class="flex-data-container gap-one horizontal">
 
     <div class="dataset">
-      <h2>Select a file from a local folder</h2>
+      <h2>Local Dataset</h2>
       <div *ngFor="let data of localData$ | async" class="show-dataset">
-        <gsa-local-data [analysisObject]="analysisObject" [data]="data"></gsa-local-data>
+        <gsa-local-data [currentDataset]="dataset" [data]="data"></gsa-local-data>
       </div>
     </div>
 
-    <mat-divider [vertical]="true"></mat-divider>
+    <mat-divider [vertical]="firstDividerVertical$ | async"></mat-divider>
 
     <div class="dataset">
-      <h2>Select one example dataset</h2>
+      <h2>Example Dataset</h2>
       <div *ngFor="let data of exampleData$ | async" class="show-dataset">
-        <gsa-example-data [analysisObject]="analysisObject" [data]="data"></gsa-example-data>
+        <gsa-example-data [currentDataset]="dataset" [data]="data"></gsa-example-data>
       </div>
     </div>
 
-    <mat-divider [vertical]="true"></mat-divider>
+    <mat-divider [vertical]="secondDividerVertical$ | async"></mat-divider>
 
     <div class="dataset">
-      <h2>Import a dataset</h2>
+      <h2>Exterior Dataset</h2>
       <div *ngFor="let data of importData$ | async" class="show-dataset">
-        <gsa-import-data [analysisObject]="analysisObject" [data]="data"></gsa-import-data>
+        <gsa-import-data [currentDataset]="dataset" [data]="data"></gsa-import-data>
       </div>
-
     </div>
   </div>
-  <gsa-loading-progress class="nav-btn-margin loading-height" [analysisObject]="analysisObject"></gsa-loading-progress>
 </div>

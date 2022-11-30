@@ -1,8 +1,20 @@
 
-.Aligner {
+.aligner {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height:  calc(100vh - 200px);
-  width: 70%;
+  min-height: calc(100vh - 200px);
+  max-width: 70%;
+  overflow: auto;
 }
+
+.nav-button-container {
+  min-width: 10%;
+
+  button {
+    position: fixed;
+    top: 50vh;
+    //transform: translateY(-50%);
+  }
+}
+

@@ -1,18 +1,18 @@
-<mat-horizontal-stepper class="background-grey" #stepper linear>
-  <mat-step [stepControl]="form1" #addMethod completed="false">
+<mat-horizontal-stepper #stepper [linear]="true" class="background-grey">
+  <mat-step #addMethod [completed]="analysisMethodsService.selectedMethod !== undefined">
 
     <ng-template matStepLabel>Select method</ng-template>
     <h1>Step 1: Select one of the available analysis methods</h1>
     <div class="flex-container flex-center horizontal gap-one">
       <div class="nav-button-container flex-center flex-container"></div>
-      <div class="Aligner">
-        <gsa-analysis-methods class="full-width"
-                              *ngIf="stepper.selected == null || stepper.selected == addMethod"></gsa-analysis-methods>
+      <div class="aligner">
+        <gsa-analysis-methods *ngIf="stepper.selected == null || stepper.selected == addMethod"
+                              class="full-width"></gsa-analysis-methods>
       </div>
       <div class="nav-button-container flex-center flex-container">
-        <button class="fixed-center-position" mat-fab color="primary"
-                [disabled]="methods.selectedMethod === undefined"
-                (click)="nextStep()">
+        <button [disabled]="!addMethod.completed" color="primary"
+                mat-fab
+                matStepperNext>
           <mat-icon>keyboard_arrow_right</mat-icon>
         </button>
       </div>
@@ -20,32 +20,33 @@
 
 
   </mat-step>
-  <mat-step [stepControl]="form2" #addData completed="false">
+  <mat-step #addData [completed]="analysisService.anyDatasetComplete()">
     <ng-template matStepLabel>Add datasets</ng-template>
     <h1>Step 2: Add and annotate your datasets</h1>
     <div class="flex-container flex-center horizontal gap-one">
       <div class="nav-button-container flex-center flex-container">
-        <button class="fixed-center-position" mat-fab color="primary" matStepperPrevious>
+        <button color="primary" mat-fab matStepperPrevious>
           <mat-icon>keyboard_arrow_left</mat-icon>
         </button>
       </div>
-      <div class="Aligner">
+      <div class="aligner">
         <div class="flex-container vertical gap-one full-width">
           <mat-accordion class="full-width" multi="false">
-            <div *ngFor="let data of analysisInformation.datasetObjects; let i = index ">
+            <div *ngFor="let data of analysisService.analysisDatum; let i = index ">
               <div class="expansion-panel-margin">
-                <gsa-nested-stepper [analysisObject]="data" *ngIf="stepper.selected == addData"></gsa-nested-stepper>
+                <gsa-nested-stepper *ngIf="stepper.selected == addData" [currentDataset]="data"></gsa-nested-stepper>
               </div>
             </div>
           </mat-accordion>
-          <button style="margin-bottom: 16px"  *ngIf="analysisInformation.savedDatasets === loadService.addedDatasets" mat-raised-button
-                  color="primary" (click)="addDataset()">Add Dataset
+          <button (click)="addDataset()" color="primary" mat-stroked-button style="margin-bottom: 16px">
+            Add Dataset
           </button>
         </div>
       </div>
       <div class="nav-button-container flex-center flex-container">
-        <button mat-fab class="fixed-center-position" color="primary" (click)="nextStep()"
-                [disabled]="analysisInformation.savedDatasets === 0">
+        <button [disabled]="!addData.completed" color="primary"
+                mat-fab
+                matStepperNext>
           <mat-icon>keyboard_arrow_right</mat-icon>
         </button>
       </div>
@@ -53,21 +54,21 @@
 
 
   </mat-step>
-  <mat-step [stepControl]="form3" #options completed="false">
+  <mat-step #options>
     <ng-template matStepLabel>Options</ng-template>
     <h1>Step 3: Analysis Options</h1>
     <div class="flex-container flex-center horizontal gap-one">
       <div class="nav-button-container flex-center flex-container">
-        <button mat-fab class="fixed-center-position" color="primary" matStepperPrevious>
+        <button color="primary" mat-fab matStepperPrevious>
           <mat-icon>keyboard_arrow_left</mat-icon>
         </button>
       </div>
-      <div class="Aligner">
-        <gsa-options class="full-width" *ngIf="stepper.selected == options"></gsa-options>
+      <div class="aligner">
+        <gsa-options *ngIf="stepper.selected == options" class="full-width"></gsa-options>
       </div>
       <div class="nav-button-container flex-center flex-container">
-        <button mat-fab class="fixed-center-position" color="primary"
-                (click)="this.analysisInformation.loadAnalysis(); nextStep()">
+        <button (click)="this.analysisService.loadAnalysis()" color="primary" mat-fab
+                matStepperNext>
           <mat-icon>keyboard_arrow_right</mat-icon>
         </button>
       </div>
@@ -75,18 +76,18 @@
   </mat-step>
 
 
-  <mat-step [stepControl]="form4" #analysis>
+  <mat-step #analysis>
     <ng-template matStepLabel>Analysis</ng-template>
     <h1>Step 4: Analysis</h1>
     <div class="flex-container flex-center horizonta gap-onel">
       <div class="nav-button-container flex-center flex-container">
-        <button mat-fab class="fixed-center-position" color="primary" matStepperPrevious>
+        <button color="primary" mat-fab matStepperPrevious>
           <mat-icon>keyboard_arrow_left</mat-icon>
         </button>
       </div>
-      <div class="Aligner">
-        <gsa-analysis class="full-width"
-                      *ngIf="stepper.selected == analysis"></gsa-analysis>
+      <div class="aligner">
+        <gsa-analysis *ngIf="stepper.selected == analysis"
+                      class="full-width"></gsa-analysis>
       </div>
       <div class="nav-button-container flex-center flex-container"></div>
     </div>

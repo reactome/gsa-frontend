@@ -8,20 +8,12 @@ import {Settings} from "../../../../model/table.model";
   templateUrl: './stepper-annotate.component.html',
   styleUrls: ['./stepper-annotate.component.scss']
 })
-export class StepperAnnotateComponent implements OnInit {
-  @Input() settings?: Settings;
-  form2_2_1: FormGroup;
-  form2_2_2: FormGroup;
+export class StepperAnnotateComponent {
+  @Input() tableSettings: Settings;
   @ViewChild('stepper') stepper: MatStepper;
+  columnStep: FormGroup;
+  cellStep: FormGroup;
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-  nextStep() {
-    // @ts-ignore
-    this.stepper.selected.completed = true;
-    this.stepper.next();
+  constructor() {
   }
 }

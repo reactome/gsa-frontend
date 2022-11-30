@@ -1,12 +1,12 @@
-<div class="grid-container" [ngClass]="{'no-information': isSmall, 'information': !isSmall}">
-  <div *ngIf="isSmall"
+<div [ngClass]="{'no-information': screenIsSmall, 'information': !screenIsSmall}" class="grid-container">
+  <div *ngIf="screenIsSmall"
        matTooltip="{{parameter.description}}">{{parameter.display_name}}</div>
-  <div *ngIf="!isSmall">{{parameter.display_name}}</div>
-  <i *ngIf="!isSmall" class="material-icons nav-btn-margin grey-color" matTooltip="{{parameter.description}}">info_outline</i>
+  <div *ngIf="!screenIsSmall">{{parameter.display_name}}</div>
+  <i *ngIf="!screenIsSmall" class="material-icons nav-btn-margin grey-color" matTooltip="{{parameter.description}}">info_outline</i>
   <div style="justify-self: end">
     <div *ngIf="parameter.values !== undefined; else inputField" class="float-right">
       <mat-form-field>
-        <mat-select style="padding-top: 10px" [(ngModel)]="parameter.value">
+        <mat-select [(ngModel)]="parameter.value" style="padding-top: 10px">
           <mat-option *ngFor="let value of parameter.values" [value]="value">
             {{value}}
           </mat-option>
@@ -21,17 +21,17 @@
       <ng-template [ngSwitchCase]="types.string">
         <mat-form-field class="example-full-width">
           {{parameter.value}}
-          <input matInput [(ngModel)]="parameter.value" type="text">
+          <input [(ngModel)]="parameter.value" matInput type="text">
         </mat-form-field>
       </ng-template>
       <ng-template [ngSwitchCase]="types.float">
         <mat-form-field class="example-full-width">
-            <input matInput [(ngModel)]="parameter.value" type="number" step="0.1">
+            <input [(ngModel)]="parameter.value" matInput step="0.1" type="number">
         </mat-form-field>
       </ng-template>
       <ng-template [ngSwitchCase]="types.int">
         <mat-form-field class="example-full-width">
-          <input matInput [(ngModel)]="parameter.value" type="number">
+          <input [(ngModel)]="parameter.value" matInput type="number">
         </mat-form-field>
       </ng-template>
     </span>

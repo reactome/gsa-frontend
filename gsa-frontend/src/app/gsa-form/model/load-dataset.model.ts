@@ -34,7 +34,7 @@ export interface DefaultParameter {
   value: string;
 }
 
-export interface DataSummary {
+export class DataSummary {
   id: string;
   title: string;
   type: string;
@@ -43,6 +43,7 @@ export interface DataSummary {
   sample_ids: string[];
   sample_metadata: SampleMetadata[];
   default_parameters: DefaultParameter[];
+  complete: boolean = false;
 }
 
 

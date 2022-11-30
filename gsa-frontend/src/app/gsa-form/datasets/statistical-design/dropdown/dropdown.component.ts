@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {AnalysisObject} from "../../../model/analysisObject.model";
 
 @Component({
   selector: 'gsa-dropdown',

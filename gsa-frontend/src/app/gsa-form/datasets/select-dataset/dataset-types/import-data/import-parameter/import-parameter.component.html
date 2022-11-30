@@ -1,18 +1,18 @@
 <div class="flex-parameter-container horizontal">
   <div>
-    <span> {{parameter.display_name}}</span>
-    <i class="material-icons" matTooltip="{{parameter.description}}">info_outline</i>
-  </div>
-  <div>
     <span [ngSwitch]="parameter.type" class="float-right">
       <ng-template [ngSwitchCase]="types.string">
-        <mat-form-field class="example-full-width">
-          <input style="background: white; color: black" matInput [(ngModel)]="parameter.value" type="text">
+        <mat-form-field class="example-full-width" appearance="outline">
+          <mat-label>{{parameter.display_name}}</mat-label>
+          <input  matInput [(ngModel)]="parameter.value" type="text" required>
+          <mat-hint>{{parameter.description}}</mat-hint>
         </mat-form-field>
       </ng-template>
       <ng-template [ngSwitchCase]="types.int">
-        <mat-form-field class="example-full-width">
-          <input style="background: white" matInput [(ngModel)]="parameter.value" type="number" step="1">
+        <mat-form-field class="example-full-width" appearance="outline">
+          <mat-label>{{parameter.display_name}}</mat-label>
+          <input  matInput [(ngModel)]="parameter.value" type="number" step="1" required>
+          <mat-hint>{{parameter.description}}</mat-hint>
         </mat-form-field>
       </ng-template>
     </span>

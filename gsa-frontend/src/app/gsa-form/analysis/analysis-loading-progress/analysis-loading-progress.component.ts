@@ -6,11 +6,8 @@ import {AnalysisService} from "../../services/analysis.service";
   templateUrl: './analysis-loading-progress.component.html',
   styleUrls: ['./analysis-loading-progress.component.scss']
 })
-export class AnalysisLoadingProgressComponent implements OnInit {
+export class AnalysisLoadingProgressComponent {
 
   constructor(public analysisService: AnalysisService) { }
-
-  ngOnInit(): void {
-  }
 
 }

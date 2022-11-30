@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {methodParameter, ParameterType} from "../../model/methods.model";
+import {MethodParameter, ParameterType} from "../../model/methods.model";
 import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
 
 @Component({
@@ -8,29 +8,20 @@ import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
   styleUrls: ['./method-parameter.component.scss']
 })
 export class MethodParameterComponent implements OnInit {
-  @Input() parameter: methodParameter;
+  @Input() parameter: MethodParameter;
   types = ParameterType;
-  isSmall: boolean = false
+  screenIsSmall: boolean = false;
 
   constructor(private responsive: BreakpointObserver) {
 
   }
 
   ngOnInit(): void {
-    this.responsive.observe([
-      Breakpoints.XSmall,
-      Breakpoints.Small,
-      Breakpoints.Medium])
+    this.responsive.observe(Breakpoints.Small)
       .subscribe(result => {
-
-        const breakpoints = result.breakpoints;
-        if (breakpoints[Breakpoints.Small] || breakpoints[Breakpoints.XSmall]) {
-          this.isSmall = true
-        }
-        else if (breakpoints[Breakpoints.Medium]) {
-          this.isSmall = false
-        }
-
+        if (result.matches) {
+          this.screenIsSmall = true;
+        } else this.screenIsSmall = false;
       });
   }
 

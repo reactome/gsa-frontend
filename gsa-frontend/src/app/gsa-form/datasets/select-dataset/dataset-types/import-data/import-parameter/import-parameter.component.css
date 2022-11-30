@@ -6,6 +6,10 @@ mat-grid-tile {
   background: #f2f5fb;
 }
 
+.flex-parameter-container {
+  display: flex;
+}
+
 .grid-container {
   display: grid;
   grid-template-columns: repeat(3, auto);

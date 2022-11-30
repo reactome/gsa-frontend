@@ -1,20 +1,24 @@
-<div class="flex-container gap-one horizontal full-width" style="align-items: flex-start" [formGroup]="frmStepTwoThree">
+<div [formGroup]="statisticalDesignStep" class="flex-container gap-one horizontal full-width"
+     style="align-items: flex-start">
 
   <div>
     <h2>Select comparison factor</h2>
-    <gsa-dropdown class="flex-one" [options]="computeValidColumns()" [selection]="defaultValue(0)"
-                  (value)="this.analysisObject.statisticalDesign!.analysisGroup = $event"></gsa-dropdown>
+    <gsa-dropdown (value)="this.currentDataset.statisticalDesign!.analysisGroup = $event"
+                  [options]="computeValidColumns()" [selection]="defaultValue(0)"
+                  class="flex-one"></gsa-dropdown>
   </div>
 
-  <div *ngIf="this.analysisObject.statisticalDesign?.analysisGroup !== undefined else disableGroupSelection">
+  <div *ngIf="this.currentDataset.statisticalDesign?.analysisGroup !== undefined else disableGroupSelection">
     <h2>Set 1st group</h2>
-    <gsa-dropdown class="flex-one" [options]="computeColumnValues(this.analysisObject.statisticalDesign!.analysisGroup)"
+    <gsa-dropdown (value)="this.currentDataset.statisticalDesign!.comparisonGroup1 = $event"
+                  [options]="computeColumnValues(this.currentDataset.statisticalDesign!.analysisGroup)"
                   [selection]="defaultValue(1)"
-                  (value)="this.analysisObject.statisticalDesign!.comparisonGroup1 = $event"></gsa-dropdown>
+                  class="flex-one"></gsa-dropdown>
     <h2>Set 2nd group</h2>
-    <gsa-dropdown class="flex-one" [options]="computeColumnValues(this.analysisObject.statisticalDesign!.analysisGroup)"
+    <gsa-dropdown (value)="this.currentDataset.statisticalDesign!.comparisonGroup2 = $event"
+                  [options]="computeColumnValues(this.currentDataset.statisticalDesign!.analysisGroup)"
                   [selection]="defaultValue(2)"
-                  (value)="this.analysisObject.statisticalDesign!.comparisonGroup2 = $event"></gsa-dropdown>
+                  class="flex-one"></gsa-dropdown>
   </div>
 
   <ng-template #disableGroupSelection>
@@ -26,19 +30,20 @@
     </div>
   </ng-template>
 
-  <div *ngIf="this.analysisObject.statisticalDesign?.analysisGroup !== undefined else disableCovariateSelection">
+  <div *ngIf="this.currentDataset.statisticalDesign?.analysisGroup !== undefined else disableCovariateSelection">
     <h2>Select covariates</h2>
-    <section class="example-section" *ngFor="let col of computeValidColumns()">
-      <mat-checkbox *ngIf="col !== this.analysisObject.statisticalDesign?.analysisGroup"
-                    [checked]="this.analysisObject.statisticalDesign?.covariances?.indexOf(col) !== -1"
-                    (change)="addCovariant($event, col)" color="primary"
-                    class="example-margin">{{col}}</mat-checkbox>
+    <section *ngFor="let col of computeValidColumns()" class="example-section">
+      <mat-checkbox (change)="addCovariate($event, col)"
+                    *ngIf="col !== this.currentDataset.statisticalDesign?.analysisGroup"
+                    [checked]="this.currentDataset.statisticalDesign?.covariances?.indexOf(col) !== -1"
+                    class="example-margin"
+                    color="primary">{{col}}</mat-checkbox>
     </section>
   </div>
   <ng-template #disableCovariateSelection>
     <div>
       <h2 class="disabled">Select covariates</h2>
-      <section class="example-section" *ngFor="let col of computeValidColumns()">
+      <section *ngFor="let col of computeValidColumns()" class="example-section">
         <mat-checkbox disabled="true">{{col}}</mat-checkbox>
       </section>
     </div>

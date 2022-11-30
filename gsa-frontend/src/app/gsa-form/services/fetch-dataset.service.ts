@@ -11,8 +11,7 @@ export class FetchDatasetService {
   exampleDataUrl = `${environment.ApiRoot}/data/examples`;
   localDataUrl = `${environment.ApiRoot}/types`;
   inputDataUrl = `${environment.ApiRoot}/data/sources`;
-  selectedData: Dataset[] = [];
-  chooseDataset: Dataset;
+  chosenDataset: Dataset;
 
 
   constructor(private http: HttpClient) {

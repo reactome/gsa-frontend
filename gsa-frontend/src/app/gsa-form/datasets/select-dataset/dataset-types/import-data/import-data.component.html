@@ -1,15 +1,15 @@
-<div class="dataset-card-content" *ngIf="data.name !== 'Example datasets'"  (click)="select()">
+<div (click)="select()" *ngIf="data.name !== 'Example datasets'" class="dataset-card-content">
   <div class="dataset">
-    <p class="bold">{{data.name | titlecase}}</p>
+    <p class="card-title">{{data.name | titlecase}}</p>
     <p>{{data.description}}</p>
-    <div *ngIf="dataService.chooseDataset === data" (click)="doNothing()">
+    <form *ngIf="fetchDatasetService.chosenDataset === data" class="parameters">
       <div *ngFor="let param of data.parameters">
         <gsa-import-parameter [parameter]="param"></gsa-import-parameter>
       </div>
       <div class="flex-container horizontal">
-      <button mat-raised-button color="accent" (click)="loadData()">Import</button>
+        <button (click)="loadData()" color="accent" mat-raised-button type="submit">Import</button>
       </div>
-    </div>
+    </form>
   </div>
 </div>
 

@@ -8,7 +8,7 @@ export interface ParameterJSON {
   values?: string[];
 }
 
-export class methodParameter implements ParameterJSON {
+export class MethodParameter implements ParameterJSON {
   default: string;
   description: string;
   display_name: string;
@@ -52,12 +52,12 @@ export enum ParameterType {
 }
 
 export class Method {
-  parameters: methodParameter[];
+  parameters: MethodParameter[];
 
   constructor(public name: string, public description: string, parameters: ParameterJSON[]) {
     this.name = name;
     this.description = description;
-    this.parameters = parameters.map(param => new methodParameter(param));
+    this.parameters = parameters.map(param => new MethodParameter(param));
   }
 }
 

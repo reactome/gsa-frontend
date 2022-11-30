@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Method, methodParameter, ParameterType} from "../model/methods.model";
+import {Method, MethodParameter, ParameterType} from "../model/methods.model";
 import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 
@@ -7,14 +7,11 @@ import {HttpClient} from "@angular/common/http";
   providedIn: 'root'
 })
 export class AnalysisMethodsService {
-  static test = 0;
-  id: number;
   methodsUrl = `${environment.ApiRoot}/methods`;
-  methods : Method[];
-  selectedMethod: Method;
+  methods: Method[];
+  selectedMethod?: Method;
 
   constructor(private http: HttpClient) {
-    this.id = AnalysisMethodsService.test++;
   }
 
   getAnalysisMethods(): void {
@@ -26,11 +23,11 @@ export class AnalysisMethodsService {
     })
   }
 
-  parseParamDefaultValue(param: methodParameter) {
+  parseParamDefaultValue(param: MethodParameter): void {
     switch (param.type) {
       case ParameterType.bool:
         param.value = param.default.toLowerCase() === "true";
-        break
+        break;
       case ParameterType.float:
         param.value = parseFloat(param.default);
         break;
