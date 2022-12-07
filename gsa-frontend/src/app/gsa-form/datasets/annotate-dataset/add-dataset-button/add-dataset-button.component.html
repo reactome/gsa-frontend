@@ -1,0 +1,11 @@
+<input #fileUpload (change)="uploadFile($event)" class="file-input" type="file">
+<button (click)="fileUpload.click()" *ngIf="icon else stroked" color="accent" mat-icon-button
+        matTooltip="Upload your own data as a csv or tsv">
+  <mat-icon>cloud_upload</mat-icon>
+</button>
+<ng-template #stroked>
+  <button (click)="fileUpload.click()" color="primary" mat-stroked-button>
+    Upload own data
+  </button>
+</ng-template>
+

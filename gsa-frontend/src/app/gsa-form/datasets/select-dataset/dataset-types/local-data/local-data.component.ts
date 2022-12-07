@@ -3,7 +3,7 @@ import {LocalDataset} from "../../../../model/fetch-dataset.model";
 import {FetchDatasetService} from "../../../../services/fetch-dataset.service";
 import {HttpClient} from "@angular/common/http";
 import {LoadDatasetService} from "../../../../services/load-dataset.service";
-import {currentDataset} from "../../../../model/analysisObject.model";
+import {Dataset} from "../../../../model/dataset.model";
 
 @Component({
   selector: 'gsa-local-data',
@@ -11,7 +11,7 @@ import {currentDataset} from "../../../../model/analysisObject.model";
   styleUrls: ['./local-data.component.scss']
 })
 export class LocalDataComponent {
-  @Input() currentDataset: currentDataset;
+  @Input() dataset: Dataset;
   @Input() data: LocalDataset;
 
   constructor(public fetchDatasetService: FetchDatasetService, private http: HttpClient, private loadDatasetService: LoadDatasetService) {
@@ -24,7 +24,7 @@ export class LocalDataComponent {
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
-      this.loadDatasetService.uploadFile(file, this.currentDataset)
+      this.loadDatasetService.uploadFile(file, this.dataset)
     }
   }
 }

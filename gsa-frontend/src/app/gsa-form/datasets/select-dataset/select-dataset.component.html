@@ -1,27 +1,28 @@
 <div [formGroup]="selectDatasetStep" class="flex-container vertical">
-  <div class="flex-container gap-one horizontal">
-    <div class="flex-one">
+  <div
+    class="flex-container gap-one horizontal ">
+    <!--    [ngClass]="{'first-divider-vertical': firstDividerVertical,
+      'first-divider-horizontal': !firstDividerVertical,
+      'second-divider-vertical': secondDividerVertical,
+      'second-divider-horizontal': !secondDividerVertical}-->
+    <div class="flex-one first-divider">
       <h2>Local Dataset</h2>
       <div *ngFor="let data of localData$ | async">
-        <gsa-local-data [currentDataset]="dataset" [data]="data"></gsa-local-data>
+        <gsa-local-data [data]="data" [dataset]="dataset"></gsa-local-data>
       </div>
     </div>
 
-    <mat-divider [vertical]="firstDividerVertical$ | async"></mat-divider>
-
-    <div class="flex-one">
+    <div class="flex-one second-divider">
       <h2>Example Dataset</h2>
       <div *ngFor="let data of exampleData$ | async">
-        <gsa-example-data [currentDataset]="dataset" [data]="data"></gsa-example-data>
+        <gsa-example-data [data]="data" [dataset]="dataset"></gsa-example-data>
       </div>
     </div>
-
-    <mat-divider [vertical]="secondDividerVertical$ | async"></mat-divider>
 
     <div class="flex-one">
       <h2>Exterior Dataset</h2>
       <div *ngFor="let data of importData$ | async">
-        <gsa-import-data [currentDataset]="dataset" [data]="data"></gsa-import-data>
+        <gsa-import-data [data]="data" [dataset]="dataset"></gsa-import-data>
       </div>
     </div>
   </div>

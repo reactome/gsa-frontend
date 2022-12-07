@@ -4,7 +4,7 @@ import {AnalysisMethodsService} from "./analysis-methods.service";
 import {LoadingStatus} from "../model/load-dataset.model";
 import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
-import {currentDataset} from "../model/analysisObject.model";
+import {Dataset} from "../model/dataset.model";
 import {AnalysisResult} from "../model/analysis-result.model";
 import {Request} from "../model/analysis.model";
 
@@ -16,7 +16,7 @@ export class AnalysisService {
   analysisStatusUrl = `${environment.ApiRoot}/status/`;
   analysisResultUrl = `${environment.ApiRoot}/result/`;
   reportStatusUrl = `${environment.ApiRoot}/report_status/`;
-  analysisDatum: currentDataset[] = [];
+  datasets: Dataset[] = [];
   createReports: boolean = false;
   analysisID?: string;
   analysisLoadingStatus?: LoadingStatus;
@@ -27,13 +27,14 @@ export class AnalysisService {
   constructor(private analysisMethodService: AnalysisMethodsService, private loadDataService: LoadDatasetService, private http: HttpClient) {
   }
 
-  anyDatasetComplete(): boolean {
-    return this.analysisDatum.some(value => value.saved);
+  allDatasetsSaved(): boolean {
+    return this.datasets.filter(value => value.saved).length === this.datasets.length;
+
   }
 
   loadAnalysis(): void {
     this.submitQuery();
-    this.timer = setInterval(() => this.checkStatus(), 1000);
+    this.timer = setInterval(() => this.getAnalysisLoadingStatus(), 1000);
   }
 
   submitQuery(): void {
@@ -43,11 +44,14 @@ export class AnalysisService {
         name: param.name,
         value: param.value
       })) || [],
-      datasets: this.analysisDatum.map(dataset => ({
+      datasets: this.datasets.map(dataset => ({
         data: dataset.summary!.id,
         name: dataset.summary!.title,
         type: dataset.summary!.type,
-        parameters: [],
+        parameters: dataset.summary!.parameters?.filter(para => para.scope !== "common").map(param => ({
+          name: param.name,
+          value: param.value
+        })),
         design: {
           analysisGroup: dataset.table!.column(dataset.statisticalDesign!.analysisGroup as string),
           samples: dataset.table!.rows,
@@ -68,16 +72,16 @@ export class AnalysisService {
       .subscribe((result: AnalysisResult) => {
         this.resultURL = result.reactome_links[0].url;
         if (this.createReports) {
-          this.getReportLoadingStatus()
+          this.timer = setInterval(() => this.getReportLoadingStatus(), 1000);
         }
       })
   }
 
   addDataset() {
-    this.analysisDatum.push({saved: false});
+    this.datasets.push({saved: false});
   }
 
-  private checkStatus(): void {
+  private getAnalysisLoadingStatus(): void {
     this.http.get<LoadingStatus>(this.analysisStatusUrl + this.analysisID)
       .subscribe((status) => {
         this.analysisLoadingStatus = status;

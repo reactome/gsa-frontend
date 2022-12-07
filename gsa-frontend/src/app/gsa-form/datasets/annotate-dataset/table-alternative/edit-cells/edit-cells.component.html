@@ -1,6 +1,8 @@
-<div class="flex-container vertical" [formGroup]="cellStep">
-  <gsa-dropdown class="flex-one" [options]="tableSettings.columns" [selection]="tableSettings.columns[0]"
-                (value)="chosenCol =$event; computeTableSettings()"></gsa-dropdown>
+<div [formGroup]="cellStep" class="flex-container vertical">
+  <gsa-dropdown (valueChange)="chosenCol =$event; computeTableSettings()" [options]="tableSettings.columns"
+                [placeholder]="'Select column'"
+                [value]="tableSettings.columns[0]"
+                class="flex-one"></gsa-dropdown>
   {{columnTableSettings.columns}}
   <gsa-table [userSettings]="columnTableSettings"></gsa-table>
 </div>

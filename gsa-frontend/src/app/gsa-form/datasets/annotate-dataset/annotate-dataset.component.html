@@ -1,24 +1,27 @@
 <div [formGroup]="annotateDataStep">
   <div class="flex-container horizontal justify-center">
-    <div class="width-eighty flex-container vertical">
-      <div class="horizontal justify-center">
+    <div class="width-eighty flex-container vertical gap-one align-center">
+      <div class="flex-container horizontal align-center justify-center gap-one">
         <span>Dataset name:</span>
-        <mat-form-field [ngStyle]="{'width.ch': datasetName.value.length, 'min-width.ch': 10}" class="margin-left-10">
-          <input #datasetName [(ngModel)]="currentDataset.summary!.title" [ngModelOptions]="{standalone: true}"
+        <mat-form-field [ngStyle]="{'width.ch': datasetName.value.length, 'min-width.ch': 10}">
+          <input #datasetName [(ngModel)]="dataset.summary!.title" [ngModelOptions]="{standalone: true}"
                  matInput
                  type="text">
         </mat-form-field>
       </div>
       <p class="grey">Please add the annotations for the given dataset. The minimum requirement is to specify one
         annotation (comparison group). For example, "Group" with values "Treatment" and "Control").</p>
+      <ng-container *ngIf="!screenIsSmall; else big">
+        <div class="align-center flex-container justify-center gap-one vertical width-hundred">
+          <gsa-table [userSettings]="tableSettings" class="width-hundred"></gsa-table>
+          <gsa-add-dataset-button [icon]="false" [tableSettings]="tableSettings"></gsa-add-dataset-button>
+        </div>
+      </ng-container>
+      <ng-template #big>
+        <gsa-stepper-annotate [tableSettings]="tableSettings"></gsa-stepper-annotate>
+      </ng-template>
     </div>
   </div>
-  <ng-container *ngIf="!screenIsSmall; else big">
-    <gsa-table [userSettings]="tableSettings"></gsa-table>
-  </ng-container>
-  <ng-template #big>
-    <gsa-stepper-annotate [tableSettings]="tableSettings"></gsa-stepper-annotate>
-  </ng-template>
 </div>
 
 

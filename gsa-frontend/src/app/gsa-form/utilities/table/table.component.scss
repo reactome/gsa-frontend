@@ -1,12 +1,16 @@
 
 .table-container {
   overflow: auto;
+  //max-height: 50vh;
+  border: 1px solid lightgray;
+
   //justify-content: safe center;
 }
 
 table {
   margin: auto;
   border-collapse: collapse;
+
 }
 
 th, td,
@@ -22,11 +26,28 @@ th, td,
   padding: 0px;
 }
 
+.add-column-button-container {
+  max-width: 5%;
+}
+
+.sticky {
+  height: 10px;
+  position: sticky;
+  bottom: calc(50% - 10px);
+  top: calc(50% - 10px);
+}
+
 .add-column-button {
   width: 100%;
   height: 100%;
   margin: 0px;
   border-radius: 0px;
+}
+
+.add-column-button:focus-visible {
+  border: 2px solid #0e7cb3 !important;
+
+
 }
 
 
@@ -36,6 +57,8 @@ th, td,
 
 td {
   padding-left: 10px;
+  padding-right: 10px;
+  z-index: 1;
 }
 
 .no-border {
@@ -43,7 +66,7 @@ td {
 }
 
 .in-front {
-  z-index: 3000;
+  z-index: 6;
 }
 
 th {
@@ -54,13 +77,21 @@ th {
 }
 
 .rows {
-  z-index: 3000;
+  z-index: 3;
   margin-right: 20px;
 }
 
+.border-right {
+  box-shadow: inset -1px 0 #282626;
+
+
+}
+
 .columns {
+  z-index: 3;
   text-align: left;
   padding-left: 10px;
+  padding-right: 10px;
 }
 
 .delete-col-button {
@@ -75,15 +106,30 @@ th {
 
 input {
   background: white;
-  z-index: 2000;
-  box-shadow: 0px 0px 0px 2px rgb(14, 101, 235) inset;
-  border: 2px solid rgb(14, 101, 235);
   padding-left: 10px;
+  padding-right: 10px;
+  scroll-margin-left: 200px;
+  scroll-margin-right: 200px;
+}
+
+.visible {
+  box-shadow: 0px 0px 0px 2px rgb(14, 101, 235) inset;
+}
+
+.invisible {
+  z-index: 0;
+}
+
+.z-index-2 {
+  z-index: 2;
+}
+
+.z-index-4 {
+  z-index: 4;
 }
 
 :focus-visible {
   outline: -webkit-focus-ring-color auto 0px !important;
-
   font: 400 14px / 20px Roboto, "Helvetica Neue", sans-serif !important;
 }
 
@@ -92,6 +138,7 @@ input {
   position: absolute;
   margin: 0;
   border: 0;
+
 }
 
 .chosen-th {

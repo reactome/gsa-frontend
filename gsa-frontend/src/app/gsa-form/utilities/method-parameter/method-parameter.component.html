@@ -1,11 +1,13 @@
-<div [ngClass]="{'no-information': screenIsSmall, 'information': !screenIsSmall}" class="grid-container">
+<div [ngClass]="{'no-information': screenIsSmall, 'information': !screenIsSmall}"
+     class="grid-container">
+  <!--  'background-grey': index % 2 === 1-->
+  <i *ngIf="!screenIsSmall" class="material-icons grey" matTooltip="{{parameter.description}}">info_outline</i>
   <div *ngIf="screenIsSmall"
        matTooltip="{{parameter.description}}">{{parameter.display_name}}</div>
   <div *ngIf="!screenIsSmall">{{parameter.display_name}}</div>
-  <i *ngIf="!screenIsSmall" class="material-icons nav-btn-margin grey" matTooltip="{{parameter.description}}">info_outline</i>
-  <div class="justify-end">
+  <div class="align-center justify-end">
     <div *ngIf="parameter.values !== undefined; else inputField">
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-select [(ngModel)]="parameter.value">
           <mat-option *ngFor="let value of parameter.values" [value]="value">
             {{value}}
@@ -19,18 +21,18 @@
         <mat-slide-toggle [(ngModel)]="parameter.value" color="primary"></mat-slide-toggle>
       </ng-template>
       <ng-template [ngSwitchCase]="types.string">
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           {{parameter.value}}
           <input [(ngModel)]="parameter.value" matInput type="text">
         </mat-form-field>
       </ng-template>
       <ng-template [ngSwitchCase]="types.float">
-        <mat-form-field>
+        <mat-form-field appearance="outline">
             <input [(ngModel)]="parameter.value" matInput step="0.1" type="number">
         </mat-form-field>
       </ng-template>
       <ng-template [ngSwitchCase]="types.int">
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <input [(ngModel)]="parameter.value" matInput type="number">
         </mat-form-field>
       </ng-template>

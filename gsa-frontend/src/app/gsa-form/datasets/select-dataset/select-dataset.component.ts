@@ -1,10 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ExampleDataset, ImportDataset, LocalDataset} from "../../model/fetch-dataset.model";
 import {FetchDatasetService} from "../../services/fetch-dataset.service";
-import {map, Observable} from "rxjs";
+import {Observable} from "rxjs";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {LoadDatasetService} from "../../services/load-dataset.service";
-import {currentDataset} from "../../model/analysisObject.model";
+import {Dataset} from "../../model/dataset.model";
 import {BreakpointObserver} from "@angular/cdk/layout";
 
 @Component({
@@ -13,13 +13,16 @@ import {BreakpointObserver} from "@angular/cdk/layout";
   styleUrls: ['./select-dataset.component.scss']
 })
 export class SelectDatasetComponent implements OnInit {
-  @Input() dataset: currentDataset;
+  @Input() dataset: Dataset;
   exampleData$: Observable<ExampleDataset[]>;
   importData$: Observable<ImportDataset[]>;
   localData$: Observable<LocalDataset[]>;
   selectDatasetStep: FormGroup;
   firstDividerVertical$: Observable<boolean>;
   secondDividerVertical$: Observable<boolean>;
+  firstDividerVertical: boolean = true;
+  secondDividerVertical: boolean = true;
+
 
   constructor(
     private formBuilder: FormBuilder, public fetchDatasetService: FetchDatasetService, public loadDataService: LoadDatasetService, private responsive: BreakpointObserver) {
@@ -32,8 +35,23 @@ export class SelectDatasetComponent implements OnInit {
     this.exampleData$ = this.fetchDatasetService.fetchExampleData();
     this.importData$ = this.fetchDatasetService.fetchImportData();
     this.localData$ = this.fetchDatasetService.fetchLocalData();
-    this.firstDividerVertical$ = this.responsive.observe('(max-width: 599px)').pipe(map(value => !value.matches));
-    this.secondDividerVertical$ = this.responsive.observe('(max-width: 1205px)').pipe(map(value => !value.matches));
+    // this.firstDividerVertical$ = this.responsive.observe('(max-width: 599px)').pipe(map(value => !value.matches));
+    // this.secondDividerVertical$ = this.responsive.observe('(max-width: 1205px)').pipe(map(value => !value.matches));
+    this.responsive.observe(['(max-width: 900px)',
+      '(max-width: 1200px)'])
+      .subscribe(result => {
+        const breakpoints = result.breakpoints;
+        if (breakpoints['(max-width: 900px)']) {
+          this.firstDividerVertical = false;
+          this.secondDividerVertical = false
+        } else if (breakpoints['(max-width: 1200px)']) {
+          this.secondDividerVertical = false;
+          this.firstDividerVertical = true
+        } else {
+          this.firstDividerVertical = true;
+          this.secondDividerVertical = true
+        }
+      });
   }
 }
 

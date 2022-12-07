@@ -1,3 +1,7 @@
 .nav-button-margin {
   margin: 20px;
 }
+
+::ng-deep .mat-vertical-content {
+  padding-right: 58px !important;
+}

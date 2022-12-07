@@ -1,5 +1,13 @@
-.add-button {
-  margin: 10px;
+mat-form-field {
+  max-width: 80% !important;
+}
+
+h2 {
+  margin: 0px;
+}
+
+.margin-bottom-20 {
+  margin-bottom: 20px;
 }
 
 /*# sourceMappingURL=edit-columns.component.css.map */

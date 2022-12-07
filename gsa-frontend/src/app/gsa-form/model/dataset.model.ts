@@ -23,7 +23,7 @@ export interface StatisticalDesign {
   covariances: string[];
 }
 
-export interface currentDataset {
+export interface Dataset {
   saved: boolean;
   summary?: DataSummary;
   table?: DatasetTable;

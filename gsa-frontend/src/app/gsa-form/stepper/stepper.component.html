@@ -20,7 +20,7 @@
 
 
   </mat-step>
-  <mat-step #addData [completed]="analysisService.anyDatasetComplete()">
+  <mat-step #addData [completed]="analysisService.allDatasetsSaved()">
     <ng-template matStepLabel>Add datasets</ng-template>
     <h1>Step 2: Add and annotate your datasets</h1>
     <div class="flex-container horizontal gap-one justify-evenly">
@@ -32,13 +32,14 @@
       <div class="center-vertical width-seventy flex-container align-center justify-center">
         <div class="flex-container width-hundred vertical gap-one align-center">
           <mat-accordion class="width-hundred" multi="false">
-            <div *ngFor="let data of analysisService.analysisDatum; let i = index ">
+            <div *ngFor="let data of analysisService.datasets; let i = index ">
               <div class="expansion-panel-margin">
-                <gsa-nested-stepper *ngIf="stepper.selected == addData" [currentDataset]="data"></gsa-nested-stepper>
+                <gsa-nested-stepper *ngIf="stepper.selected == addData" [dataset]="data"></gsa-nested-stepper>
               </div>
             </div>
           </mat-accordion>
-          <button (click)="addDataset()" color="primary" mat-stroked-button>
+          <button (click)="addDataset()" class="blue-border" color="primary"
+                  mat-stroked-button>
             Add Dataset
           </button>
         </div>

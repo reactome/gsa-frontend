@@ -53,6 +53,14 @@ h1 {
   width: 100%;
 }
 
+.height-eighty {
+  height: 80%;
+}
+
+.height-hundred {
+  height: 100%;
+}
+
 .relative {
   position: relative;
 }
@@ -61,15 +69,17 @@ h1 {
   margin-left: 10px;
 }
 
-mat-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.blue-border {
+  border: 2px solid #0e7cb3 !important;
 }
 
 /*Fonts*/
 .bold {
   font-weight: bold;
+}
+
+.no-wrap {
+  white-space: nowrap;
 }
 
 .italic {
@@ -122,6 +132,12 @@ mat-icon {
   flex-direction: column;
 }
 
+mat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .mat-vertical-content {
   padding-right: 0 !important;
 }
@@ -141,6 +157,14 @@ mat-icon {
 .dataset-card-content:hover {
   background: rgba(14, 124, 179, 0.2);
   cursor: pointer;
+}
+
+.warning-snackbar {
+  background-color: white;
+  color: red;
+}
+.warning-snackbar .mat-simple-snackbar-action {
+  color: black !important;
 }
 
 /*# sourceMappingURL=styles.css.map */

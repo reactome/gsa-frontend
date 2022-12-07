@@ -1,9 +1,21 @@
-<div #root class="table-container flex horizontal relative background-white in-front">
+<div #root class="table-container flex horizontal relative background-white in-front width-hundred">
+  <input #flyingRename (blur)="blurInput()" (change)="renameCell()"
+         (copy)="copyValues()"
+         (focus)="renameVisible = true" (keydown)="navigateTableInput($event)"
+         (keydown.delete)="deleteSelectedArea()" (mouseover)="mousemove($event)"
+         (mouseup)="mouseup()" (paste)="pasteValues($event)"
+         [(ngModel)]="renameValue"
+         [ngClass]="{'visible': renameVisible, 'invisible':  !renameVisible, 'z-index-2': isCell() && renameVisible, 'z-index-4':!isCell() && renameVisible}"
+         [ngModelOptions]="{standalone: true}" [style.height.px]="firstSelected.coordinate.height - 3"
+         [style.left.px]="firstSelected.coordinate.x - 1" [style.top.px]="firstSelected.coordinate.y -1"
+         [style.width.px]="firstSelected.coordinate.width - 19" class="flying-rename">
+
+  <!--  [ngClass]="isCell() ? 'z-index-5': 'z-index-3'"-->
+
   <table (keydown)="navigateTableDefault()" (mousedown)="mousedown($event)" (mouseover)="mousemove($event)"
-         (mouseup)="mouseup()" class="relative align-center background-white">
-    <thead *ngIf="settings.showCols">
-    <tr>
-      <th class="in-front"></th>
+         (mouseup)="mouseup()" class="relative align-center background-white width-hundred">
+    <tr *ngIf="settings.showCols">
+      <th class="in-front border-right"></th>
       <th *ngFor="let col of settings.columns; let x = index" [attr.x]="x" [attr.y]="-1" class="columns">
         <div [attr.x]="x" [attr.y]="-1" class="flex horizontal align-center justify-between">
           {{col}}
@@ -13,34 +25,20 @@
           </button>
         </div>
       </th>
-      <th *ngIf="settings.addColumnButton" class="background-white no-border"></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let row of settings.rows; let y = index">
-      <th *ngIf="settings.showRows" [attr.x]="-1" [attr.y]="y" class="rows">{{row}}</th>
-      <td *ngFor="let rowVal of settings.data[y]; let x = index" [attr.x]="x" [attr.y]="y">
-        {{rowVal.value}}
-      </td>
-      <td *ngIf="y===0 && settings.addColumnButton" class="no-padding" height="100px" rowspan="0">
-        <button #addCol (click)="addColumn()" class="add-column-button" color="primary"
+      <td *ngIf="settings.addColumnButton" class="no-padding add-column-button-container" height="100px"
+          rowspan="0">
+        <button #addCol (click)="addColumn()" class="add-column-button flex-container align-start" color="primary"
                 mat-stroked-button>
-          Add column
+          <span class="sticky">Add column</span>
         </button>
       </td>
     </tr>
-    </tbody>
+
+    <tr *ngFor="let row of settings.rows; let y = index">
+      <th *ngIf="settings.showRows" [attr.x]="-1" [attr.y]="y" class="border-right rows">{{row}}</th>
+      <td *ngFor="let rowVal of settings.data[y]; let x = index" [attr.x]="x" [attr.y]="y">
+        {{rowVal.value}}
+      </td>
+    </tr>
   </table>
-  <input #flyingRename (blur)="renameCell()" (change)="renameCell()" (copy)="copyValues()"
-         (keydown.arrowDown)="navigateTableInput($event)" (keydown.arrowLeft)="navigateTableInput($event)"
-         (keydown.arrowRight)="navigateTableInput($event)"
-         (keydown.arrowUp)="navigateTableInput($event)" (keydown.delete)="deleteSelectedArea()"
-         (keydown.enter)="navigateTableInput($event)" (keydown.shift.tab)="navigateTableInput($event)"
-         (keydown.tab)="navigateTableInput($event)"
-         (mouseover)="mousemove($event)" (mouseup)="mouseup()"
-         (paste)="pasteValues($event)"
-         *ngIf="renameVisible" [(ngModel)]="renameValue"
-         [ngModelOptions]="{standalone: true}" [style.height.px]="firstSelected.coordinate.height - 1"
-         [style.left.px]="firstSelected.coordinate.x" [style.top.px]="firstSelected.coordinate.y"
-         [style.width.px]="firstSelected.coordinate.width - 12" class="flying-rename cursor-visible">
 </div>

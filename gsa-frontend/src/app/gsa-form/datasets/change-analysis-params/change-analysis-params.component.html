@@ -1,0 +1,8 @@
+<div class="flex-container vertical align-center">
+  <div>
+    <div *ngFor="let param of data.dataset.summary!.parameters">
+      <gsa-method-parameter [parameter]="param"></gsa-method-parameter>
+    </div>
+  </div>
+  <button color="primary" mat-dialog-close mat-raised-button>Finish</button>
+</div>

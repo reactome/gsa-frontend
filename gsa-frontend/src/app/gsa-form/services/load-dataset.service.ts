@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
-import {DataSummary, LoadingStatus} from "../model/load-dataset.model";
+import {DataSummary, LoadingStatus, LoadParameter} from "../model/load-dataset.model";
 import {UploadData} from "../model/upload-dataset-model";
 
-import {currentDataset, DatasetTable} from "../model/analysisObject.model";
+import {Dataset, DatasetTable} from "../model/dataset.model";
 import {MatStepper} from "@angular/material/stepper";
 import {CellInfo} from "../model/table.model";
 import {LoadingProgressComponent} from "../datasets/select-dataset/loading-progress/loading-progress.component";
@@ -26,21 +26,21 @@ export class LoadDatasetService {
   constructor(private http: HttpClient, public dialog: MatDialog) {
   }
 
-  loadDataset(resourceId: string, postParameters: any, currentDataset: currentDataset): void {
-    // this.loadingStatus = undefined;
+  loadDataset(resourceId: string, postParameters: LoadParameter[], dataset: Dataset): void {
     // @ts-ignore
     this.loadingStatus = {
       status: "running"
     }
     this.submitQuery(resourceId, postParameters);
     this.showLoadingDialog()
-    this.timer = setInterval(() => this.waitForResult(currentDataset), 1000);
+    this.timer = setInterval(() => this.waitForResult(dataset), 1000);
   }
 
   showLoadingDialog() {
     const dialogRef = this.dialog.open(LoadingProgressComponent, {
       width: '50%',
-      height: '50%'
+      height: '50%',
+      disableClose: true
     });
     this.timer = setInterval(() => {
       if (this.loadingStatus?.status === "complete") {
@@ -54,38 +54,48 @@ export class LoadDatasetService {
       response => this.loadingID = response);
   }
 
-  processDataSummary(currentDataset: currentDataset): void {
+  processDataSummary(dataset: Dataset): void {
     this.http.get<DataSummary>(this.summaryDataUrl + this.loadingStatus?.dataset_id)
       .subscribe((summary) => {
-        currentDataset.summary = summary;
-        this.computeTableValues(currentDataset);
+        dataset.summary = summary;
+        this.computeTableValues(dataset);
       })
   }
 
-  computeTableValues(currentDataset: currentDataset) {
-    let rows: string[] = currentDataset.summary!.sample_ids.map(id => id);
-    let dataset: CellInfo[][] = currentDataset.summary!.sample_metadata[0].values.map(() => []);
-    let columns: string[] = currentDataset.summary!.sample_metadata.map(data => {
+  computeTableValues(newData: Dataset) {
+    let rows: string[] = newData.summary!.sample_ids!.map(id => id);
+    let dataset: CellInfo[][] = newData.summary!.sample_metadata![0].values.map(() => []);
+    let columns: string[] = newData.summary!.sample_metadata!.map(data => {
       data.values.forEach((value, i) =>
         dataset[i % rows.length].push(new CellInfo(value)));
       return data.name;
     })
-    currentDataset.table = new DatasetTable(columns, rows, dataset);
-    console.log(this.stepper.selected?.completed)
+    newData.table = new DatasetTable(columns, rows, dataset);
     setTimeout(() => {
       this.stepper.next();
     }, 0);
   }
 
-  uploadFile(file: File, currentDataset: currentDataset): void {
+  uploadFile(file: File, newData: Dataset): void {
     const formData = new FormData();
     formData.append('file', file, file.name);
     let uploadDataObservable = this.http.post<UploadData>(this.uploadDataUrl, formData);
     uploadDataObservable.subscribe(response => {
+
+        let dataSummary: DataSummary = {
+          id: this.loadingID!,
+          title: file.name,
+          type: "test",
+          default_parameters: []
+        }
+        newData.summary = dataSummary
+
+
         let rows: string[] = response.sample_names;
         let columns: string[] = ["Annotation1"];
         let dataset: CellInfo[][] = rows.map(() => [new CellInfo()]);
-        currentDataset.table = new DatasetTable(columns, rows, dataset);
+        newData.table = new DatasetTable(columns, rows, dataset);
+
         setTimeout(() => {
           this.stepper.next();
         }, 0);
@@ -94,7 +104,7 @@ export class LoadDatasetService {
     )
   }
 
-  private waitForResult(currentDataset: currentDataset): void {
+  private waitForResult(dataset: Dataset): void {
     this.http.get<LoadingStatus>(this.loadingStatusUrl + this.loadingID)
       .subscribe((status) => {
         this.loadingStatus = status;
@@ -104,7 +114,7 @@ export class LoadDatasetService {
             break;
           case "complete":
             clearInterval(this.timer);
-            this.processDataSummary(currentDataset);
+            this.processDataSummary(dataset);
             break;
         }
       })

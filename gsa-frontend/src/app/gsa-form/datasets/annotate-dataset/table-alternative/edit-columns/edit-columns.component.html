@@ -1,7 +1,11 @@
-<div [formGroup]="columnStep" class="flex-container vertical">
-  <div class="flex-container horizontal align-center justify-center">
+<div [formGroup]="columnStep" class="flex-container vertical align-start">
+  <div class="flex-container horizontal justify-between align-center width-hundred margin-bottom-20">
+    <h2>Edit column</h2>
+    <gsa-add-dataset-button [icon]="true" [tableSettings]="tableSettings"></gsa-add-dataset-button>
+  </div>
+  <div class="flex-container horizontal align-center">
     <div>
-      <div *ngFor="let col of tableSettings.columns; let i = index" class="flex-container horizontal">
+      <div *ngFor="let col of tableSettings.columns; let i = index" class="flex-container horizontal justify-between">
         <mat-form-field>
           <input [(ngModel)]="tableSettings.columns[i]" [ngModelOptions]="{standalone: true}" matInput type="text">
         </mat-form-field>
@@ -10,8 +14,10 @@
         </button>
       </div>
     </div>
-    <button (click)="addColumn()" class="add-button" color="primary" mat-stroked-button>
-      Add column
-    </button>
   </div>
+  <button (click)="addColumn()" color="primary" mat-stroked-button>
+    Add column
+  </button>
+
+
 </div>

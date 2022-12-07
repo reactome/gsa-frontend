@@ -1,4 +1,8 @@
-<mat-expansion-panel [class.unchosen]="analysisMethodService.selectedMethod?.name !== method.name" [class.chosen]="analysisMethodService.selectedMethod?.name === method.name" expanded="false" (click)="selectMethod()" hideToggle>
+<mat-expansion-panel
+  (click)="selectMethod()"
+  [ngClass]="analysisMethodService.selectedMethod?.name === method.name ? 'chosen': 'unchosen'" class="panel-header"
+  expanded="false"
+  hideToggle>
   <mat-expansion-panel-header>
     <mat-panel-title class="bold">
       {{method.name | titlecase}}
@@ -8,9 +12,9 @@
     </mat-panel-description>
   </mat-expansion-panel-header>
   <div class="grey-border">
-  <div *ngFor="let param of getDisplayParameters()" >
-    <gsa-method-parameter [parameter]="param"></gsa-method-parameter>
-  </div>
+    <div *ngFor="let param of getDisplayParameters(); let i = index">
+      <gsa-method-parameter [index]="i" [parameter]="param"></gsa-method-parameter>
+    </div>
   </div>
 </mat-expansion-panel>
 

@@ -1,4 +1,4 @@
-<div class="flex-container justify-center align-center">
+<div class="flex-container justify-center align-center height-hundred">
   <div [ngSwitch]="loadDataService.loadingStatus?.status">
     <div *ngSwitchCase="'running'" class="flex-container horizontal align-center">
       <div class="flex-container vertical align-center">
@@ -12,6 +12,7 @@
       <div class="flex-container vertical align-center">
         <div class="material-icons mat-error big-size">error</div>
         <h2 class="text-margin">{{loadDataService.loadingStatus!.description}}</h2>
+        <button color="primary" mat-dialog-close mat-raised-button>Cancel</button>
       </div>
     </div>
     <div *ngSwitchCase="'complete'" class="flex-container horizontal align-center">

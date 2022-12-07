@@ -65,6 +65,14 @@ h1 {
   width: 100%;
 }
 
+.height-eighty {
+  height: 80%;
+}
+
+.height-hundred {
+  height: 100%;
+}
+
 .relative {
   position: relative;
 }
@@ -73,12 +81,9 @@ h1 {
   margin-left: 10px;
 }
 
-mat-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.blue-border {
+  border: 2px solid $primary-blue !important;
 }
-
 
 /*Fonts*/
 
@@ -86,13 +91,18 @@ mat-icon {
   font-weight: bold;
 }
 
+.no-wrap {
+  white-space: nowrap;
+}
+
 .italic {
   font-style: italic;
 }
 
-.flex{
+.flex {
   display: flex;
 }
+
 /*Flexbox*/
 .flex-container {
   display: flex;
@@ -137,6 +147,12 @@ mat-icon {
 
 
 //Angular Material
+mat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .mat-vertical-content {
   padding-right: 0 !important;
 }
@@ -144,7 +160,6 @@ mat-icon {
 .expansion-panel-margin {
   margin-top: 16px !important;
 }
-
 
 .dataset-card-content {
   color: $primary-blue;
@@ -159,5 +174,12 @@ mat-icon {
   cursor: pointer;
 }
 
+.warning-snackbar {
+  background-color: white;
+  color: red;
+  .mat-simple-snackbar-action {
+    color: black !important;
+  }
+}
 
 

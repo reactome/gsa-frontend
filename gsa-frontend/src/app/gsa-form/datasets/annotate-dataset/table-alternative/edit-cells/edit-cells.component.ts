@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {CellInfo, Settings} from "../../../../model/table.model";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import column from "ag-grid-enterprise/dist/lib/excelExport/files/xml/column";
 
 @Component({
   selector: 'gsa-edit-cells',
@@ -21,6 +20,7 @@ export class EditCellsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.tableSettings = Object.assign({}, this.tableSettings);
     this.tableSettings.addColumnButton = false;
     this.tableSettings.showCols = false;
     this.columnTableSettings = Object.assign({}, this.tableSettings);
@@ -29,9 +29,12 @@ export class EditCellsComponent implements OnInit {
   }
 
   computeTableSettings(): void {
+    this.columnTableSettings = Object.assign({}, this.columnTableSettings);
+
     let colIndex = this.tableSettings.columns.indexOf(this.chosenCol);
     let columnValues: CellInfo[][] = this.tableSettings.data.map(row => [row[colIndex]]);
     this.columnTableSettings.columns = [this.chosenCol];
     this.columnTableSettings.data = columnValues;
+
   }
 }

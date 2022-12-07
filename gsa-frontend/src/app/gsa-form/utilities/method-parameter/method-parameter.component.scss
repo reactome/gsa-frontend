@@ -1,13 +1,15 @@
 
 .grid-container {
+  //border-top: 1px solid lightgray;
   display: grid;
   justify-content: space-between;
   align-items: center;
   grid-template-rows: 70px;
+  gap: 1em;
 }
 
 .information {
-  grid-template-columns: 3fr 2fr 8fr;
+  grid-template-columns: 1fr 6fr 16fr;
 }
 
 .no-information {
@@ -16,6 +18,10 @@
 
 .justify-end {
   justify-self: end;
+}
+
+::ng-deep .mat-form-field-wrapper {
+  padding: 0px;
 }
 
 mat-form-field {

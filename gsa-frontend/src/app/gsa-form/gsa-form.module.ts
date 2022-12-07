@@ -32,25 +32,27 @@ import {BrowserModule} from '@angular/platform-browser';
 import {LoadingProgressComponent} from './datasets/select-dataset/loading-progress/loading-progress.component';
 import {TableComponent} from './utilities/table/table.component';
 import {StatisticalDesignComponent} from './datasets/statistical-design/statistical-design.component';
-import {DropdownComponent} from './datasets/statistical-design/dropdown/dropdown.component';
+import {DropdownComponent} from './utilities/dropdown/dropdown.component';
 import {MatMenuModule} from "@angular/material/menu";
 import {NestedStepperComponent} from './stepper/nested-stepper/nested-stepper.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {OptionsComponent} from "./options/options.component";
 import {AnalysisComponent} from './analysis/analysis.component';
-
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {EditColumnsComponent} from './datasets/annotate-dataset/table-alternative/edit-columns/edit-columns.component';
 import {EditCellsComponent} from './datasets/annotate-dataset/table-alternative/edit-cells/edit-cells.component';
 import {
   StepperAnnotateComponent
 } from './datasets/annotate-dataset/table-alternative/stepper-annotate/stepper-annotate.component';
 import {MatDialogModule} from "@angular/material/dialog";
+import {AddDatasetButtonComponent} from './datasets/annotate-dataset/add-dataset-button/add-dataset-button.component';
+import {ChangeAnalysisParamsComponent} from './datasets/change-analysis-params/change-analysis-params.component';
 
 
 @NgModule({
   declarations: [
-    AnalysisMethodsComponent, MethodComponent, MethodParameterComponent, SelectDatasetComponent, ExampleDataComponent, AnnotateDatasetComponent, StepperComponent, LocalDataComponent, ImportDataComponent, ImportParameterComponent, LoadingProgressComponent, TableComponent, StatisticalDesignComponent, DropdownComponent, NestedStepperComponent, OptionsComponent, AnalysisComponent, EditColumnsComponent, EditCellsComponent, StepperAnnotateComponent
+    AnalysisMethodsComponent, MethodComponent, MethodParameterComponent, SelectDatasetComponent, ExampleDataComponent, AnnotateDatasetComponent, StepperComponent, LocalDataComponent, ImportDataComponent, ImportParameterComponent, LoadingProgressComponent, TableComponent, StatisticalDesignComponent, DropdownComponent, NestedStepperComponent, OptionsComponent, AnalysisComponent, EditColumnsComponent, EditCellsComponent, StepperAnnotateComponent, AddDatasetButtonComponent, ChangeAnalysisParamsComponent
   ],
   exports: [
     StepperComponent
@@ -79,7 +81,8 @@ import {MatDialogModule} from "@angular/material/dialog";
     MatMenuModule,
     MatCheckboxModule,
     MatExpansionModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSnackBarModule
   ],
   // bootstrap: [SelectDatasetComponent]
 })

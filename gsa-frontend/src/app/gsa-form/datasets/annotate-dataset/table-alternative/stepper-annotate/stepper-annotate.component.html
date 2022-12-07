@@ -1,24 +1,23 @@
 <mat-horizontal-stepper #stepper class="background-white">
-  <mat-step #editCols [stepControl]="columnStep">
+  <mat-step #editCols [stepControl]="columnStep" label="Columns">
 
-    <div class="flex-container vertical justify-center align-center">
-      <h2>Enter column names:</h2>
-      <div class="flex-container flex-center horizontal gap-one">
-        <div class="center-vertical">
-          <gsa-edit-columns *ngIf="stepper.selected == null || stepper.selected == editCols"
-                            [tableSettings]="tableSettings"
-                            class="full-width"></gsa-edit-columns>
-        </div>
+    <div class="flex-container flex-center horizontal gap-one">
+      <div class="center-vertical">
+        <gsa-edit-columns *ngIf="stepper.selected == null || stepper.selected == editCols"
+                          [tableSettings]="tableSettings"
+                          class="full-width"></gsa-edit-columns>
       </div>
-      <button class="nav-btn-margin" color="primary" mat-raised-button matStepperNext>
+    </div>
+    <button class="nav-btn-margin" color="primary" mat-raised-button matStepperNext>
+      <div class="flex-container horizontal align-center">
         <mat-icon>keyboard_arrow_right</mat-icon>
         Change cells
-      </button>
-    </div>
+      </div>
+    </button>
 
 
   </mat-step>
-  <mat-step #editCells [stepControl]="cellStep">
+  <mat-step #editCells [stepControl]="cellStep" label="Cells">
     <div class="flex-container vertical justify-center align-center">
       <h2>Change cells:</h2>
       <div class="flex-container flex-center horizontal gap-one">
@@ -33,8 +32,10 @@
         </div>
       </div>
       <button class="nav-btn-margin" color="primary" mat-raised-button matStepperPrevious>
-        <mat-icon>keyboard_arrow_left</mat-icon>
-        Change columns
+        <div class="flex-container horizontal align-center">
+          <mat-icon>keyboard_arrow_left</mat-icon>
+          Change columns
+        </div>
       </button>
     </div>
   </mat-step>

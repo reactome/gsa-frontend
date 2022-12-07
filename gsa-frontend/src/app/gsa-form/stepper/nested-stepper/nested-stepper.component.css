@@ -2,4 +2,8 @@
   margin: 20px;
 }
 
+::ng-deep .mat-vertical-content {
+  padding-right: 58px !important;
+}
+
 /*# sourceMappingURL=nested-stepper.component.css.map */

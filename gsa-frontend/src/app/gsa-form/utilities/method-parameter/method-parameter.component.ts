@@ -9,6 +9,8 @@ import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
 })
 export class MethodParameterComponent implements OnInit {
   @Input() parameter: MethodParameter;
+  @Input() index: number;
+
   types = ParameterType;
   screenIsSmall: boolean = false;
 

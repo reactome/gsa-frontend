@@ -2,8 +2,8 @@ import {Component, Input} from '@angular/core';
 import {ImportDataset} from "../../../../model/fetch-dataset.model";
 import {FetchDatasetService} from "../../../../services/fetch-dataset.service";
 import {LoadDatasetService} from "../../../../services/load-dataset.service";
-import {LoadParameter, LoadParameterClass} from "../../../../model/load-dataset.model";
-import {currentDataset} from "../../../../model/analysisObject.model";
+import {LoadParameterClass} from "../../../../model/load-dataset.model";
+import {Dataset} from "../../../../model/dataset.model";
 
 @Component({
   selector: 'gsa-import-data',
@@ -11,7 +11,7 @@ import {currentDataset} from "../../../../model/analysisObject.model";
   styleUrls: ['./import-data.component.scss']
 })
 export class ImportDataComponent {
-  @Input() currentDataset: currentDataset;
+  @Input() dataset: Dataset;
   @Input() data: ImportDataset;
 
   constructor(public fetchDatasetService: FetchDatasetService, public loadDatasetService: LoadDatasetService) {
@@ -23,10 +23,10 @@ export class ImportDataComponent {
 
 
   loadData(): void {
-    let loadParams: LoadParameter[] = this.data.parameters.map(param =>
-      new LoadParameterClass(param.name, param.value.toString())
-    );
-    this.loadDatasetService.loadDataset(this.data.id, loadParams, this.currentDataset);
+    this.loadDatasetService.loadDataset(
+      this.data.id,
+      this.data.parameters.map(param => new LoadParameterClass(param.name, param.value.toString())),
+      this.dataset);
   }
 }
 

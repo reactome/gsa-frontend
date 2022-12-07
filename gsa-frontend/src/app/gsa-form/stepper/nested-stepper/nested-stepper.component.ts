@@ -5,7 +5,9 @@ import {StatisticalDesignComponent} from "../../datasets/statistical-design/stat
 import {AnalysisService} from "../../services/analysis.service";
 import {LoadDatasetService} from "../../services/load-dataset.service";
 import {MatStepper} from "@angular/material/stepper";
-import {currentDataset} from "../../model/analysisObject.model";
+import {Dataset} from "../../model/dataset.model";
+import {MatDialog} from "@angular/material/dialog";
+import {ChangeAnalysisParamsComponent} from "../../datasets/change-analysis-params/change-analysis-params.component";
 
 @Component({
   selector: 'gsa-nested-stepper',
@@ -18,9 +20,9 @@ export class NestedStepperComponent implements AfterViewInit {
   @ViewChild('selectData') selectDatasetComponent: SelectDatasetComponent;
   @ViewChild('annotateData') annotateDatasetComponent: AnnotateDatasetComponent;
   @ViewChild("statisticalDesign") statisticalDesignComponent: StatisticalDesignComponent
-  @Input() currentDataset: currentDataset;
+  @Input() dataset: Dataset;
 
-  constructor(public loadDatasetService: LoadDatasetService, private cdr: ChangeDetectorRef, public analysisService: AnalysisService) {
+  constructor(public loadDatasetService: LoadDatasetService, private cdr: ChangeDetectorRef, public analysisService: AnalysisService, public dialog: MatDialog) {
   }
 
 
@@ -31,28 +33,36 @@ export class NestedStepperComponent implements AfterViewInit {
 
 
   deleteDataset() {
-    let indexCurrentDataset = this.analysisService.analysisDatum.indexOf(this.currentDataset);
-    this.analysisService.analysisDatum.splice(indexCurrentDataset, 1);
+    let indexdataset = this.analysisService.datasets.indexOf(this.dataset);
+    this.analysisService.datasets.splice(indexdataset, 1);
   }
 
 
   setValidStatisticalDesign() {
-    if (this.currentDataset.statisticalDesign?.analysisGroup !== undefined) {
-      if (this.currentDataset.table?.columns.indexOf(this.currentDataset.statisticalDesign!.analysisGroup) === -1) {
-        this.currentDataset.statisticalDesign!.analysisGroup = undefined;
+    if (this.dataset.statisticalDesign?.analysisGroup !== undefined) {
+      if (this.dataset.table?.columns.indexOf(this.dataset.statisticalDesign!.analysisGroup) === -1) {
+        this.dataset.statisticalDesign!.analysisGroup = undefined;
       }
     }
   }
 
   saveData() {
-    this.currentDataset.saved = true;
+    this.dataset.saved = true;
   }
 
 
   checkStatisticalDesign(): boolean {
-    return this.currentDataset.statisticalDesign?.analysisGroup !== undefined ||
-      this.currentDataset.statisticalDesign?.comparisonGroup1 !== undefined ||
-      this.currentDataset.statisticalDesign?.comparisonGroup2 !== undefined;
+    return this.dataset.statisticalDesign?.analysisGroup !== undefined &&
+      this.dataset.statisticalDesign?.comparisonGroup1 !== undefined &&
+      this.dataset.statisticalDesign?.comparisonGroup2 !== undefined;
 
   }
+
+  changeParameters($event: MouseEvent) {
+    $event.stopImmediatePropagation()
+    this.dialog.open(ChangeAnalysisParamsComponent, {
+      data: {dataset: this.dataset},
+    });
+  }
+
 }

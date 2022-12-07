@@ -2,8 +2,9 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {AnalysisMethodsService} from "../services/analysis-methods.service";
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
+import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 
-
+@UntilDestroy()
 @Component({
   selector: 'gsa-analysis-methods',
   templateUrl: './analysis-methods.component.html',
@@ -24,11 +25,8 @@ export class AnalysisMethodsComponent implements OnInit {
   ngOnInit(): void {
     this.analysisMethodsService.getAnalysisMethods();
     this.responsive.observe(Breakpoints.XSmall)
-      .subscribe(result => {
-        if (result.matches) {
-          this.screenIsXSmall = true;
-        } else this.screenIsXSmall = false;
-      });
+      .pipe(untilDestroyed(this))
+      .subscribe(result => this.screenIsXSmall = result.matches);
   }
 
   // @ViewChild('root') rootRef: ElementRef<HTMLDivElement>;

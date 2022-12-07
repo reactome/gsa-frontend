@@ -17,9 +17,11 @@ export class AnalysisMethodsService {
   getAnalysisMethods(): void {
     this.http.get<Method[]>(this.methodsUrl).subscribe((methods) => {
       this.methods = methods;
-      this.methods.forEach((method) => method.parameters.forEach((param) => {
-        this.parseParamDefaultValue(param)
-      }))
+      this.methods.forEach((method) => {
+        method.parameters.forEach((param) => {
+          this.parseParamDefaultValue(param)
+        });
+      })
     })
   }
 
