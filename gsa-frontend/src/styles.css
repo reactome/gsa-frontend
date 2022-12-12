@@ -1,7 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "../node_modules/ag-grid-community/dist/styles/ag-grid.css";
 @import "../node_modules/ag-grid-community/dist/styles/ag-theme-alpine.css";
-
 html, body {
   height: 100%;
   overflow: hidden !important;
@@ -154,15 +153,15 @@ mat-icon {
 }
 
 .dataset-card-content {
-  color: #177dc0;;
+  color: #0e7cb3;
   padding: 10px;
   margin: 3px !important;
   border-radius: 10px;
-  border: 1px solid #177dc0;
+  border: 1px solid #0e7cb3;
 }
 
 .dataset-card-content:hover {
-  background: rgba(150, 193, 255, 0.3);
+  background: rgba(14, 124, 179, 0.2);
   cursor: pointer;
 }
 
@@ -170,7 +169,6 @@ mat-icon {
   background-color: white;
   color: red;
 }
-
 .warning-snackbar .mat-simple-snackbar-action {
   color: black !important;
 }
