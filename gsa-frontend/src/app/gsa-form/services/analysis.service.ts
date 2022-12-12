@@ -7,6 +7,8 @@ import {HttpClient} from "@angular/common/http";
 import {Dataset} from "../model/dataset.model";
 import {AnalysisResult} from "../model/analysis-result.model";
 import {Request} from "../model/analysis.model";
+import {catchError, throwError} from "rxjs";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Injectable({
   providedIn: 'root'
@@ -24,12 +26,11 @@ export class AnalysisService {
   resultURL: string;
   private timer: NodeJS.Timer;
 
-  constructor(private analysisMethodService: AnalysisMethodsService, private loadDataService: LoadDatasetService, private http: HttpClient) {
+  constructor(private analysisMethodService: AnalysisMethodsService, private loadDataService: LoadDatasetService, private http: HttpClient, private snackBar: MatSnackBar) {
   }
 
   allDatasetsSaved(): boolean {
-    return this.datasets.filter(value => value.saved).length === this.datasets.length;
-
+    return this.datasets.filter(value => value.saved).length === this.datasets.length && this.datasets.length > 0;
   }
 
   loadAnalysis(): void {
@@ -64,11 +65,25 @@ export class AnalysisService {
     };
     this.createReports = query.parameters.some(param => param.name === 'create_reports' && param.value);
     this.http.post(this.submitAnalysisUrl, query, {responseType: 'text'})
+      .pipe(catchError((err: Error) => {
+        this.snackBar.open("The analysis could not be performed: \n" + err.message, "Close", {
+          panelClass: ['warning-snackbar'],
+          duration: 10000
+        });
+        return throwError(err);    //Rethrow it back to component
+      }))
       .subscribe(response => this.analysisID = response);
   }
 
   processAnalysisResult(): void {
     this.http.get<any>(this.analysisResultUrl + this.analysisID)
+      .pipe(catchError((err: Error) => {
+        this.snackBar.open("The analysis could not been performed: \n" + err.message, "Close", {
+          panelClass: ['warning-snackbar'],
+          duration: 10000
+        });
+        return throwError(err);    //Rethrow it back to component
+      }))
       .subscribe((result: AnalysisResult) => {
         this.resultURL = result.reactome_links[0].url;
         if (this.createReports) {
@@ -83,6 +98,13 @@ export class AnalysisService {
 
   private getAnalysisLoadingStatus(): void {
     this.http.get<LoadingStatus>(this.analysisStatusUrl + this.analysisID)
+      .pipe(catchError((err: Error) => {
+        this.snackBar.open("The analysis could not be performed: \n" + err.message, "Close", {
+          panelClass: ['warning-snackbar'],
+          duration: 10000
+        });
+        return throwError(err);    //Rethrow it back to component
+      }))
       .subscribe((status) => {
         this.analysisLoadingStatus = status;
         switch (status.status) {
@@ -99,6 +121,13 @@ export class AnalysisService {
 
   private getReportLoadingStatus(): void {
     this.http.get<LoadingStatus>(this.reportStatusUrl + this.analysisID)
+      .pipe(catchError((err: Error) => {
+        this.snackBar.open("The reports could not been loaded: \n" + err.message, "Close", {
+          panelClass: ['warning-snackbar'],
+          duration: 10000
+        });
+        return throwError(err);    //Rethrow it back to component
+      }))
       .subscribe((status) => {
         this.reportLoadingStatus = status;
         switch (status.status) {

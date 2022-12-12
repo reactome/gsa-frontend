@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {LoadDatasetService} from "../../services/load-dataset.service";
 import {MatCheckboxChange} from "@angular/material/checkbox";
 import {Dataset} from "../../model/dataset.model";
 
@@ -13,7 +12,7 @@ export class StatisticalDesignComponent implements OnInit {
   @Input() dataset: Dataset
   statisticalDesignStep: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, public loadDatasetService: LoadDatasetService) {
+  constructor(private formBuilder: FormBuilder) {
     this.statisticalDesignStep = this.formBuilder.group({
       address: ['', Validators.required]
     });
@@ -36,15 +35,27 @@ export class StatisticalDesignComponent implements OnInit {
     return this.dataset.table?.dataset.map(row => row[colIndex].value) || [];
   }
 
-  computeColumnValues(colName: string | undefined): string[] {
+  computeColumnValues(colName: string | undefined, group: string): string[] {
     let colValues: string[] = this.getColumn(colName);
     colValues = colValues.filter((item, index) => colValues.indexOf(item) === index && item !== "");
+    switch (group) {
+      case 'first':
+        if (colValues.indexOf(<string>this.dataset.statisticalDesign!.comparisonGroup1) === -1) {
+          this.dataset.statisticalDesign!.comparisonGroup1 = undefined;
+        }
+        break;
+      case 'second':
+        if (colValues.indexOf(<string>this.dataset.statisticalDesign!.comparisonGroup2) === -1) {
+          this.dataset.statisticalDesign!.comparisonGroup2 = undefined;
+        }
+        break;
+    }
     // colValues.splice(colValues.indexOf(""), 1)
     return colValues;
   }
 
   computeValidColumns(): string[] {
-    return this.dataset.table!.columns.filter((colName) => this.computeColumnValues(colName).length > 1);
+    return this.dataset.table!.columns.filter((colName) => this.computeColumnValues(colName, "default").length > 1);
   }
 
   defaultValue(index: number): string | undefined {
@@ -55,13 +66,13 @@ export class StatisticalDesignComponent implements OnInit {
   }
 
   defaultStillInTable(index: number): boolean {
-    let defaultValue = this.dataset.summary?.default_parameters[index].value;
+    let defaultValue = this.dataset.summary?.default_parameters[index]?.value;
     switch (index) {
       case 0:
         return this.dataset.table!.columns.indexOf(<string>defaultValue) !== -1;
       case 1 || 2:
         if (this.dataset.statisticalDesign?.analysisGroup !== undefined) {
-          return this.computeColumnValues(this.dataset.statisticalDesign?.analysisGroup).indexOf(<string>defaultValue) !== -1;
+          return this.computeColumnValues(this.dataset.statisticalDesign?.analysisGroup, 'analysis').indexOf(<string>defaultValue) !== -1;
         }
     }
     return true;
@@ -80,5 +91,10 @@ export class StatisticalDesignComponent implements OnInit {
       let indexCovariate = this.dataset.statisticalDesign!.covariances.indexOf(covariate);
       this.dataset.statisticalDesign!.covariances.splice(indexCovariate, 1);
     }
+  }
+
+  log($event: any) {
+    console.log($event)
+
   }
 }

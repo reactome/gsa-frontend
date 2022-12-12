@@ -9,9 +9,6 @@
          [ngModelOptions]="{standalone: true}" [style.height.px]="firstSelected.coordinate.height - 3"
          [style.left.px]="firstSelected.coordinate.x - 1" [style.top.px]="firstSelected.coordinate.y -1"
          [style.width.px]="firstSelected.coordinate.width - 19" class="flying-rename">
-
-  <!--  [ngClass]="isCell() ? 'z-index-5': 'z-index-3'"-->
-
   <table (keydown)="navigateTableDefault()" (mousedown)="mousedown($event)" (mouseover)="mousemove($event)"
          (mouseup)="mouseup()" class="relative align-center background-white width-hundred">
     <tr *ngIf="settings.showCols">

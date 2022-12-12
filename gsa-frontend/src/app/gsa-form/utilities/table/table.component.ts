@@ -1,4 +1,14 @@
-import {AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {CellInfo, Settings} from "../../model/table.model";
 import {Clipboard} from '@angular/cdk/clipboard';
 import {MatButton} from "@angular/material/button";
@@ -30,7 +40,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild('flyingRename') input: ElementRef<HTMLInputElement>;
   @ViewChild('root') rootRef: ElementRef<HTMLDivElement>;
   @ViewChild('addCol') columnButton: MatButton;
-  intermediate: CellInfo
   lastSelected: CellInfo;
   renameVisible: boolean = false
   renameValue: string;
@@ -56,7 +65,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     down: ([x, y]) => [x, y + 1]
   }
 
-  constructor(private clipboard: Clipboard) {
+  constructor(private clipboard: Clipboard, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -72,6 +81,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     this.firstSelected = new CellInfo(undefined, 0, 0, this.getRelativeCoords(this.getHTMLCellElement(0, 0)));
     this.lastSelected = new CellInfo(undefined, 0, 0);
     this.renameValue = this.settings.data[0][0].value;
+    this.cd.detectChanges()
   }
 
 
@@ -262,16 +272,32 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     return [x, y];
   }
 
-  focusOnButton(x: number, y: number): void {
-    if (this.rowEndExceeded(x + 1) && this.columnEndExceeded(y + 1) || this.rowBeginExceeded(x - 1) && this.columnBeginExceeded(y - 1)) {
+  findPreviousTabStop(element: HTMLElement) {
+    var universe = document.querySelectorAll('input, button, select, textarea, a[href]');
+    var list = Array.prototype.filter.call(universe, function (item) {
+      return item.tabIndex >= "0"
+    });
+    var index = list.indexOf(element);
+    return list[index - 1] || list[0];
+  }
+
+  unfocusTable(x: number, y: number): boolean {
+    if (this.rowEndExceeded(x + 1) && this.columnEndExceeded(y + 1)) {
       this.renameVisible = false;
-      this.firstSelected = new CellInfo(undefined, 0, 0)
       setTimeout(() => this.columnButton.focus());
+      return true
+    } else if (this.rowBeginExceeded(x - 1) && this.columnBeginExceeded(y - 1)) {
+      this.blurInput();
+      setTimeout(() => this.input.nativeElement.blur());
+      var nextEl = this.findPreviousTabStop(this.input.nativeElement);
+      nextEl.focus();
+      return true
     }
+    return false
   }
 
 
-  navigateTable($event: KeyboardEvent) {
+  navigateTable($event: KeyboardEvent): void {
     let x = this.lastSelected.x;
     let y = this.lastSelected.y;
 
@@ -283,12 +309,14 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       ["Enter", () => this.moveCell(x, y, "down")],
       ["Tab", () => {
         if ($event.shiftKey) {
-          this.focusOnButton(x, y);
+          if (this.unfocusTable(x, y)) return [-1, -1];
           [x, y] = this.moveCell(x, y, "up");
           if (y === this.settings.rows.length - 1) x -= 1;
           return [x, y];
         } else {
-          this.focusOnButton(x, y);
+          if (this.unfocusTable(x, y)) return [-1, -1];
+
+          // this.unfocusTable(x, y);
           [x, y] = this.moveCell(x, y, "down");
           if ((y === -1) || (y === 0 && !this.settings.renameCols)) x += 1;
           return [x, y];
@@ -297,18 +325,25 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     ]);
 
     const action = keyToAction.get($event.key);
-
     if (action) {
-      this.deselect();
       $event.preventDefault();
       let [x, y] = action();
-
+      if (x === -1 && y === -1) return
+      if ((!$event.shiftKey) || ($event.shiftKey && $event.key === 'Tab')) {
+        [x, y] = [this.firstSelected.x + (x - this.lastSelected.x), this.firstSelected.y + (y - this.lastSelected.y)]
+      }
       let parentElement = this.getHTMLCellElement(x, y);
+      this.deselect();
+      this.input.nativeElement.classList.add("selected");
+
       setTimeout(() => {
         if ((!$event.shiftKey) || ($event.shiftKey && $event.key === 'Tab')) {
           this.firstSelected = new CellInfo(undefined, x, y, this.getRelativeCoords(parentElement as HTMLElement));
+          this.input.nativeElement.classList.remove("selected");
+
         }
         this.lastSelected = new CellInfo(undefined, x, y, this.getRelativeCoords(parentElement as HTMLElement));
+
         this.showSelected("add")
         this.showChangeInput();
       }, 0);
@@ -362,7 +397,9 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       }
       if (x < maxX) copyText += "\n";
     }
+    let temp = this.firstSelected
     this.clipboard.copy(copyText)
+    this.firstSelected = temp
   }
 
   getHTMLCellElement(x: number, y: number):
@@ -395,7 +432,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     this.renameCell()
     this.deselect()
     this.firstSelected = new CellInfo(undefined, 0, 0, this.getRelativeCoords(this.getHTMLCellElement(0, 0)));
-    this.lastSelected = new CellInfo(undefined, 0, 0);
+    this.lastSelected = new CellInfo(undefined, 0, 0, this.getRelativeCoords(this.getHTMLCellElement(0, 0)));
     this.renameValue = this.settings.data[0][0].value;
   }
 }

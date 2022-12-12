@@ -33,13 +33,22 @@ export class AnnotateDatasetComponent implements OnInit {
       showRows: true,
       addColumnButton: true
     };
-    // this.responsive.observe(Breakpoints.Small).subscribe(result => this.screenIsSmall = result.matches);
-    this.responsive.observe(Breakpoints.Small)
-      .subscribe(result => {
-        if (result.matches) {
-          this.screenIsSmall = true;
-        } else this.screenIsSmall = false;
-      });
+    this.responsive.observe(Breakpoints.Small).subscribe(result => this.screenIsSmall = result.matches);
+    // this.responsive.observe(Breakpoints.Small)
+    //   .subscribe(result => {
+    //     if (result.matches) {
+    //       this.screenIsSmall = true;
+    //     } else this.screenIsSmall = false;
+    //   });
+    // this.responsive.observe([Breakpoints.Small, Breakpoints.XSmall])
+    //   .subscribe(result => {
+    //     const breakpoints = result.breakpoints;
+    //     if (breakpoints[Breakpoints.Small] || breakpoints[Breakpoints.XSmall]) {
+    //       this.screenIsSmall = true;
+    //     } else {
+    //       this.screenIsSmall = false;
+    //     }
+    //   });
   }
 
 

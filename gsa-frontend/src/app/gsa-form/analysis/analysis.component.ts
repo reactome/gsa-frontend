@@ -14,5 +14,10 @@ export class AnalysisComponent {
     this.analysisStep = this.formBuilder.group({
       name: ['', Validators.required]
     });
+
+  }
+
+  openLink(url: string) {
+    window.open(url, '_blank');
   }
 }

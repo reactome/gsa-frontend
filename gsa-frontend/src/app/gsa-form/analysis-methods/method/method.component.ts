@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Method} from "../../model/methods.model"
 import {AnalysisMethodsService} from "../../services/analysis-methods.service";
 
@@ -9,8 +9,10 @@ import {AnalysisMethodsService} from "../../services/analysis-methods.service";
 })
 export class MethodComponent {
   @Input() method: Method
+  expanded: boolean = false
 
-  constructor(public analysisMethodService: AnalysisMethodsService) { }
+  constructor(public analysisMethodService: AnalysisMethodsService) {
+  }
 
   getDisplayParameters() {
     return this.method.parameters.filter(p => p.scope !== 'common');
@@ -18,5 +20,7 @@ export class MethodComponent {
 
   selectMethod() {
     this.analysisMethodService.selectedMethod = this.method;
+    this.expanded = !this.expanded
+    console.log(this.expanded)
   }
 }

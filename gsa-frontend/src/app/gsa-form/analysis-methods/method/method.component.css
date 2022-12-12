@@ -3,11 +3,8 @@ mat-expansion-panel-header {
   height: 100% !important;
 }
 
-.panel-header {
-  box-sizing: border-box;
-  border-style: solid;
-  border-width: 5px;
-  border-radius: 20px;
+.expansion-border {
+  border: 5px solid;
 }
 
 .chosen {
@@ -15,6 +12,7 @@ mat-expansion-panel-header {
 }
 
 .chosen:hover {
+  cursor: pointer;
   background: white;
   color: black;
 }
@@ -24,11 +22,17 @@ mat-expansion-panel-header {
 }
 
 .unchosen:hover {
+  cursor: pointer;
+  background: white;
   border-color: rgba(0, 0, 0, 0.04);
 }
 
 .grey-border {
   border-top: 1px solid lightgray;
+}
+
+.unchosen:hover mat-expansion-panel-header {
+  background: rgba(0, 0, 0, 0.04);
 }
 
 /*# sourceMappingURL=method.component.css.map */

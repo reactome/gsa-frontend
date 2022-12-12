@@ -24,7 +24,8 @@ export class LocalDataComponent {
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
-      this.loadDatasetService.uploadFile(file, this.dataset)
+      this.loadDatasetService.uploadFile(file, this.dataset, this.data.id)
+
     }
   }
 }

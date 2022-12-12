@@ -1,9 +1,11 @@
 <mat-expansion-panel
   (click)="selectMethod()"
-  [ngClass]="analysisMethodService.selectedMethod?.name === method.name ? 'chosen': 'unchosen'" class="panel-header"
-  expanded="false"
+  (closed)="expanded = false"
+  (opened)="expanded = true"
+  [expanded]="expanded" [ngClass]="analysisMethodService.selectedMethod?.name === method.name ? 'chosen': 'unchosen'"
+  class="expansion-border"
   hideToggle>
-  <mat-expansion-panel-header>
+  <mat-expansion-panel-header (click)="selectMethod()">
     <mat-panel-title class="bold">
       {{method.name | titlecase}}
     </mat-panel-title>

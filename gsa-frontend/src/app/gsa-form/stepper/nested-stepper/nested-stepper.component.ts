@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, Input, ViewChild} from '@angular/core';
+import {AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, Input, ViewChild} from '@angular/core';
 import {SelectDatasetComponent} from "../../datasets/select-dataset/select-dataset.component";
 import {AnnotateDatasetComponent} from "../../datasets/annotate-dataset/annotate-dataset.component";
 import {StatisticalDesignComponent} from "../../datasets/statistical-design/statistical-design.component";
@@ -14,7 +14,7 @@ import {ChangeAnalysisParamsComponent} from "../../datasets/change-analysis-para
   templateUrl: './nested-stepper.component.html',
   styleUrls: ['./nested-stepper.component.scss']
 })
-export class NestedStepperComponent implements AfterViewInit {
+export class NestedStepperComponent implements AfterViewInit, AfterViewChecked {
 
   @ViewChild('nestedStepper') public stepper: MatStepper;
   @ViewChild('selectData') selectDatasetComponent: SelectDatasetComponent;
@@ -31,10 +31,15 @@ export class NestedStepperComponent implements AfterViewInit {
     this.loadDatasetService.stepper = this.stepper;
   }
 
+  ngAfterViewChecked(): void {
+    this.cdr.detectChanges();
+  }
 
-  deleteDataset() {
-    let indexdataset = this.analysisService.datasets.indexOf(this.dataset);
-    this.analysisService.datasets.splice(indexdataset, 1);
+
+  deleteDataset($event: MouseEvent) {
+    $event.stopPropagation()
+    let indexDataset = this.analysisService.datasets.indexOf(this.dataset);
+    this.analysisService.datasets.splice(indexDataset, 1);
   }
 
 
@@ -55,7 +60,6 @@ export class NestedStepperComponent implements AfterViewInit {
     return this.dataset.statisticalDesign?.analysisGroup !== undefined &&
       this.dataset.statisticalDesign?.comparisonGroup1 !== undefined &&
       this.dataset.statisticalDesign?.comparisonGroup2 !== undefined;
-
   }
 
   changeParameters($event: MouseEvent) {
@@ -65,4 +69,12 @@ export class NestedStepperComponent implements AfterViewInit {
     });
   }
 
+
+  setStep() {
+    if (this.dataset.saved) {
+      setTimeout(() => {
+        this.stepper.selectedIndex = 1
+      });
+    }
+  }
 }

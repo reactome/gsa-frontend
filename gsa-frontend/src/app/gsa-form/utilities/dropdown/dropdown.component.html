@@ -1,4 +1,4 @@
-<mat-form-field class="z-index-4000">
+<mat-form-field>
   <mat-select (selectionChange)="saveValue()" (valueChange)="saveValue()" [(value)]="value" [disabled]="disabled"
               placeholder="{{placeholder}}">
     <mat-option *ngFor="let pos of options" [value]="pos">{{pos}}</mat-option>

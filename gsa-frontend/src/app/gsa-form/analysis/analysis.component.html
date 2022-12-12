@@ -2,72 +2,106 @@
   <div class="flex-container horizontal gap-one ">
     <mat-card class="flex-one">
       <div class="flex-container align-start vertical content-height">
-        <h2 class="flex-one">Analysis</h2>
+        <h2 class="flex-one height-fifteen">Analysis</h2>
         <div class="flex-container vertical align-center justify-center height-hundred width-hundred flex-twelve">
           <div [ngSwitch]="analysisService.analysisLoadingStatus?.status">
             <div *ngSwitchCase="'running'">
-              <div class="flex-container horizontal align-center gap-one">
+              <div class="flex-container horizontal justify-center align-center">
                 <div class="spinner-box">
-                  <mat-spinner diameter="24"></mat-spinner>
+                  <mat-spinner class="padding-right-ten" diameter="25"></mat-spinner>
                 </div>
-                Analysis loading!
+                Analysis loading: {{analysisService.analysisLoadingStatus?.completed! * 100}}%
               </div>
             </div>
             <div *ngSwitchCase="'failed'"
-                 class="flex-container horizontal align-center">
+                 class="flex-container vertical align-center gap-one justify-center">
               <div class="material-icons mat-error big-error">error</div>
+              <span>Analysis failed, please contact help@reactome.org</span>
               <div class="text-margin">{{analysisService.analysisLoadingStatus!.description}}</div>
             </div>
             <div *ngSwitchCase="'complete'">
               <div class="flex-container vertical align-center gap-one">
-                <div>Congratulations, your analysis has finished!</div>
-                <form target="_blank">
-                  <button color="primary" formaction="{{analysisService.resultURL}}" mat-raised-button>
-                    <mat-icon><span class="material-icons-outlined">
+                <div>Congratulations, your analysis has been finished!</div>
+                <button (click)="openLink(analysisService.resultURL)" color="primary" mat-raised-button>
+                  <div class="flex-container horizontal align-center">
+                    <mat-icon class="padding-right-ten"><span class="material-icons-outlined">
                     visibility
                   </span></mat-icon>
-                    Results
-                  </button>
-                </form>
+                    <span>Results</span>
+                  </div>
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
       <mat-card-footer>
-        <div class="grey description-height">{{analysisService.analysisLoadingStatus?.description}}</div>
+        <div class="flex-container vertical  justify-end footer-height">
+          <div
+            class="grey description"><span
+            *ngIf="analysisService.analysisLoadingStatus?.status === 'running'">{{analysisService.analysisLoadingStatus?.description}}</span>
+          </div>
 
-        <mat-progress-bar class="progress-height" mode="determinate"
-                          value="{{analysisService.analysisLoadingStatus?.completed! * 100}}"></mat-progress-bar>
+          <mat-progress-bar class="progress-bar" mode="determinate"
+                            value="{{analysisService.analysisLoadingStatus?.completed! * 100}}"></mat-progress-bar>
+        </div>
       </mat-card-footer>
+
     </mat-card>
 
 
     <mat-card *ngIf="analysisService.createReports" class="flex-one ">
-      <div class="content-height">
-        <h2>Report</h2>
-        <div class="flex-container vertical align-center justify-center">
+      <div class="flex-container align-start vertical content-height">
+        <h2 class="flex-one height-fifteen">Report</h2>
+        <div class="flex-container vertical align-center justify-center height-hundred width-hundred flex-twelve">
           <div [ngSwitch]="analysisService.reportLoadingStatus?.status">
             <div *ngSwitchCase="'running'">
-              Report loading!
+              <div class="flex-container horizontal justify-center align-center">
+                <div class="spinner-box">
+                  <mat-spinner class="padding-right-ten" diameter="25"></mat-spinner>
+                </div>
+                Report loading: {{analysisService.reportLoadingStatus?.completed! * 100}}%
+              </div>
             </div>
             <div *ngSwitchCase="'failed'"
-                 class="flex-container horizontal align-center">
+                 class="flex-container vertical align-center">
               <div class="material-icons mat-error big-error">error</div>
+              <span>Report generation failed, please contact help@reactome.org</span>
               <div class="text-margin">{{analysisService.reportLoadingStatus!.description}}</div>
             </div>
             <div *ngSwitchCase="'complete'">
               <div class="flex-container vertical align-center gap-one">
-
-                <div>Click for some nice reports</div>
+                <div>Here are some nice reports</div>
                 <div class="flex-container horizontal gap-one">
                   <div *ngFor="let report of analysisService.reportLoadingStatus?.reports">
                     <form target="_blank">
-                      <button color="primary" formaction="{{report.url}}" mat-raised-button>
-                        <mat-icon><span class="material-icons-outlined">
-                    picture_as_pdf
-                  </span></mat-icon>
-                        {{report.name}}
+                      <button (click)="openLink(report.url)" color="primary" mat-raised-button>
+                        <span [ngSwitch]="report.name" class="float-right">
+                          <ng-template [ngSwitchCase]="'MS Excel Report (xlsx)'">
+                            <div class="flex-container horizontal align-center">
+                              <mat-icon class="padding-right-ten"><span
+                                class="material-icons-outlined">table_view</span></mat-icon><span>Excel Report</span>
+                              </div>
+                          </ng-template>
+
+                          <ng-template [ngSwitchCase]="'PDF Report'">
+                                                        <div class="flex-container horizontal align-center">
+
+                            <mat-icon class="padding-right-ten"><span
+                              class="material-icons-outlined">picture_as_pdf</span></mat-icon>
+                                                         <span>{{report.name}}</span>
+                                                        </div>
+                          </ng-template>
+                          <ng-template [ngSwitchCase]="'R Script'">
+                                                        <div class="flex-container horizontal align-center">
+
+                            <mat-icon class="padding-right-ten"><span
+                              class="material-icons-outlined">description</span></mat-icon>
+                                                         <span>{{report.name}}</span>
+                                                        </div>
+                          </ng-template>
+                        </span>
+
                       </button>
                     </form>
                   </div>
@@ -78,9 +112,14 @@
         </div>
       </div>
       <mat-card-footer>
-        <div class="grey description-height">{{analysisService.reportLoadingStatus?.description}}</div>
-        <mat-progress-bar class="progress-height" mode="determinate"
-                          value="{{analysisService.reportLoadingStatus?.completed! * 100}}"></mat-progress-bar>
+        <div class="flex-container vertical justify-end footer-height">
+          <div class="grey description"><span
+            *ngIf="analysisService.reportLoadingStatus?.status === 'running'">{{analysisService.reportLoadingStatus?.description}}</span>
+          </div>
+          <mat-progress-bar class="progress-bar" mode="determinate"
+                            value="{{analysisService.reportLoadingStatus?.completed! * 100}}"></mat-progress-bar>
+        </div>
+
       </mat-card-footer>
     </mat-card>
   </div>

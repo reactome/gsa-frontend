@@ -3,9 +3,9 @@
 
     <div class="flex-container flex-center horizontal gap-one">
       <div class="center-vertical">
-        <gsa-edit-columns *ngIf="stepper.selected == null || stepper.selected == editCols"
-                          [tableSettings]="tableSettings"
-                          class="full-width"></gsa-edit-columns>
+        <gsa-edit-columns
+          [tableSettings]="tableSettings"
+          class="full-width"></gsa-edit-columns>
       </div>
     </div>
     <button class="nav-btn-margin" color="primary" mat-raised-button matStepperNext>
@@ -25,9 +25,9 @@
         </div>
         <div class="center-vertical">
           <div class="flex-container vertical gap-one full-width">
-            <gsa-edit-cells *ngIf="stepper.selected == null || stepper.selected == editCells"
-                            [tableSettings]="tableSettings"
-                            class="full-width"></gsa-edit-cells>
+            <gsa-edit-cells
+              [tableSettings]="tableSettings"
+              class="full-width"></gsa-edit-cells>
           </div>
         </div>
       </div>

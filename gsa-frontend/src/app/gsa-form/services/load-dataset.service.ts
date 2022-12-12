@@ -9,6 +9,8 @@ import {MatStepper} from "@angular/material/stepper";
 import {CellInfo} from "../model/table.model";
 import {LoadingProgressComponent} from "../datasets/select-dataset/loading-progress/loading-progress.component";
 import {MatDialog} from "@angular/material/dialog";
+import {catchError, throwError} from "rxjs";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +25,7 @@ export class LoadDatasetService {
   loadingStatus?: LoadingStatus;
   private timer: NodeJS.Timer;
 
-  constructor(private http: HttpClient, public dialog: MatDialog) {
+  constructor(private http: HttpClient, public dialog: MatDialog, private snackBar: MatSnackBar) {
   }
 
   loadDataset(resourceId: string, postParameters: LoadParameter[], dataset: Dataset): void {
@@ -40,7 +42,8 @@ export class LoadDatasetService {
     const dialogRef = this.dialog.open(LoadingProgressComponent, {
       width: '50%',
       height: '50%',
-      disableClose: true
+      disableClose: true,
+
     });
     this.timer = setInterval(() => {
       if (this.loadingStatus?.status === "complete") {
@@ -50,14 +53,32 @@ export class LoadDatasetService {
   }
 
   submitQuery(resourceId: string, postParameters: any): void {
-    this.http.post(this.loadDataUrl + resourceId, postParameters, {responseType: 'text'}).subscribe(
-      response => this.loadingID = response);
+    this.http.post(this.loadDataUrl + resourceId, postParameters, {responseType: 'text'})
+      .pipe(catchError((err: Error) => {
+        this.snackBar.open("The chosen dataset could not been loaded: \n" + err.message, "Close", {
+          panelClass: ['warning-snackbar'],
+          duration: 10000
+        });
+        return throwError(err);    //Rethrow it back to component
+      }))
+      .subscribe(
+        response => this.loadingID = response);
   }
 
   processDataSummary(dataset: Dataset): void {
     this.http.get<DataSummary>(this.summaryDataUrl + this.loadingStatus?.dataset_id)
+      .pipe(catchError((err: Error) => {
+        this.snackBar.open("The chosen dataset could not been loaded: \n" + err.message, "Close", {
+          panelClass: ['warning-snackbar'],
+          duration: 10000
+        });
+        return throwError(err);    //Rethrow it back to component
+      }))
       .subscribe((summary) => {
         dataset.summary = summary;
+        dataset.summary.parameters = []
+        dataset.statisticalDesign = undefined
+        dataset.saved = false
         this.computeTableValues(dataset);
       })
   }
@@ -76,36 +97,53 @@ export class LoadDatasetService {
     }, 0);
   }
 
-  uploadFile(file: File, newData: Dataset): void {
+  uploadFile(file: File, newData: Dataset, type: string): void {
     const formData = new FormData();
     formData.append('file', file, file.name);
-    let uploadDataObservable = this.http.post<UploadData>(this.uploadDataUrl, formData);
-    uploadDataObservable.subscribe(response => {
+    this.http.post<UploadData>(this.uploadDataUrl, formData)
+      .pipe(catchError((err: Error) => {
+        this.snackBar.open("The chosen dataset could not been uploaded: \n" + err.message, "Close", {
+          panelClass: ['warning-snackbar'],
+          duration: 10000
+        });
+        return throwError(err);    //Rethrow it back to component
+      }))
+      .subscribe(response => {
 
-        let dataSummary: DataSummary = {
-          id: this.loadingID!,
-          title: file.name,
-          type: "test",
-          default_parameters: []
+          let dataSummary: DataSummary = {
+            id: response.data_token,
+            title: file.name,
+            type: type,
+            default_parameters: [],
+            parameters: []
+          }
+          newData.statisticalDesign = undefined
+          newData.saved = false
+          newData.summary = dataSummary
+
+
+          let rows: string[] = response.sample_names;
+          let columns: string[] = ["Annotation1"];
+          let dataset: CellInfo[][] = rows.map(() => [new CellInfo()]);
+          newData.table = new DatasetTable(columns, rows, dataset);
+
+          setTimeout(() => {
+            this.stepper.next();
+          }, 0);
+
         }
-        newData.summary = dataSummary
-
-
-        let rows: string[] = response.sample_names;
-        let columns: string[] = ["Annotation1"];
-        let dataset: CellInfo[][] = rows.map(() => [new CellInfo()]);
-        newData.table = new DatasetTable(columns, rows, dataset);
-
-        setTimeout(() => {
-          this.stepper.next();
-        }, 0);
-
-      }
-    )
+      )
   }
 
   private waitForResult(dataset: Dataset): void {
     this.http.get<LoadingStatus>(this.loadingStatusUrl + this.loadingID)
+      .pipe(catchError((err: Error) => {
+        this.snackBar.open("The chosen dataset could not been loaded: \n" + err.message, "Close", {
+          panelClass: ['warning-snackbar'],
+          duration: 10000
+        });
+        return throwError(err);    //Rethrow it back to component
+      }))
       .subscribe((status) => {
         this.loadingStatus = status;
         switch (this.loadingStatus?.status) {

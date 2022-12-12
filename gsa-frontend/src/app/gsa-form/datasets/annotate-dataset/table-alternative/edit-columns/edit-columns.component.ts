@@ -32,4 +32,10 @@ export class EditColumnsComponent {
     });
 
   }
+
+
+  valueChange($event: any, columnIndex: number) {
+    this.tableSettings.columns[columnIndex] = $event.target.value;
+
+  }
 }
