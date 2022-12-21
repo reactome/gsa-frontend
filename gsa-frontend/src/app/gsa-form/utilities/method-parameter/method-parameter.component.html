@@ -27,7 +27,8 @@
       </ng-template>
       <ng-template [ngSwitchCase]="types.email">
         <mat-form-field appearance="outline" class="background-white">
-          <input [(ngModel)]="parameter.value" [errorStateMatcher]="matcher" [formControl]="emailFormControl" matInput
+          <input (input)="setValue($event, parameter)" [errorStateMatcher]="matcher" [formControl]="emailFormControl"
+                 matInput
                  type="email">
                     <mat-error *ngIf="emailFormControl.hasError('email')">
                       Please enter a valid email address

@@ -157,16 +157,12 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   addColumn() {
-    console.log(this.firstSelected)
     this.deselect();
-    console.log("Hier", this.settings.columns)
     this.settings.columns.push("Annotation" + (this.settings.columns.length + 1));
-    console.log("Hier", this.settings.columns)
     this.settings.data.forEach((row) => row.push(new CellInfo()));
     setTimeout(() => this.focusOnCell(this.settings.columns.length - 1, -1));
     this.firstSelected = new CellInfo(undefined, this.settings.columns.length - 1, -1)
     this.lastSelected = new CellInfo(undefined, this.settings.columns.length - 1, -1)
-    console.log("Hier", this.settings.columns)
 
 
   }
@@ -224,10 +220,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   deleteColumn($event: MouseEvent, y: number) {
     $event.preventDefault();
     $event.stopPropagation();
-    console.log(y, this.settings.columns)
     this.settings.columns.splice(y, 1);
-    console.log(y, this.settings.columns)
-
     this.settings.data.forEach((row) => row.splice(y, 1));
     this.renameVisible = false;
   }
@@ -338,8 +331,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
           return [x, y];
         } else {
           if (this.unfocusTableEnd(x, y)) return [-1, -1];
-
-          // this.unfocusTable(x, y);
           [x, y] = this.moveCell(x, y, "down");
           if ((y === -1) || (y === 0 && !this.settings.renameCols)) x += 1;
           return [x, y];
@@ -363,7 +354,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         if ((!$event.shiftKey) || ($event.shiftKey && $event.key === 'Tab')) {
           this.firstSelected = new CellInfo(undefined, x, y, this.getRelativeCoords(parentElement as HTMLElement));
           this.input.nativeElement.classList.remove("selected");
-
         }
         this.lastSelected = new CellInfo(undefined, x, y, this.getRelativeCoords(parentElement as HTMLElement));
         this.showSelected("add")
@@ -406,7 +396,9 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     if (minX !== maxX || minY !== maxY) {
       for (let x = minX; x <= maxX; x++) {
         for (let y = minY; y <= maxY; y++) {
-          this.settings.data[y][x].value = ""
+          if (y === -1) this.settings.columns[x] = ""
+          else if (x === -1) this.settings.rows[y] = ""
+          else this.settings.data[y][x].value = ""
         }
       }
       this.renameValue = ""

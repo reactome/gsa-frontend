@@ -28,7 +28,13 @@ export class MethodParameterComponent implements OnInit {
 
 
   constructor(private responsive: BreakpointObserver) {
+  }
 
+  setValue($event: any, parameter: MethodParameter): void {
+    parameter.value = $event.target.value;
+    console.log($event.target)
+    this.emailFormControl.setValue($event.target.value)
+    console.log(this.emailFormControl.value)
   }
 
   ngOnInit(): void {
