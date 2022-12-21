@@ -142,6 +142,7 @@ export class LoadDatasetService {
 
   computeColumnValues(dataset: Dataset, colName: string | undefined, group: string): string[] {
     let colValues: string[] = this.getColumnValues(dataset, colName);
+    colValues = colValues.filter((value, index) => colValues.indexOf(value) === index)
     colValues = colValues.filter(item => item !== "");
     const design = dataset.statisticalDesign!;
     switch (group) {
@@ -158,7 +159,6 @@ export class LoadDatasetService {
   }
 
   computeValidColumns(dataset: Dataset): string[] {
-    console.log(dataset.table!.columns)
     return dataset.table!.columns?.filter((colName) => this.computeColumnValues(dataset, colName, "default").length > 1);
   }
 
