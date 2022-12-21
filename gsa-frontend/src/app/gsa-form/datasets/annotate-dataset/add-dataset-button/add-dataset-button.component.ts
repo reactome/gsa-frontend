@@ -3,6 +3,7 @@ import {CellInfo, Settings} from "../../../model/table.model";
 import {map, Observable} from "rxjs";
 import {fromPromise} from "rxjs/internal/observable/innerFrom";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {WarningSnackbarComponent} from "./warning-snackbar/warning-snackbar.component";
 
 type MetadataFile = { rowMap: Map<string, number>, csvData: string[][] };
 
@@ -53,26 +54,29 @@ export class AddDatasetButtonComponent implements OnInit {
           })
         })
         if (unfoundRows.length === this.tableSettings.rows.length) {
-          this.snackBar.open(
-            'No rows matched (The rows of the table should appear in the first column of your uploaded file.)', "Close", {
-              panelClass: ['warning-snackbar'],
-              duration: 10000
-            });
+          this.snackBar.openFromComponent(WarningSnackbarComponent, {
+            data: {
+              message: 'No rows matched \n (The rows of the table should appear in the first column of your uploaded file.)',
+              warning: false
+            }
+          });
         } else if (unfoundRows.length > 0) {
-          this.snackBar.open("Warning: " + unfoundRows.length + " rows could not be found in the submitted file. " +
-            "The following rows could not be found: " + unfoundRows + ".", "Close", {
-            panelClass: ['warning-snackbar'],
-            duration: 10000
+          this.snackBar.openFromComponent(WarningSnackbarComponent, {
+            data: {
+              message: unfoundRows.length + " rows could not be found in the submitted file. \n The following rows could not be found: " + unfoundRows + ".",
+              warning: true
+            }
           });
         }
         data.csvData[0].forEach((col) => this.tableSettings.columns.push(col));
-        this.deleteDoubledCols()
+        this.renameDoubledCols()
+        // this.deleteEmptyCols()
         sub.unsubscribe();
       });
 
   }
 
-  deleteDoubledCols(): void {
+  renameDoubledCols(): void {
     this.tableSettings.columns.forEach((col, index) => {
       if (this.tableSettings.columns.indexOf(col) != index) {
         this.tableSettings.columns[index] = col + "_2";
@@ -81,5 +85,25 @@ export class AddDatasetButtonComponent implements OnInit {
     })
   }
 
-
+  //
+  // private deleteEmptyCols(): void {
+  //   let deleteCols: number[] = []
+  //   let emptyCol: boolean
+  //   this.tableSettings.columns.forEach((col, index) => {
+  //     emptyCol = true
+  //     this.tableSettings.data.forEach(row => {
+  //       if (row[index].value !== "") {
+  //         emptyCol = false
+  //       }
+  //     })
+  //     if (emptyCol) {
+  //       deleteCols.push(index)
+  //     }
+  //   })
+  //
+  //   deleteCols.forEach(col => {
+  //     this.tableSettings.columns = this.tableSettings.columns.slice(col, 1)
+  //     this.tableSettings.data = this.tableSettings.data.map(row => row.slice(col, 1))
+  //   })
+  // }
 }

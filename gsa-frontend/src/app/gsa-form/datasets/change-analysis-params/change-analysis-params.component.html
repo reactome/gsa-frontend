@@ -4,5 +4,8 @@
       <gsa-method-parameter [parameter]="param"></gsa-method-parameter>
     </div>
   </div>
-  <button color="primary" mat-dialog-close mat-raised-button>Finish</button>
+  <div class="flex-container horizontal gap-one">
+    <button (click)="setToDefault()" color="primary" mat-raised-button>Reset</button>
+    <button color="primary" mat-dialog-close mat-raised-button>Finish</button>
+  </div>
 </div>

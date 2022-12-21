@@ -7,7 +7,7 @@
 }
 
 .information {
-  grid-template-columns: 1fr 6fr 16fr;
+  grid-template-columns: 1fr 6fr 6fr;
 }
 
 .no-information {
@@ -20,6 +20,7 @@
 
 ::ng-deep .mat-form-field-wrapper {
   padding: 0px;
+  margin: 0px !important;
 }
 
 mat-form-field {

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Settings} from "../../model/table.model";
 import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
@@ -11,18 +11,19 @@ import {Dataset} from "../../model/dataset.model";
   styleUrls: ['./annotate-dataset.component.scss']
 })
 export class AnnotateDatasetComponent implements OnInit {
-
+  @ViewChild('hiddenText') textEl: ElementRef;
   @Input() dataset: Dataset;
   annotateDataStep: FormGroup;
   tableSettings: Settings;
   screenIsSmall: boolean = false;
-
+  renameWidth: number = 100;
 
   constructor(private formBuilder: FormBuilder, private responsive: BreakpointObserver) {
     this.annotateDataStep = this.formBuilder.group({
       address: ['', Validators.required]
     });
   }
+
 
   ngOnInit() {
     this.tableSettings = {
@@ -34,23 +35,12 @@ export class AnnotateDatasetComponent implements OnInit {
       addColumnButton: true
     };
     this.responsive.observe(Breakpoints.Small).subscribe(result => this.screenIsSmall = result.matches);
-    // this.responsive.observe(Breakpoints.Small)
-    //   .subscribe(result => {
-    //     if (result.matches) {
-    //       this.screenIsSmall = true;
-    //     } else this.screenIsSmall = false;
-    //   });
-    // this.responsive.observe([Breakpoints.Small, Breakpoints.XSmall])
-    //   .subscribe(result => {
-    //     const breakpoints = result.breakpoints;
-    //     if (breakpoints[Breakpoints.Small] || breakpoints[Breakpoints.XSmall]) {
-    //       this.screenIsSmall = true;
-    //     } else {
-    //       this.screenIsSmall = false;
-    //     }
-    //   });
+    this.resize()
   }
 
+  resize() {
+    setTimeout(() => this.renameWidth = Math.max(100, this.textEl.nativeElement.offsetWidth));
+  }
 
 }
 

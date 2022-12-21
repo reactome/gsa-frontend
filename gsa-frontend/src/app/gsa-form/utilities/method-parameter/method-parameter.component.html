@@ -1,37 +1,47 @@
-<div class="grid-container">
-  <div class="flex-container horizontal">
-    <span> {{parameter.display_name}}</span>
-    <i class="material-icons nav-btn-margin grey-color" matTooltip="{{parameter.description}}">info_outline</i>
-  </div>
-  <div>
-    <span *ngIf="parameter.values !== undefined; else inputField" class="float-right">
-      <mat-form-field>
-        <mat-select style="padding-top: 10px" [(ngModel)]="parameter.value">
+<div [ngClass]="{'no-information': screenIsSmall, 'information': !screenIsSmall}"
+     class="grid-container">
+  <!--  'background-grey': index % 2 === 1-->
+  <i *ngIf="!screenIsSmall" class="material-icons grey" matTooltip="{{parameter.description}}">info_outline</i>
+  <div *ngIf="screenIsSmall"
+       matTooltip="{{parameter.description}}">{{parameter.display_name}}</div>
+  <div *ngIf="!screenIsSmall">{{parameter.display_name}}</div>
+  <div class="align-center justify-end">
+    <div *ngIf="parameter.values !== undefined; else inputField">
+      <mat-form-field appearance="outline" class="background-white">
+        <mat-select [(ngModel)]="parameter.value">
           <mat-option *ngFor="let value of parameter.values" [value]="value">
             {{value}}
           </mat-option>
         </mat-select>
       </mat-form-field>
-    </span>
+    </div>
     <ng-template #inputField>
-    <span [ngSwitch]="parameter.type" class="float-right">
+    <span [ngSwitch]="parameter.type">
       <ng-template [ngSwitchCase]="types.bool">
         <mat-slide-toggle [(ngModel)]="parameter.value" color="primary"></mat-slide-toggle>
       </ng-template>
       <ng-template [ngSwitchCase]="types.string">
-        <mat-form-field class="example-full-width">
-          {{parameter.value}}
-          <input matInput [(ngModel)]="parameter.value" type="text">
+        <mat-form-field appearance="outline" class="background-white">
+          <input [(ngModel)]="parameter.value" matInput type="text">
+        </mat-form-field>
+      </ng-template>
+      <ng-template [ngSwitchCase]="types.email">
+        <mat-form-field appearance="outline" class="background-white">
+          <input [(ngModel)]="parameter.value" [errorStateMatcher]="matcher" [formControl]="emailFormControl" matInput
+                 type="email">
+                    <mat-error *ngIf="emailFormControl.hasError('email')">
+                      Please enter a valid email address
+                    </mat-error>
         </mat-form-field>
       </ng-template>
       <ng-template [ngSwitchCase]="types.float">
-        <mat-form-field class="example-full-width">
-            <input matInput [(ngModel)]="parameter.value" type="number" step="0.1">
+        <mat-form-field appearance="outline" class="background-white">
+            <input [(ngModel)]="parameter.value" matInput step="0.1" type="number">
         </mat-form-field>
       </ng-template>
       <ng-template [ngSwitchCase]="types.int">
-        <mat-form-field class="example-full-width">
-          <input matInput [(ngModel)]="parameter.value" type="number">
+        <mat-form-field appearance="outline" class="background-white">
+          <input [(ngModel)]="parameter.value" matInput type="number">
         </mat-form-field>
       </ng-template>
     </span>

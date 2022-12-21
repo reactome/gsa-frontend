@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import "../node_modules/ag-grid-community/dist/styles/ag-grid.css";
 @import "../node_modules/ag-grid-community/dist/styles/ag-theme-alpine.css";
+
 html, body {
   height: 100%;
   overflow: hidden !important;
@@ -167,10 +168,25 @@ mat-icon {
 
 .warning-snackbar {
   background-color: white;
-  color: red;
+  color: #ff6200;
 }
+
 .warning-snackbar .mat-simple-snackbar-action {
   color: black !important;
+}
+
+.error-snackbar {
+  background-color: white;
+  color: red;
+}
+
+.error-snackbar .mat-simple-snackbar-action {
+  color: black !important;
+}
+
+.mat-snack-bar-container {
+  max-width: 100% !important;
+  background: white !important;
 }
 
 /*# sourceMappingURL=styles.css.map */

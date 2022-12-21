@@ -112,7 +112,7 @@ export class LoadDatasetService {
 
           let dataSummary: DataSummary = {
             id: response.data_token,
-            title: file.name,
+            title: file.name.substring(0, file.name.lastIndexOf(".")),
             type: type,
             default_parameters: [],
             parameters: []
@@ -133,6 +133,33 @@ export class LoadDatasetService {
 
         }
       )
+  }
+
+  getColumnValues(dataset: Dataset, colName: any): string[] {
+    let colIndex = dataset.table!.columns.indexOf(colName);
+    return dataset.table?.dataset.map(row => row[colIndex].value) || [];
+  }
+
+  computeColumnValues(dataset: Dataset, colName: string | undefined, group: string): string[] {
+    let colValues: string[] = this.getColumnValues(dataset, colName);
+    colValues = colValues.filter(item => item !== "");
+    const design = dataset.statisticalDesign!;
+    switch (group) {
+      case 'first':
+        if (!colValues.includes(<string>design.comparisonGroup1)) design.comparisonGroup1 = undefined;
+        break;
+      case 'second':
+        if (!colValues.includes(<string>design.comparisonGroup2)) design.comparisonGroup2 = undefined;
+        colValues = colValues.filter(val => val !== design.comparisonGroup1);
+        if (colValues.length === 1) design.comparisonGroup2 = colValues[0];
+        break;
+    }
+    return colValues;
+  }
+
+  computeValidColumns(dataset: Dataset): string[] {
+    console.log(dataset.table!.columns)
+    return dataset.table!.columns?.filter((colName) => this.computeColumnValues(dataset, colName, "default").length > 1);
   }
 
   private waitForResult(dataset: Dataset): void {

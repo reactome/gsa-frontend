@@ -1,13 +1,13 @@
-<div (click)="select()" *ngIf="data.name !== 'Example datasets'"
+<div (click)="select()"
      [ngClass]="fetchDatasetService.chosenDataset !== data ? 'dataset-card-content': 'hover-opponent'">
   <div>
     <p class="bold no-wrap">{{data.name}}</p>
     <p>{{data.description}}</p>
     <form *ngIf="fetchDatasetService.chosenDataset === data" class="background-white">
-      <div *ngFor="let param of data.parameters">
-        <gsa-import-parameter [parameter]="param"></gsa-import-parameter>
-      </div>
-      <div class="flex-container horizontal justify-center">
+      <div class="flex-container vertical gap-one align-center">
+        <div *ngFor="let param of data.parameters">
+          <gsa-import-parameter [parameter]="param"></gsa-import-parameter>
+        </div>
         <button (click)="loadData()" class="blue-border" color="primary" mat-stroked-button type="submit">Import
         </button>
       </div>

@@ -20,7 +20,13 @@ export interface StatisticalDesign {
   analysisGroup?: string;
   comparisonGroup1?: string;
   comparisonGroup2?: string;
-  covariances: string[];
+  covariances: Covariate[];
+  // covariances: string[];
+}
+
+export interface Covariate {
+  name: string;
+  value: boolean;
 }
 
 export interface Dataset {

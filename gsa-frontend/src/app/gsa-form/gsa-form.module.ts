@@ -48,11 +48,13 @@ import {
 import {MatDialogModule} from "@angular/material/dialog";
 import {AddDatasetButtonComponent} from './datasets/annotate-dataset/add-dataset-button/add-dataset-button.component';
 import {ChangeAnalysisParamsComponent} from './datasets/change-analysis-params/change-analysis-params.component';
-
+import {ScrollableComponent} from './utilities/scrollable/scrollable.component';
+import { SaveDatasetButtonComponent } from './datasets/annotate-dataset/save-dataset-button/save-dataset-button.component';
+import { WarningSnackbarComponent } from './datasets/annotate-dataset/add-dataset-button/warning-snackbar/warning-snackbar.component';
 
 @NgModule({
   declarations: [
-    AnalysisMethodsComponent, MethodComponent, MethodParameterComponent, SelectDatasetComponent, ExampleDataComponent, AnnotateDatasetComponent, StepperComponent, LocalDataComponent, ImportDataComponent, ImportParameterComponent, LoadingProgressComponent, TableComponent, StatisticalDesignComponent, DropdownComponent, NestedStepperComponent, OptionsComponent, AnalysisComponent, EditColumnsComponent, EditCellsComponent, StepperAnnotateComponent, AddDatasetButtonComponent, ChangeAnalysisParamsComponent
+    AnalysisMethodsComponent, MethodComponent, MethodParameterComponent, SelectDatasetComponent, ExampleDataComponent, AnnotateDatasetComponent, StepperComponent, LocalDataComponent, ImportDataComponent, ImportParameterComponent, LoadingProgressComponent, TableComponent, StatisticalDesignComponent, DropdownComponent, NestedStepperComponent, OptionsComponent, AnalysisComponent, EditColumnsComponent, EditCellsComponent, StepperAnnotateComponent, AddDatasetButtonComponent, ChangeAnalysisParamsComponent, ScrollableComponent, SaveDatasetButtonComponent, WarningSnackbarComponent
   ],
   exports: [
     StepperComponent

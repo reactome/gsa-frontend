@@ -8,6 +8,7 @@ import {MatStepper} from "@angular/material/stepper";
 import {Dataset} from "../../model/dataset.model";
 import {MatDialog} from "@angular/material/dialog";
 import {ChangeAnalysisParamsComponent} from "../../datasets/change-analysis-params/change-analysis-params.component";
+import {ScrollService} from "../../services/scroll.service";
 
 @Component({
   selector: 'gsa-nested-stepper',
@@ -22,7 +23,8 @@ export class NestedStepperComponent implements AfterViewInit, AfterViewChecked {
   @ViewChild("statisticalDesign") statisticalDesignComponent: StatisticalDesignComponent
   @Input() dataset: Dataset;
 
-  constructor(public loadDatasetService: LoadDatasetService, private cdr: ChangeDetectorRef, public analysisService: AnalysisService, public dialog: MatDialog) {
+  constructor(public loadDatasetService: LoadDatasetService, private cdr: ChangeDetectorRef, public analysisService: AnalysisService, public dialog: MatDialog,
+              public scrollService: ScrollService) {
   }
 
 
@@ -45,7 +47,7 @@ export class NestedStepperComponent implements AfterViewInit, AfterViewChecked {
 
   setValidStatisticalDesign() {
     if (this.dataset.statisticalDesign?.analysisGroup !== undefined) {
-      if (this.dataset.table?.columns.indexOf(this.dataset.statisticalDesign!.analysisGroup) === -1) {
+      if (!this.dataset.table?.columns.includes(this.dataset.statisticalDesign!.analysisGroup)) {
         this.dataset.statisticalDesign!.analysisGroup = undefined;
       }
     }
@@ -71,10 +73,18 @@ export class NestedStepperComponent implements AfterViewInit, AfterViewChecked {
 
 
   setStep() {
+    this.updateScroll();
     if (this.dataset.saved) {
-      setTimeout(() => {
-        this.stepper.selectedIndex = 1
-      });
+      setTimeout(() => this.stepper.selectedIndex = 1);
     }
+  }
+
+  updateScroll() {
+    setTimeout(() => this.scrollService.triggerResize(), 300);
+  }
+
+  checkAnnotationData(): boolean {
+    return this.loadDatasetService?.computeValidColumns(this.dataset).length > 0;
+
   }
 }

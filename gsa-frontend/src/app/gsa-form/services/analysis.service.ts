@@ -10,6 +10,7 @@ import {Request} from "../model/analysis.model";
 import {catchError, throwError} from "rxjs";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -39,6 +40,8 @@ export class AnalysisService {
   }
 
   submitQuery(): void {
+    // @ts-ignore
+    // @ts-ignore
     const query: Request.Query = {
       methodName: this.analysisMethodService.selectedMethod?.name || "Method name",
       parameters: this.analysisMethodService.selectedMethod?.parameters.map(param => ({
@@ -60,28 +63,46 @@ export class AnalysisService {
             group1: dataset.statisticalDesign!.comparisonGroup1 as string,
             group2: dataset.statisticalDesign!.comparisonGroup2 as string,
           },
-        }
+          // [key.name in dataset.statisticalDesign!.covariances]: string;
+        },
       })),
     };
+    query.datasets.forEach(queryDataset => {
+      let origDataset: Dataset = this.findOrigDataset(queryDataset.data);
+      origDataset.statisticalDesign?.covariances.filter(covariate => covariate.name !== origDataset.statisticalDesign?.analysisGroup).forEach(cov => {
+        queryDataset.design[cov.name] = this.getColumnValues(origDataset, cov.name);
+      })
+    })
     this.createReports = query.parameters.some(param => param.name === 'create_reports' && param.value);
     this.http.post(this.submitAnalysisUrl, query, {responseType: 'text'})
       .pipe(catchError((err: Error) => {
         this.snackBar.open("The analysis could not be performed: \n" + err.message, "Close", {
-          panelClass: ['warning-snackbar'],
-          duration: 10000
+          panelClass: ['warning-snackbar']
         });
+
+        clearInterval(this.timer);
         return throwError(err);    //Rethrow it back to component
       }))
       .subscribe(response => this.analysisID = response);
+  }
+
+  findOrigDataset(datasetID: string): Dataset {
+    return this.datasets.filter(dataset => dataset.summary?.id === datasetID)[0]
+  }
+
+
+  getColumnValues(dataset: Dataset, colName: string): string[] {
+    let colIndex = dataset.table!.columns.indexOf(colName);
+    return dataset.table?.dataset.map(row => row[colIndex].value) || [];
   }
 
   processAnalysisResult(): void {
     this.http.get<any>(this.analysisResultUrl + this.analysisID)
       .pipe(catchError((err: Error) => {
         this.snackBar.open("The analysis could not been performed: \n" + err.message, "Close", {
-          panelClass: ['warning-snackbar'],
-          duration: 10000
+          panelClass: ['warning-snackbar']
         });
+        clearInterval(this.timer);
         return throwError(err);    //Rethrow it back to component
       }))
       .subscribe((result: AnalysisResult) => {
@@ -100,9 +121,9 @@ export class AnalysisService {
     this.http.get<LoadingStatus>(this.analysisStatusUrl + this.analysisID)
       .pipe(catchError((err: Error) => {
         this.snackBar.open("The analysis could not be performed: \n" + err.message, "Close", {
-          panelClass: ['warning-snackbar'],
-          duration: 10000
+          panelClass: ['warning-snackbar']
         });
+        clearInterval(this.timer);
         return throwError(err);    //Rethrow it back to component
       }))
       .subscribe((status) => {
@@ -123,9 +144,9 @@ export class AnalysisService {
     this.http.get<LoadingStatus>(this.reportStatusUrl + this.analysisID)
       .pipe(catchError((err: Error) => {
         this.snackBar.open("The reports could not been loaded: \n" + err.message, "Close", {
-          panelClass: ['warning-snackbar'],
-          duration: 10000
+          panelClass: ['warning-snackbar']
         });
+        clearInterval(this.timer);
         return throwError(err);    //Rethrow it back to component
       }))
       .subscribe((status) => {

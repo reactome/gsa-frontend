@@ -1,29 +1,31 @@
 <div [formGroup]="selectDatasetStep" class="flex-container vertical">
   <div
     class="flex-container gap-one horizontal ">
-    <!--    [ngClass]="{'first-divider-vertical': firstDividerVertical,
-      'first-divider-horizontal': !firstDividerVertical,
-      'second-divider-vertical': secondDividerVertical,
-      'second-divider-horizontal': !secondDividerVertical}-->
-    <div class="flex-one first-divider">
+    <div class="flex-one">
       <h2>Local Dataset</h2>
-      <div *ngFor="let data of localData$ | async">
+      <div *ngFor="let data of localData$ | async" class="margin-bottom-10" class="margin-bottom-10">
         <gsa-local-data [data]="data" [dataset]="dataset"></gsa-local-data>
       </div>
     </div>
 
-    <div class="flex-one second-divider">
+    <div class="flex-one">
       <h2>Example Dataset</h2>
-      <div *ngFor="let data of exampleData$ | async">
+      <div *ngFor="let data of exampleData$ | async" class="margin-bottom-10">
         <gsa-example-data [data]="data" [dataset]="dataset"></gsa-example-data>
       </div>
     </div>
 
     <div class="flex-one">
-      <h2>Exterior Dataset</h2>
-      <div *ngFor="let data of importData$ | async">
-        <gsa-import-data [data]="data" [dataset]="dataset"></gsa-import-data>
+      <h2>Public Dataset</h2>
+      <div *ngFor="let data of importData$ | async" class="margin-bottom-10">
+        <gsa-import-data *ngIf="data.name !== 'Example datasets'" [data]="data" [dataset]="dataset"></gsa-import-data>
       </div>
     </div>
+
+    <!--    <div class="flex-one">-->
+    <!--      <h2>Dataset Library</h2>-->
+    <!--      <gsa-dataset-library [dataset]="dataset" [searchData]="librarySearchData"></gsa-dataset-library>-->
+    <!--    </div>-->
+
   </div>
 </div>

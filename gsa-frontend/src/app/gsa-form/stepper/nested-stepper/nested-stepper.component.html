@@ -1,4 +1,5 @@
-<mat-expansion-panel #mep="matExpansionPanel" (opened)="setStep()" [expanded]="!dataset.saved" hideToggle>
+<mat-expansion-panel #mep="matExpansionPanel" (closed)="updateScroll()" (opened)="setStep()" [expanded]="!dataset.saved"
+                     hideToggle>
   <mat-expansion-panel-header class="padding-left-zero">
     <div *ngIf="dataset.saved; else unsaved" class="border-blue-left">
       <div class=" background-blue saved flex-container align-center justify-center"><span class="no-wrap">Saved</span>
@@ -56,7 +57,7 @@
       </div>
     </mat-step>
 
-    <mat-step #annotate [completed]="true">
+    <mat-step #annotate [completed]="dataset.table !== undefined && checkAnnotationData() ">
       <ng-template matStepLabel>Annotate your dataset</ng-template>
       <div class="flex-container align-center vertical">
         <button [disabled]="dataset.saved" class="nav-button-margin" color="accent" mat-fab matStepperPrevious>
@@ -64,7 +65,9 @@
         </button>
         <gsa-annotate-dataset *ngIf="nestedStepper.selected == annotate" [dataset]="dataset"
                               class="width-hundred"></gsa-annotate-dataset>
-        <button (click)="setValidStatisticalDesign()" class="nav-button-margin" color="accent" mat-fab matStepperNext>
+        <button (click)="setValidStatisticalDesign()" [disabled]="!annotate.completed" class="nav-button-margin"
+                color="accent" mat-fab
+                matStepperNext>
           <mat-icon>keyboard_arrow_down</mat-icon>
         </button>
       </div>

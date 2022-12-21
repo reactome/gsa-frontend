@@ -1,0 +1,9 @@
+<div #scrollable (scroll)="scrolling()" [ngClass]="{'overflow-hide': !scroll}"
+     class="center-vertical width-hundred relative flex-container align-center justify-center scrollbar">
+  <div class="flex-container vertical justify-center align-center width-98">
+    <div *ngIf="shadows.top" class="shadow shadow-top width-hundred"></div>
+    <ng-content></ng-content>
+
+    <div *ngIf="shadows.bottom" class="shadow shadow-bottom width-hundred"></div>
+  </div>
+</div>

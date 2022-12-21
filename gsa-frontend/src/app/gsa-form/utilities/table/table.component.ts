@@ -12,7 +12,6 @@ import {
 import {CellInfo, Settings} from "../../model/table.model";
 import {Clipboard} from '@angular/cdk/clipboard';
 import {MatButton} from "@angular/material/button";
-import row from "ag-grid-enterprise/dist/lib/excelExport/files/xml/row";
 
 
 type CellCoord = { x: number, y: number, parentElement: any };
@@ -71,16 +70,14 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   ngOnInit(): void {
     this.settings = {...this.defaultSettings, ...this.userSettings};
     // Define coordinate for input field
-    this.firstSelected = new CellInfo(undefined, 0, 0);
-    this.lastSelected = new CellInfo(undefined, 0, 0);
-    this.renameValue = this.settings.data[0][0].value;
+    this.firstSelected = new CellInfo(undefined, 0, -1);
+    this.lastSelected = new CellInfo(undefined, 0, -1);
+    this.renameValue = this.settings.columns[0];
   }
 
   ngAfterViewInit() {
     // Now we can find the HTML elements since they are initialised
-    this.firstSelected = new CellInfo(undefined, 0, 0, this.getRelativeCoords(this.getHTMLCellElement(0, 0)));
-    this.lastSelected = new CellInfo(undefined, 0, 0);
-    this.renameValue = this.settings.data[0][0].value;
+    this.setFirstElement()
     this.cd.detectChanges()
   }
 
@@ -147,7 +144,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   deselect() {
-    this.renameCell();
+    if (this.settings.columns.length > 0) this.renameCell();
     this.showSelected("remove");
     this.input?.nativeElement?.classList.remove("selected");
     this.lastSelected = this.firstSelected
@@ -160,19 +157,24 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   addColumn() {
+    console.log(this.firstSelected)
     this.deselect();
+    console.log("Hier", this.settings.columns)
     this.settings.columns.push("Annotation" + (this.settings.columns.length + 1));
+    console.log("Hier", this.settings.columns)
     this.settings.data.forEach((row) => row.push(new CellInfo()));
     setTimeout(() => this.focusOnCell(this.settings.columns.length - 1, -1));
     this.firstSelected = new CellInfo(undefined, this.settings.columns.length - 1, -1)
     this.lastSelected = new CellInfo(undefined, this.settings.columns.length - 1, -1)
+    console.log("Hier", this.settings.columns)
+
 
   }
 
   changeValue($event: MouseEvent) {
     $event.preventDefault();
     let cell = this.getCell($event);
-    this.firstSelected = new CellInfo(undefined, cell.x, cell.y, this.getRelativeCoords(cell.parentElement));
+    setTimeout(() => this.firstSelected = new CellInfo(undefined, cell.x, cell.y, this.getRelativeCoords(cell.parentElement)));
     this.showChangeInput();
   }
 
@@ -210,9 +212,9 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   renameCell() {
-    if (this.firstSelected.x === -1) { // It is a column
+    if (this.firstSelected.y === -1) { // It is a column
       this.settings.columns[this.firstSelected.x] = this.renameValue;
-    } else if (this.firstSelected.y === -1) { // It is a row
+    } else if (this.firstSelected.x === -1) { // It is a row
       this.settings.rows[this.firstSelected.y] = this.renameValue;
     } else { // It is a cell
       this.settings.data[this.firstSelected.y][this.firstSelected.x].value = this.renameValue;
@@ -222,7 +224,10 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   deleteColumn($event: MouseEvent, y: number) {
     $event.preventDefault();
     $event.stopPropagation();
+    console.log(y, this.settings.columns)
     this.settings.columns.splice(y, 1);
+    console.log(y, this.settings.columns)
+
     this.settings.data.forEach((row) => row.splice(y, 1));
     this.renameVisible = false;
   }
@@ -281,12 +286,8 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     return list[index - 1] || list[0];
   }
 
-  unfocusTable(x: number, y: number): boolean {
-    if (this.rowEndExceeded(x + 1) && this.columnEndExceeded(y + 1)) {
-      this.renameVisible = false;
-      setTimeout(() => this.columnButton.focus());
-      return true
-    } else if (this.rowBeginExceeded(x - 1) && this.columnBeginExceeded(y - 1)) {
+  unfocusTableBegin(x: number, y: number): boolean {
+    if (this.rowBeginExceeded(x - 1) && this.columnBeginExceeded(y - 1)) {
       this.blurInput();
       setTimeout(() => this.input.nativeElement.blur());
       var nextEl = this.findPreviousTabStop(this.input.nativeElement);
@@ -296,11 +297,31 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     return false
   }
 
+  unfocusTableEnd(x: number, y: number): boolean {
+    if (this.rowEndExceeded(x + 1) && this.columnEndExceeded(y + 1)) {
+      this.renameVisible = false;
+      setTimeout(() => this.columnButton.focus());
+      return true
+    }
+    return false
+  }
+
+  focusLastCell($event: any) {
+    setTimeout(() => {
+      let [x, y] = [this.settings.columns.length - 1, this.settings.rows.length - 1]
+      let parentElement = this.getHTMLCellElement(x, y);
+
+      this.firstSelected = new CellInfo(undefined, x, y, this.getRelativeCoords(parentElement as HTMLElement));
+      this.lastSelected = new CellInfo(undefined, x, y, this.getRelativeCoords(parentElement as HTMLElement));
+      this.showSelected("add")
+      this.showChangeInput();
+    }, 0);
+
+  }
 
   navigateTable($event: KeyboardEvent): void {
     let x = this.lastSelected.x;
     let y = this.lastSelected.y;
-
     const keyToAction: Map<string, () => Coord> = new Map<string, () => Coord>([
       ["ArrowRight", () => this.moveCell(x, y, "right")],
       ["ArrowLeft", () => this.moveCell(x, y, "left")],
@@ -308,13 +329,15 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       ["ArrowDown", () => this.moveCell(x, y, "down")],
       ["Enter", () => this.moveCell(x, y, "down")],
       ["Tab", () => {
+
         if ($event.shiftKey) {
-          if (this.unfocusTable(x, y)) return [-1, -1];
+          if (this.unfocusTableBegin(x, y)) return [-1, -1];
+
           [x, y] = this.moveCell(x, y, "up");
           if (y === this.settings.rows.length - 1) x -= 1;
           return [x, y];
         } else {
-          if (this.unfocusTable(x, y)) return [-1, -1];
+          if (this.unfocusTableEnd(x, y)) return [-1, -1];
 
           // this.unfocusTable(x, y);
           [x, y] = this.moveCell(x, y, "down");
@@ -343,7 +366,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
 
         }
         this.lastSelected = new CellInfo(undefined, x, y, this.getRelativeCoords(parentElement as HTMLElement));
-
         this.showSelected("add")
         this.showChangeInput();
       }, 0);
@@ -379,15 +401,17 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
 
   deleteSelectedArea() {
     let {minX, maxX, minY, maxY} = this.computeRange();
-    for (let x = minX; x <= maxX; x++) {
-      for (let y = minY; y <= maxY; y++) {
-        this.settings.data[y][x].value = ""
+    if (minX !== maxX || minY !== maxY) {
+      for (let x = minX; x <= maxX; x++) {
+        for (let y = minY; y <= maxY; y++) {
+          this.settings.data[y][x].value = ""
+        }
       }
+      this.renameValue = ""
     }
-    this.renameValue = ""
   }
 
-  copyValues() {
+  copyValues($event: any) {
     let copyText: string = ""
     let {minX, maxX, minY, maxY} = this.computeRange();
     for (let x = minX; x <= maxX; x++) {
@@ -397,9 +421,14 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       }
       if (x < maxX) copyText += "\n";
     }
-    let temp = this.firstSelected
+    const temp_selected = this.firstSelected;
+    const temp_rename = this.renameValue;
     this.clipboard.copy(copyText)
-    this.firstSelected = temp
+    setTimeout(() => {
+      this.firstSelected = temp_selected
+      this.lastSelected = temp_selected
+      this.renameValue = temp_rename
+    })
   }
 
   getHTMLCellElement(x: number, y: number):
@@ -428,11 +457,20 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   blurInput() {
-    this.renameVisible = false
-    this.renameCell()
-    this.deselect()
-    this.firstSelected = new CellInfo(undefined, 0, 0, this.getRelativeCoords(this.getHTMLCellElement(0, 0)));
-    this.lastSelected = new CellInfo(undefined, 0, 0, this.getRelativeCoords(this.getHTMLCellElement(0, 0)));
-    this.renameValue = this.settings.data[0][0].value;
+    this.renameVisible = false;
+    // this.renameCell();
+    this.deselect();
+    this.setFirstElement();
+  }
+
+
+  private setFirstElement() {
+    let y: number = this.settings.renameCols ? -1 : 0;
+    let x: number = this.settings.renameRows ? -1 : 0;
+    this.firstSelected = new CellInfo(undefined, x, y, this.getRelativeCoords(this.getHTMLCellElement(x, y)));
+    this.lastSelected = new CellInfo(undefined, x, y, this.getRelativeCoords(this.getHTMLCellElement(x, y)));
+    this.renameValue = this.settings.renameCols ?
+      this.settings.columns[this.firstSelected.x] : this.renameValue = this.settings.renameRows ?
+        this.settings.rows[this.firstSelected.y] : this.settings.data[this.firstSelected.y][this.firstSelected.x].value;
   }
 }

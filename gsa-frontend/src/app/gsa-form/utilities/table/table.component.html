@@ -1,8 +1,9 @@
 <div #root class="table-container flex horizontal relative background-white in-front width-hundred">
   <input #flyingRename (blur)="blurInput()" (change)="renameCell()"
-         (copy)="copyValues()"
+         (copy)="copyValues($event)"
          (focus)="renameVisible = true" (keydown)="navigateTableInput($event)"
-         (keydown.delete)="deleteSelectedArea()" (mouseover)="mousemove($event)"
+         (keydown.backspace)="deleteSelectedArea()" (keydown.delete)="deleteSelectedArea()"
+         (mouseover)="mousemove($event)"
          (mouseup)="mouseup()" (paste)="pasteValues($event)"
          [(ngModel)]="renameValue"
          [ngClass]="{'visible': renameVisible, 'invisible':  !renameVisible, 'z-index-2': isCell() && renameVisible, 'z-index-4':!isCell() && renameVisible}"
@@ -24,7 +25,8 @@
       </th>
       <td *ngIf="settings.addColumnButton" class="no-padding add-column-button-container" height="100px"
           rowspan="0">
-        <button #addCol (click)="addColumn()" class="add-column-button flex-container align-start" color="primary"
+        <button #addCol (click)="addColumn()" (keydown.shift.tab)="focusLastCell($event)"
+                class="add-column-button flex-container align-start" color="primary"
                 mat-stroked-button>
           <span class="sticky">Add column</span>
         </button>

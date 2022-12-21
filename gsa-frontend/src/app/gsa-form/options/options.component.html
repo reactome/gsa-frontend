@@ -1,10 +1,15 @@
 <div [formGroup]="analysisOptionsStep" class="flex-container horizontal">
 
   <mat-card>
-    <div *ngFor="let param of getDisplayParameters()">
-      <gsa-method-parameter *ngIf="param.display_name !== 'Reactome server'" [parameter]="param"></gsa-method-parameter>
+    <div class="grey-border flex-container vertical align-center justify-center">
+      <div *ngFor="let param of getDisplayParameters(); let i = index" class="param-line width-eighty">
+        <gsa-method-parameter *ngIf="param.display_name !== 'Reactome server'"
+                              [parameter]="param"></gsa-method-parameter>
+
+      </div>
     </div>
-    <br><br>
+
+    <br>
     <div class="grey">Disclaimer: We use your email address to send you a message when your Gene Set Analysis request is
       completed,
       and

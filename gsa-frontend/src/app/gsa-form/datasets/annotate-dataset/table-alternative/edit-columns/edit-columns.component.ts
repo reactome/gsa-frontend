@@ -11,6 +11,8 @@ export class EditColumnsComponent {
 
   columnStep: FormGroup;
   @Input() tableSettings: Settings;
+  @Input() datasetName: string;
+
 
   constructor(private formBuilder: FormBuilder) {
     this.columnStep = this.formBuilder.group({

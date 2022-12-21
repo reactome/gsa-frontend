@@ -169,6 +169,7 @@ mat-icon {
 
 .dataset-card-content {
   color: $primary-blue;
+  //color: black;
   padding: 10px;
   margin: 3px !important;
   border-radius: 10px;
@@ -182,7 +183,7 @@ mat-icon {
 
 .warning-snackbar {
   background-color: white;
-  color: red;
+  color: #ff6200;
 
   .mat-simple-snackbar-action {
     color: black !important;
@@ -190,4 +191,17 @@ mat-icon {
 }
 
 
+.error-snackbar {
+  background-color: white;
+  color: red;
 
+  .mat-simple-snackbar-action {
+    color: black !important;
+  }
+}
+
+.mat-snack-bar-container {
+  max-width: 100% !important;
+  background: white !important;
+
+}

@@ -48,7 +48,8 @@ export enum ParameterType {
   bool = "bool",
   float = "float",
   string = "string",
-  int = "int"
+  int = "int",
+  email = "email",
 }
 
 export class Method {

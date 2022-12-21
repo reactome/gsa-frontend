@@ -1,18 +1,20 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {MatCheckboxChange} from "@angular/material/checkbox";
-import {Dataset} from "../../model/dataset.model";
+import {Covariate, Dataset} from "../../model/dataset.model";
+import {LoadDatasetService} from "../../services/load-dataset.service";
 
 @Component({
   selector: 'gsa-statistical-design',
   templateUrl: './statistical-design.component.html',
   styleUrls: ['./statistical-design.component.scss']
 })
-export class StatisticalDesignComponent implements OnInit {
+export class StatisticalDesignComponent implements OnInit, AfterViewInit {
   @Input() dataset: Dataset
   statisticalDesignStep: FormGroup;
+  allComplete = false;
+  someComplete = false;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, public loadDatasetService: LoadDatasetService) {
     this.statisticalDesignStep = this.formBuilder.group({
       address: ['', Validators.required]
     });
@@ -24,39 +26,18 @@ export class StatisticalDesignComponent implements OnInit {
         analysisGroup: this.defaultValue(0),
         comparisonGroup1: this.defaultValue(1),
         comparisonGroup2: this.defaultValue(2),
-        covariances: []
+        covariances: this.loadDatasetService.computeValidColumns(this.dataset).map(covariate => ({
+          name: covariate,
+          value: this.isDefaultCovariate(covariate)
+        }))
       };
-      this.dataset.statisticalDesign.covariances = this.computeValidColumns().filter(covariate => this.defaultCovariate(covariate));
     }
   }
 
-  getColumn(colName: any): any[] {
-    let colIndex = this.dataset.table!.columns.indexOf(colName);
-    return this.dataset.table?.dataset.map(row => row[colIndex].value) || [];
+  ngAfterViewInit() {
+    this.updateCompleteness();
   }
 
-  computeColumnValues(colName: string | undefined, group: string): string[] {
-    let colValues: string[] = this.getColumn(colName);
-    colValues = colValues.filter((item, index) => colValues.indexOf(item) === index && item !== "");
-    switch (group) {
-      case 'first':
-        if (colValues.indexOf(<string>this.dataset.statisticalDesign!.comparisonGroup1) === -1) {
-          this.dataset.statisticalDesign!.comparisonGroup1 = undefined;
-        }
-        break;
-      case 'second':
-        if (colValues.indexOf(<string>this.dataset.statisticalDesign!.comparisonGroup2) === -1) {
-          this.dataset.statisticalDesign!.comparisonGroup2 = undefined;
-        }
-        break;
-    }
-    // colValues.splice(colValues.indexOf(""), 1)
-    return colValues;
-  }
-
-  computeValidColumns(): string[] {
-    return this.dataset.table!.columns.filter((colName) => this.computeColumnValues(colName, "default").length > 1);
-  }
 
   defaultValue(index: number): string | undefined {
     if (this.defaultStillInTable(index)) {
@@ -69,32 +50,32 @@ export class StatisticalDesignComponent implements OnInit {
     let defaultValue = this.dataset.summary?.default_parameters[index]?.value;
     switch (index) {
       case 0:
-        return this.dataset.table!.columns.indexOf(<string>defaultValue) !== -1;
+        return this.dataset.table!.columns.includes(<string>defaultValue);
       case 1 || 2:
         if (this.dataset.statisticalDesign?.analysisGroup !== undefined) {
-          return this.computeColumnValues(this.dataset.statisticalDesign?.analysisGroup, 'analysis').indexOf(<string>defaultValue) !== -1;
+          return this.loadDatasetService.computeColumnValues(this.dataset, this.dataset.statisticalDesign?.analysisGroup, 'analysis').indexOf(<string>defaultValue) !== -1;
         }
     }
     return true;
   }
 
-
-  defaultCovariate(covariate: string): boolean {
+  isDefaultCovariate(covariate: string): boolean {
     let covariates = this.dataset.summary?.default_parameters[3] !== undefined ? this.dataset.summary!.default_parameters[3].value : "";
-    return covariates.split(",").indexOf(covariate) !== -1;
+    return covariates.split(",").includes(covariate);
   }
 
-  addCovariate($event: MatCheckboxChange, covariate: string): void {
-    if ($event.checked) {
-      this.dataset.statisticalDesign!.covariances.push(covariate);
-    } else {
-      let indexCovariate = this.dataset.statisticalDesign!.covariances.indexOf(covariate);
-      this.dataset.statisticalDesign!.covariances.splice(indexCovariate, 1);
-    }
+  changeAllCovariates(value: boolean) {
+    this.dataset.statisticalDesign?.covariances.forEach(covariate => covariate.value = value);
+    this.allComplete = value;
+    this.someComplete = false;
   }
 
-  log($event: any) {
-    console.log($event)
+  updateCompleteness() {
+    this.allComplete = this.validCovariates().every(cov => cov.value);
+    this.someComplete = this.validCovariates().some(cov => cov.value) && !this.allComplete;
+  }
 
+  public validCovariates(): Covariate[] {
+    return this.dataset.statisticalDesign?.covariances.filter(covariate => this.dataset.statisticalDesign?.analysisGroup !== covariate.name) || [];
   }
 }

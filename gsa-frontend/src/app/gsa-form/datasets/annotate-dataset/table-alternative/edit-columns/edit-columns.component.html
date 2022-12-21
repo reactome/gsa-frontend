@@ -1,7 +1,11 @@
 <div [formGroup]="columnStep" class="flex-container vertical align-start">
   <div class="flex-container horizontal justify-between align-center width-hundred margin-bottom-20">
-    <h2>Edit column</h2>
-    <gsa-add-dataset-button [icon]="true" [tableSettings]="tableSettings"></gsa-add-dataset-button>
+    <h2>Edit columns</h2>
+    <div>
+      <gsa-add-dataset-button [icon]="true" [tableSettings]="tableSettings"></gsa-add-dataset-button>
+      <gsa-save-dataset-button [datasetName]="datasetName" [icon]="true"
+                               [tableSettings]="tableSettings"></gsa-save-dataset-button>
+    </div>
   </div>
   <div class="flex-container horizontal align-center">
     <div>
@@ -18,9 +22,9 @@
       </div>
     </div>
   </div>
+</div>
+<div class="flex-container horizontal justify-center">
   <button (click)="addColumn()" color="primary" mat-stroked-button>
     Add column
   </button>
-
-
 </div>

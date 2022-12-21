@@ -23,14 +23,12 @@ export class AnalysisMethodsService {
           panelClass: ['warning-snackbar'],
           duration: 10000
         });
-        return throwError(err);    //Rethrow it back to component
+        return throwError(() => err);    //Rethrow it back to component
       }))
       .subscribe((methods) => {
         this.methods = methods;
         this.methods.forEach((method) => {
-          method.parameters.forEach((param) => {
-            this.parseParamDefaultValue(param)
-          });
+          method.parameters.forEach((param) => this.parseParamDefaultValue(param));
         })
       })
   }
@@ -39,6 +37,7 @@ export class AnalysisMethodsService {
     switch (param.type) {
       case ParameterType.bool:
         param.value = param.default.toLowerCase() === "true";
+        if (param.name === 'create_reports') param.value = true
         break;
       case ParameterType.float:
         param.value = parseFloat(param.default);
@@ -47,6 +46,9 @@ export class AnalysisMethodsService {
         param.value = parseInt(param.default);
         break;
       default:
+
+        if (param.name === 'email') param.type = ParameterType.email;
+
         param.value = param.default;
     }
   }

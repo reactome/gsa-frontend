@@ -16,10 +16,13 @@ export class ChangeAnalysisParamsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.setToDefault()
+  }
+
+  setToDefault() {
     this.data.dataset.summary!.parameters = this.analysisMethodsService.selectedMethod?.parameters.filter(para =>
       para.scope !== "common").map(param => {
       return Object.assign({}, param)
     })
   }
-
 }

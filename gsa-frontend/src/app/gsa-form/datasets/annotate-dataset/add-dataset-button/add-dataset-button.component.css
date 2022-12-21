@@ -2,4 +2,13 @@
   display: none;
 }
 
+snack-bar-container {
+  width: fit-content !important;
+  max-width: 100% !important;
+}
+
+.mat-snack-bar-container {
+  max-width: 100% !important;
+}
+
 /*# sourceMappingURL=add-dataset-button.component.css.map */

@@ -15,4 +15,12 @@ h2 {
   margin: 0px !important;
 }
 
+.margin-bottom-15 {
+  margin-bottom: 15px !important;
+}
+
+.negative-margin-left {
+  margin-left: -35px;
+}
+
 /*# sourceMappingURL=statistical-design.component.css.map */

@@ -1,19 +1,24 @@
 <mat-horizontal-stepper #stepper class="background-white">
+  <mat-step-header style="padding: 0px !important"></mat-step-header>
   <mat-step #editCols [stepControl]="columnStep" label="Columns">
 
-    <div class="flex-container flex-center horizontal gap-one">
+    <div class="flex-container flex-center horizontal justify-center gap-one">
       <div class="center-vertical">
         <gsa-edit-columns
+          [datasetName]="datasetName"
           [tableSettings]="tableSettings"
           class="full-width"></gsa-edit-columns>
       </div>
     </div>
-    <button class="nav-btn-margin" color="primary" mat-raised-button matStepperNext>
-      <div class="flex-container horizontal align-center">
-        <mat-icon>keyboard_arrow_right</mat-icon>
-        Change cells
-      </div>
-    </button>
+    <div class="flex-container horizontal justify-center">
+
+      <button class="nav-btn-margin" color="primary" mat-raised-button matStepperNext>
+        <div class="flex-container horizontal align-center">
+          <mat-icon>keyboard_arrow_right</mat-icon>
+          Change cells
+        </div>
+      </button>
+    </div>
 
 
   </mat-step>
@@ -25,18 +30,21 @@
         </div>
         <div class="center-vertical">
           <div class="flex-container vertical gap-one full-width">
-            <gsa-edit-cells
-              [tableSettings]="tableSettings"
-              class="full-width"></gsa-edit-cells>
+            <gsa-edit-cells *ngIf="stepper.selected == editCells"
+                            [tableSettings]="tableSettings"
+                            class="full-width"></gsa-edit-cells>
           </div>
         </div>
       </div>
-      <button class="nav-btn-margin" color="primary" mat-raised-button matStepperPrevious>
-        <div class="flex-container horizontal align-center">
-          <mat-icon>keyboard_arrow_left</mat-icon>
-          Change columns
-        </div>
-      </button>
+      <div class="flex-container horizontal justify-center">
+
+        <button class="nav-btn-margin" color="primary" mat-raised-button matStepperPrevious>
+          <div class="flex-container horizontal align-center">
+            <mat-icon>keyboard_arrow_left</mat-icon>
+            Change columns
+          </div>
+        </button>
+      </div>
     </div>
   </mat-step>
 </mat-horizontal-stepper>

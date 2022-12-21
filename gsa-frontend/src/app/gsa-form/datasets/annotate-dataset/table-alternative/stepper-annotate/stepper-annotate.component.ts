@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {FormGroup} from "@angular/forms";
 import {MatStepper} from "@angular/material/stepper";
 import {Settings} from "../../../../model/table.model";
@@ -11,6 +11,8 @@ import {Settings} from "../../../../model/table.model";
 export class StepperAnnotateComponent {
   @Input() tableSettings: Settings;
   @ViewChild('stepper') stepper: MatStepper;
+  @Input() datasetName: string;
+
   columnStep: FormGroup;
   cellStep: FormGroup;
 

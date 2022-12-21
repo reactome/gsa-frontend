@@ -1,3 +1,8 @@
-
+.param-line {
+  box-shadow: #dbdbdb -2px 3px 4px 0;
+  padding: 0 25px;
+  margin-top: 14px;
+  background-color: rgba(243, 245, 253, 0.44);
+}
 
 /*# sourceMappingURL=options.component.css.map */
