@@ -1,0 +1,9 @@
+<div (click)="select()" class="dataset-card-content">
+  <input #fileUpload (change)="onFileSelected($event)" class="file-input" type="file">
+  <div (click)="fileUpload.click()">
+    <div>
+      <p class="bold no-wrap">{{data.name}}</p>
+      <p>{{data.description}}</p>
+    </div>
+  </div>
+</div>

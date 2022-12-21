@@ -1,0 +1,34 @@
+<div [formGroup]="annotateDataStep">
+  <div class="flex-container horizontal justify-center">
+    <div [ngClass]="screenIsSmall ? 'width-hundred': 'width-eighty'"
+         class="flex-container vertical gap-one align-center">
+      <div class="flex-container horizontal align-center justify-center gap-one">
+        <span>Dataset name:</span>
+        <mat-form-field [ngStyle]="{'width.px': renameWidth}">
+          <input #elasticInput (input)="resize()" [(ngModel)]="dataset.summary!.title"
+                 [ngModelOptions]="{standalone: true}" matInput
+                 type="text">
+        </mat-form-field>
+      </div>
+      <span #hiddenText style="visibility: hidden; white-space: pre; height: 0px">{{elasticInput.value}}</span>
+      <p class="grey">Please add the annotations for the given dataset. The minimum requirement is to specify one
+        annotation (comparison group). For example, "Group" with values "Treatment" and "Control").</p>
+      <ng-container *ngIf="!screenIsSmall; else big">
+        <div class="align-center flex-container justify-center gap-one vertical width-hundred">
+          <gsa-table [userSettings]="tableSettings" class="width-hundred"></gsa-table>
+          <div class="flex-container horizontal gap-one">
+            <gsa-add-dataset-button [icon]="false" [tableSettings]="tableSettings"></gsa-add-dataset-button>
+            <gsa-save-dataset-button [datasetName]="dataset.summary!.title!" [icon]="false"
+                                     [tableSettings]="tableSettings"></gsa-save-dataset-button>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #big>
+        <gsa-stepper-annotate [datasetName]="dataset.summary!.title!" [tableSettings]="tableSettings"
+                              class="width-hundred"></gsa-stepper-annotate>
+      </ng-template>
+    </div>
+  </div>
+</div>
+
+

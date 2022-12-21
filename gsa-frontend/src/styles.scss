@@ -1,0 +1,211 @@
+/* You can add global styles to this file, and also import other style files */
+@import "../node_modules/ag-grid-community/dist/styles/ag-grid.css";
+@import "../node_modules/ag-grid-community/dist/styles/ag-theme-alpine.css";
+
+:root {
+  --background-grey: #eff2ff;
+  --primary-blue: #0e7cb3;
+  --primary-blue-hover: #1e95cf;
+  --button-blue-hover: #177dc0;
+  --button-blue: #1e94d0;
+  --warning: #ff6200;
+  --grey: 164, 164, 164;
+}
+
+
+html, body {
+  height: 100%;
+  overflow: hidden !important;
+}
+
+body {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: var(--background-grey);
+  margin: 8px;
+}
+
+//Colors
+.background-grey {
+  background-color: var(--background-grey);
+}
+
+.background-white {
+  background-color: white;
+}
+
+.background-blue {
+  background-color: var(--primary-blue);
+}
+
+.grey {
+  color: grey;
+}
+
+
+h1 {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+  font-weight: bold !important;
+}
+
+//Width
+
+.width-forty {
+  width: 40%;
+}
+
+.width-fifty {
+  width: 50%;
+}
+
+.width-sixty {
+  width: 60%;
+}
+
+.width-seventy {
+  width: 70%;
+}
+
+.width-eighty {
+  width: 80%;
+}
+
+.width-hundred {
+  width: 100%;
+}
+
+.height-eighty {
+  height: 80%;
+}
+
+.height-hundred {
+  height: 100%;
+}
+
+.relative {
+  position: relative;
+}
+
+.margin-left-10 {
+  margin-left: 10px;
+}
+
+.blue-border {
+  border: 2px solid var(--primary-blue) !important;
+}
+
+/*Fonts*/
+
+.bold {
+  font-weight: bold;
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.flex {
+  display: flex;
+}
+
+/*Flexbox*/
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.flex-one {
+  flex: 1;
+}
+
+.gap-one {
+  gap: 1em;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.align-start {
+  align-items: start;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-evenly {
+  justify-content: space-evenly;
+}
+
+.horizontal {
+  flex-direction: row;
+}
+
+.vertical {
+  flex-direction: column;
+}
+
+
+//Angular Material
+mat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mat-vertical-content {
+  padding-right: 0 !important;
+}
+
+.expansion-panel-margin {
+  margin-top: 16px !important;
+}
+
+.dataset-card-content {
+  color: var(--primary-blue);
+  //color: black;
+  padding: 10px;
+  margin: 3px !important;
+  border-radius: 10px;
+  border: 1px solid var(--primary-blue);
+}
+
+.dataset-card-content:hover {
+  background: rgba(var(--primary-blue), 0.2);
+  cursor: pointer;
+}
+
+.warning-snackbar {
+  background-color: white;
+  color: var(--warning);
+
+  .mat-simple-snackbar-action {
+    color: black !important;
+  }
+}
+
+
+.error-snackbar {
+  background-color: white;
+  color: red;
+
+  .mat-simple-snackbar-action {
+    color: black !important;
+  }
+}
+
+.mat-snack-bar-container {
+  max-width: 100% !important;
+  background: white !important;
+
+}

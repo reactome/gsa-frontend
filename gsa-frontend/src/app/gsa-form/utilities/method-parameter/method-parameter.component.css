@@ -1,0 +1,30 @@
+.grid-container {
+  display: grid;
+  justify-content: space-between;
+  align-items: center;
+  grid-template-rows: 70px;
+  gap: 1em;
+}
+
+.information {
+  grid-template-columns: 1fr 6fr 6fr;
+}
+
+.no-information {
+  grid-template-columns: 1.5fr 4fr;
+}
+
+.justify-end {
+  justify-self: end;
+}
+
+::ng-deep .mat-form-field-wrapper {
+  padding: 0px;
+  margin: 0px !important;
+}
+
+mat-form-field {
+  flex: 2;
+}
+
+/*# sourceMappingURL=method-parameter.component.css.map */

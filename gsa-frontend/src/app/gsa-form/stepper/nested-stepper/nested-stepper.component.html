@@ -1,0 +1,93 @@
+<mat-expansion-panel #mep="matExpansionPanel" (closed)="updateScroll()" (opened)="setStep()" [expanded]="!dataset.saved"
+                     hideToggle>
+  <mat-expansion-panel-header class="padding-left-zero">
+    <div *ngIf="dataset.saved; else unsaved" class="border-blue-left">
+      <div class=" background-blue saved flex-container align-center justify-center"><span class="no-wrap">Saved</span>
+      </div>
+    </div>
+    <ng-template #unsaved>
+      <div class="border-grey-left">
+        <div class=" background-lightgrey saved flex-container align-center justify-center"><span class="no-wrap"> Not Saved</span>
+        </div>
+      </div>
+    </ng-template>
+    <div class="flex-container width-hundred horizontal align-center justify-between">
+
+      <div *ngIf="dataset.summary === undefined; else title" class="italic">New Dataset</div>
+      <ng-template #title>
+        <div class="flex-container vertical justify-center">
+          <span class="bold">{{dataset.summary?.title}}</span>
+          <span
+            *ngIf="dataset.statisticalDesign?.analysisGroup"> {{dataset.statisticalDesign?.analysisGroup}}
+            :
+            <span *ngIf="dataset.statisticalDesign?.comparisonGroup1">
+                  {{dataset.statisticalDesign?.comparisonGroup1}}
+              vs. {{dataset.statisticalDesign?.comparisonGroup2}}
+          </span></span>
+        </div>
+      </ng-template>
+      <div class="flex-container horizontal align-center justify-center">
+        <button (click)="changeParameters($event)" [disabled]="dataset.summary?.parameters == undefined"
+                color="primary"
+                mat-icon-button
+                matTooltip="Edit analysis parameters of specific dataset"><span
+          class="material-icons">bar_chart</span>
+        </button>
+        <button (click)="deleteDataset($event)" color="primary"
+                mat-icon-button
+                matTooltip="Delete dataset"><span
+          class="material-icons">delete</span>
+        </button>
+      </div>
+
+    </div>
+  </mat-expansion-panel-header>
+
+  <mat-vertical-stepper #nestedStepper linear>
+    <mat-step #select [completed]="dataset.table !== undefined">
+      <ng-template matStepLabel>Select a dataset</ng-template>
+      <div class="flex-container align-center vertical">
+        <gsa-select-dataset *ngIf="nestedStepper.selected == null || nestedStepper.selected == select"
+                            [dataset]="dataset"
+                            class="width-hundred"></gsa-select-dataset>
+        <button [disabled]="!select.completed" class="nav-button-margin" color="accent" mat-fab
+                matStepperNext>
+          <mat-icon>keyboard_arrow_down</mat-icon>
+        </button>
+      </div>
+    </mat-step>
+
+    <mat-step #annotate [completed]="dataset.table !== undefined && checkAnnotationData() ">
+      <ng-template matStepLabel>Annotate your dataset</ng-template>
+      <div class="flex-container align-center vertical">
+        <button [disabled]="dataset.saved" class="nav-button-margin" color="accent" mat-fab matStepperPrevious>
+          <mat-icon>keyboard_arrow_up</mat-icon>
+        </button>
+        <gsa-annotate-dataset *ngIf="nestedStepper.selected == annotate" [dataset]="dataset"
+                              class="width-hundred"></gsa-annotate-dataset>
+        <button (click)="setValidStatisticalDesign()" [disabled]="!annotate.completed" class="nav-button-margin"
+                color="accent" mat-fab
+                matStepperNext>
+          <mat-icon>keyboard_arrow_down</mat-icon>
+        </button>
+      </div>
+    </mat-step>
+
+    <mat-step #statisticalDesign [completed]="checkStatisticalDesign()">
+      <ng-template matStepLabel>Statistical Design</ng-template>
+      <div class="flex-container align-center vertical">
+        <button class="nav-button-margin" color="accent" mat-fab matStepperPrevious>
+          <mat-icon>keyboard_arrow_up</mat-icon>
+        </button>
+        <gsa-statistical-design *ngIf="nestedStepper.selected == statisticalDesign" [dataset]="dataset"
+                                class="width-hundred"></gsa-statistical-design>
+        <button (click)="saveData(); nestedStepper.selected = annotate; mep.expanded = false;"
+                [disabled]="!statisticalDesign.completed" class="nav-button-margin"
+                color="primary"
+                mat-raised-button>
+          Save Dataset
+        </button>
+      </div>
+    </mat-step>
+  </mat-vertical-stepper>
+</mat-expansion-panel>

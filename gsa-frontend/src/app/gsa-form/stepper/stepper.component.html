@@ -1,0 +1,106 @@
+<mat-horizontal-stepper #stepper [linear]="true" class="background-grey">
+  <mat-step #addMethod [completed]="analysisMethodsService.selectedMethod !== undefined">
+
+    <ng-template matStepLabel>Select method</ng-template>
+    <h1>Step 1: Select one of the available analysis methods</h1>
+
+    <div class="flex-container horizontal gap-one justify-evenly">
+      <div class="nav-button-container"></div>
+      <gsa-scrollable class="width-seventy">
+        <gsa-analysis-methods class="width-hundred "></gsa-analysis-methods>
+      </gsa-scrollable>
+
+      <div class="nav-button-container align-center flex-container justify-center vertical">
+        <button [disabled]="!addMethod.completed" class="margin-top-30" color="primary"
+                mat-fab
+                matStepperNext>
+          <mat-icon>keyboard_arrow_right</mat-icon>
+        </button>
+        <div class="grey margin-top-10">Continue</div>
+      </div>
+    </div>
+  </mat-step>
+
+
+  <mat-step #addData [completed]="analysisService.allDatasetsSaved()">
+    <ng-template matStepLabel>Add datasets</ng-template>
+    <h1>Step 2: Add and annotate your datasets</h1>
+    <div class="flex-container horizontal gap-one justify-evenly">
+      <div class="nav-button-container align-center flex-container justify-center vertical">
+        <button class="margin-top-30" color="primary" mat-fab matStepperPrevious>
+          <mat-icon>keyboard_arrow_left</mat-icon>
+        </button>
+        <div class="grey margin-top-10">Back</div>
+      </div>
+      <gsa-scrollable #scrollable [bottomMargin]="57" class="width-seventy">
+        <mat-accordion (change)="scrollable.updateShadows()" class="width-hundred" multi="false">
+          <div *ngFor="let data of analysisService.datasets; let i = index " class="gap-one">
+            <gsa-nested-stepper *ngIf="i === 0 else margin" [dataset]="data" class="width-hundred"></gsa-nested-stepper>
+            <ng-template #margin>
+              <div class="expansion-panel-margin">
+                <gsa-nested-stepper [dataset]="data"></gsa-nested-stepper>
+              </div>
+            </ng-template>
+          </div>
+        </mat-accordion>
+        <!--        </div>-->
+        <button (click)="addDataset()" class="blue-border margin-top-30" color="primary"
+                mat-stroked-button>
+          Add Dataset
+        </button>
+      </gsa-scrollable>
+
+      <div class="nav-button-container align-center flex-container justify-center vertical">
+        <button [disabled]="!addData.completed" class="margin-top-30" color="primary"
+                mat-fab
+                matStepperNext>
+          <mat-icon>keyboard_arrow_right</mat-icon>
+        </button>
+        <div class="grey margin-top-10">Continue</div>
+      </div>
+
+    </div>
+
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Options</ng-template>
+    <h1>Step 3: Analysis Options</h1>
+    <div class="flex-container horizontal gap-one justify-evenly">
+      <div class="nav-button-container align-center justify-center flex-container vertical">
+        <button class="margin-top-30" color="primary" mat-fab matStepperPrevious>
+          <mat-icon>keyboard_arrow_left</mat-icon>
+        </button>
+        <div class="grey margin-top-10">Back</div>
+      </div>
+      <gsa-scrollable #scrollable [bottomMargin]="57" class="width-seventy">
+        <gsa-options class="width-hundred"></gsa-options>
+      </gsa-scrollable>
+      <div class="nav-button-container align-center justify-center flex-container vertical">
+        <button (click)="this.analysisService.loadAnalysis()"
+                class="margin-top-30" color="primary" mat-fab matStepperNext>
+          <mat-icon>keyboard_arrow_right</mat-icon>
+        </button>
+        <div class="grey margin-top-10">Continue</div>
+      </div>
+    </div>
+  </mat-step>
+
+
+  <mat-step #analysis>
+    <ng-template matStepLabel>Analysis</ng-template>
+    <h1>Step 4: Analysis</h1>
+    <div class="flex-container horizontal gap-one justify-evenly">
+      <div class="nav-button-container align-center justify-center flex-container vertical">
+        <button class="margin-top-30" color="primary" mat-fab matStepperPrevious>
+          <mat-icon>keyboard_arrow_left</mat-icon>
+        </button>
+        <div class="grey margin-top-10">Back</div>
+      </div>
+      <gsa-scrollable #scrollable [bottomMargin]="57" class="width-seventy">
+        <gsa-analysis class="width-hundred"></gsa-analysis>
+      </gsa-scrollable>
+      <div class="nav-button-container align-center justify-center flex-container"></div>
+    </div>
+  </mat-step>
+</mat-horizontal-stepper>
+

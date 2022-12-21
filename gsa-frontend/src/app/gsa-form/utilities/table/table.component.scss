@@ -1,0 +1,140 @@
+
+.table-container {
+  overflow: auto;
+  //max-height: 50vh;
+  border: 1px solid lightgray;
+
+  //justify-content: safe center;
+}
+
+table {
+  margin: auto;
+  border-collapse: collapse;
+
+}
+
+th, td,
+{
+  min-height: 50px;
+  padding: 0.25em;
+  min-width: 5%;
+  border-bottom: 1px solid lightgray;
+  border-right: 1px solid lightgray;
+}
+
+.no-padding {
+  padding: 0px;
+}
+
+.add-column-button-container {
+  max-width: 5%;
+}
+
+.sticky {
+  height: 10px;
+  position: sticky;
+  bottom: calc(50% - 10px);
+  top: calc(50% - 10px);
+}
+
+.add-column-button {
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+  border-radius: 0px;
+}
+
+.add-column-button:focus-visible {
+  border: 2px solid var(--primary-blue) !important;
+
+
+}
+
+
+.bin-button:focus-visible {
+  outline: none !important;
+}
+
+td {
+  padding-left: 10px;
+  padding-right: 10px;
+  z-index: 1;
+}
+
+.no-border {
+  border-right: 1px solid white;
+}
+
+.in-front {
+  z-index: 6;
+}
+
+th {
+  position: sticky;
+  left: 0;
+  top: 0;
+  background: #e8e8e8;
+}
+
+.rows {
+  z-index: 3;
+  margin-right: 20px;
+}
+
+.columns {
+  z-index: 3;
+  text-align: left;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.delete-col-button {
+  height: 25px;
+  width: 25px;
+}
+
+
+.selected {
+  background: rgba(14, 101, 235, 0.1);
+}
+
+input {
+  background: white;
+  padding-left: 10px;
+  padding-right: 10px;
+  scroll-margin-left: 200px;
+  scroll-margin-right: 200px;
+}
+
+.visible {
+  box-shadow: 0px 0px 0px 2px rgb(14, 101, 235) inset;
+}
+
+.invisible {
+  z-index: 0;
+}
+
+.z-index-2 {
+  z-index: 2;
+}
+
+.z-index-4 {
+  z-index: 4;
+}
+
+:focus-visible {
+  outline: -webkit-focus-ring-color auto 0px !important;
+  font: 400 14px / 20px Roboto, "Helvetica Neue", sans-serif !important;
+}
+
+
+.flying-rename {
+  position: absolute;
+  margin: 0;
+  border: 0;
+
+}
+
+.chosen-th {
+  background-color: lightgray;
+}

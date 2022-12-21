@@ -1,0 +1,10 @@
+.adjustable-width {
+  width: fit-content;
+  min-width: 10ch;
+}
+
+hidden-text {
+  visibility: hidden;
+  white-space: pre;
+  height: 0px
+}

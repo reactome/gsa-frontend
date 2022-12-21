@@ -1,0 +1,64 @@
+.shadow {
+  position: sticky;
+  z-index: 10;
+  top: 0px;
+  left: 1%;
+  right: 1%;
+  bottom: 0px;
+  height: 20px;
+  margin-top: -20px;
+}
+
+.shadow-bottom-transition {
+  opacity: 0;
+  transition: opacity 0ms;
+  box-shadow: 0 -10px 10px -10px #8d8c8c inset;
+}
+
+.shadow-top-transition {
+  opacity: 0;
+  transition: opacity 0ms;
+  box-shadow: 0 10px 10px -10px #8d8c8c inset;
+}
+
+.shadow-top {
+  opacity: 1;
+  box-shadow: 0 10px 10px -10px #8d8c8c inset;
+}
+
+.shadow-bottom {
+  opacity: 1;
+  box-shadow: 0 -10px 10px -10px #8d8c8c inset;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 4px;
+  background-color: var(--background-grey);
+  transition: background-color ease 3s;
+}
+
+
+.scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: rgba(var(--grey), 0.7);
+  //background-color: inherit;
+}
+
+.overflow-hide.scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--background-grey);
+}
+
+
+.center-vertical {
+  height: calc(100vh - 130px);
+  overflow-y: auto;
+  overflow-x: hidden;
+
+
+  //-ms-overflow-style: none; /* IE and Edge */
+  //scrollbar-width: none;
+}
+
+.width-98 {
+  width: 98%;
+}

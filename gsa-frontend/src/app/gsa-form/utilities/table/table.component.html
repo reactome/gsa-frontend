@@ -1,0 +1,43 @@
+<div #root class="table-container flex horizontal relative background-white in-front width-hundred">
+  <input #flyingRename (blur)="blurInput()" (change)="renameCell()"
+         (copy)="copyValues($event)"
+         (focus)="renameVisible = true" (keydown)="navigateTableInput($event)"
+         (keydown.backspace)="deleteSelectedArea()" (keydown.delete)="deleteSelectedArea()"
+         (mouseover)="mousemove($event)"
+         (mouseup)="mouseup()" (paste)="pasteValues($event)"
+         [(ngModel)]="renameValue"
+         [ngClass]="{'visible': renameVisible, 'invisible':  !renameVisible, 'z-index-2': isCell() && renameVisible, 'z-index-4':!isCell() && renameVisible}"
+         [ngModelOptions]="{standalone: true}" [style.height.px]="firstSelected.coordinate.height - 3"
+         [style.left.px]="firstSelected.coordinate.x - 1" [style.top.px]="firstSelected.coordinate.y -1"
+         [style.width.px]="firstSelected.coordinate.width - 19" class="flying-rename">
+  <table (keydown)="navigateTableDefault()" (mousedown)="mousedown($event)" (mouseover)="mousemove($event)"
+         (mouseup)="mouseup()" class="relative align-center background-white width-hundred">
+    <tr *ngIf="settings.showCols">
+      <th class="in-front border-right"></th>
+      <th *ngFor="let col of settings.columns; let x = index" [attr.x]="x" [attr.y]="-1" class="columns">
+        <div [attr.x]="x" [attr.y]="-1" class="flex horizontal align-center justify-between">
+          {{col}}
+          <button (click)="deleteColumn($event, x)" [attr.addCol]="true" class="bin-button" color="primary"
+                  mat-icon-button>
+            <span class="material-icons">delete</span>
+          </button>
+        </div>
+      </th>
+      <td *ngIf="settings.addColumnButton" class="no-padding add-column-button-container" height="100px"
+          rowspan="0">
+        <button #addCol (click)="addColumn()" (keydown.shift.tab)="focusLastCell($event)"
+                class="add-column-button flex-container align-start" color="primary"
+                mat-stroked-button>
+          <span class="sticky">Add column</span>
+        </button>
+      </td>
+    </tr>
+
+    <tr *ngFor="let row of settings.rows; let y = index">
+      <th *ngIf="settings.showRows" [attr.x]="-1" [attr.y]="y" class="border-right rows">{{row}}</th>
+      <td *ngFor="let rowVal of settings.data[y]; let x = index" [attr.x]="x" [attr.y]="y">
+        {{rowVal.value}}
+      </td>
+    </tr>
+  </table>
+</div>

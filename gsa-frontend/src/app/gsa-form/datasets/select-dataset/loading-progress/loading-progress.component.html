@@ -1,0 +1,27 @@
+<div class="flex-container justify-center align-center height-hundred">
+  <mat-dialog-content>
+    <div [ngSwitch]="loadDataService.loadingStatus?.status">
+      <div *ngSwitchCase="'running'" class="flex-container horizontal align-center">
+        <div class="flex-container vertical align-center">
+          <div class="spinner-box">
+            <mat-spinner diameter="140"></mat-spinner>
+          </div>
+          <h2 class="text-margin">Loading Dataset</h2>
+        </div>
+      </div>
+      <div *ngSwitchCase="'failed'" class="flex-container horizontal align-center">
+        <div class="flex-container vertical align-center">
+          <div class="material-icons mat-error big-size">error</div>
+          <h2 class="text-margin">{{loadDataService.loadingStatus!.description}}</h2>
+          <button color="primary" mat-dialog-close mat-raised-button>Cancel</button>
+        </div>
+      </div>
+      <div *ngSwitchCase="'complete'" class="flex-container horizontal align-center">
+        <div class="flex-container vertical align-center">
+          <div class="material-icons big-size green">check_circle</div>
+          <h2 class="text-margin">Dataset loaded</h2>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+</div>
