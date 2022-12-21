@@ -11,7 +11,6 @@ The new frontend works similar to the old implementation: https://reactome.org/u
 ## Rework of the annotation of datasets
 The annotation of the datasets has been completely reworked and redesigned. The goal is to simplify the user's work with a spreadsheet-like table.
 The user is now able to upload its datasets annotations  in CSV or TSV format. Furthermore, values can be copied from Excel or Google sheets and pasted into the table. It is also possible to copy ranges from the website table into any spreadsheet software. This new range editing also supports its deletion . Furthermore, to help the accessibility,  it is also possible to navigate through the table with the keyboard.
-For the development of this feature a lot of time was spent, because we could not use already implemented libraries for the table. Existing spreadsheet implementations are not open source and only available by subscription. Since the PathwayBrowser should be as independent as possible from third party vendors we decided to implement the table with all functions ourselves.
 
 ## Add dataset specific parameters to override method defaults
 It is possible for the user to overwrite the analysis parameters selected in the first step for individual datasets. Once a data set has been selected it is possible to click a button in the corresponding dataset header to overwrite the respective parameters.
