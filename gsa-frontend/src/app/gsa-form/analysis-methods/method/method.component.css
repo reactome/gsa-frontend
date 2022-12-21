@@ -7,25 +7,8 @@ mat-expansion-panel-header {
   border: 5px solid;
 }
 
-.background-lightgrey {
-  background: #ebebeb;
-}
-
-.background-lightergrey {
-  background: #fbfafa;
-}
-
-.border-round {
-  border-radius: 100px;
-}
-
-.padding-sides {
-  padding-right: 30px;
-  padding-left: 30px;
-}
-
 .chosen {
-  border-color: #0e7cb3;
+  border-color: var(--primary-blue);
 }
 
 .chosen:hover {
@@ -38,30 +21,24 @@ mat-expansion-panel-header {
   border-color: white;
 }
 
-.param-line {
-  box-shadow: #dbdbdb -2px 3px 4px 0;
-  padding: 0 25px;
-  margin-top: 14px;
-  background-color: rgba(243, 245, 253, 0.44);
-}
-
 .unchosen:hover {
   background: white;
   border-color: rgba(0, 0, 0, 0.04);
-}
-
-.grey-border {
-  border-top: 1px solid lightgray;
 }
 
 .unchosen:hover mat-expansion-panel-header {
   background: rgba(0, 0, 0, 0.04);
 }
 
-.grid-container {
-  display: grid;
-  grid-gap: 1em 10em;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+.grey-border {
+  border-top: 1px solid lightgray;
+}
+
+.param-line {
+  box-shadow: rgba(var(--grey), 0.7) -2px 3px 4px 0;
+  padding: 0 25px;
+  margin-top: 14px;
+  background-color: rgba(var(--grey), 0.1);
 }
 
 .margin-top-20 {

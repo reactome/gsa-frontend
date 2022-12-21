@@ -3,7 +3,7 @@
 }
 
 .card-design {
-  color: #0e7cb3;
+  color: var(--primary-blue);
   padding: 10px;
   margin: 3px !important;
   border-radius: 10px;

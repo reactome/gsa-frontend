@@ -3,7 +3,8 @@ mat-grid-list {
 }
 
 mat-grid-tile {
-  background: #f2f5fb;
+  background: rgba(var(--grey), 1);
+  opacity: 0.4;
 }
 
 .flex-parameter-container {
@@ -17,7 +18,7 @@ mat-grid-tile {
 }
 
 i {
-  color: #b7babd;
+  color: rgba(var(--grey), 1);
   margin-left: 8px;
   vertical-align: middle;
 }

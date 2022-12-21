@@ -33,17 +33,17 @@
 
 .scrollbar::-webkit-scrollbar {
   width: 4px;
-  background-color: #eff2ff;
+  background-color: var(--background-grey);
   transition: background-color ease 3s;
 }
 
 .scrollbar::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background-color: #b9b9b9;
+  background-color: rgba(var(--grey), 0.7);
 }
 
 .overflow-hide.scrollbar::-webkit-scrollbar-thumb {
-  background-color: #eff2ff;
+  background-color: var(--background-grey);
 }
 
 .center-vertical {

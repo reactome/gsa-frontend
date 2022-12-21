@@ -1,6 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
 @import "../node_modules/ag-grid-community/dist/styles/ag-grid.css";
 @import "../node_modules/ag-grid-community/dist/styles/ag-theme-alpine.css";
+:root {
+  --background-grey: #eff2ff;
+  --primary-blue: #0e7cb3;
+  --primary-blue-hover: #1e95cf;
+  --button-blue-hover: #177dc0;
+  --button-blue: #1e94d0;
+  --warning: #ff6200;
+  --grey: 164, 164, 164;
+}
 
 html, body {
   height: 100%;
@@ -9,12 +18,12 @@ html, body {
 
 body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  background-color: #eff2ff;
+  background-color: var(--background-grey);
   margin: 8px;
 }
 
 .background-grey {
-  background-color: #eff2ff;
+  background-color: var(--background-grey);
 }
 
 .background-white {
@@ -22,7 +31,7 @@ body {
 }
 
 .background-blue {
-  background-color: #0e7cb3;
+  background-color: var(--primary-blue);
 }
 
 .grey {
@@ -77,7 +86,7 @@ h1 {
 }
 
 .blue-border {
-  border: 2px solid #0e7cb3 !important;
+  border: 2px solid var(--primary-blue) !important;
 }
 
 /*Fonts*/
@@ -154,23 +163,22 @@ mat-icon {
 }
 
 .dataset-card-content {
-  color: #0e7cb3;
+  color: var(--primary-blue);
   padding: 10px;
   margin: 3px !important;
   border-radius: 10px;
-  border: 1px solid #0e7cb3;
+  border: 1px solid var(--primary-blue);
 }
 
 .dataset-card-content:hover {
-  background: rgba(14, 124, 179, 0.2);
+  background: rgba(var(--primary-blue), 0.2);
   cursor: pointer;
 }
 
 .warning-snackbar {
   background-color: white;
-  color: #ff6200;
+  color: var(--warning);
 }
-
 .warning-snackbar .mat-simple-snackbar-action {
   color: black !important;
 }
@@ -179,7 +187,6 @@ mat-icon {
   background-color: white;
   color: red;
 }
-
 .error-snackbar .mat-simple-snackbar-action {
   color: black !important;
 }

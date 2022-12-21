@@ -400,6 +400,8 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   deleteSelectedArea() {
+    setTimeout(() => this.firstSelected = new CellInfo(undefined, this.firstSelected.x, this.firstSelected.y, this.getRelativeCoords(this.getHTMLCellElement(this.firstSelected.x, this.firstSelected.y))));
+
     let {minX, maxX, minY, maxY} = this.computeRange();
     if (minX !== maxX || minY !== maxY) {
       for (let x = minX; x <= maxX; x++) {
@@ -409,6 +411,8 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       }
       this.renameValue = ""
     }
+    this.deselect()
+    this.selectCell(this.firstSelected.x, this.firstSelected.y)
   }
 
   copyValues($event: any) {

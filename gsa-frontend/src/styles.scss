@@ -2,12 +2,16 @@
 @import "../node_modules/ag-grid-community/dist/styles/ag-grid.css";
 @import "../node_modules/ag-grid-community/dist/styles/ag-theme-alpine.css";
 
+:root {
+  --background-grey: #eff2ff;
+  --primary-blue: #0e7cb3;
+  --primary-blue-hover: #1e95cf;
+  --button-blue-hover: #177dc0;
+  --button-blue: #1e94d0;
+  --warning: #ff6200;
+  --grey: 164, 164, 164;
+}
 
-$background-grey: #eff2ff;
-$primary-blue: #0e7cb3;
-$primary-blue-hover: #1e95cf;
-$button-blue-hover: #177dc0;
-$button-blue: #1e94d0;
 
 html, body {
   height: 100%;
@@ -16,13 +20,13 @@ html, body {
 
 body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  background-color: $background-grey;
+  background-color: var(--background-grey);
   margin: 8px;
 }
 
 //Colors
 .background-grey {
-  background-color: $background-grey;
+  background-color: var(--background-grey);
 }
 
 .background-white {
@@ -30,7 +34,7 @@ body {
 }
 
 .background-blue {
-  background-color: $primary-blue;
+  background-color: var(--primary-blue);
 }
 
 .grey {
@@ -88,7 +92,7 @@ h1 {
 }
 
 .blue-border {
-  border: 2px solid $primary-blue !important;
+  border: 2px solid var(--primary-blue) !important;
 }
 
 /*Fonts*/
@@ -168,22 +172,22 @@ mat-icon {
 }
 
 .dataset-card-content {
-  color: $primary-blue;
+  color: var(--primary-blue);
   //color: black;
   padding: 10px;
   margin: 3px !important;
   border-radius: 10px;
-  border: 1px solid $primary-blue;
+  border: 1px solid var(--primary-blue);
 }
 
 .dataset-card-content:hover {
-  background: rgba($primary-blue, 0.2);
+  background: rgba(var(--primary-blue), 0.2);
   cursor: pointer;
 }
 
 .warning-snackbar {
   background-color: white;
-  color: #ff6200;
+  color: var(--warning);
 
   .mat-simple-snackbar-action {
     color: black !important;

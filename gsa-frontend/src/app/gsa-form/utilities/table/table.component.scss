@@ -45,7 +45,7 @@ th, td,
 }
 
 .add-column-button:focus-visible {
-  border: 2px solid #0e7cb3 !important;
+  border: 2px solid var(--primary-blue) !important;
 
 
 }
@@ -73,18 +73,12 @@ th {
   position: sticky;
   left: 0;
   top: 0;
-  background: #f2f2f2;
+  background: #e8e8e8;
 }
 
 .rows {
   z-index: 3;
   margin-right: 20px;
-}
-
-.border-blue-left {
-  box-shadow: inset -1px 0 #282626;
-
-
 }
 
 .columns {
@@ -142,5 +136,5 @@ input {
 }
 
 .chosen-th {
-  background-color: #e2e2e5;
+  background-color: lightgray;
 }
