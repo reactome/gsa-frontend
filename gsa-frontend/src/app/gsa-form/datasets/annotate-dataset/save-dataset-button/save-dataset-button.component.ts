@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Settings} from "../../../model/table.model";
-import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatLegacySnackBar as MatSnackBar} from "@angular/material/legacy-snack-bar";
 
 
 type MetadataFile = { rowMap: Map<string, number>, csvData: string[][] };

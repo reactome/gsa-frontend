@@ -6,7 +6,7 @@ import {AnalysisService} from "../../services/analysis.service";
 import {LoadDatasetService} from "../../services/load-dataset.service";
 import {MatStepper} from "@angular/material/stepper";
 import {Dataset} from "../../model/dataset.model";
-import {MatDialog} from "@angular/material/dialog";
+import {MatLegacyDialog as MatDialog} from "@angular/material/legacy-dialog";
 import {ChangeAnalysisParamsComponent} from "../../datasets/change-analysis-params/change-analysis-params.component";
 import {ScrollService} from "../../services/scroll.service";
 

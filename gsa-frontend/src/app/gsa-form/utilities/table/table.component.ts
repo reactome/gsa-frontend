@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import {CellInfo, Settings} from "../../model/table.model";
 import {Clipboard} from '@angular/cdk/clipboard';
-import {MatButton} from "@angular/material/button";
+import {MatLegacyButton as MatButton} from "@angular/material/legacy-button";
 
 
 type CellCoord = { x: number, y: number, parentElement: any };

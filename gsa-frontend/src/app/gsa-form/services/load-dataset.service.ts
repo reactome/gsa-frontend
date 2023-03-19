@@ -8,9 +8,9 @@ import {Dataset, DatasetTable} from "../model/dataset.model";
 import {MatStepper} from "@angular/material/stepper";
 import {CellInfo} from "../model/table.model";
 import {LoadingProgressComponent} from "../datasets/select-dataset/loading-progress/loading-progress.component";
-import {MatDialog} from "@angular/material/dialog";
+import {MatLegacyDialog as MatDialog} from "@angular/material/legacy-dialog";
 import {catchError, throwError} from "rxjs";
-import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatLegacySnackBar as MatSnackBar} from "@angular/material/legacy-snack-bar";
 
 @Injectable({
   providedIn: 'root'

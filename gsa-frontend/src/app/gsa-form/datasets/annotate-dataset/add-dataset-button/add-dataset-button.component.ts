@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {CellInfo, Settings} from "../../../model/table.model";
 import {map, Observable} from "rxjs";
 import {fromPromise} from "rxjs/internal/observable/innerFrom";
-import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatLegacySnackBar as MatSnackBar} from "@angular/material/legacy-snack-bar";
 import {WarningSnackbarComponent} from "./warning-snackbar/warning-snackbar.component";
 
 type MetadataFile = { rowMap: Map<string, number>, csvData: string[][] };
