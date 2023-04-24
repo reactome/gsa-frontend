@@ -53,7 +53,7 @@ export namespace Library {
     categories: string[];
     id: string;
     label: string;
-    description?: string;router
+    description?: string;
   }
 
   type ContinuousFields = 'sample-count';
