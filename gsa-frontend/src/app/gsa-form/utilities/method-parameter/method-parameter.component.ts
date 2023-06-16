@@ -32,18 +32,11 @@ export class MethodParameterComponent implements OnInit {
 
   setValue($event: any, parameter: MethodParameter): void {
     parameter.value = $event.target.value;
-    console.log($event.target)
     this.emailFormControl.setValue($event.target.value)
-    console.log(this.emailFormControl.value)
   }
 
   ngOnInit(): void {
     this.responsive.observe(Breakpoints.Small)
-      .subscribe(result => {
-        if (result.matches) {
-          this.screenIsSmall = true;
-        } else this.screenIsSmall = false;
-      });
+      .subscribe(result => this.screenIsSmall = result.matches);
   }
-
 }

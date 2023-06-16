@@ -96,20 +96,19 @@ input {
   scroll-margin-right: 200px;
 }
 
-.visible {
-  box-shadow: 0px 0px 0px 2px rgb(14, 101, 235) inset;
-}
-
-.invisible {
-  z-index: 0;
-}
-
-.z-index-2 {
-  z-index: 2;
-}
-
-.z-index-4 {
+.flying-rename {
+  position: absolute;
+  margin: 0;
+  border: 0;
+  font: 400 14px/20px Roboto, sans-serif;
+  letter-spacing: 0.0178571429em;
+  visibility: hidden;
   z-index: 4;
+}
+
+.flying-rename.visible {
+  box-shadow: 0px 0px 0px 2px rgb(14, 101, 235) inset;
+  visibility: visible;
 }
 
 :focus-visible {
@@ -117,14 +116,12 @@ input {
   font: 400 14px/20px Roboto, "Helvetica Neue", sans-serif !important;
 }
 
-.flying-rename {
-  position: absolute;
-  margin: 0;
-  border: 0;
+th.selected {
+  background-color: lightgray;
 }
 
-.chosen-th {
-  background-color: lightgray;
+th[y="0"][x="0"] {
+  visibility: hidden;
 }
 
 /*# sourceMappingURL=table.component.css.map */

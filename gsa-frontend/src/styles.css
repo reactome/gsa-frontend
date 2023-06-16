@@ -38,6 +38,10 @@ body {
   color: grey;
 }
 
+.mdc-tooltip__surface {
+  text-align: justify;
+}
+
 h1 {
   display: flex;
   justify-content: center;

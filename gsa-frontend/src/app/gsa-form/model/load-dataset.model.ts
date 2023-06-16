@@ -7,7 +7,7 @@ export interface LoadingStatus {
   description: string
   id: string
   reports: Report[]
-  status: string
+  status: 'failed' | 'complete' | 'running';
 }
 
 export interface LoadParameter {

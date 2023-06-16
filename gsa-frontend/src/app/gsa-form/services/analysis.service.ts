@@ -8,7 +8,7 @@ import {Dataset} from "../model/dataset.model";
 import {AnalysisResult} from "../model/analysis-result.model";
 import {Request} from "../model/analysis.model";
 import {catchError, throwError} from "rxjs";
-import {MatLegacySnackBar as MatSnackBar} from "@angular/material/legacy-snack-bar";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 
 @Injectable({

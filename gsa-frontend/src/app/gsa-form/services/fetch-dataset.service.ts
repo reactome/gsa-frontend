@@ -3,7 +3,7 @@ import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {Dataset, ExampleDataset, ImportDataset, LocalDataset} from "../model/fetch-dataset.model";
 import {catchError, map, Observable, throwError} from "rxjs";
-import {MatLegacySnackBar as MatSnackBar} from "@angular/material/legacy-snack-bar";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +39,7 @@ export class FetchDatasetService {
           panelClass: ['warning-snackbar'],
           duration: 10000
         });
-        return throwError(err);    //Rethrow it back to component
+        return throwError(() => err);    //Rethrow it back to component
       }))
       .pipe(map((data: ImportDataset[]) => {
         return data.map(value => new ImportDataset(value.parameters, value.name, value.description, value.id));
