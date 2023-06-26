@@ -1,8 +1,11 @@
-
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
+@use "palette" as p;
+@use "variables";
+@use 'sass:map';
 // Plus imports for other components in your app.
+
 
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
@@ -18,99 +21,70 @@
 @include mat.all-component-typographies();
 @include mat.core();
 
-/* For use in src/lib/core/theming/_palette.scss */
-$reactome-primary-color: (
-  50 : #e3eff7,
-  100 : #b9d8ec,
-  200 : #8bbee0,
-  300 : #5da4d3,
-  400 : #3a91c9,
-  500 : #177dc0,
-  600 : #1475ba,
-  700 : #116ab2,
-  800 : #0d60aa,
-  900 : #074d9c,
-  A100 : #c9dfff,
-  A200 : #96c1ff,
-  A400 : #63a4ff,
-  A700 : #4995ff,
-  contrast: (
-    50 : #000000,
-    100 : #000000,
-    200 : #000000,
-    300 : #000000,
-    400 : #ffffff,
-    500 : #ffffff,
-    600 : #ffffff,
-    700 : #ffffff,
-    800 : #ffffff,
-    900 : #ffffff,
-    A100 : #000000,
-    A200 : #000000,
-    A400 : #000000,
-    A700 : #000000,
-  )
-);
-
-/* For use in src/lib/core/theming/_palette.scss */
-$reactome-secondary-color: (
-  50 : #f7ebe3,
-  100 : #ecceb9,
-  200 : #e0ad8b,
-  300 : #d38c5d,
-  400 : #c9743a,
-  500 : #c05b17,
-  600 : #ba5314,
-  700 : #b24911,
-  800 : #aa400d,
-  900 : #9c2f07,
-  A100 : #ffd4c9,
-  A200 : #ffac96,
-  A400 : #ff8463,
-  A700 : #ff7049,
-  contrast: (
-    50 : #000000,
-    100 : #000000,
-    200 : #000000,
-    300 : #000000,
-    400 : #000000,
-    500 : #ffffff,
-    600 : #ffffff,
-    700 : #ffffff,
-    800 : #ffffff,
-    900 : #ffffff,
-    A100 : #000000,
-    A200 : #000000,
-    A400 : #000000,
-    A700 : #000000,
-  )
-);
-
-
-
-
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$gsa-frontend-primary: mat.define-palette($reactome-primary-color);
-$gsa-frontend-accent: mat.define-palette($reactome-primary-color, A200, A100, A400);
+$primary-palette: mat.define-palette(p.$primary-colors);
+$secondary-palette: mat.define-palette(p.$secondary-colors);
+$tertiary-palette: mat.define-palette(p.$tertiary-colors);
 
 // The warn palette is optional (defaults to red).
-$gsa-frontend-warn: mat.define-palette(mat.$red-palette);
+$error-palette: mat.define-palette(p.$error-colors);
+$neutral-palette: mat.define-palette(p.$neutral-colors);
+$neutral-variant-palette: mat.define-palette(p.$neutral-variant-colors);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$gsa-frontend-theme: mat.define-light-theme((
+$light-theme: mat.define-light-theme((
   color: (
-    primary: $gsa-frontend-primary,
-    accent: $gsa-frontend-accent,
-    warn: $gsa-frontend-warn,
+    primary: $primary-palette,
+    accent: $tertiary-palette,
+    warn: $error-palette,
   )
 ));
+
+$dark-theme: mat.define-dark-theme((
+  color: (
+    primary: $primary-palette,
+    accent: $tertiary-palette,
+    warn: $error-palette,
+  )
+));
+
+$palettes: (
+  primary-palette: $primary-palette,
+  secondary-palette: $secondary-palette,
+  tertiary-palette: $tertiary-palette,
+  error-palette: $error-palette,
+  neutral-palette: $neutral-palette,
+  neutral-variant-palette: $neutral-variant-palette
+);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include mat.all-component-themes($gsa-frontend-theme);
+@include mat.all-component-themes($light-theme);
+//@include nested-stepper.theme($light-theme);
+
+$color-config: mat.get-color-config($light-theme);
+
+
+
+// Apply the dark theme only when the user prefers dark themes.
+@media (prefers-color-scheme: dark) {
+  // Use the `-color` mixins to only apply color styles without reapplying the same
+  // typography and density styles.
+
+  $color-config: mat.get-color-config($dark-theme);
+  @include mat.all-component-themes($dark-theme);
+
+}
+
+@include variables.theme($palettes);
+
+
+
+
+
 
