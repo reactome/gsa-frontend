@@ -3,42 +3,30 @@ mat-expansion-panel-header {
   height: 100% !important;
 }
 
-.expansion-border {
-  border: 5px solid;
+mat-expansion-panel {
+  border: 5px solid inherit;
+  background: var(--surface1);
+  color: var(--on-surface);
 }
 
 .chosen {
-  border-color: var(--primary-blue);
+  border: 5px solid var(--primary);
+  border-radius: 5px;
 }
 
 .chosen:hover {
   cursor: pointer;
-  background: white;
-  color: black;
-}
-
-.unchosen {
-  border-color: white;
-}
-
-.unchosen:hover {
-  background: white;
-  border-color: rgba(0, 0, 0, 0.04);
-}
-
-.unchosen:hover mat-expansion-panel-header {
-  background: rgba(0, 0, 0, 0.04);
 }
 
 .grey-border {
-  border-top: 1px solid lightgray;
+  //border-top: 1px solid lightgray;
 }
 
 .param-line {
-  box-shadow: rgba(var(--grey), 0.7) -2px 3px 4px 0;
+  //box-shadow: rgba($grey, 0.7) -2px 3px 4px 0;
   padding: 0 25px;
   margin-top: 14px;
-  background-color: rgba(var(--grey), 0.1);
+  //background-color: rgba($grey, 0.1);
 }
 
 .margin-top-20 {

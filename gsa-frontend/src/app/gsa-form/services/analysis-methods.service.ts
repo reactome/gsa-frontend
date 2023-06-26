@@ -1,9 +1,23 @@
 import {Injectable} from '@angular/core';
 import {Method, MethodParameter, ParameterType} from "../model/methods.model";
+import {Method as NgRxMethod} from "../state/method/method.state";
 import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
-import {catchError, throwError} from "rxjs";
+import {catchError, Observable, throwError} from "rxjs";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {Parameter} from "../state/parameter/parameter.state";
+
+export interface MethodJSON extends NgRxMethod {
+  parameters: Parameter[]
+}
+
+export const typeToParse: { [p: string]: (value: string) => any } = {
+  bool: value => value.toLowerCase() === 'true',
+  float: parseFloat,
+  int: parseInt,
+  email: value => value,
+  string: value => value
+}
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +28,10 @@ export class AnalysisMethodsService {
   selectedMethod?: Method;
 
   constructor(private http: HttpClient, private snackBar: MatSnackBar) {
+  }
+
+  getAll(): Observable<MethodJSON[]> {
+    return this.http.get<MethodJSON[]>(this.methodsUrl)
   }
 
   getAnalysisMethods(): void {

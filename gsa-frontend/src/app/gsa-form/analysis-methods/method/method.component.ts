@@ -1,34 +1,40 @@
-import {Component, Input} from '@angular/core';
-import {Method} from "../../model/methods.model"
-import {AnalysisMethodsService} from "../../services/analysis-methods.service";
+import {Component, Input, OnInit} from '@angular/core';
 import {ScrollService} from "../../services/scroll.service";
+import {Method} from "../../state/method/method.state";
+import {Store} from "@ngrx/store";
+import {methodActions} from "../../state/method/method.action";
+import {map, Observable} from "rxjs";
+import {methodFeature} from "../../state/method/method.selector";
+import {parameterFeature} from "../../state/parameter/parameter.selector";
+import {Parameter} from "../../state/parameter/parameter.state";
+import {parameterActions} from "../../state/parameter/parameter.action";
 
 @Component({
   selector: 'gsa-method',
   templateUrl: './method.component.html',
   styleUrls: ['./method.component.scss']
 })
-export class MethodComponent {
-  @Input() method: Method
-  expanded: boolean = false
+export class MethodComponent implements OnInit {
+  @Input() method: Method;
+  selected$ = this.store.select(methodFeature.selectSelectedMethodName).pipe(map(name => name === this.method.name));
+  parameters$: Observable<Parameter[]>;
 
-  constructor(public analysisMethodService: AnalysisMethodsService, private scrollService: ScrollService) {
+  ngOnInit(): void {
+    this.parameters$ = this.store.select(parameterFeature.selectParameters(this.method.parameterIds)).pipe(
+      map(params => params.filter(p => p !== undefined && p.scope !== 'common') as Parameter[])
+    );
   }
 
-  getDisplayParameters() {
-    return this.method.parameters.filter(p => p.scope !== 'common');
+  constructor(private scrollService: ScrollService, private store: Store) {
   }
 
   selectMethod() {
-    this.analysisMethodService.selectedMethod = this.method;
-
+    // this.analysisMethodService.selectedMethod = this.method;
+    this.store.dispatch(methodActions.select({method: this.method}))
   }
 
-  setToDefault() {
-
-    this.method.parameters.forEach(param => {
-      this.analysisMethodService.parseParamDefaultValue(param)
-    })
+  setToDefault(parameters: Parameter[]) {
+    this.store.dispatch(parameterActions.reset({parameters}))
   }
 
   updateScroll() {
