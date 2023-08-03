@@ -11,10 +11,6 @@ snack-bar-container {
   max-width: 100% !important;
 }
 
-.orange {
-  color: var(--warning);
-}
-
 .warning-size {
   font-size: 50px;
 }

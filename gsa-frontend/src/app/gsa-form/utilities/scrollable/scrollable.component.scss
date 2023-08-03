@@ -10,7 +10,7 @@
 }
 
 .shadow-bottom-transition {
-  opacity: 0;
+  opacity: var(--primary);
   transition: opacity 0ms;
   box-shadow: 0 -10px 10px -10px #8d8c8c inset;
 }
@@ -33,19 +33,19 @@
 
 .scrollbar::-webkit-scrollbar {
   width: 4px;
-  background-color: var(--background-grey);
+  background-color: var(--surface);
   transition: background-color ease 3s;
 }
 
 
 .scrollbar::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background-color: rgba(var(--grey), 0.7);
+  background-color: var(--outline-variant);
   //background-color: inherit;
 }
 
 .overflow-hide.scrollbar::-webkit-scrollbar-thumb {
-  background-color: var(--background-grey);
+  background-color: var(--outline-variant);
 }
 
 

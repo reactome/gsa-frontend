@@ -5,6 +5,11 @@ import {Dataset, ExampleDataset, ImportDataset, LocalDataset} from "../model/fet
 import {catchError, map, Observable, throwError} from "rxjs";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {PDatasetSource} from "../state/dataset-source/dataset-source.state";
+import {Parameter} from "../state/parameter/parameter.state";
+
+export interface DatasetSourceJSON extends PDatasetSource {
+    parameters: Parameter[]
+}
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +24,8 @@ export class FetchDatasetService {
   constructor(private http: HttpClient, private snackBar: MatSnackBar) {
   }
 
-  fetchExampleDataSources(): Observable<PDatasetSource[]> {
-    return this.http.get<PDatasetSource[]>(this.exampleDataUrl)
+  fetchExampleDataSources(): Observable<DatasetSourceJSON[]> {
+    return this.http.get<DatasetSourceJSON[]>(this.exampleDataUrl)
       .pipe(catchError((err: Error) => {
         this.snackBar.open("The dataset options could not been loaded: \n" + err.message, "Close", {
           panelClass: ['warning-snackbar'],
@@ -30,8 +35,8 @@ export class FetchDatasetService {
       }));
   }
 
-  fetchExternalDataSources(): Observable<PDatasetSource[]> {
-    return this.http.get<PDatasetSource[]>(this.inputDataUrl)
+  fetchExternalDataSources(): Observable<DatasetSourceJSON[]> {
+    return this.http.get<DatasetSourceJSON[]>(this.inputDataUrl)
       .pipe(catchError((err: Error) => {
         this.snackBar.open("The dataset options could not been loaded: \n" + err.message, "Close", {
           panelClass: ['warning-snackbar'],
@@ -41,8 +46,8 @@ export class FetchDatasetService {
       }));
   }
 
-  fetchLocalDataSources(): Observable<PDatasetSource[]> {
-    return this.http.get<PDatasetSource[]>(this.localDataUrl)
+  fetchLocalDataSources(): Observable<DatasetSourceJSON[]> {
+    return this.http.get<DatasetSourceJSON[]>(this.localDataUrl)
       .pipe(catchError((err: Error) => {
         this.snackBar.open("The dataset options could not been loaded: \n" + err.message, "Close", {
           panelClass: ['warning-snackbar'],

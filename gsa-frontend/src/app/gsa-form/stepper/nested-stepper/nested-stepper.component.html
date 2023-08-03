@@ -2,12 +2,12 @@
                      hideToggle>
   <mat-expansion-panel-header class="padding-left-zero">
     <div *ngIf="dataset.saved; else unsaved" class="border-blue-left">
-      <div class=" background-blue saved flex-container align-center justify-center"><span class="no-wrap">Saved</span>
+      <div class="saved flex-container align-center justify-center"><span class="no-wrap">Saved</span>
       </div>
     </div>
     <ng-template #unsaved>
       <div class="border-grey-left">
-        <div class=" background-lightgrey saved flex-container align-center justify-center"><span class="no-wrap"> Not Saved</span>
+        <div class="saved flex-container align-center justify-center"><span class="no-wrap"> Not Saved</span>
         </div>
       </div>
     </ng-template>
@@ -50,8 +50,7 @@
         <gsa-select-dataset *ngIf="nestedStepper.selected == null || nestedStepper.selected == select"
                             [dataset]="dataset"
                             class="width-hundred"></gsa-select-dataset>
-        <button [disabled]="!select.completed" class="nav-button-margin" color="accent" mat-fab
-                matStepperNext>
+        <button [disabled]="!select.completed" class="nav-button-margin" color="accent" mat-fab matStepperNext>
           <mat-icon>keyboard_arrow_down</mat-icon>
         </button>
       </div>

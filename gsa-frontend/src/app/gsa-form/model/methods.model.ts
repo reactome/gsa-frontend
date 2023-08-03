@@ -1,3 +1,5 @@
+import {Parameter} from "../state/parameter/parameter.state";
+
 export interface ParameterJSON {
   default: string;
   description: string;
@@ -8,7 +10,8 @@ export interface ParameterJSON {
   values?: string[];
 }
 
-export class MethodParameter implements ParameterJSON {
+export class MethodParameter implements ParameterJSON, Parameter {
+  id: string;
   default: string;
   description: string;
   display_name: string;

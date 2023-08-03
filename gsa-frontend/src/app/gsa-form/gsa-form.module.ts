@@ -22,10 +22,10 @@ import {MatStepperModule} from "@angular/material/stepper";
 import {StepperComponent} from './stepper/stepper.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {LocalDataComponent} from './datasets/select-dataset/dataset-types/local-data/local-data.component';
-import {ImportDataComponent} from './datasets/select-dataset/dataset-types/import-data/import-data.component';
+import {ExternalDataComponent} from './datasets/select-dataset/dataset-types/external-data/external-data.component';
 import {
-  ImportParameterComponent
-} from "./datasets/select-dataset/dataset-types/import-data/import-parameter/import-parameter.component";
+  ExternalParameterComponent
+} from "./datasets/select-dataset/dataset-types/external-data/external-parameter/external-parameter.component";
 import {MethodParameterComponent} from "./utilities/method-parameter/method-parameter.component";
 import {AgGridModule} from "ag-grid-angular";
 import {BrowserModule} from '@angular/platform-browser';
@@ -55,10 +55,20 @@ import {
   WarningSnackbarComponent
 } from './datasets/annotate-dataset/add-dataset-button/warning-snackbar/warning-snackbar.component';
 import {TableModule} from "./utilities/table/table.module";
+import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatSortModule} from '@angular/material/sort';
+import {StoreModule} from "@ngrx/store";
+import {methodFeature} from "./state/method/method.selector";
+import {EffectsModule} from "@ngrx/effects";
+import {MethodEffects} from "./state/method/method.effect";
+import {parameterFeature} from "./state/parameter/parameter.selector";
+import {datasetSourceFeature} from "./state/dataset-source/dataset-source.selector";
+import {DatasetSourceEffects} from "./state/dataset-source/dataset-source.effect";
 
 @NgModule({
   declarations: [
-    AnalysisMethodsComponent, MethodComponent, MethodParameterComponent, SelectDatasetComponent, ExampleDataComponent, AnnotateDatasetComponent, StepperComponent, LocalDataComponent, ImportDataComponent, ImportParameterComponent, LoadingProgressComponent, StatisticalDesignComponent, DropdownComponent, NestedStepperComponent, OptionsComponent, AnalysisComponent, EditColumnsComponent, EditCellsComponent, StepperAnnotateComponent, AddDatasetButtonComponent, ChangeAnalysisParamsComponent, ScrollableComponent, SaveDatasetButtonComponent, WarningSnackbarComponent
+    AnalysisMethodsComponent, MethodComponent, MethodParameterComponent, SelectDatasetComponent, ExampleDataComponent, AnnotateDatasetComponent, StepperComponent, LocalDataComponent, ExternalDataComponent, ExternalParameterComponent, LoadingProgressComponent, StatisticalDesignComponent, DropdownComponent, NestedStepperComponent, OptionsComponent, AnalysisComponent, EditColumnsComponent, EditCellsComponent, StepperAnnotateComponent, AddDatasetButtonComponent, ChangeAnalysisParamsComponent, ScrollableComponent, SaveDatasetButtonComponent, WarningSnackbarComponent
   ],
   exports: [
     StepperComponent
@@ -89,7 +99,15 @@ import {TableModule} from "./utilities/table/table.module";
     MatExpansionModule,
     MatDialogModule,
     MatSnackBarModule,
-    TableModule
+    TableModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    StoreModule.forFeature(methodFeature),
+    StoreModule.forFeature(parameterFeature),
+    StoreModule.forFeature(datasetSourceFeature),
+    EffectsModule.forFeature(MethodEffects),
+    EffectsModule.forFeature(DatasetSourceEffects),
   ],
   // bootstrap: [SelectDatasetComponent]
 })

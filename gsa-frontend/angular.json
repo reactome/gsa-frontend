@@ -27,10 +27,15 @@
               "src/assets"
             ],
             "styles": [
-              "src/custom-theme.scss",
-              "src/styles.css"
+              "src/theme/custom-theme.scss",
+              "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "node_modules/"
+              ]
+            }
           },
           "configurations": {
             "production": {
@@ -98,7 +103,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": []
           }
@@ -113,6 +118,9 @@
     }
   },
   "cli": {
-    "analytics": "b47f2e73-2bc9-4d19-94b4-b95abb3a3489"
+    "analytics": "b47f2e73-2bc9-4d19-94b4-b95abb3a3489",
+    "schematicCollections": [
+      "@ngrx/schematics"
+    ]
   }
 }

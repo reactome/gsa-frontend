@@ -3,7 +3,7 @@ mat-grid-list {
 }
 
 mat-grid-tile {
-  background: rgba(var(--grey), 1);
+  //background: rgba($grey, 1);
   opacity: 0.4;
 }
 
@@ -27,7 +27,7 @@ mat-grid-tile {
 }
 
 i {
-  color: rgba(var(--grey), 1);
+  //color: rgba($grey, 1);
   margin-left: 8px;
   vertical-align: middle;
 }

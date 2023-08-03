@@ -1,5 +1,5 @@
-<mat-horizontal-stepper #stepper [linear]="true" class="background-grey">
-  <mat-step #addMethod [completed]="analysisMethodsService.selectedMethod !== undefined">
+<mat-horizontal-stepper #stepper [linear]="true">
+  <mat-step #addMethod [completed]="(methodSelected$ | async) === true">
 
     <ng-template matStepLabel>Select method</ng-template>
     <h1>Step 1: Select one of the available analysis methods</h1>

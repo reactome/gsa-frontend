@@ -13,8 +13,8 @@ export class MethodEffects {
           map(methods => {
             methods.forEach(method => method.parameters.forEach(param => {
               param.id = `${method.name} - ${param.name}`;
-              param.value = typeToParse[param.type](param.default)
-              param.default = typeToParse[param.type](param.default)
+              param.value = typeToParse[param.type](param.default);
+              param.default = typeToParse[param.type](param.default);
             }));
             return methods;
           }),

@@ -1,4 +1,4 @@
-<div #root class="table-container flex horizontal relative background-white in-front width-hundred" (blur)="deselect()">
+<div #root class="table-container flex horizontal relative in-front width-hundred" (blur)="deselect()">
   <input #flyingRename (change)="renameCell()"
          (blur)="blurInput()" (copy)="copyValues()"
          (focus)="renameVisible = true"
@@ -14,7 +14,7 @@
          class="flying-rename">
   <table (mousedown)="mousedown($event)" (mouseover)="mousemove($event)" (mouseup)="mouseup()"
          (keydown)="navigateTable($event)"
-         class="relative align-center background-white width-hundred"
+         class="relative align-center width-hundred"
          *ngIf="data$ | async as data">
     <tr *ngFor="let row of data; let y = index">
       <!-- HEADER -->

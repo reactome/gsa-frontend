@@ -1,4 +1,4 @@
-import {createActionGroup, emptyProps, props} from '@ngrx/store';
+import {createActionGroup, props} from '@ngrx/store';
 import {Parameter} from "./parameter.state";
 import {Update} from "@ngrx/entity";
 

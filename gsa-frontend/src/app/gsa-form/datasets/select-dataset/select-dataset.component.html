@@ -17,8 +17,8 @@
 
     <div class="flex-one">
       <h2>Public Dataset</h2>
-      <div *ngFor="let data of importData$ | async" class="margin-bottom-10">
-        <gsa-import-data *ngIf="data.name !== 'Example datasets'" [data]="data" [dataset]="dataset"></gsa-import-data>
+      <div *ngFor="let data of externalData$ | async" class="margin-bottom-10">
+        <gsa-external-data *ngIf="data.name !== 'Example datasets'" [data]="data" [dataset]="dataset"></gsa-external-data>
       </div>
     </div>
 

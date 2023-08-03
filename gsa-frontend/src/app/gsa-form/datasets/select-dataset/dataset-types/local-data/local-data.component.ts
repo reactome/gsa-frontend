@@ -4,6 +4,9 @@ import {FetchDatasetService} from "../../../../services/fetch-dataset.service";
 import {HttpClient} from "@angular/common/http";
 import {LoadDatasetService} from "../../../../services/load-dataset.service";
 import {Dataset} from "../../../../model/dataset.model";
+import {PDatasetSource} from "../../../../state/dataset-source/dataset-source.state";
+import {datasetSourceActions} from "../../../../state/dataset-source/dataset-source.action";
+import {Store} from "@ngrx/store";
 
 @Component({
   selector: 'gsa-local-data',
@@ -12,13 +15,13 @@ import {Dataset} from "../../../../model/dataset.model";
 })
 export class LocalDataComponent {
   @Input() dataset: Dataset;
-  @Input() data: LocalDataset;
+  @Input() data: PDatasetSource;
 
-  constructor(public fetchDatasetService: FetchDatasetService, private http: HttpClient, private loadDatasetService: LoadDatasetService) {
+  constructor(public store: Store, private http: HttpClient, private loadDatasetService: LoadDatasetService) {
   }
 
   select() {
-    this.fetchDatasetService.chosenDataset = this.data;
+    this.store.dispatch(datasetSourceActions.select({toBeSelected: this.data}));
   }
 
   onFileSelected(event: any) {

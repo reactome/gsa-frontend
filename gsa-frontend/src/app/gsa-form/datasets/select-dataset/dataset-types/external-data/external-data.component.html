@@ -1,0 +1,18 @@
+<div (click)="select()" [ngClass]="(isSelected$ | async)?'hover-opponent':'dataset-card-content'">
+    <div>
+        <p class="bold no-wrap">{{data.name}}</p>
+        <p>{{data.description}}</p>
+        <form *ngIf="isSelected$ | async">
+            <div class="flex-container vertical gap-one align-center" *ngIf="parameters$ | async as parameters">
+                <div *ngFor="let param of parameters">
+                    <!--          <gsa-external-parameter [parameter]="param"></gsa-external-parameter>-->
+                    <gsa-method-parameter [parameter]="param"></gsa-method-parameter>
+                </div>
+                <button (click)="loadData(parameters)" class="blue-border" color="primary" mat-stroked-button
+                        type="submit">Import
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+

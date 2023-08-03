@@ -1,16 +1,4 @@
 /* You can add global styles to this file, and also import other style files */
-@import "../node_modules/ag-grid-community/dist/styles/ag-grid.css";
-@import "../node_modules/ag-grid-community/dist/styles/ag-theme-alpine.css";
-
-:root {
-  --background-grey: #eff2ff;
-  --primary-blue: #0e7cb3;
-  --primary-blue-hover: #1e95cf;
-  --button-blue-hover: #177dc0;
-  --button-blue: #1e94d0;
-  --warning: #ff6200;
-  --grey: 164, 164, 164;
-}
 
 
 html, body {
@@ -20,22 +8,22 @@ html, body {
 
 body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  background-color: var(--background-grey);
+  background-color: var(--surface);
   margin: 8px;
 }
 
 //Colors
-.background-grey {
-  background-color: var(--background-grey);
-}
-
-.background-white {
-  background-color: white;
-}
-
-.background-blue {
-  background-color: var(--primary-blue);
-}
+//.background-grey {
+//  background-color: $background-grey;
+//}
+//
+//.background-white {
+//  background-color: white;
+//}
+//
+//.background-blue {
+//  background-color: $primary-blue;
+//}
 
 .grey {
   color: grey;
@@ -96,7 +84,7 @@ h1 {
 }
 
 .blue-border {
-  border: 2px solid var(--primary-blue) !important;
+  border: 2px solid var(--primary) !important;
 }
 
 /*Fonts*/
@@ -176,22 +164,22 @@ mat-icon {
 }
 
 .dataset-card-content {
-  color: var(--primary-blue);
+  color: var(--primary);
   //color: black;
   padding: 10px;
   margin: 3px !important;
   border-radius: 10px;
-  border: 1px solid var(--primary-blue);
+  border: 1px solid var(--primary);
 }
 
 .dataset-card-content:hover {
-  background: rgba(var(--primary-blue), 0.2);
+  background: rgba(var(--primary), 0.2);
   cursor: pointer;
 }
 
 .warning-snackbar {
   background-color: white;
-  color: var(--warning);
+  color: coral;
 
   .mat-simple-snackbar-action {
     color: black !important;
@@ -200,8 +188,8 @@ mat-icon {
 
 
 .error-snackbar {
-  background-color: white;
-  color: red;
+  background-color: var(--error-container);
+  color: var(--on-error-container);
 
   .mat-simple-snackbar-action {
     color: black !important;
@@ -210,6 +198,6 @@ mat-icon {
 
 .mat-snack-bar-container {
   max-width: 100% !important;
-  background: white !important;
+  //background: white !important;
 
 }

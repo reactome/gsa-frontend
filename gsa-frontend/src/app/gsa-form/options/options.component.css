@@ -1,8 +1,8 @@
 .param-line {
-  box-shadow: rgba(var(--grey), 0.7) -2px 3px 4px 0;
+  box-shadow: rgba(var(--outline-variant), 0.7) -2px 3px 4px 0;
   padding: 0 25px;
   margin-top: 14px;
-  background-color: rgba(var(--grey), 0.1);
+  background-color: rgba(var(--outline-variant), 0.1);
 }
 
 /*# sourceMappingURL=options.component.css.map */

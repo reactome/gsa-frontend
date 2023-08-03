@@ -1,6 +1,6 @@
 .table-container {
   overflow: auto;
-  border: 1px solid lightgray;
+  border: 1px solid var(--outline);
 }
 
 table {
@@ -12,8 +12,8 @@ th, td {
   min-height: 50px;
   padding: 0.25em;
   min-width: 5%;
-  border-bottom: 1px solid lightgray;
-  border-right: 1px solid lightgray;
+  border-bottom: 1px solid var(--outline);
+  border-right: 1px solid var(--outline);
 }
 
 .no-padding {
@@ -39,7 +39,7 @@ th, td {
 }
 
 .add-column-button:focus-visible {
-  border: 2px solid var(--primary-blue) !important;
+  border: 2px solid var(--primary) !important;
 }
 
 .bin-button:focus-visible {
@@ -50,10 +50,7 @@ td {
   padding-left: 10px;
   padding-right: 10px;
   z-index: 1;
-}
-
-.no-border {
-  border-right: 1px solid white;
+  background-color: var(--surface);
 }
 
 .in-front {
@@ -64,19 +61,22 @@ th {
   position: sticky;
   left: 0;
   top: 0;
-  background: #e8e8e8;
+  background: var(--surface-variant);
+  color: var(--on-surface-variant);
 }
 
-.rows {
-  z-index: 3;
+th.rows {
+  z-index: 5;
   margin-right: 20px;
 }
 
-.columns {
+th.columns {
   z-index: 3;
   text-align: left;
   padding-left: 10px;
   padding-right: 10px;
+  background: var(--surface3);
+  color: var(--on-surface);
 }
 
 .delete-col-button {
@@ -85,11 +85,12 @@ th {
 }
 
 .selected {
-  background: rgba(14, 101, 235, 0.1);
+  background: var(--surface3);
 }
 
 input {
-  background: white;
+  background: transparent;
+  color: var(--on-surface);
   padding-left: 10px;
   padding-right: 10px;
   scroll-margin-left: 200px;
@@ -107,7 +108,7 @@ input {
 }
 
 .flying-rename.visible {
-  box-shadow: 0px 0px 0px 2px rgb(14, 101, 235) inset;
+  box-shadow: 0px 0px 0px 2px var(--primary) inset;
   visibility: visible;
 }
 
@@ -117,7 +118,8 @@ input {
 }
 
 th.selected {
-  background-color: lightgray;
+  background-color: var(--surface5);
+  color: var(--on-surface);
 }
 
 th[y="0"][x="0"] {
