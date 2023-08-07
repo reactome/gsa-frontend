@@ -62,7 +62,7 @@
         <button [disabled]="dataset.saved" class="nav-button-margin" color="accent" mat-fab matStepperPrevious>
           <mat-icon>keyboard_arrow_up</mat-icon>
         </button>
-        <gsa-annotate-dataset *ngIf="nestedStepper.selected == annotate" [dataset]="dataset"
+        <gsa-annotate-dataset *ngIf="nestedStepper.selected == annotate"
                               class="width-hundred"></gsa-annotate-dataset>
         <button (click)="setValidStatisticalDesign()" [disabled]="!annotate.completed" class="nav-button-margin"
                 color="accent" mat-fab

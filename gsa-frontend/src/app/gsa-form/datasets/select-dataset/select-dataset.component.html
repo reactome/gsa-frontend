@@ -3,22 +3,22 @@
     class="flex-container gap-one horizontal ">
     <div class="flex-one">
       <h2>Local Dataset</h2>
-      <div *ngFor="let data of localData$ | async" class="margin-bottom-10">
-        <gsa-local-data [data]="data" [dataset]="dataset"></gsa-local-data>
+      <div *ngFor="let source of localSources$ | async" class="margin-bottom-10">
+        <gsa-local-data [source]="source"></gsa-local-data>
       </div>
     </div>
 
     <div class="flex-one">
       <h2>Example Dataset</h2>
-      <div *ngFor="let data of exampleData$ | async" class="margin-bottom-10">
-        <gsa-example-data [data]="data" [dataset]="dataset"></gsa-example-data>
+      <div *ngFor="let source of exampleSources$ | async" class="margin-bottom-10">
+        <gsa-example-data [source]="source"></gsa-example-data>
       </div>
     </div>
 
     <div class="flex-one">
       <h2>Public Dataset</h2>
-      <div *ngFor="let data of externalData$ | async" class="margin-bottom-10">
-        <gsa-external-data *ngIf="data.name !== 'Example datasets'" [data]="data" [dataset]="dataset"></gsa-external-data>
+      <div *ngFor="let source of externalSources$ | async" class="margin-bottom-10">
+        <gsa-external-data *ngIf="source.name !== 'Example datasets'" [source]="source"></gsa-external-data>
       </div>
     </div>
 

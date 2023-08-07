@@ -1,5 +1,5 @@
 <div class="flex-container justify-center align-center height-hundred">
-  <mat-dialog-content *ngIf="loadDataService.loadingStatus$ | async as status">
+  <mat-dialog-content *ngIf="loadingStatus$ | async as status">
     <div [ngSwitch]="status.status">
       <div *ngSwitchCase="'running'" class="flex-container vertical justify-center align-center">
         <div class="spinner-box">

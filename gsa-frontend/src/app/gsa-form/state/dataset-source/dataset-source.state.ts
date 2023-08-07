@@ -1,6 +1,5 @@
 import {createEntityAdapter, EntityState} from "@ngrx/entity";
-
-type PartialRequired<T, K extends keyof T> = Pick<T, K> & Partial<Omit<T, K>>;
+import {PartialRequired} from "../../model/utils.model";
 
 export type Source = 'External' | 'Local' | 'Example';
 

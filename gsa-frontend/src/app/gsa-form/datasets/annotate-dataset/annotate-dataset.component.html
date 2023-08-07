@@ -1,11 +1,12 @@
-<div [formGroup]="annotateDataStep">
+<div [formGroup]="annotateDataStep" *ngIf="(dataset$ | async) as dataset">
   <div class="flex-container horizontal justify-center">
     <div [ngClass]="screenIsSmall ? 'width-hundred': 'width-eighty'"
          class="flex-container vertical gap-one align-center">
       <div class="flex-container horizontal align-center justify-center gap-one">
         <span>Dataset name:</span>
         <mat-form-field [ngStyle]="{'width.px': renameWidth}">
-          <input #elasticInput (input)="resize()" [(ngModel)]="dataset.summary!.title"
+          <input #elasticInput (input)="resize()"
+                 [ngModel]="dataset.summary?.title" (ngModelChange)="updateTitle($event.value)"
                  [ngModelOptions]="{standalone: true}" matInput
                  type="text">
         </mat-form-field>

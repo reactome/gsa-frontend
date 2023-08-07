@@ -34,9 +34,6 @@ export class MethodParameterComponent implements OnInit {
   }
 
   update(value: any) {
-    this.store.dispatch({
-      type: 'dfvjshdbvsjdhvb'
-    })
     this.store.dispatch(parameterActions.update({
       update: {
         id: this.parameter.id,
