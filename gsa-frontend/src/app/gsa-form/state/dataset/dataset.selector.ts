@@ -8,6 +8,7 @@ export const datasetFeature = createFeature({
   name: "dataset",
   reducer: datasetReducer,
   extraSelectors: ({selectDatasetState, selectEntities,selectLastId}) => ({
+    ...datasetAdapter.getSelectors(selectDatasetState),
     selectLastDataset: createSelector(selectEntities, selectLastId, (entities, lastId) => entities[lastId]),
     selectDataset: (id: number) => createSelector(selectEntities, entities => entities[id]),
     selectIsSaved: (id: number) => createSelector(selectEntities, entities => !!(entities[id] && entities[id]!.saved)),
@@ -27,6 +28,5 @@ export const datasetFeature = createFeature({
       entities[id]!.statisticalDesign!.comparisonGroup2 &&
       entities[id]!.statisticalDesign!.comparisonGroup1 !== entities[id]!.statisticalDesign!.comparisonGroup2)
     ),
-    ...datasetAdapter.getSelectors(selectDatasetState)
   })
 })
