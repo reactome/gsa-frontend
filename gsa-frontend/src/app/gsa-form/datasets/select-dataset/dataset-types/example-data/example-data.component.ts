@@ -11,6 +11,7 @@ import {datasetActions} from "../../../../state/dataset/dataset.actions";
 })
 export class ExampleDataComponent {
   @Input() source: PDatasetSource;
+  @Input() datasetId: number;
 
   constructor(public store: Store) {
   }
@@ -21,7 +22,7 @@ export class ExampleDataComponent {
   }
 
   loadData() {
-    this.store.dispatch(datasetActions.load({resourceId: 'example_datasets', parameters: [{
+    this.store.dispatch(datasetActions.load({id: this.datasetId, resourceId: 'example_datasets', parameters: [{
         name: "dataset_id",
         value: this.source.id
       }]}))

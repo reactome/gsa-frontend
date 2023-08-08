@@ -2,8 +2,6 @@ import {createFeature, createSelector} from "@ngrx/store";
 import {Ranges, reducer} from "./table.reducer";
 import {TableOrder, transpose} from "./table.util";
 import {Cell} from "./table.state";
-import row from "ag-grid-enterprise/dist/lib/excelExport/files/xml/row";
-import cell from "ag-grid-enterprise/dist/lib/excelExport/files/xml/cell";
 
 export const selectors = createFeature({
   name: 'table',

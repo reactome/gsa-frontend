@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Settings} from "../../model/table.model";
 import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
@@ -16,8 +16,9 @@ import {datasetActions} from "../../state/dataset/dataset.actions";
 })
 export class AnnotateDatasetComponent implements OnInit {
     @ViewChild('hiddenText') textEl: ElementRef;
-    @Input() datasetId: string;
-    @Input() dataset$: Observable<PDataset | undefined>
+    @Input() datasetId: number;
+    @Output() annotations = new EventEmitter<string[][]>;
+    dataset$: Observable<PDataset | undefined>
     annotateDataStep: FormGroup;
     tableSettings: Settings;
     screenIsSmall: boolean = false;
@@ -46,7 +47,7 @@ export class AnnotateDatasetComponent implements OnInit {
     }
 
     resize() {
-        setTimeout(() => this.renameWidth = Math.max(100, this.textEl.nativeElement.offsetWidth));
+        // setTimeout(() => this.renameWidth = Math.max(100, this.textEl.nativeElement.offsetWidth));
     }
 
     updateTitle(value: string) {

@@ -34,11 +34,13 @@
       </div>
       <gsa-scrollable #scrollable [bottomMargin]="57" class="width-seventy">
         <mat-accordion (change)="scrollable.updateShadows()" class="width-hundred" multi="false">
-          <div *ngFor="let data of analysisService.datasets; let i = index " class="gap-one">
-            <gsa-nested-stepper *ngIf="i === 0 else margin" [dataset]="data" class="width-hundred"></gsa-nested-stepper>
+          <div *ngFor="let id of datasetIds$ | async; let i = index " class="gap-one">
+            <ng-container *ngIf="i === 0 else margin">
+              <gsa-nested-stepper [datasetId]="id" class="width-hundred"></gsa-nested-stepper>
+            </ng-container>
             <ng-template #margin>
               <div class="expansion-panel-margin">
-                <gsa-nested-stepper [dataset]="data"></gsa-nested-stepper>
+                <gsa-nested-stepper [datasetId]="id"></gsa-nested-stepper>
               </div>
             </ng-template>
           </div>

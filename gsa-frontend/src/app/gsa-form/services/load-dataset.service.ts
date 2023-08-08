@@ -160,7 +160,7 @@ export class LoadDatasetService {
     //     let colIndex = dataset.table!.columns.indexOf(colName);
     //     return dataset.table?.dataset.map(row => row[colIndex].value) || [];
     // }
-
+    //
     // computeColumnValues(dataset: Dataset, colName: string | undefined, group: string): string[] {
     //     let colValues: string[] = this.getColumnValues(dataset, colName);
     //     colValues = colValues.filter((value, index) => colValues.indexOf(value) === index)
@@ -178,7 +178,7 @@ export class LoadDatasetService {
     //     }
     //     return colValues;
     // }
-
+    //
     // computeValidColumns(dataset: Dataset): string[] {
     //     return dataset.table!.columns?.filter((colName) => this.computeColumnValues(dataset, colName, "default").length > 1);
     // }

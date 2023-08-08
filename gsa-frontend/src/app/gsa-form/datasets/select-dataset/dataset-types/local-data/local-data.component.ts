@@ -11,6 +11,7 @@ import {datasetActions} from "../../../../state/dataset/dataset.actions";
 })
 export class LocalDataComponent {
   @Input() source: PDatasetSource;
+  @Input() datasetId: number;
 
   constructor(public store: Store) {
   }
@@ -22,7 +23,7 @@ export class LocalDataComponent {
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
-      this.store.dispatch(datasetActions.upload({file, typeId: this.source.id}))
+      this.store.dispatch(datasetActions.upload({id: this.datasetId,file, typeId: this.source.id}))
 
     }
   }

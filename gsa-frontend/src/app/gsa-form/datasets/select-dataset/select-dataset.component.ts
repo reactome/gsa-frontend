@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Observable} from "rxjs";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Dataset} from "../../model/dataset.model";
 import {BreakpointObserver} from "@angular/cdk/layout";
 import {SearchLibraryDataset} from "../../model/dataset-library";
 import {PDatasetSource} from "../../state/dataset-source/dataset-source.state";
@@ -15,7 +14,7 @@ import {datasetSourceFeature} from "../../state/dataset-source/dataset-source.se
   styleUrls: ['./select-dataset.component.scss']
 })
 export class SelectDatasetComponent implements OnInit {
-  @Input() dataset: Dataset;
+  @Input() datasetId: number;
   exampleSources$: Observable<PDatasetSource[]> = this.store.select(datasetSourceFeature.selectBySource('Example'));
   externalSources$: Observable<PDatasetSource[]>= this.store.select(datasetSourceFeature.selectBySource('External'));
   localSources$: Observable<PDatasetSource[]>= this.store.select(datasetSourceFeature.selectBySource('Local'));

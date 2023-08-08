@@ -16,6 +16,7 @@ import {datasetActions} from "../../../../state/dataset/dataset.actions";
 export class ExternalDataComponent implements OnInit {
 
     @Input() source: PDatasetSource;
+    @Input() datasetId: number;
     parameters$: Observable<Parameter[]>;
     isSelected$: Observable<boolean>;
 
@@ -36,7 +37,7 @@ export class ExternalDataComponent implements OnInit {
 
 
     loadData(parameters: Parameter[]): void {
-        this.store.dispatch(datasetActions.load({resourceId: this.source.id, parameters: parameters.map(param => ({name: param.name, value: param.value}))}))
+        this.store.dispatch(datasetActions.load({id: this.datasetId,resourceId: this.source.id, parameters: parameters.map(param => ({name: param.name, value: param.value}))}))
     }
 }
 

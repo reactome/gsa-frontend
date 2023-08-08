@@ -12,85 +12,97 @@ import {TableOrder} from "../../utilities/table/state/table.util";
 
 @Injectable()
 export class LoadedDatasetEffects {
-    upload = createEffect(() => this.actions$.pipe(
-        ofType(datasetActions.upload),
-        exhaustMap(({file, typeId}) => this.loadDatasetService.uploadFile(file).pipe(
-            map(uploadData => datasetActions.uploadComplete({uploadData, typeId, name: file.name.substring(0, file.name.lastIndexOf("."))})),
-            catchError((err) => of(datasetActions.uploadError({error: err})))
-        ))
+  upload = createEffect(() => this.actions$.pipe(
+    ofType(datasetActions.upload),
+    exhaustMap(({file, typeId, id}) => this.loadDatasetService.uploadFile(file).pipe(
+      map(uploadData => datasetActions.uploadComplete({
+        id,
+        uploadData,
+        typeId,
+        name: file.name.substring(0, file.name.lastIndexOf("."))
+      })),
+      catchError((error) => of(datasetActions.uploadError({error, id})))
     ))
+  ))
 
-    load = createEffect(() => this.actions$.pipe(
-        ofType(datasetActions.load),
-        exhaustMap(({resourceId, parameters}) => this.loadDatasetService.submitLoadDataset(resourceId, parameters).pipe(
-            map(loadingId => datasetActions.loadSubmitted({loadingId})),
-            catchError((err) => of(datasetActions.loadSubmittedError({error: err})))
-        ))
+  load = createEffect(() => this.actions$.pipe(
+    ofType(datasetActions.load),
+    exhaustMap(({resourceId, parameters, id}) => this.loadDatasetService.submitLoadDataset(resourceId, parameters).pipe(
+      map(loadingId => datasetActions.loadSubmitted({loadingId, id})),
+      catchError((error) => of(datasetActions.loadSubmittedError({error, id})))
     ))
+  ))
 
-    loadSubmitted = createEffect(() => this.actions$.pipe(
-        ofType(datasetActions.loadSubmitted),
-        tap(({loadingId}) => {
-            this.dialogRef = this.dialog.open(LoadingProgressComponent, {
-                width: '50%',
-                height: '50%',
-                disableClose: true,
-                data: {loadingId}
-            });
-        }),
-        map(({loadingId}) => datasetActions.getLoadStatus({loadingId}))
+  loadSubmitted = createEffect(() => this.actions$.pipe(
+    ofType(datasetActions.loadSubmitted),
+    tap(({id}) => {
+      this.dialogRef = this.dialog.open(LoadingProgressComponent, {
+        width: '50%',
+        height: '50%',
+        disableClose: true,
+        data: {datasetId: id}
+      });
+    }),
+    map(({loadingId, id}) => datasetActions.getLoadStatus({loadingId, id}))
+  ))
+
+  loadStatus = createEffect(() => this.actions$.pipe(
+    ofType(datasetActions.getLoadStatus),
+    switchMap(({loadingId, id}) => this.loadDatasetService.getLoadingStatus(loadingId).pipe(
+      mergeMap(loadingStatus => {
+        const actions: TypedAction<any>[] = [datasetActions.setLoadStatus({loadingStatus, id})];
+        if (loadingStatus.status === "running") actions.push(datasetActions.getLoadStatus({loadingId, id}));
+        else if (loadingStatus.status === "failed") actions.push(datasetActions.getLoadStatusError({
+          error: loadingStatus.reports,
+          id
+        }));
+        return actions
+      }),
+      delayWhen(action => action.type === '[GSA Dataset] get load status' ? timer(500) : timer(0)),
+      catchError((error) => of(datasetActions.loadSubmittedError({error, id})))
     ))
+  ))
 
-    loadStatus = createEffect(() => this.actions$.pipe(
-        ofType(datasetActions.getLoadStatus),
-        switchMap(({loadingId}) => this.loadDatasetService.getLoadingStatus(loadingId).pipe(
-            mergeMap(loadingStatus => {
-                const actions: TypedAction<any>[] = [datasetActions.setLoadStatus({loadingStatus})];
-                if (loadingStatus.status === "running") actions.push(datasetActions.getLoadStatus({loadingId}));
-                else if (loadingStatus.status === "failed") actions.push(datasetActions.getLoadStatusError({error: loadingStatus.reports}));
-                return actions
-            }),
-            delayWhen(action => action.type === '[GSA Dataset] get load status' ? timer(500) : timer(0)),
-            catchError((err) => of(datasetActions.loadSubmittedError({error: err})))
-        ))
+  loadingToSummary = createEffect(() => this.actions$.pipe(
+    ofType(datasetActions.setLoadStatus),
+    filter(({loadingStatus}) => loadingStatus.status === 'complete'),
+    map(({loadingStatus, id}) => datasetActions.getSummary({
+      datasetId: loadingStatus.dataset_id!,
+      loadingId: loadingStatus.id,
+      id
+    }))
+  ))
+
+  getSummary = createEffect(() => this.actions$.pipe(
+    ofType(datasetActions.getSummary),
+    exhaustMap(({loadingId, datasetId, id}) => this.loadDatasetService.getSummary(datasetId).pipe(
+      map(summary => datasetActions.setSummary({summary, loadingId, id})),
+      catchError((error) => of(datasetActions.loadSubmittedError({error, id}))),
+      tap(() => setTimeout(() => this.dialogRef.close(), 500))
     ))
-
-    loadingToSummary = createEffect(() => this.actions$.pipe(
-        ofType(datasetActions.setLoadStatus),
-        filter(({loadingStatus}) => loadingStatus.status === 'complete'),
-        map(({loadingStatus}) => datasetActions.getSummary({datasetId: loadingStatus.dataset_id!, loadingId: loadingStatus.id}))
-    ))
-
-    getSummary = createEffect(() => this.actions$.pipe(
-        ofType(datasetActions.getSummary),
-        exhaustMap(({loadingId, datasetId}) => this.loadDatasetService.getSummary(datasetId).pipe(
-            map(summary => datasetActions.setSummary({summary, loadingId})),
-            catchError((err) => of(datasetActions.loadSubmittedError({error: err}))),
-            tap(() => setTimeout(() => this.dialogRef.close(), 500))
-        ))
-    ))
+  ))
 
 
-    summaryToAnnotate = createEffect(() => this.actions$.pipe(
-        ofType(datasetActions.setSummary),
-        map(({summary}) => {
-            const table: string[][] = (!summary.sample_metadata) ?
-                [[''], ...summary.sample_ids.map(id => [id])] :
-                [
-                    ['', ...summary.sample_metadata.map(col => col.name)],
-                    ...summary.sample_ids.map((id, i) => [id, ...summary.sample_metadata!.map(column => column.values[i])])
-                ]
-            return TableActions.import({table, hasColNames: true, hasRowNames: true, order: TableOrder.ROW_BY_ROW})
-        })
-    ))
+  summaryToAnnotate = createEffect(() => this.actions$.pipe(
+    ofType(datasetActions.setSummary),
+    map(({summary, id}) => {
+      const table: string[][] = (!summary.sample_metadata) ?
+        [[''], ...summary.sample_ids.map(sampleId => [sampleId])] :
+        [
+          ['', ...summary.sample_metadata.map(col => col.name)],
+          ...summary.sample_ids.map((sampleId, i) => [sampleId, ...summary.sample_metadata!.map(column => column.values[i])])
+        ]
+      return TableActions.import({table, hasColNames: true, hasRowNames: true, order: TableOrder.ROW_BY_ROW})
+    })
+  ))
 
 
-    dialogRef: MatDialogRef<LoadingProgressComponent>;
+  dialogRef: MatDialogRef<LoadingProgressComponent>;
 
-    constructor(
-        private actions$: Actions,
-        private dialog: MatDialog,
-        private loadDatasetService: LoadDatasetService
-    ) {
-    }
+  constructor(
+    private actions$: Actions,
+    private dialog: MatDialog,
+    private loadDatasetService: LoadDatasetService
+  ) {
+  }
 }
