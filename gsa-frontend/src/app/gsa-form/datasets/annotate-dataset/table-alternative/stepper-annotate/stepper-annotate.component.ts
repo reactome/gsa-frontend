@@ -2,6 +2,7 @@ import {Component, Input, ViewChild} from '@angular/core';
 import {FormGroup} from "@angular/forms";
 import {MatStepper} from "@angular/material/stepper";
 import {Settings} from "../../../../model/table.model";
+import {Subset} from "../../../../model/utils.model";
 
 @Component({
   selector: 'gsa-stepper-annotate',
@@ -9,7 +10,7 @@ import {Settings} from "../../../../model/table.model";
   styleUrls: ['./stepper-annotate.component.scss']
 })
 export class StepperAnnotateComponent {
-  @Input() tableSettings: Settings;
+  @Input() tableSettings: Subset<Settings>;
   @ViewChild('stepper') stepper: MatStepper;
   @Input() datasetName: string;
 

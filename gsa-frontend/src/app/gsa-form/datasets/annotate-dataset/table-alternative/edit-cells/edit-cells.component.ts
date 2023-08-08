@@ -1,10 +1,12 @@
 import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
-import {CellInfo, Settings} from "../../../../model/table.model";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {tableFeature} from "../../../../utilities/table/state/table.selector";
 import {Store} from "@ngrx/store";
-import {fromEvent, map, Observable, switchMap} from "rxjs";
+import {combineLatestWith, EMPTY, map, Observable, switchMap} from "rxjs";
 import {DropdownComponent} from "../../../../utilities/dropdown/dropdown.component";
+import {transpose} from "../../../../utilities/table/state/table.util";
+import {Settings} from "../../../../model/table.model";
+import {Subset} from "../../../../model/utils.model";
 
 @Component({
     selector: 'gsa-edit-cells',
@@ -14,12 +16,11 @@ import {DropdownComponent} from "../../../../utilities/dropdown/dropdown.compone
 export class EditCellsComponent implements OnInit, AfterViewInit {
     cellStep: FormGroup;
     chosenCol: string;
-    chosenCol$: Observable<string[]>;
-    columnNames = this.store.select(tableFeature.selectColNames);
-    rowNames = this.store.select(tableFeature.selectRowNames);
+    columnNames$ = this.store.select(tableFeature.selectColNames);
+    rowNames$ = this.store.select(tableFeature.selectRowNames);
+    data$: Observable<string[][]> = EMPTY;
     @ViewChild('choice') dropdown: DropdownComponent;
-
-    // column$= this.store.select(tableFeature.selectColumn({name: this.chosenCol, includeName:true }))
+    @Input() tableSettings: Subset<Settings>;
 
     constructor(private formBuilder: FormBuilder, private store: Store) {
         this.cellStep = this.formBuilder.group({
@@ -31,9 +32,11 @@ export class EditCellsComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        this.chosenCol$ = this.dropdown.valueChange.pipe(
+        this.data$ = this.dropdown.valueChange.pipe(
             switchMap(name => this.store.select(tableFeature.selectColumn({name, includeName: true}))),
-            map(cells => [cells.map(cell => cell.value)])
+            map(cells => cells.map(cell => cell.value)),
+            combineLatestWith(this.rowNames$),
+            map(([column, rowNames]) => transpose([['', ...rowNames], column]))
         )
     }
 
