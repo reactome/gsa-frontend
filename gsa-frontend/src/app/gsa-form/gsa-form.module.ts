@@ -65,6 +65,8 @@ import {MethodEffects} from "./state/method/method.effect";
 import {parameterFeature} from "./state/parameter/parameter.selector";
 import {datasetSourceFeature} from "./state/dataset-source/dataset-source.selector";
 import {DatasetSourceEffects} from "./state/dataset-source/dataset-source.effect";
+import {datasetFeature} from "./state/dataset/dataset.selector";
+import {LoadedDatasetEffects} from "./state/dataset/dataset.effect";
 
 @NgModule({
   declarations: [
@@ -106,8 +108,10 @@ import {DatasetSourceEffects} from "./state/dataset-source/dataset-source.effect
     StoreModule.forFeature(methodFeature),
     StoreModule.forFeature(parameterFeature),
     StoreModule.forFeature(datasetSourceFeature),
+    StoreModule.forFeature(datasetFeature),
     EffectsModule.forFeature(MethodEffects),
     EffectsModule.forFeature(DatasetSourceEffects),
+    EffectsModule.forFeature(LoadedDatasetEffects),
   ],
   // bootstrap: [SelectDatasetComponent]
 })

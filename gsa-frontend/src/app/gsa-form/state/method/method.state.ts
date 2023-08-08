@@ -1,7 +1,5 @@
 import {createEntityAdapter, EntityState} from "@ngrx/entity";
 
-type PartialRequired<T, K extends keyof T> = Pick<T, K> & Partial<Omit<T, K>>;
-
 export interface Method {
   name: string;
   description: string;

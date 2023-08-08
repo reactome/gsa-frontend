@@ -1,4 +1,5 @@
-<mat-expansion-panel #mep="matExpansionPanel" (closed)="updateScroll()" (opened)="setStep()" [expanded]="!dataset.saved"
+<mat-expansion-panel *ngIf="(dataset$ | async) as dataset" #mep="matExpansionPanel" (closed)="updateScroll()"
+                     (opened)="setStep()" [expanded]="!dataset.saved"
                      hideToggle>
   <mat-expansion-panel-header class="padding-left-zero">
     <div *ngIf="dataset.saved; else unsaved" class="border-blue-left">
@@ -13,7 +14,7 @@
     </ng-template>
     <div class="flex-container width-hundred horizontal align-center justify-between">
 
-      <div *ngIf="dataset.summary === undefined; else title" class="italic">New Dataset</div>
+      <div *ngIf="summaryComplete$ | async; else title" class="italic">New Dataset</div>
       <ng-template #title>
         <div class="flex-container vertical justify-center">
           <span class="bold">{{dataset.summary?.title}}</span>
@@ -44,27 +45,25 @@
   </mat-expansion-panel-header>
 
   <mat-vertical-stepper #nestedStepper linear>
-    <mat-step #select [completed]="dataset.table !== undefined">
+    <mat-step #selectStep [completed]="(summaryComplete$ | async) || false">
       <ng-template matStepLabel>Select a dataset</ng-template>
       <div class="flex-container align-center vertical">
-        <gsa-select-dataset *ngIf="nestedStepper.selected == null || nestedStepper.selected == select"
-                            [dataset]="dataset"
-                            class="width-hundred"></gsa-select-dataset>
-        <button [disabled]="!select.completed" class="nav-button-margin" color="accent" mat-fab matStepperNext>
+        <gsa-select-dataset *ngIf="nestedStepper.selected === undefined || nestedStepper.selected === selectStep"
+                            [datasetId]="datasetId" class="width-hundred"/>
+        <button [disabled]="!selectStep.completed" class="nav-button-margin" color="accent" mat-fab matStepperNext>
           <mat-icon>keyboard_arrow_down</mat-icon>
         </button>
       </div>
     </mat-step>
 
-    <mat-step #annotate [completed]="dataset.table !== undefined && checkAnnotationData() ">
+    <mat-step #annotateStep [completed]="(annotationComplete$ | async) || false">
       <ng-template matStepLabel>Annotate your dataset</ng-template>
       <div class="flex-container align-center vertical">
         <button [disabled]="dataset.saved" class="nav-button-margin" color="accent" mat-fab matStepperPrevious>
           <mat-icon>keyboard_arrow_up</mat-icon>
         </button>
-        <gsa-annotate-dataset *ngIf="nestedStepper.selected == annotate" [dataset]="dataset"
-                              class="width-hundred"></gsa-annotate-dataset>
-        <button (click)="setValidStatisticalDesign()" [disabled]="!annotate.completed" class="nav-button-margin"
+        <gsa-annotate-dataset *ngIf="nestedStepper.selected == annotateStep" class="width-hundred"/>
+        <button [disabled]="!annotateStep.completed" class="nav-button-margin" (click)="saveAnnotations()"
                 color="accent" mat-fab
                 matStepperNext>
           <mat-icon>keyboard_arrow_down</mat-icon>
@@ -72,15 +71,15 @@
       </div>
     </mat-step>
 
-    <mat-step #statisticalDesign [completed]="checkStatisticalDesign()">
+    <mat-step #statisticalDesign [completed]="(statisticalDesignComplete$ | async) || false">
       <ng-template matStepLabel>Statistical Design</ng-template>
       <div class="flex-container align-center vertical">
         <button class="nav-button-margin" color="accent" mat-fab matStepperPrevious>
           <mat-icon>keyboard_arrow_up</mat-icon>
         </button>
-        <gsa-statistical-design *ngIf="nestedStepper.selected == statisticalDesign" [dataset]="dataset"
-                                class="width-hundred"></gsa-statistical-design>
-        <button (click)="saveData(); nestedStepper.selected = annotate; mep.expanded = false;"
+        <gsa-statistical-design *ngIf="nestedStepper.selected == statisticalDesign"
+                                class="width-hundred"/>
+        <button (click)="saveData(); nestedStepper.selected = annotateStep; mep.expanded = false;"
                 [disabled]="!statisticalDesign.completed" class="nav-button-margin"
                 color="primary"
                 mat-raised-button>

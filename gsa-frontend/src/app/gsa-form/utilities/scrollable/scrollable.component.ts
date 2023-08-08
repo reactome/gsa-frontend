@@ -32,9 +32,11 @@ export class ScrollableComponent implements AfterViewInit {
   }
 
   public updateShadows() {
-    const scrollable = this.scrollable.nativeElement;
-    this.shadows.top = scrollable.scrollTop > this.topMargin;
-    this.shadows.bottom = scrollable.clientHeight + scrollable.scrollTop + this.bottomMargin < scrollable.scrollHeight;
+    setTimeout(() => {
+      const scrollable = this.scrollable.nativeElement;
+      this.shadows.top = scrollable.scrollTop > this.topMargin;
+      this.shadows.bottom = scrollable.clientHeight + scrollable.scrollTop + this.bottomMargin < scrollable.scrollHeight;
+    })
   }
 
 }

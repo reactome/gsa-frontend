@@ -1,7 +1,7 @@
 <div (click)="select()" [ngClass]="(isSelected$ | async)?'hover-opponent':'dataset-card-content'">
     <div>
-        <p class="bold no-wrap">{{data.name}}</p>
-        <p>{{data.description}}</p>
+        <p class="bold no-wrap">{{source.name}}</p>
+        <p>{{source.description}}</p>
         <form *ngIf="isSelected$ | async">
             <div class="flex-container vertical gap-one align-center" *ngIf="parameters$ | async as parameters">
                 <div *ngFor="let param of parameters">

@@ -1,29 +1,34 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Settings} from "../../model/table.model";
 import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
-import {Dataset} from "../../model/dataset.model";
+import {Observable} from "rxjs";
+import {PDataset} from "../../state/dataset/dataset.state";
+import {Store} from "@ngrx/store";
+import {datasetFeature} from "../../state/dataset/dataset.selector";
+import {datasetActions} from "../../state/dataset/dataset.actions";
 
 
 @Component({
-  selector: 'gsa-annotate-dataset',
-  templateUrl: './annotate-dataset.component.html',
-  styleUrls: ['./annotate-dataset.component.scss']
+    selector: 'gsa-annotate-dataset',
+    templateUrl: './annotate-dataset.component.html',
+    styleUrls: ['./annotate-dataset.component.scss']
 })
 export class AnnotateDatasetComponent implements OnInit {
-  @ViewChild('hiddenText') textEl: ElementRef;
-  @Input() dataset: Dataset;
-  annotateDataStep: FormGroup;
-  tableSettings: Partial<Settings>;
-  data: string[][];
-  screenIsSmall: boolean = false;
-  renameWidth: number = 100;
+    @ViewChild('hiddenText') textEl: ElementRef;
+    @Input() datasetId: number;
+    @Output() annotations = new EventEmitter<string[][]>;
+    dataset$: Observable<PDataset | undefined>
+    annotateDataStep: FormGroup;
+    tableSettings: Settings;
+    screenIsSmall: boolean = false;
+    renameWidth: number = 100;
 
-  constructor(private formBuilder: FormBuilder, private responsive: BreakpointObserver) {
-    this.annotateDataStep = this.formBuilder.group({
-      address: ['', Validators.required]
-    });
-  }
+    constructor(private formBuilder: FormBuilder, private responsive: BreakpointObserver, private store: Store) {
+        this.annotateDataStep = this.formBuilder.group({
+            address: ['', Validators.required]
+        });
+    }
 
 
   ngOnInit() {
@@ -41,10 +46,20 @@ export class AnnotateDatasetComponent implements OnInit {
     this.resize()
   }
 
-  resize() {
-    setTimeout(() => this.renameWidth = Math.max(100, this.textEl.nativeElement.offsetWidth));
-  }
+    resize() {
+        // setTimeout(() => this.renameWidth = Math.max(100, this.textEl.nativeElement.offsetWidth));
+    }
 
+    updateTitle(value: string) {
+        this.store.dispatch(datasetActions.updateSummary({
+            update: {
+                id: this.datasetId,
+                changes: {
+                    title: value
+                }
+            }
+        }))
+    }
 }
 
 

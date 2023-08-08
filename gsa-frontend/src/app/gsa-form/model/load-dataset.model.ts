@@ -1,5 +1,6 @@
 import {Report} from "./report-status.model";
 import {MethodParameter} from "./methods.model";
+import {PartialRequired} from "./utils.model";
 
 export interface LoadingStatus {
   completed: number
@@ -7,8 +8,10 @@ export interface LoadingStatus {
   description: string
   id: string
   reports: Report[]
-  status: 'failed' | 'complete' | 'running';
+  status: 'failed' | 'complete' | 'running' | 'pending';
 }
+
+export type PLoadingStatus = PartialRequired<LoadingStatus, 'id' | 'status'>
 
 export interface LoadParameter {
   name: string
@@ -41,11 +44,15 @@ export class DataSummary {
   type: string;
   description?: string;
   group?: string;
-  sample_ids?: string[];
+  sample_ids: string[];
   sample_metadata?: SampleMetadata[];
-  default_parameters: Parameter[];
+  default_parameters?: Parameter[];
   parameters?: MethodParameter[];
   complete?: boolean = false;
+}
+
+export function isComplete(loadingStatus: PLoadingStatus): loadingStatus is LoadingStatus {
+  return (loadingStatus as LoadingStatus).dataset_id !== undefined
 }
 
 
