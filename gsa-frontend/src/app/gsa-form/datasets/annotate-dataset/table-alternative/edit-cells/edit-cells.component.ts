@@ -1,40 +1,41 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {CellInfo, Settings} from "../../../../model/table.model";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {tableFeature} from "../../../../utilities/table/state/table.selector";
+import {Store} from "@ngrx/store";
+import {fromEvent, map, Observable, switchMap} from "rxjs";
+import {DropdownComponent} from "../../../../utilities/dropdown/dropdown.component";
 
 @Component({
-  selector: 'gsa-edit-cells',
-  templateUrl: './edit-cells.component.html',
-  styleUrls: ['./edit-cells.component.scss']
+    selector: 'gsa-edit-cells',
+    templateUrl: './edit-cells.component.html',
+    styleUrls: ['./edit-cells.component.scss']
 })
-export class EditCellsComponent implements OnInit {
-  @Input() tableSettings: Settings;
-  cellStep: FormGroup;
-  chosenCol: string;
-  columnTableSettings: Settings;
+export class EditCellsComponent implements OnInit, AfterViewInit {
+    cellStep: FormGroup;
+    chosenCol: string;
+    chosenCol$: Observable<string[]>;
+    columnNames = this.store.select(tableFeature.selectColNames);
+    rowNames = this.store.select(tableFeature.selectRowNames);
+    @ViewChild('choice') dropdown: DropdownComponent;
 
-  constructor(private formBuilder: FormBuilder) {
-    this.cellStep = this.formBuilder.group({
-      address: ['', Validators.required]
-    });
-  }
+    // column$= this.store.select(tableFeature.selectColumn({name: this.chosenCol, includeName:true }))
 
-  ngOnInit(): void {
-    this.tableSettings = Object.assign({}, this.tableSettings);
-    this.tableSettings.addColumnButton = false;
-    this.tableSettings.showCols = false;
-    this.columnTableSettings = Object.assign({}, this.tableSettings);
-    this.chosenCol = this.tableSettings.columns[0];
-    this.computeTableSettings();
-  }
+    constructor(private formBuilder: FormBuilder, private store: Store) {
+        this.cellStep = this.formBuilder.group({
+            address: ['', Validators.required]
+        });
+    }
 
-  computeTableSettings(): void {
-    this.columnTableSettings = Object.assign({}, this.columnTableSettings);
+    ngOnInit(): void {
+    }
 
-    let colIndex = this.tableSettings.columns.indexOf(this.chosenCol);
-    let columnValues: CellInfo[][] = this.tableSettings.data.map(row => [row[colIndex]]);
-    this.columnTableSettings.columns = [this.chosenCol];
-    this.columnTableSettings.data = columnValues;
+    ngAfterViewInit(): void {
+        this.chosenCol$ = this.dropdown.valueChange.pipe(
+            switchMap(name => this.store.select(tableFeature.selectColumn({name, includeName: true}))),
+            map(cells => [cells.map(cell => cell.value)])
+        )
+    }
 
-  }
+
 }

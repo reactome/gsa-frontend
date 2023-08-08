@@ -15,11 +15,10 @@
         annotation (comparison group). For example, "Group" with values "Treatment" and "Control").</p>
       <ng-container *ngIf="!screenIsSmall; else big">
         <div class="align-center flex-container justify-center gap-one vertical width-hundred">
-          <gsa-table [userSettings]="tableSettings" class="width-hundred"></gsa-table>
+          <gsa-table [userSettings]="tableSettings" [data]="" class="width-hundred"></gsa-table>
           <div class="flex-container horizontal gap-one">
-            <gsa-add-dataset-button [icon]="false" [tableSettings]="tableSettings"></gsa-add-dataset-button>
-            <gsa-save-dataset-button [datasetName]="dataset.summary!.title!" [icon]="false"
-                                     [tableSettings]="tableSettings"></gsa-save-dataset-button>
+            <gsa-add-dataset-button [icon]="false"></gsa-add-dataset-button>
+            <gsa-save-dataset-button [datasetName]="dataset.summary!.title!" [icon]="false"></gsa-save-dataset-button>
           </div>
         </div>
       </ng-container>

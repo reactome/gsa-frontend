@@ -1,3 +1,5 @@
+import {Mapper} from "../utilities/table/table.component";
+
 export class CellInfo {
   value: any
   x : number
@@ -12,16 +14,13 @@ export class CellInfo {
   }
 }
 
-export interface Settings {
-  columns: string[];
-  rows: string[];
-  data: CellInfo[][];
-  renameCols?: boolean;
-  renameRows?: boolean;
-  changeCells?: boolean;
-  addColumnButton?: boolean;
-  showCols?: boolean;
-  showRows?: boolean;
+export interface Settings extends Mapper<boolean>{
+  renameCols: boolean;
+  renameRows: boolean;
+  changeCells: boolean;
+  addColumnButton: boolean;
+  showCols: boolean;
+  showRows: boolean;
 }
 
 

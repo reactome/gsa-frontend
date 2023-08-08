@@ -9,7 +9,7 @@
   </div>
   <div class="flex-container horizontal align-center">
     <div>
-      <div *ngFor="let col of tableSettings.columns; let i = index" class="flex-container horizontal justify-between">
+      <div *ngFor="let col of columns$ | async; let i = index" class="flex-container horizontal justify-between">
         <mat-form-field>
           <input (change)="valueChange($event, i)"
                  [ngModelOptions]="{standalone: true}"

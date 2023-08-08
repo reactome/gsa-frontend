@@ -14,7 +14,8 @@ export class AnnotateDatasetComponent implements OnInit {
   @ViewChild('hiddenText') textEl: ElementRef;
   @Input() dataset: Dataset;
   annotateDataStep: FormGroup;
-  tableSettings: Settings;
+  tableSettings: Partial<Settings>;
+  data: string[][];
   screenIsSmall: boolean = false;
   renameWidth: number = 100;
 
@@ -26,14 +27,16 @@ export class AnnotateDatasetComponent implements OnInit {
 
 
   ngOnInit() {
+    let table = this.dataset.table!;
     this.tableSettings = {
-      columns: this.dataset.table!.columns,
-      rows: this.dataset.table!.rows,
-      data: this.dataset.table!.dataset,
       renameRows: false,
       showRows: true,
       addColumnButton: true
     };
+    this.data =  [
+      ["", ...table.columns],
+      ...table.dataset.map((row, y) => [table.rows[y], ...row.map(cell => cell.value)])
+    ]
     this.responsive.observe(Breakpoints.Small).subscribe(result => this.screenIsSmall = result.matches);
     this.resize()
   }
