@@ -27,7 +27,7 @@ export const datasetReducer: ActionReducer<DatasetState> = createReducer(
     id,
     changes: {loadingStatus}
   }, state)),
-  on(datasetActions.setSummary, (state, {summary, loadingId, id}) => datasetAdapter.updateOne({
+  on(datasetActions.setSummary, (state, {summary, id}) => datasetAdapter.updateOne({
     id,
     changes: {summary}
   }, state)),

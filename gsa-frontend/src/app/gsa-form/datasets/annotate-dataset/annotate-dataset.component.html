@@ -14,16 +14,17 @@
       <span #hiddenText style="visibility: hidden; white-space: pre; height: 0px">{{elasticInput.value}}</span>
       <p class="grey">Please add the annotations for the given dataset. The minimum requirement is to specify one
         annotation (comparison group). For example, "Group" with values "Treatment" and "Control").</p>
-      <ng-container *ngIf="!screenIsSmall; else big">
+      <ng-container *ngIf="!screenIsSmall; else small">
         <div class="align-center flex-container justify-center gap-one vertical width-hundred">
-          <gsa-table [userSettings]="tableSettings" [data]="" class="width-hundred"></gsa-table>
+          <gsa-table [userSettings]="tableSettings" [table]="dataset.annotations || [['']]"
+                     (tableChange)="onTableUpdate($event)" class="width-hundred"></gsa-table>
           <div class="flex-container horizontal gap-one">
             <gsa-add-dataset-button [icon]="false"></gsa-add-dataset-button>
             <gsa-save-dataset-button [datasetName]="dataset.summary!.title!" [icon]="false"></gsa-save-dataset-button>
           </div>
         </div>
-      </ng-container>1
-      <ng-template #big>
+      </ng-container>
+      <ng-template #small>
         <gsa-stepper-annotate [datasetName]="dataset.summary!.title!" [tableSettings]="tableSettings"
                               class="width-hundred"></gsa-stepper-annotate>
       </ng-template>

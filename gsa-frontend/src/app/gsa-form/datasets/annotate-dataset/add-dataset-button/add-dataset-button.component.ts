@@ -1,9 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {CellInfo, Settings} from "../../../model/table.model";
-import {map, Observable} from "rxjs";
-import {fromPromise} from "rxjs/internal/observable/innerFrom";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {WarningSnackbarComponent} from "./warning-snackbar/warning-snackbar.component";
 import {Store} from "@ngrx/store";
 import {TableActions} from "../../../utilities/table/state/table.action";
 
@@ -14,7 +10,6 @@ import {TableActions} from "../../../utilities/table/state/table.action";
     styleUrls: ['./add-dataset-button.component.scss']
 })
 export class AddDatasetButtonComponent implements OnInit {
-    @Input() tableSettings: Settings;
     @Input() icon: boolean;
 
 

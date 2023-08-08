@@ -25,8 +25,8 @@ export const datasetActions = createActionGroup({
     'set load status': props<{ loadingStatus: PLoadingStatus, id: number }>(),
     'get load status error': props<{ error: any, id: number }>(),
 
-    'get summary': props<{ datasetId: string, loadingId: string, id: number }>(),
-    'set summary': props<{ summary: DataSummary, loadingId: string, id: number }>(),
+    'get summary': props<{ datasetId: string, id: number }>(),
+    'set summary': props<{ summary: DataSummary, id: number }>(),
     'get summary error': props<{ error: any, id: number }>(),
 
     'update summary': props<{ update: Update<DataSummary> }>(),

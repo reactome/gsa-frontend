@@ -1,7 +1,7 @@
 <div [formGroup]="cellStep" class="flex-container vertical">
-    <gsa-dropdown #choice *ngIf="(columnNames | async) as columns" (valueChange)="chosenCol =$event;" [options]="columns"
-                  [placeholder]="'Select column'"
-                  [value]="columns[0]"
-                  class="flex-one"></gsa-dropdown>
-    <gsa-table [data]=""></gsa-table>
+  <gsa-dropdown #choice *ngIf="(columnNames$ | async) as columns" (valueChange)="chosenCol =$event;" [options]="columns"
+                [placeholder]="'Select column'"
+                [value]="columns[0]"
+                class="flex-one"></gsa-dropdown>
+  <gsa-table [table]="(data$ | async) || [['']]" [userSettings]="tableSettings"></gsa-table>
 </div>

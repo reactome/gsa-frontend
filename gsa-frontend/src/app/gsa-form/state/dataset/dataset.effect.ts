@@ -6,8 +6,6 @@ import {LoadDatasetService} from "../../services/load-dataset.service";
 import {TypedAction} from "@ngrx/store/src/models";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {LoadingProgressComponent} from "../../datasets/select-dataset/loading-progress/loading-progress.component";
-import {TableActions} from "../../utilities/table/state/table.action";
-import {TableOrder} from "../../utilities/table/state/table.util";
 
 
 @Injectable()
@@ -23,6 +21,19 @@ export class LoadedDatasetEffects {
       })),
       catchError((error) => of(datasetActions.uploadError({error, id})))
     ))
+  ))
+
+  uploadCompleteToSummary = createEffect(() => this.actions$.pipe(
+    ofType(datasetActions.uploadComplete),
+    map(({uploadData, name, typeId, id}) => datasetActions.setSummary({
+      id,
+      summary: {
+        id: uploadData.data_token,
+        title: name,
+        type: typeId,
+        sample_ids: uploadData.sample_names
+      }
+    }))
   ))
 
   load = createEffect(() => this.actions$.pipe(
@@ -68,15 +79,14 @@ export class LoadedDatasetEffects {
     filter(({loadingStatus}) => loadingStatus.status === 'complete'),
     map(({loadingStatus, id}) => datasetActions.getSummary({
       datasetId: loadingStatus.dataset_id!,
-      loadingId: loadingStatus.id,
       id
     }))
   ))
 
   getSummary = createEffect(() => this.actions$.pipe(
     ofType(datasetActions.getSummary),
-    exhaustMap(({loadingId, datasetId, id}) => this.loadDatasetService.getSummary(datasetId).pipe(
-      map(summary => datasetActions.setSummary({summary, loadingId, id})),
+    exhaustMap(({datasetId, id}) => this.loadDatasetService.getSummary(datasetId).pipe(
+      map(summary => datasetActions.setSummary({summary, id})),
       catchError((error) => of(datasetActions.loadSubmittedError({error, id}))),
       tap(() => setTimeout(() => this.dialogRef.close(), 500))
     ))
@@ -92,7 +102,7 @@ export class LoadedDatasetEffects {
           ['', ...summary.sample_metadata.map(col => col.name)],
           ...summary.sample_ids.map((sampleId, i) => [sampleId, ...summary.sample_metadata!.map(column => column.values[i])])
         ]
-      return TableActions.import({table, hasColNames: true, hasRowNames: true, order: TableOrder.ROW_BY_ROW})
+      return datasetActions.setAnnotations({annotations: table, id})
     })
   ))
 

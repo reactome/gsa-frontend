@@ -2,18 +2,17 @@
   <div class="flex-container horizontal justify-between align-center width-hundred margin-bottom-20">
     <h2>Edit columns</h2>
     <div>
-      <gsa-add-dataset-button [icon]="true" [tableSettings]="tableSettings"></gsa-add-dataset-button>
-      <gsa-save-dataset-button [datasetName]="datasetName" [icon]="true"
-                               [tableSettings]="tableSettings"></gsa-save-dataset-button>
+      <gsa-add-dataset-button [icon]="true"></gsa-add-dataset-button>
+      <gsa-save-dataset-button [datasetName]="datasetName" [icon]="true"></gsa-save-dataset-button>
     </div>
   </div>
   <div class="flex-container horizontal align-center">
     <div>
-      <div *ngFor="let col of columns$ | async; let i = index" class="flex-container horizontal justify-between">
+      <div *ngFor="let col of columnNames$ | async; let i = index" class="flex-container horizontal justify-between">
         <mat-form-field>
           <input (change)="valueChange($event, i)"
                  [ngModelOptions]="{standalone: true}"
-                 [ngModel]="tableSettings.columns[i]" matInput
+                 [ngModel]="col" matInput
                  type="text">
         </mat-form-field>
         <button (click)="deleteColumn(col)" class="bin-button" color="primary" mat-icon-button>
