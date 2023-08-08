@@ -6,19 +6,21 @@ import {
     Input,
     OnChanges,
     OnInit,
+    Output,
     SimpleChanges,
     ViewChild
 } from '@angular/core';
-import {CellInfo, Settings} from "../../model/table.model";
+import {Settings} from "../../model/table.model";
 import {Clipboard} from '@angular/cdk/clipboard';
 import {MatButton} from "@angular/material/button";
 import {Store} from "@ngrx/store";
 import {TableActions} from "./state/table.action";
 import {Cell, Coords} from "./state/table.state";
-import {combineLatest, filter, first, map, Observable, tap} from "rxjs";
+import {combineLatest, EMPTY, filter, first, map, Observable, tap} from "rxjs";
 import {TableOrder} from "./state/table.util";
 import {tableFeature} from "./state/table.selector";
 import {isDefined} from "../utils";
+import {Subset} from "../../model/utils.model";
 
 
 type CellCoord = { x: number, y: number, parentElement: any };
@@ -57,8 +59,10 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     // firstSelected: CellInfo;
     // lastSelected: CellInfo;
 
-    @Input() userSettings: Settings;
-    @Input() data: string[][];
+    @Input() userSettings: Subset<Settings>;
+    @Input() table: string[][];
+    @Output() tableChange: Observable<string[][]> = EMPTY;
+
     settings: Settings;
     private defaultSettings: Settings = {
         renameCols: true,
@@ -90,6 +94,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         // this.firstSelected = new CellInfo(undefined, 0, -1);
         // this.lastSelected = new CellInfo(undefined, 0, -1);
         this.data$ = this.store.select(tableFeature.selectData(TableOrder.ROW_BY_ROW));
+        this.tableChange = this.data$.pipe(map(table => table.map(row => row.map(cell => cell.value))));
 
         this.start$ = this.store.select(tableFeature.selectStart);
         this.startCell$ = this.start$.pipe(map(start => this.getHTMLCellElement(start.x, start.y)));
@@ -123,7 +128,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         this.isCell$ = this.startType$.pipe(map(type => type === 'cell'));
 
         this.store.dispatch(TableActions.import({
-            table: this.data,
+            table: this.table,
             hasColNames: true,
             hasRowNames: true,
             order: TableOrder.ROW_BY_ROW

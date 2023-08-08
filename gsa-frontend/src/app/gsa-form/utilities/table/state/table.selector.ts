@@ -8,6 +8,7 @@ export const tableFeature = createFeature({
     name: 'table',
     reducer: reducer,
     extraSelectors: ({selectDataset, selectStart, selectStop}) => ({
+        selectRawData: createSelector(selectDataset, (dataset) => dataset.map(row => row.map(cell=> cell.value))),
         selectData: (order: TableOrder) => createSelector(selectDataset, (dataset) => order === TableOrder.COLUMN_BY_COLUMN ? transpose(dataset) : dataset),
         selectValue: createSelector(
             selectStart, selectDataset,
