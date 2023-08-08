@@ -34,12 +34,12 @@ export class NestedStepperComponent implements OnInit, AfterViewInit, AfterViewC
   ngOnInit(): void {
     this.dataset$ = this.store.select(datasetFeature.selectDataset(this.datasetId));
     this.summaryComplete$ = this.store.select(datasetFeature.selectSummaryComplete(this.datasetId)).pipe(
-      share(),
       distinctUntilChanged(),
-      tap(complete => setTimeout(() => complete ? this.stepper.next() : null)) // Go to next step if summary is complete
+      tap(complete => setTimeout(() => complete && this.stepper.next())), // Go to next step if summary is complete
+      share()
     ); // TODO find a better way to go to next AFTER template updated [complete] step checker, so that stepper.next() can have an effect without setTimeout
-    this.annotationComplete$ = this.store.select(datasetFeature.selectAnnotationComplete(this.datasetId)).pipe(share(), distinctUntilChanged());
-    this.statisticalDesignComplete$ = this.store.select(datasetFeature.selectStatisticalDesignComplete(this.datasetId)).pipe(share(), distinctUntilChanged());
+    this.annotationComplete$ = this.store.select(datasetFeature.selectAnnotationComplete(this.datasetId)).pipe(distinctUntilChanged(), share());
+    this.statisticalDesignComplete$ = this.store.select(datasetFeature.selectStatisticalDesignComplete(this.datasetId)).pipe(distinctUntilChanged(), share());
 
   }
 
@@ -93,6 +93,8 @@ export class NestedStepperComponent implements OnInit, AfterViewInit, AfterViewC
   }
 
   saveAnnotations() {
-   // this.store.dispatch(datasetActions.setAnnotations({annotations, id: this.datasetId}))
+    // this.store.dispatch(datasetActions.setAnnotations({annotations, id: this.datasetId}))
   }
+
+  protected readonly console = console;
 }
