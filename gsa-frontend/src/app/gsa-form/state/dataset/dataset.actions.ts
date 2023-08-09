@@ -28,6 +28,7 @@ export const datasetActions = createActionGroup({
     'get summary': props<{ datasetId: string, id: number }>(),
     'set summary': props<{ summary: DataSummary, id: number }>(),
     'get summary error': props<{ error: any, id: number }>(),
+    'clear summary': props<{ id: number }>(),
 
     'update summary': props<{ update: Update<DataSummary> }>(),
     'update annotations': props<{ update: Update<string[][]> }>(),

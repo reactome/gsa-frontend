@@ -35,6 +35,10 @@ export const datasetReducer: ActionReducer<DatasetState> = createReducer(
     id,
     changes: {annotations}
   }, state)),
+  on(datasetActions.clearSummary, (state, {id}) => datasetAdapter.updateOne({
+      id,
+      changes: {summary: undefined}
+  }, state)),
   on(datasetActions.uploadComplete, (state, {uploadData, name, typeId, id}) => datasetAdapter.updateOne({
     id,
     changes: {

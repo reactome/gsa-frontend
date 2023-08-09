@@ -59,7 +59,7 @@
     <mat-step #annotateStep [completed]="(annotationComplete$ | async) || false">
       <ng-template matStepLabel>Annotate your dataset</ng-template>
       <div class="flex-container align-center vertical">
-        <button [disabled]="dataset.saved" class="nav-button-margin" color="accent" mat-fab matStepperPrevious>
+        <button [disabled]="dataset.saved" class="nav-button-margin" (click)="clearSummary()" color="accent" mat-fab matStepperPrevious>
           <mat-icon>keyboard_arrow_up</mat-icon>
         </button>
         <gsa-annotate-dataset [datasetId]="datasetId" *ngIf="nestedStepper.selected == annotateStep" class="width-hundred"/>

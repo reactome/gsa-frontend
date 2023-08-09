@@ -6,7 +6,7 @@ import {ScrollService} from "../../services/scroll.service";
 import {CdkStep} from "@angular/cdk/stepper";
 import {Store} from "@ngrx/store";
 import {datasetFeature} from "../../state/dataset/dataset.selector";
-import {distinctUntilChanged, Observable, of, share, tap} from "rxjs";
+import {delay, distinctUntilChanged, Observable, of, share} from "rxjs";
 import {PDataset} from "../../state/dataset/dataset.state";
 import {datasetActions} from "../../state/dataset/dataset.actions";
 
@@ -33,14 +33,10 @@ export class NestedStepperComponent implements OnInit, AfterViewInit, AfterViewC
 
   ngOnInit(): void {
     this.dataset$ = this.store.select(datasetFeature.selectDataset(this.datasetId));
-    this.summaryComplete$ = this.store.select(datasetFeature.selectSummaryComplete(this.datasetId)).pipe(
-      distinctUntilChanged(),
-      tap(complete => setTimeout(() => complete && this.stepper.next())), // Go to next step if summary is complete
-      share()
-    ); // TODO find a better way to go to next AFTER template updated [complete] step checker, so that stepper.next() can have an effect without setTimeout
+    this.summaryComplete$ = this.store.select(datasetFeature.selectSummaryComplete(this.datasetId)).pipe(share(),distinctUntilChanged());
+    this.summaryComplete$.pipe(delay(0)).subscribe(() => this.stepper.next());
     this.annotationComplete$ = this.store.select(datasetFeature.selectAnnotationComplete(this.datasetId)).pipe(distinctUntilChanged(), share());
     this.statisticalDesignComplete$ = this.store.select(datasetFeature.selectStatisticalDesignComplete(this.datasetId)).pipe(distinctUntilChanged(), share());
-
   }
 
 
@@ -96,5 +92,8 @@ export class NestedStepperComponent implements OnInit, AfterViewInit, AfterViewC
     // this.store.dispatch(datasetActions.setAnnotations({annotations, id: this.datasetId}))
   }
 
+  clearSummary() {
+    this.store.dispatch(datasetActions.clearSummary({ id: this.datasetId }));
+  }
   protected readonly console = console;
 }
