@@ -122,52 +122,29 @@ export const reducer: ActionReducer<State> = createUndoRedoReducer(
     Cells.select(state);
     return state;
   }),
-  on(TableActions.import, (state, {table, hasColNames, hasRowNames, order = TableOrder.COLUMN_BY_COLUMN}) => {
+  on(TableActions.import, (state, {table, hasColNames, hasRowNames, fullImport = false}) => {
     const nameToRowI = new Map(state.dataset.map((row, i) => [row[0].value, i]));
     const nameToColI = new Map(state.dataset[0].map((cell, i) => [cell.value, i]));
 
-    switch (order) {
-      case TableOrder.ROW_BY_ROW:
-        for (let yFrom = 0; yFrom < table.length; yFrom++) {
-          let xTo, yTo: number;
-          let rowName = table[yFrom][0];
-          if (hasRowNames && nameToRowI.has(rowName)) {
-            yTo = nameToRowI.get(rowName) as number;
-          } else {
-
-            yTo = state.dataset.push(state.dataset[0].map(() => cell())) - 1;
-            nameToRowI.set(rowName, yTo);
-          }
-          for (let xFrom = 0; xFrom < table[0].length; xFrom++) {
-            const colName = table[0][xFrom];
-            if (hasColNames && nameToColI.has(colName)) {
-              xTo = nameToColI.get(colName) as number;
-            } else {
-              xTo = pushAll(state.dataset, cell()) - 1;
-              nameToColI.set(colName, xTo);
-            }
-            state.dataset[yTo][xTo].value = table[yFrom][xFrom];
-          }
-        }
-        break;
-      case TableOrder.COLUMN_BY_COLUMN:
-        // for (let xFrom = 0; xFrom < table.length; xFrom++) {
-        //   let xTo, yTo: number;
-        //   if (hasColNames && nameToColI.has(table[xFrom][0])) {
-        //     xTo = nameToColI.get(table[xFrom][0]) as number;
-        //   } else {
-        //     xTo = pushAll(state.dataset, {value: ''}) - 1;
-        //   }
-        //   for (let yFrom = 0; yFrom < table[0].length; yFrom++) {
-        //     if (hasRowNames && nameToRowI.has(table[0][yFrom])) {
-        //       yTo = nameToRowI.get(table[0][yFrom]) as number;
-        //     } else {
-        //       yTo = state.dataset[xTo].push({value: ''}) - 1;
-        //     }
-        //     state.dataset[yTo][xTo].value = table[xFrom][yFrom];
-        //   }
-        // }
-        break;
+    for (let yFrom = 0; yFrom < table.length; yFrom++) {
+      let xTo, yTo: number;
+      let rowName = table[yFrom][0];
+      if (hasRowNames && nameToRowI.has(rowName)) { // Row already present
+        yTo = nameToRowI.get(rowName) as number;
+      } else if (fullImport || state.settings.addRow) { // New row to add
+        yTo = state.dataset.push(state.dataset[0].map(() => cell())) - 1;
+        nameToRowI.set(rowName, yTo);
+      } else continue; // skip row since not present and cannot be added
+      for (let xFrom = 0; xFrom < table[0].length; xFrom++) {
+        const colName = table[0][xFrom];
+        if (hasColNames && nameToColI.has(colName)) { // Column already present
+          xTo = nameToColI.get(colName) as number;
+        } else if (fullImport || state.settings.addColumn) { // New column to add
+          xTo = pushAll(state.dataset, cell()) - 1;
+          nameToColI.set(colName, xTo);
+        } else continue; // skip column since not present and cannot be added
+        state.dataset[yTo][xTo].value = table[yFrom][xFrom];
+      }
     }
 
     return Cells.select(state);

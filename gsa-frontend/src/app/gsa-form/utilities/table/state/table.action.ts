@@ -36,7 +36,7 @@ export const TableActions = createActionGroup({
         'select range': props<{ start?: Coords, stop?: Coords }>(),
 
         'import file': props<{ file: File }>(),
-        'import': props<{ table: string[][], hasColNames: boolean, hasRowNames: boolean, order?: TableOrder }>(),
+        'import': props<{ table: string[][], hasColNames: boolean, hasRowNames: boolean, fullImport?: boolean }>(),
         'paste': props<{ table: string[][], order?: TableOrder }>(),
 
         'setting': props<{ setting: keyof Settings, value: boolean }>(),

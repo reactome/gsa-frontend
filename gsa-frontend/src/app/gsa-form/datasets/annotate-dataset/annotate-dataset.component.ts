@@ -34,8 +34,7 @@ export class AnnotateDatasetComponent implements OnInit {
   ngOnInit() {
     this.tableSettings = {
       renameRows: false,
-      showRows: true,
-      addColumnButton: true
+      addRow: false
     };
     this.dataset$ = this.store.select(datasetFeature.selectDataset(this.datasetId));
     this.responsive.observe(Breakpoints.Small).subscribe(result => this.screenIsSmall = result.matches);

@@ -18,7 +18,8 @@ export interface Settings extends Mapper<boolean>{
   renameCols: boolean;
   renameRows: boolean;
   changeCells: boolean;
-  addColumnButton: boolean;
+  addColumn: boolean;
+  addRow: boolean;
   showCols: boolean;
   showRows: boolean;
 }

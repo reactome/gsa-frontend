@@ -28,7 +28,13 @@ th, td {
 }
 
 .add-column-button-container {
+  height: 100px;
   max-width: 5%;
+}
+
+.add-row-button-container {
+  height: 50px;
+  max-height: 5%;
 }
 
 .sticky {

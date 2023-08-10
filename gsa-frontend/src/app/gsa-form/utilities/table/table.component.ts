@@ -119,7 +119,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       table: this.table,
       hasColNames: true,
       hasRowNames: true,
-      order: TableOrder.ROW_BY_ROW
+      fullImport: true
     }));
   }
 
@@ -231,6 +231,10 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     // setTimeout(() => this.focusOnCell(this.settings.columns.length - 1, -1));
     // this.firstSelected = new CellInfo(undefined, this.settings.columns.length - 1, -1)
     // this.lastSelected = new CellInfo(undefined, this.settings.columns.length - 1, -1)
+  }
+
+  addRow() {
+    this.store.dispatch(TableActions.addRow())
   }
 
   changeValue($event: MouseEvent) {

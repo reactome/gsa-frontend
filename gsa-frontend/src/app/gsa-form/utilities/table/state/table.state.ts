@@ -36,7 +36,8 @@ export const initialState: State = {
         renameCols: true,
         renameRows: true,
         changeCells: true,
-        addColumnButton: true,
+        addColumn: true,
+        addRow: true,
         showRows: true,
         showCols: true
     },
