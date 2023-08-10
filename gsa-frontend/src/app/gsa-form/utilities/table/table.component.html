@@ -1,4 +1,5 @@
-<div #root class="table-container flex horizontal relative in-front width-hundred" (blur)="deselect()">
+<div #root class="table-container flex horizontal relative in-front width-hundred" (blur)="deselect()"
+     *ngrxLet="settings$ as settings">
     <input #flyingRename (change)="renameCell(flyingRename)"
            (blur)="blurInput()" (copy)="copyValues()"
            (focus)="renameVisible = true"

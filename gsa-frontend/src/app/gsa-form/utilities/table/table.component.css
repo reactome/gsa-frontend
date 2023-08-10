@@ -91,6 +91,7 @@ td {
 
 th {
   position: sticky;
+  white-space: nowrap;
 }
 th.rows {
   left: 0;
