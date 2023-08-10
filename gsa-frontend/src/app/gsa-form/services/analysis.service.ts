@@ -40,8 +40,6 @@ export class AnalysisService {
   }
 
   submitQuery(): void {
-    // @ts-ignore
-    // @ts-ignore
     const query: Request.Query = {
       methodName: this.analysisMethodService.selectedMethod?.name || "Method name",
       parameters: this.analysisMethodService.selectedMethod?.parameters.map(param => ({

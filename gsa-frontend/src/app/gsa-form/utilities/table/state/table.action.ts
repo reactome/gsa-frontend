@@ -2,6 +2,7 @@ import {createActionGroup, emptyProps, props} from "@ngrx/store";
 import {Coords} from "./table.state";
 import {TableOrder} from "./table.util";
 import {Settings} from "../../../model/table.model";
+import {Subset} from "../../../model/utils.model";
 
 export type Named = {name: string};
 
@@ -39,7 +40,7 @@ export const TableActions = createActionGroup({
         'paste': props<{ table: string[][], order?: TableOrder }>(),
 
         'setting': props<{ setting: keyof Settings, value: boolean }>(),
-        'settings': props<{ settings: Pick<Settings, keyof Settings> }>()
+        'settings': props<{ settings: Subset<Settings> }>()
     }
 })
 
