@@ -20,6 +20,9 @@ export class StepperComponent implements AfterViewInit, OnInit {
   methodSelected$ = this.store.select(methodFeature.selectSelectedMethodName).pipe(map(name => name !== null))
 
   datasetIds$ = this.store.select(datasetFeature.selectIds) as Observable<number[]>;
+
+  allSaved$: Observable<boolean> = this.store.select(datasetFeature.selectAllSaved);
+
   constructor(private cdr: ChangeDetectorRef, public analysisMethodsService: AnalysisMethodsService, public analysisService: AnalysisService, private store: Store) {
   }
 
@@ -34,5 +37,4 @@ export class StepperComponent implements AfterViewInit, OnInit {
   addDataset() {
     this.store.dispatch(datasetActions.add())
   }
-
 }

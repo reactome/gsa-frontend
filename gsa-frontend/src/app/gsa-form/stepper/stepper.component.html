@@ -22,7 +22,7 @@
   </mat-step>
 
 
-  <mat-step #addData [completed]="analysisService.allDatasetsSaved()">
+  <mat-step #addData [completed]="(allSaved$ | async) || false">
     <ng-template matStepLabel>Add datasets</ng-template>
     <h1>Step 2: Add and annotate your datasets</h1>
     <div class="flex-container horizontal gap-one justify-evenly">

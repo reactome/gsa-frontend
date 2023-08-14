@@ -1,81 +1,77 @@
 import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Covariate, Dataset} from "../../model/dataset.model";
-import {LoadDatasetService} from "../../services/load-dataset.service";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Observable} from 'rxjs';
+import {PDataset} from '../../state/dataset/dataset.state';
+import {Store} from '@ngrx/store';
+import {AnalysisGroups, datasetFeature,} from '../../state/dataset/dataset.selector';
+import {datasetActions} from '../../state/dataset/dataset.actions';
+import {Covariate} from "../../model/dataset.model";
+import {MatCheckboxChange} from "@angular/material/checkbox";
 
 @Component({
-  selector: 'gsa-statistical-design',
-  templateUrl: './statistical-design.component.html',
-  styleUrls: ['./statistical-design.component.scss']
+    selector: 'gsa-statistical-design',
+    templateUrl: './statistical-design.component.html',
+    styleUrls: ['./statistical-design.component.scss'],
 })
 export class StatisticalDesignComponent implements OnInit, AfterViewInit {
-  @Input() dataset: Dataset
-  statisticalDesignStep: FormGroup;
-  allComplete = false;
-  someComplete = false;
+    @Input() datasetId: number;
+    dataset$: Observable<PDataset | undefined>;
+    statisticalDesignStep: FormGroup;
+    analysisGroups$: Observable<AnalysisGroups>;
+    covariates$: Observable<Covariate[]>;
 
-  // constructor(private formBuilder: FormBuilder, public loadDatasetService: LoadDatasetService) {
-  //   this.statisticalDesignStep = this.formBuilder.group({
-  //     address: ['', Validators.required]
-  //   });
-  // }
-  //
-  ngOnInit(): void {
-  //   if (this.dataset.statisticalDesign === undefined) {
-  //     this.dataset.statisticalDesign = {
-  //       analysisGroup: this.defaultValue(0),
-  //       comparisonGroup1: this.defaultValue(1),
-  //       comparisonGroup2: this.defaultValue(2),
-  //       covariances: this.loadDatasetService.computeValidColumns(this.dataset).map(covariate => ({
-  //         name: covariate,
-  //         value: this.isDefaultCovariate(covariate)
-  //       }))
-  //     };
-  //   }
-  }
+    someSelected$: Observable<boolean>;
+    allSelected$: Observable<boolean>;
 
-  ngAfterViewInit() {
-    // this.updateCompleteness();
-  }
-  //
-  //
-  // defaultValue(index: number): string | undefined {
-  //   if (this.defaultStillInTable(index)) {
-  //     return this.dataset.summary?.default_parameters[index]?.value;
-  //   }
-  //   return undefined;
-  // }
-  //
-  // defaultStillInTable(index: number): boolean {
-  //   let defaultValue = this.dataset.summary?.default_parameters[index]?.value;
-  //   switch (index) {
-  //     case 0:
-  //       return this.dataset.table!.columns.includes(<string>defaultValue);
-  //     case 1 || 2:
-  //       if (this.dataset.statisticalDesign?.analysisGroup !== undefined) {
-  //         return this.loadDatasetService.computeColumnValues(this.dataset, this.dataset.statisticalDesign?.analysisGroup, 'analysis').indexOf(<string>defaultValue) !== -1;
-  //       }
-  //   }
-  //   return true;
-  // }
-  //
-  // isDefaultCovariate(covariate: string): boolean {
-  //   let covariates = this.dataset.summary?.default_parameters[3] !== undefined ? this.dataset.summary!.default_parameters[3].value : "";
-  //   return covariates.split(",").includes(covariate);
-  // }
-  //
-  // changeAllCovariates(value: boolean) {
-  //   this.dataset.statisticalDesign?.covariances.forEach(covariate => covariate.value = value);
-  //   this.allComplete = value;
-  //   this.someComplete = false;
-  // }
-  //
-  // updateCompleteness() {
-  //   this.allComplete = this.validCovariates().every(cov => cov.value);
-  //   this.someComplete = this.validCovariates().some(cov => cov.value) && !this.allComplete;
-  // }
-  //
-  // public validCovariates(): Covariate[] {
-  //   return this.dataset.statisticalDesign?.covariances.filter(covariate => this.dataset.statisticalDesign?.analysisGroup !== covariate.name) || [];
-  // }
+    constructor(private formBuilder: FormBuilder, public store: Store) {
+        this.statisticalDesignStep = this.formBuilder.group({
+            address: ['', Validators.required],
+        });
+    }
+
+    ngOnInit(): void {
+        this.dataset$ = this.store.select(datasetFeature.selectDataset(this.datasetId),);
+        this.analysisGroups$ = this.store.select(datasetFeature.selectAnalysisGroups(this.datasetId),);
+        this.covariates$ = this.store.select(datasetFeature.selectCovariates(this.datasetId));
+        this.someSelected$ = this.store.select(datasetFeature.selectCovariancesSomeSelected(this.datasetId));
+        this.allSelected$ = this.store.select(datasetFeature.selectCovariancesAllSelected(this.datasetId));
+    }
+
+    ngAfterViewInit() {}
+
+    changeAllCovariates(value: boolean) {
+        this.store.dispatch(
+            datasetActions.setCovariatesValue({id: this.datasetId, value: value})
+        );
+    }
+
+    comparisonGroup2Values(groups: string[], group1: string) {
+        if (!groups) return [];
+        return groups.filter((group) => group !== group1);
+    }
+
+    changeComparisonFactor(value: string) {
+        this.store.dispatch(
+            datasetActions.setAnalysisGroup({
+                group: value,
+                id: this.datasetId
+            })
+        );
+    }
+
+    changeGroup1(group: string) {
+        this.store.dispatch(datasetActions.setComparisonGroup1({group, id: this.datasetId,}));
+    }
+
+    changeGroup2(group: string) {
+        this.store.dispatch(datasetActions.setComparisonGroup2({group, id: this.datasetId,}));
+    }
+
+    setCovariance($event: MatCheckboxChange, group: string) {
+        this.store.dispatch(datasetActions.setCovariateValue({
+            group,
+            value: $event.checked,
+            id: this.datasetId,
+        }));
+    }
 }
