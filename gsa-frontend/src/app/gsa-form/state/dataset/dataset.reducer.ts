@@ -4,6 +4,8 @@ import {datasetActions} from './dataset.actions';
 import {DataSummary} from '../../model/load-dataset.model';
 import {StatisticalDesign} from "../../model/dataset.model";
 import {Subset} from "../../model/utils.model";
+import {cp, transpose} from "../../utilities/table/state/table.util";
+import {isDefined} from "../../utilities/utils";
 
 export const datasetReducer: ActionReducer<DatasetState> = createReducer(
     initialState,
