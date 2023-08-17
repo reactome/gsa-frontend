@@ -75,7 +75,7 @@
         <div class="grey margin-top-10">Back</div>
       </div>
       <gsa-scrollable #scrollable [bottomMargin]="57" class="width-seventy">
-        <gsa-options class="width-hundred"></gsa-options>
+        <gsa-options  class="width-hundred" [method]="vm.method"></gsa-options>
       </gsa-scrollable>
       <div class="nav-button-container align-center justify-center flex-container vertical">
         <button (click)="this.analysisService.loadAnalysis()"

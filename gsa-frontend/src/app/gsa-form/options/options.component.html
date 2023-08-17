@@ -1,23 +1,23 @@
 <div [formGroup]="analysisOptionsStep" class="flex-container horizontal">
 
-  <mat-card>
-    <div class="grey-border flex-container vertical align-center justify-center">
-      <div *ngFor="let param of getDisplayParameters(); let i = index" class="param-line width-eighty">
-        <gsa-method-parameter *ngIf="param.display_name !== 'Reactome server'"
-                              [parameter]="param"></gsa-method-parameter>
+    <mat-card>
+        <div class="grey-border flex-container vertical align-center justify-center" *ngIf="parameters$ | async as parameters">
+            <div *ngFor="let param of parameters; let i = index" class="param-line width-eighty">
+                <gsa-method-parameter *ngIf="param.display_name !== 'Reactome server'"
+                                      [parameter]="param"></gsa-method-parameter>
+            </div>
+        </div>
 
-      </div>
-    </div>
+        <br>
+        <div class="grey">Disclaimer: We use your email address to send you a message when your Gene Set Analysis
+            request is
+            completed,
+            and
+            your results are available to download. After this analysis is finished, we do not store your email address.
+            Furthermore, we do not share your email addresses with any third parties and we do not subscribe your email
+            address
+            to any Reactome mailing list.
+        </div>
 
-    <br>
-    <div class="grey">Disclaimer: We use your email address to send you a message when your Gene Set Analysis request is
-      completed,
-      and
-      your results are available to download. After this analysis is finished, we do not store your email address.
-      Furthermore, we do not share your email addresses with any third parties and we do not subscribe your email
-      address
-      to any Reactome mailing list.
-    </div>
-
-  </mat-card>
+    </mat-card>
 </div>

@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
-import {Dataset, ExampleDataset, ImportDataset, LocalDataset} from "../model/fetch-dataset.model";
-import {catchError, map, Observable, throwError} from "rxjs";
+import {catchError, Observable, throwError} from "rxjs";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {PDatasetSource} from "../state/dataset-source/dataset-source.state";
 import {Parameter} from "../state/parameter/parameter.state";
@@ -18,8 +17,6 @@ export class FetchDatasetService {
   exampleDataUrl = `${environment.ApiRoot}/data/examples`;
   localDataUrl = `${environment.ApiRoot}/types`;
   inputDataUrl = `${environment.ApiRoot}/data/sources`;
-  chosenDataset: Dataset;
-
 
   constructor(private http: HttpClient, private snackBar: MatSnackBar) {
   }
@@ -56,6 +53,4 @@ export class FetchDatasetService {
         return throwError(() => err);    //Rethrow it back to component
       }));
   }
-
-
 }

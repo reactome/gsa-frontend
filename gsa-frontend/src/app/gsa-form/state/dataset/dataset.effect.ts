@@ -8,7 +8,7 @@ import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {LoadingProgressComponent} from "../../datasets/select-dataset/loading-progress/loading-progress.component";
 
 @Injectable()
-export class LoadedDatasetEffects {
+export class DatasetEffects {
     upload = createEffect(() =>
         this.actions$.pipe(
             ofType(datasetActions.upload),
@@ -82,18 +82,11 @@ export class LoadedDatasetEffects {
             switchMap(({loadingId, id}) =>
                 this.loadDatasetService.getLoadingStatus(loadingId).pipe(
                     mergeMap((loadingStatus) => {
-                        const actions: TypedAction<any>[] = [
-                            datasetActions.setLoadStatus({loadingStatus, id}),
-                        ];
+                        const actions: TypedAction<any>[] = [datasetActions.setLoadStatus({loadingStatus, id})];
                         if (loadingStatus.status === 'running')
                             actions.push(datasetActions.getLoadStatus({loadingId, id}));
                         else if (loadingStatus.status === 'failed')
-                            actions.push(
-                                datasetActions.getLoadStatusError({
-                                    error: loadingStatus.reports,
-                                    id,
-                                }),
-                            );
+                            actions.push(datasetActions.getLoadStatusError({error: loadingStatus.reports,id}));
                         return actions;
                     }),
                     delayWhen((action) =>
