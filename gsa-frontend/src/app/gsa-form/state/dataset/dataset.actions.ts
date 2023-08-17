@@ -35,6 +35,7 @@ export const datasetActions = createActionGroup({
 
         'set annotations': props<{ annotations: string[][], id: number }>(),
 
+        'init annotation columns': emptyProps(),
         'init statistical design': props<{ id: number }>(),
         'init covariances': props<{ id: number }>(),
         'set statistical design': props<{ statisticalDesign: StatisticalDesign, id: number }>(),

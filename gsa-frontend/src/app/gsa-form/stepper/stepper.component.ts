@@ -4,9 +4,14 @@ import {AnalysisService} from "../services/analysis.service";
 import {MatStepper} from "@angular/material/stepper";
 import {Store} from "@ngrx/store";
 import {methodFeature} from "../state/method/method.selector";
-import {map, Observable} from "rxjs";
+import {map, Observable, switchMap} from "rxjs";
 import {datasetFeature} from "../state/dataset/dataset.selector";
 import {datasetActions} from "../state/dataset/dataset.actions";
+import {analysisActions} from "../state/analysis/analysis.actions";
+import {parameterFeature} from "../state/parameter/parameter.selector";
+import {Dataset} from "../state/dataset/dataset.state";
+import {Method} from "../state/method/method.state";
+import {Parameter} from "../state/parameter/parameter.state";
 
 
 @Component({

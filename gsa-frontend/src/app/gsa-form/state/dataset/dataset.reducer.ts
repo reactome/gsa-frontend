@@ -60,15 +60,34 @@ export const datasetReducer: ActionReducer<DatasetState> = createReducer(
             state,
         ),
     ),
-    on(datasetActions.setAnnotations, (state, {annotations, id}) =>
-        datasetAdapter.updateOne(
-            {
-                id,
-                changes: {annotations},
-            },
-            state,
-        ),
+    on(datasetActions.setAnnotations, (state, {annotations, id}) => {
+        return datasetAdapter.updateOne(
+                {
+                    id,
+                    changes: {
+                        annotations: annotations,
+                    },
+                },
+                state,
+            );
+        },
     ),
+
+    on(datasetActions.initAnnotationColumns, (state ) =>
+        datasetAdapter.updateMany(state.ids.map(id => state.entities[id]).filter(isDefined).map(dataset => {
+            const annotations = dataset.annotations!;
+
+            const annotationsWithSimpleIds = cp(annotations);
+            annotationsWithSimpleIds[0][0] = 'sample_ids';
+
+            return {
+                id: dataset.id,
+                changes: {
+                    annotationColumns: new Map<string, string[]>(transpose(annotationsWithSimpleIds).map(col => [col[0], col.slice(1)]))
+                }
+            }
+        }), state)),
+
     on(datasetActions.clearSummary, (state, {id}) =>
         datasetAdapter.updateOne(
             {

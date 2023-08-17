@@ -1,5 +1,12 @@
-<mat-horizontal-stepper #stepper [linear]="true">
-  <mat-step #addMethod [completed]="(methodSelected$ | async) === true">
+<mat-horizontal-stepper #stepper [linear]="true" *ngrxLet="{
+reportRequired: reportRequired$,
+allSaved: allSaved$,
+method: selectedMethod$,
+methodSelected: methodSelected$,
+parameters: methodParameters$,
+datasets: datasets$
+} as vm">
+  <mat-step #addMethod [completed]="vm.methodSelected">
 
     <ng-template matStepLabel>Select method</ng-template>
     <h1>Step 1: Select one of the available analysis methods</h1>
@@ -22,7 +29,7 @@
   </mat-step>
 
 
-  <mat-step #addData [completed]="(allSaved$ | async) || false">
+  <mat-step #addData [completed]="vm.allSaved">
     <ng-template matStepLabel>Add datasets</ng-template>
     <h1>Step 2: Add and annotate your datasets</h1>
     <div class="flex-container horizontal gap-one justify-evenly">
@@ -53,7 +60,7 @@
       </gsa-scrollable>
 
       <div class="nav-button-container align-center flex-container justify-center vertical">
-        <button [disabled]="!addData.completed" class="margin-top-30" color="primary"
+        <button [disabled]="!addData.completed" (click)="initAnnotations()"  class="margin-top-30" color="primary"
                 mat-fab
                 matStepperNext>
           <mat-icon>keyboard_arrow_right</mat-icon>
@@ -67,7 +74,7 @@
   <mat-step>
     <ng-template matStepLabel>Options</ng-template>
     <h1>Step 3: Analysis Options</h1>
-    <div class="flex-container horizontal gap-one justify-evenly">
+    <div class="flex-container horizontal gap-one justify-evenly" *ngIf="vm.method">
       <div class="nav-button-container align-center justify-center flex-container vertical">
         <button class="margin-top-30" color="primary" mat-fab matStepperPrevious>
           <mat-icon>keyboard_arrow_left</mat-icon>
@@ -78,7 +85,7 @@
         <gsa-options  class="width-hundred" [method]="vm.method"></gsa-options>
       </gsa-scrollable>
       <div class="nav-button-container align-center justify-center flex-container vertical">
-        <button (click)="this.analysisService.loadAnalysis()"
+        <button (click)="loadAnalysis(vm.method, vm.datasets, vm.parameters, vm.reportRequired)"
                 class="margin-top-30" color="primary" mat-fab matStepperNext>
           <mat-icon>keyboard_arrow_right</mat-icon>
         </button>
