@@ -7,7 +7,7 @@ import {LoadingProgressComponent} from "../datasets/select-dataset/loading-progr
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {catchError, EMPTY, Observable, of, throwError} from "rxjs";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {Dataset} from "../state/dataset/dataset.state";
+import {Dataset, PDataset} from "../state/dataset/dataset.state";
 
 
 @Injectable({

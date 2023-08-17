@@ -1,16 +1,16 @@
-<div [formGroup]="analysisStep">
+<div [formGroup]="analysisStep" *ngrxLet="{analysisLoadingStatus: analysisLoadingStatus$, reportLoadingStatus: reportLoadingStatus$, reportsRequired: reportsRequired$, result: result$} as vm">
   <div class="flex-container horizontal gap-one ">
     <mat-card class="flex-one">
       <div class="flex-container align-start vertical content-height">
         <h2 class="flex-one height-fifteen">Analysis</h2>
         <div class="flex-container vertical align-center justify-center height-hundred width-hundred flex-twelve">
-          <div [ngSwitch]="analysisService.analysisLoadingStatus?.status">
+          <div [ngSwitch]="vm.analysisLoadingStatus?.status">
             <div *ngSwitchCase="'running'">
               <div class="flex-container vertical justify-center align-center gap-three">
                 <div class="spinner-box">
                   <mat-spinner class="padding-right-ten" diameter="100"></mat-spinner>
                 </div>
-                <div class="big-text">Analysis loading: {{analysisService.analysisLoadingStatus?.completed! * 100}}%
+                <div class="big-text">Analysis loading: {{vm.analysisLoadingStatus?.completed! * 100}}%
                 </div>
               </div>
             </div>
@@ -18,12 +18,12 @@
                  class="flex-container vertical align-center gap-one justify-center">
               <div class="material-icons mat-error big-error">error</div>
               <span class="big-text">Analysis failed, please contact help@reactome.org</span>
-              <div class="text-margin">{{analysisService.analysisLoadingStatus!.description}}</div>
+              <div class="text-margin">{{vm.analysisLoadingStatus!.description}}</div>
             </div>
             <div *ngSwitchCase="'complete'">
               <div class="flex-container vertical align-center gap-one">
                 <div class="big-text">Congratulations, your analysis has finished!</div>
-                <a color="primary" href="{{analysisService.resultURL}}" mat-raised-button target="_blank">
+                <a color="primary" href="{{vm.result?.reactome_links?.[0]?.url}}" mat-raised-button target="_blank">
                   <div class="flex-container horizontal align-center">
                     <mat-icon class="padding-right-ten"><span class="material-icons-outlined">
                     visibility
@@ -32,7 +32,7 @@
                   </div>
                 </a>
                 <br>
-                <div *ngIf="analysisService.createReports && analysisService.reportLoadingStatus?.status !== 'complete'"
+                <div *ngIf="vm.reportsRequired && vm.reportLoadingStatus?.status !== 'complete'"
                      class="grey">
                   Don't hesitate! You can already analyse while the reports are loading.
                 </div>
@@ -45,22 +45,22 @@
         <div class="flex-container vertical  justify-end footer-height">
           <div
             class="grey description"><span
-            *ngIf="analysisService.analysisLoadingStatus?.status === 'running'">{{analysisService.analysisLoadingStatus?.description}}</span>
+            *ngIf="vm.analysisLoadingStatus?.status === 'running'">{{vm.analysisLoadingStatus?.description}}</span>
           </div>
 
           <mat-progress-bar class="progress-bar" mode="determinate"
-                            value="{{analysisService.analysisLoadingStatus?.completed! * 100}}"></mat-progress-bar>
+                            value="{{vm.analysisLoadingStatus?.completed! * 100}}"></mat-progress-bar>
         </div>
       </mat-card-footer>
 
     </mat-card>
 
 
-    <mat-card *ngIf="analysisService.createReports" class="flex-one ">
+    <mat-card *ngIf="vm.reportsRequired" class="flex-one ">
       <div class="flex-container align-start vertical content-height">
         <h2 class="flex-one height-fifteen">Report</h2>
         <div class="flex-container vertical align-center justify-center height-hundred width-hundred flex-twelve">
-          <div [ngSwitch]="analysisService.reportLoadingStatus?.status">
+          <div [ngSwitch]="vm.reportLoadingStatus?.status">
             <div *ngSwitchCase=undefined class="big-text">
               Waiting for analysis results...
             </div>
@@ -69,20 +69,20 @@
                 <div class="spinner-box">
                   <mat-spinner class="padding-right-ten" diameter="100"></mat-spinner>
                 </div>
-                <div class="big-text">Report loading: {{analysisService.reportLoadingStatus?.completed! * 100}}%</div>
+                <div class="big-text">Report loading: {{vm.reportLoadingStatus?.completed! * 100}}%</div>
               </div>
             </div>
             <div *ngSwitchCase="'failed'"
                  class="flex-container vertical align-center">
               <div class="material-icons mat-error big-error">error</div>
               <span class="big-text">Report generation failed, please contact help@reactome.org</span>
-              <div class="text-margin">{{analysisService.reportLoadingStatus!.description}}</div>
+              <div class="text-margin">{{vm.reportLoadingStatus!.description}}</div>
             </div>
             <div *ngSwitchCase="'complete'">
               <div class="flex-container vertical align-center gap-one">
                 <div class="big-text">Here are some nice reports</div>
                 <div class="flex-container horizontal gap-one">
-                  <div *ngFor="let report of analysisService.reportLoadingStatus?.reports">
+                  <div *ngFor="let report of vm.reportLoadingStatus?.reports">
                     <a color="primary" href="{{report.url}}" mat-raised-button target="_blank">
                         <span [ngSwitch]="report.name" class="float-right">
 
@@ -124,10 +124,10 @@
       <mat-card-footer>
         <div class="flex-container vertical justify-end footer-height">
           <div class="grey description"><span
-            *ngIf="analysisService.reportLoadingStatus?.status === 'running'">{{analysisService.reportLoadingStatus?.description}}</span>
+            *ngIf="vm.reportLoadingStatus?.status === 'running'">{{vm.reportLoadingStatus?.description}}</span>
           </div>
           <mat-progress-bar class="progress-bar" mode="determinate"
-                            value="{{analysisService.reportLoadingStatus?.completed! * 100}}"></mat-progress-bar>
+                            value="{{vm.reportLoadingStatus?.completed! * 100}}"></mat-progress-bar>
         </div>
 
       </mat-card-footer>

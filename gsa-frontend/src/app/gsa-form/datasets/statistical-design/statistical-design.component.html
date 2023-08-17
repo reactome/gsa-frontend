@@ -1,85 +1,83 @@
-<!--<div [formGroup]="statisticalDesignStep" class="flex-container gap-one horizontal full-width">-->
+<div [formGroup]="statisticalDesignStep"
+     *ngrxLet="{ dataset: dataset$, analysisGroups: analysisGroups$, covariates: covariates$, all: allSelected$, some: someSelected$} as vm"
+     class="flex-container gap-one horizontal full-width">
 
-<!--  <div class="flex-one flex-container align-center vertical card-design">-->
-<!--    <h2 class="flex-container justify-center" class="flex-container justify-center">Select comparison factor</h2>-->
-<!--    <mat-form-field appearance="outline">-->
-<!--      <mat-select [(value)]="dataset.statisticalDesign!.analysisGroup">-->
-<!--        <mat-option *ngFor="let value of loadDatasetService.computeValidColumns(dataset)" value="{{value}}">-->
-<!--          {{value}}-->
-<!--        </mat-option>-->
-<!--      </mat-select>-->
-<!--    </mat-form-field>-->
-<!--  </div>-->
+    <div class="flex-one flex-container align-center vertical card-design">
+        <h2 class="flex-container justify-center" class="flex-container justify-center">Select comparison factor</h2>
+        <mat-form-field appearance="outline">
+            <mat-select #groups [value]="vm.dataset?.statisticalDesign?.analysisGroup"
+                        (selectionChange)="changeComparisonFactor($event.value)">
+                <mat-option *ngFor="let value of vm.analysisGroups | keyvalue" value="{{value.key}}">
+                    {{value.key}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
 
-<!--  <div class="flex-one flex-container align-center vertical card-design">-->
-<!--    <div *ngIf="dataset.statisticalDesign?.analysisGroup !== undefined else disableGroupSelection"-->
-<!--         class="flex-one flex-container align-center vertical">-->
-<!--      <h2 class="flex-container justify-center">Set 1st group</h2>-->
-<!--      <mat-form-field appearance="outline" class="flex-one margin-bottom-15">-->
-<!--        <mat-select [(value)]="dataset.statisticalDesign!.comparisonGroup1">-->
-<!--          <mat-option-->
-<!--            *ngFor="let value of loadDatasetService.computeColumnValues(dataset, dataset.statisticalDesign!.analysisGroup, 'first')"-->
-<!--            value="{{value}}">-->
-<!--            {{value}}-->
-<!--          </mat-option>-->
-<!--        </mat-select>-->
-<!--      </mat-form-field>-->
+    <div class="flex-one flex-container align-center vertical card-design">
+        <div *ngIf="vm.dataset?.statisticalDesign?.analysisGroup !== undefined else disableGroupSelection"
+             class="flex-one flex-container align-center vertical">
+            <h2 class="flex-container justify-center">Set 1st group</h2>
+            <mat-form-field appearance="outline" class="flex-one margin-bottom-15">
+                <mat-select #group1 [value]="vm.dataset?.statisticalDesign!.comparisonGroup1"
+                            (selectionChange)="changeGroup1($event.value)">
+                    <mat-option *ngFor="let value of vm.analysisGroups[groups.value]" value="{{value}}">
+                        {{value}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <h2 class="flex-container justify-center">Set 2nd group</h2>
+            <mat-form-field appearance="outline" class="flex-one">
+                <mat-select [value]="vm.dataset?.statisticalDesign!.comparisonGroup2"
+                            (selectionChange)="changeGroup2($event.value)">
+                    <mat-option
+                            *ngFor="let value of comparisonGroup2Values(vm.analysisGroups[groups.value], group1?.value)"
+                            value="{{value}}">
+                        {{value}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
 
+        <ng-template #disableGroupSelection>
+            <h2 class="flex-container justify-center disabled ">Set 1st group</h2>
+            <mat-form-field appearance="outline" class="flex-one margin-bottom-15">
+                <mat-select [disabled]="true">
+                </mat-select>
+            </mat-form-field>
+            <h2 class="flex-container justify-center disabled ">Set 2nd group</h2>
+            <mat-form-field appearance="outline" class="flex-one">
+                <mat-select [disabled]="true">
+                </mat-select>
+            </mat-form-field>
+        </ng-template>
+    </div>
 
-<!--      <h2 class="flex-container justify-center">Set 2nd group</h2>-->
-<!--      <mat-form-field appearance="outline" class="flex-one">-->
-<!--        <mat-select-->
-<!--          [(value)]="dataset.statisticalDesign!.comparisonGroup2">-->
-<!--          <mat-option-->
-<!--            *ngFor="let value of loadDatasetService.computeColumnValues(dataset, dataset.statisticalDesign!.analysisGroup, 'second')"-->
-<!--            value="{{value}}">-->
-<!--            {{value}}-->
-<!--          </mat-option>-->
-<!--        </mat-select>-->
-<!--      </mat-form-field>-->
-<!--    </div>-->
+    <div class="flex-one flex-container align-center vertical card-design">
+        <div *ngIf="vm.dataset?.statisticalDesign?.analysisGroup !== undefined else disableCovariateSelection"
+             class="flex-one flex-container align-center vertical">
+            <h2 class="flex-container justify-center">Select covariates</h2>
+            <div class="flex-container vertical">
+                <mat-checkbox (change)="changeAllCovariates($event.checked)" [checked]="vm.all"
+                              [indeterminate]="vm.some && ! vm.all" class="negative-margin-left" color="primary"
+                >Select all
+                </mat-checkbox>
+                <section>
+                    <mat-checkbox class="example-margin"
+                                  color="primary" *ngFor="let cov of vm.covariates" class="example-section"
+                                  [checked]="cov.value" (change)="setCovariance($event, cov.name)">
+                        {{cov.name}}</mat-checkbox>
+                </section>
+            </div>
+        </div>
 
-<!--    <ng-template #disableGroupSelection>-->
-<!--      <h2 class="flex-container justify-center disabled ">Set 1st group</h2>-->
-<!--      <mat-form-field appearance="outline" class="flex-one margin-bottom-15">-->
-<!--        <mat-select [disabled]="true">-->
-<!--        </mat-select>-->
-<!--      </mat-form-field>-->
-<!--      <h2 class="flex-container justify-center disabled ">Set 2nd group</h2>-->
-<!--      <mat-form-field appearance="outline" class="flex-one">-->
-<!--        <mat-select [disabled]="true">-->
-<!--        </mat-select>-->
-<!--      </mat-form-field>-->
-<!--    </ng-template>-->
-<!--  </div>-->
-
-<!--  <div class="flex-one flex-container align-center vertical card-design">-->
-<!--    <div *ngIf="dataset.statisticalDesign?.analysisGroup !== undefined else disableCovariateSelection"-->
-<!--         class="flex-one flex-container align-center vertical">-->
-<!--      <h2 class="flex-container justify-center">Select covariates</h2>-->
-<!--      <div class="flex-container vertical">-->
-<!--        <mat-checkbox (change)="changeAllCovariates($event.checked)" [checked]="allComplete"-->
-<!--                      [indeterminate]="someComplete" class="negative-margin-left" color="primary"-->
-<!--        >Select all-->
-<!--        </mat-checkbox>-->
-<!--        <section *ngFor="let cov of validCovariates()" class="example-section">-->
-<!--          <mat-checkbox (change)="updateCompleteness()"-->
-<!--                        *ngIf="cov.name !== dataset.statisticalDesign?.analysisGroup"-->
-<!--                        [(ngModel)]="cov.value"-->
-<!--                        [ngModelOptions]="{standalone: true}"-->
-<!--                        class="example-margin"-->
-<!--                        color="primary">{{cov.name}}</mat-checkbox>-->
-<!--        </section>-->
-<!--      </div>-->
-<!--    </div>-->
-
-<!--    <ng-template #disableCovariateSelection>-->
-<!--      <h2 class="flex-container justify-center disabled ">Select covariates</h2>-->
-<!--      <div class="flex-container vertical">-->
-<!--        <section *ngFor="let col of loadDatasetService.computeValidColumns(dataset)" class="example-section">-->
-<!--          <mat-checkbox disabled="true">{{col}}</mat-checkbox>-->
-<!--        </section>-->
-<!--      </div>-->
-<!--    </ng-template>-->
-<!--  </div>-->
-<!--</div>-->
+        <ng-template #disableCovariateSelection>
+            <h2 class="flex-container justify-center disabled ">Select covariates</h2>
+            <div class="flex-container vertical">
+                <section *ngFor="let col of vm.dataset?.statisticalDesign?.covariances" class="example-section">
+                    <mat-checkbox disabled="true">{{col.name}}</mat-checkbox>
+                </section>
+            </div>
+        </ng-template>
+    </div>
+</div>

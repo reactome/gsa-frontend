@@ -6,9 +6,10 @@ export enum TableOrder {
 export const width = (table: any[][]) => table[0].length - 1;
 export const height = (table: any[][]) => table.length - 1;
 
-export const cp = (obj: any) => JSON.parse(JSON.stringify(obj));
+export const cp = <T>(obj: T) => JSON.parse(JSON.stringify(obj)) as T;
 
-export const transpose = (table: any[][]): any[][] => table[0].map((_, colIndex) => table.map(row => row[colIndex]));
+export const transpose = <T>(table: T[][]): T[][] => table[0].map((_, colIndex) => table.map(row => row[colIndex]));
+export const findColumnValuesByName = <T>(table: T[][], columnHeader: T): T[] | undefined => transpose(table).find(col => col[0] === columnHeader)?.slice(1);
 
 export const pushAll = <T>(table: T[][], value: T): number => table.reduce((_, col) => col.push(cp(value)), 0);
 

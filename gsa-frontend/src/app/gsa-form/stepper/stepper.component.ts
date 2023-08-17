@@ -4,35 +4,53 @@ import {AnalysisService} from "../services/analysis.service";
 import {MatStepper} from "@angular/material/stepper";
 import {Store} from "@ngrx/store";
 import {methodFeature} from "../state/method/method.selector";
-import {map, Observable} from "rxjs";
+import {map, Observable, switchMap} from "rxjs";
 import {datasetFeature} from "../state/dataset/dataset.selector";
 import {datasetActions} from "../state/dataset/dataset.actions";
+import {analysisActions} from "../state/analysis/analysis.actions";
+import {parameterFeature} from "../state/parameter/parameter.selector";
+import {Dataset} from "../state/dataset/dataset.state";
+import {Method} from "../state/method/method.state";
+import {Parameter} from "../state/parameter/parameter.state";
 
 
 @Component({
-  selector: 'gsa-stepper',
-  templateUrl: './stepper.component.html',
-  styleUrls: ['./stepper.component.scss']
+    selector: 'gsa-stepper',
+    templateUrl: './stepper.component.html',
+    styleUrls: ['./stepper.component.scss']
 })
 export class StepperComponent implements AfterViewInit, OnInit {
-  @ViewChild('stepper') stepper: MatStepper;
+    @ViewChild('stepper') stepper: MatStepper;
 
-  methodSelected$ = this.store.select(methodFeature.selectSelectedMethodName).pipe(map(name => name !== null))
+    selectedMethod$ = this.store.select(methodFeature.selectSelectedMethod);
+    methodSelected$ = this.selectedMethod$.pipe(map(method => method?.name !== null))
 
-  datasetIds$ = this.store.select(datasetFeature.selectIds) as Observable<number[]>;
-  constructor(private cdr: ChangeDetectorRef, public analysisMethodsService: AnalysisMethodsService, public analysisService: AnalysisService, private store: Store) {
-  }
+    methodParameters$ = this.selectedMethod$.pipe(switchMap(method => this.store.select(parameterFeature.selectParameters(method?.parameterIds || []))))
+    reportRequired$ = this.methodParameters$.pipe(map(parameters => (parameters.find(parameter => parameter.name === 'create_reports')?.value || false) as boolean))
+    datasetIds$ = this.store.select(datasetFeature.selectIds) as Observable<number[]>;
+    datasets$ = this.store.select(datasetFeature.selectAll) as Observable<Dataset[]>;
+    allSaved$: Observable<boolean> = this.store.select(datasetFeature.selectAllSaved);
 
-  ngAfterViewInit() {
-    this.cdr.detectChanges();
-  }
+    constructor(private cdr: ChangeDetectorRef, public analysisMethodsService: AnalysisMethodsService, public analysisService: AnalysisService, private store: Store) {
+    }
 
-  ngOnInit(): void {
-    this.addDataset();
-  }
+    ngAfterViewInit() {
+        this.cdr.detectChanges();
+    }
 
-  addDataset() {
-    this.store.dispatch(datasetActions.add())
-  }
+    ngOnInit(): void {
+        this.addDataset();
+    }
 
+    addDataset() {
+        this.store.dispatch(datasetActions.add())
+    }
+
+    loadAnalysis(method: Method, datasets: Dataset[], parameters: Parameter[], reportsRequired: boolean) {
+        this.store.dispatch(analysisActions.load({method, datasets, parameters, reportsRequired}))
+    }
+
+    initAnnotations() {
+        this.store.dispatch(datasetActions.initAnnotationColumns())
+    }
 }

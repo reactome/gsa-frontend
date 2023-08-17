@@ -17,11 +17,15 @@ export class DatasetTable {
 }
 
 export interface StatisticalDesign {
+  defaultComparisonFactor?: string;
+  defaultGroup1?: string;
+  defaultGroup2?: string;
+  defaultCovariances: Set<string>;
+
   analysisGroup?: string;
   comparisonGroup1?: string;
   comparisonGroup2?: string;
   covariances: Covariate[];
-  // covariances: string[];
 }
 
 export interface Covariate {
