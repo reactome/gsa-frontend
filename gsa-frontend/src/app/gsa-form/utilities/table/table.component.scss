@@ -35,7 +35,6 @@ table.spreadsheet {
   td.cell, th.rows, th.columns {
     border-color: var(--outline-variant);
     border-style: solid;
-    width: 100px
   }
 
   th.columns, td.add-column-button-container {
