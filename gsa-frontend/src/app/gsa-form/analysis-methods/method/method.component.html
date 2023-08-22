@@ -1,8 +1,8 @@
-<mat-expansion-panel
+<mat-expansion-panel *ngrxLet="selected$ as selected"
   (closed)="updateScroll()" (opened)="updateScroll()"
-  [ngClass]="(selected$ | async) ? 'chosen': 'unchosen'"
+  [ngClass]="{'chosen': selected}"
   [expanded]="(selected$ | async) === true"
-  hideToggle>
+  hideToggle class="mat-elevation-z3">
   <mat-expansion-panel-header (click)="selectMethod()">
     <mat-panel-title class="bold">
       {{method.name}}

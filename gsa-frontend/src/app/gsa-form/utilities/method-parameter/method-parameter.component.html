@@ -1,5 +1,4 @@
 <div [ngClass]="{'no-information': screenIsSmall, 'information': !screenIsSmall}" class="grid-container">
-  <!--  'background-grey': index % 2 === 1-->
   <i *ngIf="!screenIsSmall" class="material-icons grey" matTooltip="{{parameter.description}}">info_outline</i>
   <div *ngIf="screenIsSmall" matTooltip="{{parameter.description}}">{{parameter.display_name}}</div>
   <div *ngIf="!screenIsSmall">{{parameter.display_name}}</div>
