@@ -4,7 +4,7 @@ mat-expansion-panel-header {
 }
 
 mat-expansion-panel {
-  border: 5px solid inherit;
+  border: 5px solid transparent;
   border-radius: 5px;
 
   &.chosen {

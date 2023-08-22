@@ -107,6 +107,11 @@ h1 {
 .flex-container {
   display: flex;
   flex-wrap: wrap;
+
+  &.no-wrap {
+    flex-wrap: nowrap;
+    white-space: inherit;
+  }
 }
 
 .flex-one {
