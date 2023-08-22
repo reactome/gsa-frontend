@@ -3,6 +3,7 @@ import {DataSummary, PLoadingStatus} from "../../model/load-dataset.model";
 import {StatisticalDesign} from "../../model/dataset.model";
 import {UploadData} from "../../model/upload-dataset-model";
 import {Update} from "@ngrx/entity";
+import {Parameter} from "../parameter/parameter.state";
 
 
 export const datasetActions = createActionGroup({
@@ -44,5 +45,13 @@ export const datasetActions = createActionGroup({
         'set comparison group 2': props<{ group: string, id: number }>(),
         'set covariate value': props<{ group: string, value: boolean, id: number }>(),
         'set covariates value': props<{ value: boolean, id: number }>(),
+
+
+        'set summary parameters': props<{ id :number, parameters: Parameter[]}>(),
+        'open summary parameters': props<{ id : number }>(),
+        'open summary parameters success': props<{ id : number }>(),
+        'reset summary parameters' : props<{ id : number }>(),
+        'finish summary parameters' : props<{ id : number }>(),
+
     }
 })

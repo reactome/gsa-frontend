@@ -1,6 +1,7 @@
 import {Report} from "./report-status.model";
 import {MethodParameter} from "./methods.model";
 import {PartialRequired} from "./utils.model";
+import {Parameter} from "../state/parameter/parameter.state";
 
 export interface LoadingStatus {
   completed: number
@@ -33,10 +34,10 @@ export interface SampleMetadata {
   values: string[];
 }
 
-export interface Parameter {
-  name: string;
-  value: string;
-}
+// export interface Parameter {
+//   name: string;
+//   value: string;
+// }
 
 export class DataSummary {
   id: string;
@@ -47,7 +48,7 @@ export class DataSummary {
   sample_ids: string[];
   sample_metadata?: SampleMetadata[];
   default_parameters?: Parameter[];
-  parameters?: MethodParameter[];
+  parameters?: Parameter[];
   complete?: boolean = false;
 }
 

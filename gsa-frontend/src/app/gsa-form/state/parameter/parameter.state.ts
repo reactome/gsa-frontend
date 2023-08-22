@@ -1,11 +1,14 @@
 import {createEntityAdapter, EntityState} from "@ngrx/entity";
+
+export type Scope = 'common' | 'analysis' | 'dataset';
+
 export interface Parameter<T = any> {
   id: string;
   default: T;
   description: string;
   display_name: string;
   name: string;
-  scope: string;
+  scope: Scope;
   type: ParameterType;
   required?: boolean;
   values?: string[];

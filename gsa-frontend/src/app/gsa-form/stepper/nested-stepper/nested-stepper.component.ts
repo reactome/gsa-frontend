@@ -1,15 +1,16 @@
 import {AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {MatStepper} from "@angular/material/stepper";
 import {MatDialog} from "@angular/material/dialog";
-import {ChangeAnalysisParamsComponent} from "../../datasets/change-analysis-params/change-analysis-params.component";
 import {ScrollService} from "../../services/scroll.service";
 import {CdkStep} from "@angular/cdk/stepper";
 import {Store} from "@ngrx/store";
 import {datasetFeature} from "../../state/dataset/dataset.selector";
-import {delay, distinctUntilChanged, Observable, of, share, tap} from "rxjs";
+import {delay, distinctUntilChanged, Observable, of, share} from "rxjs";
 import {PDataset} from "../../state/dataset/dataset.state";
 import {datasetActions} from "../../state/dataset/dataset.actions";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
+import {Parameter} from "../../state/parameter/parameter.state";
+import {ChangeAnalysisParamsComponent} from "../../datasets/change-analysis-params/change-analysis-params.component";
 
 @Component({
     selector: 'gsa-nested-stepper',
@@ -21,8 +22,11 @@ export class NestedStepperComponent implements OnInit, AfterViewInit, AfterViewC
 
     @ViewChild('nestedStepper') public stepper: MatStepper;
     @ViewChild('annotateStep') annotateStep: CdkStep
+    @ViewChild('statisticalDesignStep') statisticalDesignStep: CdkStep
     @Input() datasetId: number;
+
     dataset$: Observable<PDataset | undefined>;
+    parameters$: Observable<Parameter[]>;
     summaryComplete$: Observable<boolean> = of(false);
     annotationComplete$: Observable<boolean> = of(false);
     statisticalDesignComplete$: Observable<boolean> = of(false);
@@ -32,10 +36,10 @@ export class NestedStepperComponent implements OnInit, AfterViewInit, AfterViewC
                 public scrollService: ScrollService, private store: Store) {
     }
 
-
     ngOnInit(): void {
         this.dataset$ = this.store.select(datasetFeature.selectDataset(this.datasetId));
-        this.summaryComplete$ = this.store.select(datasetFeature.selectSummaryComplete(this.datasetId)).pipe(distinctUntilChanged(), share(), tap((complete) => console.log(complete)));
+        this.parameters$ = this.store.select(datasetFeature.selectSummaryParameters(this.datasetId));
+        this.summaryComplete$ = this.store.select(datasetFeature.selectSummaryComplete(this.datasetId)).pipe(distinctUntilChanged(), share());
         this.summaryComplete$.pipe(delay(0), untilDestroyed(this)).subscribe(() => this.stepper.next());
         this.annotationComplete$ = this.store.select(datasetFeature.selectAnnotationComplete(this.datasetId)).pipe(distinctUntilChanged(), share());
         this.statisticalDesignComplete$ = this.store.select(datasetFeature.selectStatisticalDesignComplete(this.datasetId)).pipe(distinctUntilChanged(), share());
@@ -60,16 +64,14 @@ export class NestedStepperComponent implements OnInit, AfterViewInit, AfterViewC
         this.store.dispatch(datasetActions.delete({id: this.datasetId}))
     }
 
-
     saveData() {
-        this.store.dispatch(datasetActions.save({id: this.datasetId}))
+      this.store.dispatch(datasetActions.save({id: this.datasetId}))
     }
 
-    changeParameters($event: MouseEvent) {
-        $event.stopImmediatePropagation()
-        this.dialog.open(ChangeAnalysisParamsComponent, {
-            // data: {dataset: this.dataset}, // TODO
-        });
+    changeParameters() {
+
+      this.store.dispatch(datasetActions.openSummaryParameters({id: this.datasetId}))
+
     }
 
     setStep() {
@@ -86,10 +88,6 @@ export class NestedStepperComponent implements OnInit, AfterViewInit, AfterViewC
     checkAnnotationData(): boolean {
         // return this.loadDatasetService?.computeValidColumns(this.dataset).length > 0;
         return true;
-    }
-
-    saveAnnotations() {
-        // this.store.dispatch(datasetActions.setAnnotations({annotations, id: this.datasetId}))
     }
 
     clearSummary() {

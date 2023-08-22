@@ -1,11 +1,11 @@
-import {Parameter} from "../state/parameter/parameter.state";
+import {Parameter, Scope} from "../state/parameter/parameter.state";
 
 export interface ParameterJSON {
   default: string;
   description: string;
   display_name: string;
   name: string;
-  scope: string;
+  scope: Scope;
   type: ParameterType;
   values?: string[];
 }
@@ -15,7 +15,7 @@ export class MethodParameter implements ParameterJSON, Parameter {
   default: string;
   description: string;
   display_name: string;
-  scope: string;
+  scope: Scope;
   type: ParameterType;
   values: string[] | undefined;
   name: string;

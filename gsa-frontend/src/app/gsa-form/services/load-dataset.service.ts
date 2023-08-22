@@ -103,6 +103,7 @@ export class LoadDatasetService {
     // }
 
     submitLoadDataset(resourceId: string, postParameters: { name: string, value: any }[]): Observable<string> {
+        console.log(postParameters)
         return this.http.post(this.loadDataUrl + resourceId, postParameters, {responseType: 'text'})
             .pipe(catchError((err: Error) => {
                 this.snackBar.open("The chosen dataset could not been loaded: \n" + err.message, "Close", {

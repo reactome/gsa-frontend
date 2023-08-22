@@ -28,8 +28,8 @@
           </span></span>
         </div>
       </ng-template>
-      <div class="flex-container horizontal align-center justify-center">
-        <button (click)="changeParameters($event)" [disabled]="dataset.summary?.parameters == undefined"
+      <div class="flex-container horizontal align-center justify-center" *ngrxLet="parameters$ as parameters">
+        <button (click)="changeParameters()" [disabled]="parameters.length === 0"
                 color="primary"
                 mat-icon-button
                 matTooltip="Edit analysis parameters of specific dataset"><span
@@ -64,7 +64,7 @@
           <mat-icon>keyboard_arrow_up</mat-icon>
         </button>
         <gsa-annotate-dataset [datasetId]="datasetId" *ngIf="nestedStepper.selected == annotateStep" class="width-hundred"/>
-        <button [disabled]="!annotateStep.completed" class="nav-button-margin" (click)="saveAnnotations()"
+        <button [disabled]="!annotateStep.completed" class="nav-button-margin"
                 color="accent" mat-fab
                 matStepperNext>
           <mat-icon>keyboard_arrow_down</mat-icon>
@@ -80,7 +80,7 @@
         </button>
         <gsa-statistical-design [datasetId]="datasetId" *ngIf="nestedStepper.selected == statisticalDesignStep"
                                 class="width-hundred"/>
-        <button (click)="saveData(); nestedStepper.selected = annotateStep; mep.expanded = false;"
+        <button (click)="saveData(); nestedStepper.selected = statisticalDesignStep; mep.expanded = false;"
                 [disabled]="!statisticalDesignStep.completed" class="nav-button-margin"
                 color="primary"
                 mat-raised-button>

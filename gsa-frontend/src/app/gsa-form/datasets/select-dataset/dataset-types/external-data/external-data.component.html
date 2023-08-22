@@ -3,12 +3,12 @@
         <p class="bold no-wrap">{{source.name}}</p>
         <p>{{source.description}}</p>
         <form *ngIf="isSelected$ | async">
-            <div class="flex-container vertical gap-one align-center" *ngIf="parameters$ | async as parameters">
-                <div *ngFor="let param of parameters">
+            <div class="flex-container vertical gap-one align-center" >
+                <div *ngFor="let param of source.parameters">
                     <!--          <gsa-external-parameter [parameter]="param"></gsa-external-parameter>-->
-                    <gsa-method-parameter [parameter]="param"></gsa-method-parameter>
+                    <gsa-method-parameter [parameter]="param" (parameterChange)="updateParam($event, source.parameters || [])"></gsa-method-parameter>
                 </div>
-                <button (click)="loadData(parameters)" class="blue-border" color="primary" mat-stroked-button
+                <button (click)="loadData(source.parameters || [])" class="blue-border" color="primary" mat-stroked-button
                         type="submit">Import
                 </button>
             </div>

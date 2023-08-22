@@ -1,7 +1,7 @@
-<div [formGroup]="analysisMethodStep">
+<div [formGroup]="analysisMethodStep" *ngrxLet="{methods: methods$, names: methodNames$} as vm">
   <mat-accordion multi="false" class="flex-container gap-one">
-    <div *ngFor="let method of methods$ | async">
-      <gsa-method [method]="method"></gsa-method>
+    <div *ngFor="let name of vm.names;">
+      <gsa-method [methodName]="name"></gsa-method>
     </div>
   </mat-accordion>
 </div>

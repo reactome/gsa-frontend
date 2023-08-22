@@ -22,6 +22,7 @@ export class LoadingProgressComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     this.loadingStatus$ = this.store.select(datasetFeature.selectDataset(this.data.datasetId)).pipe(
       map(dataset => dataset?.loadingStatus),
       filter(isDefined),

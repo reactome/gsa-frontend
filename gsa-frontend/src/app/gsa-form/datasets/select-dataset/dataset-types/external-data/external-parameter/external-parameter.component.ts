@@ -8,6 +8,7 @@ import {Parameter} from "../../../../../state/parameter/parameter.state";
   templateUrl: './external-parameter.component.html',
   styleUrls: ['./external-parameter.component.scss']
 })
+//todo delete it
 export class ExternalParameterComponent implements OnInit {
 
   @Input() parameter: Parameter;

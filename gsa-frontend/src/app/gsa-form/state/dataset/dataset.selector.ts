@@ -3,6 +3,8 @@ import {createFeature, createSelector} from '@ngrx/store';
 import {datasetReducer} from './dataset.reducer';
 import {transpose} from '../../utilities/table/state/table.util';
 import {Covariate} from "../../model/dataset.model";
+import {MethodParameter} from "../../model/methods.model";
+import {Parameter} from "../parameter/parameter.state";
 
 export type AnalysisGroups = { [name: string]: string[] };
 export const datasetFeature = createFeature({
@@ -105,5 +107,9 @@ export const datasetFeature = createFeature({
         selectCovariancesSomeSelected: (id: number) => createSelector(selectEntities, (entities): boolean => {
             return entities[id] && entities[id]?.statisticalDesign && entities[id]?.statisticalDesign?.covariances?.some(cov => cov.value) || false;
         }),
+
+        selectSummaryParameters: (id: number) => createSelector(selectEntities, (entities): Parameter[] => {
+          return entities[id] && entities[id]!.summary && entities[id]!.summary!.parameters || [];
+        })
     }),
 });
