@@ -36,7 +36,6 @@ export class DatasetSourceEffects {
           param.value = typeToParse[param.type](param.default);
           param.default = typeToParse[param.type](param.default);
         }))
-        console.log(externals)
         return externals;
       }),
       mergeMap(datasetSources => [
