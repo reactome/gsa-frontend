@@ -23,7 +23,7 @@ export class StepperComponent implements AfterViewInit, OnInit {
     @ViewChild('stepper') stepper: MatStepper;
 
     selectedMethod$ = this.store.select(methodFeature.selectSelectedMethod);
-    methodSelected$ = this.selectedMethod$.pipe(map(method => method?.name !== null))
+    methodSelected$ = this.selectedMethod$.pipe(map(method => method !== null))
 
     methodParameters$ = this.selectedMethod$.pipe(switchMap(method => this.store.select(parameterFeature.selectParameters(method?.parameterIds || []))))
     reportRequired$ = this.methodParameters$.pipe(map(parameters => (parameters.find(parameter => parameter.name === 'create_reports')?.value || false) as boolean))
