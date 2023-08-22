@@ -277,10 +277,4 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     return {x, y};
   }
 
-
-  blurInput() {
-    this.tableStore.blur()
-  }
-
-
 }
