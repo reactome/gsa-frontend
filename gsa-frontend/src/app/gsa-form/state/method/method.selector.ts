@@ -7,6 +7,7 @@ export const methodFeature = createFeature({
   reducer: methodReducer,
   extraSelectors: ({selectMethodState, selectEntities, selectSelectedMethodName}) => ({
     ...methodAdapter.getSelectors(selectMethodState),
+    selectMethod: (name: string) => createSelector(selectEntities, (entities) => entities[name]),
     selectSelectedMethod: createSelector(selectEntities, selectSelectedMethodName, (entities, selectedMethodName) => selectedMethodName === null ? null : (entities[selectedMethodName] || null) as Method | null),
   })
 })

@@ -17,6 +17,7 @@ import {methodActions} from "../state/method/method.action";
 })
 export class AnalysisMethodsComponent implements OnInit {
 
+  methodNames$: Observable<string[]> = this.store.select(methodFeature.selectIds) as Observable<string[]>;
   methods$: Observable<Method[]> = this.store.select(methodFeature.selectAll);
   analysisMethodStep: FormGroup;
   screenIsXSmall: boolean = false;

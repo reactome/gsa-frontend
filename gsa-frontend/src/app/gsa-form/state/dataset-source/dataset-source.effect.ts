@@ -32,16 +32,15 @@ export class DatasetSourceEffects {
     exhaustMap(() => this.service.fetchExternalDataSources().pipe(
       map(externals => {
         externals.forEach(external => external.parameters.forEach(param => {
-          param.id = `${external.id} - ${param.name}`;
+        //  param.id = `${external.id} - ${param.name}`;
           param.value = typeToParse[param.type](param.default);
           param.default = typeToParse[param.type](param.default);
         }))
-        console.log(externals)
         return externals;
       }),
       mergeMap(datasetSources => [
         datasetSourceActions.loadExternalSuccess({externals: datasetSources}),
-        parameterActions.addMany({parameters: datasetSources.flatMap(source => source.parameters)})
+       // parameterActions.addMany({parameters: datasetSources.flatMap(source => source.parameters)})
       ]),
       catchError((err) => of(datasetSourceActions.loadLocalsFailure({error: err})))
     )),

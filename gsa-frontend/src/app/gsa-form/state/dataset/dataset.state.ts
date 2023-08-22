@@ -11,6 +11,7 @@ export interface Dataset {
     annotations: string[][],
     annotationColumns: Map<string, string[]>,
     statisticalDesign: StatisticalDesign
+    parametersId: string[];
 }
 
 export type PDataset = PartialRequired<Dataset, 'id' | 'saved'>

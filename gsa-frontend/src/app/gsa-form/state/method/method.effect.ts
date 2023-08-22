@@ -20,7 +20,7 @@ export class MethodEffects {
           }),
           mergeMap(methods => [
             methodActions.loadSuccess({methods}),
-            parameterActions.addMany({parameters: methods.flatMap(method => method.parameters)})
+            // parameterActions.addMany({parameters: methods.flatMap(method => method.parameters)})
           ]),
           catchError((err) => of(methodActions.loadFailure({error: err})))
         )

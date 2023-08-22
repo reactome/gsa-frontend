@@ -1,22 +1,22 @@
-<mat-expansion-panel
+<mat-expansion-panel *ngrxLet="{method: method$, parameters: parameters$} as vm"
   (closed)="updateScroll()" (opened)="updateScroll()"
   [ngClass]="(selected$ | async) ? 'chosen': 'unchosen'"
   [expanded]="(selected$ | async) === true"
   hideToggle>
   <mat-expansion-panel-header (click)="selectMethod()">
     <mat-panel-title class="bold">
-      {{method.name}}
+      {{vm.method.name}}
     </mat-panel-title>
 
     <mat-panel-description>
-      {{method.description}}
+      {{vm.method.description}}
     </mat-panel-description>
   </mat-expansion-panel-header>
-  <div *ngIf="parameters$ | async as params" class="grey-border flex-container vertical align-center justify-center">
-    <div *ngFor="let param of params; let i = index" class="param-line width-eighty">
-      <gsa-method-parameter [index]="i" [parameter]="param"/>
+  <div  class="grey-border flex-container vertical align-center justify-center">
+    <div *ngFor="let param of vm.parameters" class="param-line width-eighty">
+      <gsa-method-parameter [parameter]="param" (parameterChange)="updateParam($event, vm.parameters)"/>
     </div>
-    <button (click)="setToDefault(params)" class="margin-top-20" color="primary" mat-raised-button>Reset</button>
+    <button (click)="setToDefault(vm.parameters)" class="margin-top-20" color="primary" mat-raised-button>Reset</button>
   </div>
 
 </mat-expansion-panel>

@@ -1,11 +1,27 @@
 import {Injectable} from "@angular/core";
 import {Actions, createEffect, ofType} from "@ngrx/effects";
-import {catchError, delayWhen, exhaustMap, filter, map, mergeMap, of, switchMap, tap, timer} from "rxjs";
+import {
+    catchError,
+    combineLatestWith,
+    delayWhen,
+    exhaustMap,
+    filter,
+    map,
+    mergeMap,
+    of,
+    switchMap,
+    tap,
+    timer
+} from "rxjs";
 import {datasetActions} from "./dataset.actions";
 import {LoadDatasetService} from "../../services/load-dataset.service";
 import {TypedAction} from "@ngrx/store/src/models";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {LoadingProgressComponent} from "../../datasets/select-dataset/loading-progress/loading-progress.component";
+import {ChangeAnalysisParamsComponent} from "../../datasets/change-analysis-params/change-analysis-params.component";
+import {Store} from "@ngrx/store";
+import {methodFeature} from "../method/method.selector";
+
 
 @Injectable()
 export class DatasetEffects {
@@ -86,7 +102,7 @@ export class DatasetEffects {
                         if (loadingStatus.status === 'running')
                             actions.push(datasetActions.getLoadStatus({loadingId, id}));
                         else if (loadingStatus.status === 'failed')
-                            actions.push(datasetActions.getLoadStatusError({error: loadingStatus.reports,id}));
+                            actions.push(datasetActions.getLoadStatusError({error: loadingStatus.reports, id}));
                         return actions;
                     }),
                     delayWhen((action) =>
@@ -157,24 +173,58 @@ export class DatasetEffects {
     initStatsToInitCovs = createEffect(() =>
         this.actions$.pipe(
             ofType(datasetActions.initStatisticalDesign),
-            map(({ id}) => datasetActions.initCovariances({id})),
+            map(({id}) => datasetActions.initCovariances({id})),
         ),
     );
 
     setAnalysisGroupToInitCovs = createEffect(() =>
         this.actions$.pipe(
             ofType(datasetActions.setAnalysisGroup),
-            map(({ id}) => datasetActions.initCovariances({id})),
+            map(({id}) => datasetActions.initCovariances({id})),
         ),
     );
 
+    summaryAndMethodToParameters = createEffect(() =>
+        this.actions$.pipe(
+            ofType(datasetActions.setSummary),
+            combineLatestWith(this.store.select(methodFeature.selectSelectedMethod)),
+            map(([summary, method]) => datasetActions.setSummaryParameters({
+                id: summary.id,
+                parameters: (method?.parameters
+                    .filter((param) => param.scope === 'dataset')
+                    .map(param => ({
+                        ...param,
+                       // default: param.value // Method param is the default value for the dataset param
+                    })) || [])
+            })),
+        )
+    );
+
+
+    openParameters = createEffect(() =>
+        this.actions$.pipe(
+            ofType(datasetActions.openSummaryParameters),
+            map(({id}) => {
+                this.changeAnalysisParamsDialogRef = this.dialog.open(ChangeAnalysisParamsComponent, {
+                    width: '80%',
+                    height: '80%',
+                    data: {datasetId: id},
+                })
+                return datasetActions.openSummaryParametersSuccess({id})
+            }),
+        ))
+
 
     dialogRef: MatDialogRef<LoadingProgressComponent>;
+
+    changeAnalysisParamsDialogRef: MatDialogRef<ChangeAnalysisParamsComponent>;
+
 
     constructor(
         private actions$: Actions,
         private dialog: MatDialog,
         private loadDatasetService: LoadDatasetService,
+        private store: Store,
     ) {
     }
 }

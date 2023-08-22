@@ -1,6 +1,8 @@
 import {ActionReducer, createReducer, on} from "@ngrx/store";
 import {datasetSourceAdapter, DatasetSourceState, initialState} from "./dataset-source.state";
 import {datasetSourceActions} from "./dataset-source.action";
+import {datasetActions} from "../dataset/dataset.actions";
+import {datasetAdapter} from "../dataset/dataset.state";
 
 
 export const datasetSourceReducer: ActionReducer<DatasetSourceState> = createReducer(
@@ -18,10 +20,12 @@ export const datasetSourceReducer: ActionReducer<DatasetSourceState> = createRed
         externals.map(external => ({
             ...external,
             source: 'External',
-            parameterIds: external.parameters.map(param => param.id)
         })), state)),
     on(datasetSourceActions.select, (state, {toBeSelected}) => ({
         ...state,
         selectedSourceId: toBeSelected.id
-    }))
+    })),
+    on(datasetSourceActions.setParameters, (state, {id, parameters}) => {
+        return datasetSourceAdapter.updateOne({id, changes: {parameters}}, state)
+    }),
 )

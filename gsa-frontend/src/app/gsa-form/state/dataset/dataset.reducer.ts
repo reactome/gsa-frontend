@@ -150,7 +150,7 @@ export const datasetReducer: ActionReducer<DatasetState> = createReducer(
 
     on(datasetActions.initStatisticalDesign, (state, {id}) => {
             const summary = state.entities[id]!.summary!;
-            const defaultCovariances = new Set(summary.default_parameters!
+            const defaultCovariances = new Set<string>(summary.default_parameters!
                 .find(param => param.name === 'covariates')?.value
                 .split(',') || []);
             const defaultGroup1 = summary.default_parameters!.filter((param) => param.name === 'comparison_group_1')[0].value;
@@ -266,4 +266,31 @@ export const datasetReducer: ActionReducer<DatasetState> = createReducer(
             }
         }, state)
     }),
+
+    on(datasetActions.setSummaryParameters, (state, {id, parameters}) => {
+        const dataset = state.entities[id]!;
+        const summary = dataset?.summary!;
+        return datasetAdapter.updateOne({
+            id,
+            changes: {
+                summary:{
+                    ...summary,
+                    parameters
+                }
+            }}, state)
+    }),
+
+    on(datasetActions.resetSummaryParameters, (state, {id}) => {
+        const summary = state.entities[id]!?.summary!;
+        if (!summary) return state;
+        return datasetAdapter.updateOne({
+            id,
+            changes: {
+                summary:{
+                    ...summary,
+                    parameters: summary.parameters?.map(p => ({...p, value: p.default}))
+                }
+            }}, state)
+    }),
+
 );
