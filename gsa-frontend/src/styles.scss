@@ -9,21 +9,20 @@ html, body {
 body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   background-color: var(--surface);
+  color: black;
   margin: 8px;
 }
 
-//Colors
-//.background-grey {
-//  background-color: $background-grey;
-//}
-//
-//.background-white {
-//  background-color: white;
-//}
-//
-//.background-blue {
-//  background-color: $primary-blue;
-//}
+@media (prefers-color-scheme: dark) {
+  body {
+    color: white;
+  }
+}
+
+mat-vertical-stepper, mat-horizontal-stepper {
+  background: transparent !important;
+}
+
 
 .grey {
   color: grey;
@@ -32,7 +31,6 @@ body {
 .mdc-tooltip__surface {
   text-align: justify;
 }
-
 
 h1 {
   display: flex;

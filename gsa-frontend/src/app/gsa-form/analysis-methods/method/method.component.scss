@@ -5,28 +5,24 @@ mat-expansion-panel-header {
 
 mat-expansion-panel {
   border: 5px solid inherit;
-  background: var(--surface1);
-  color: var(--on-surface);
-}
-
-.chosen {
-  border: 5px solid var(--primary);
   border-radius: 5px;
-}
 
-.chosen:hover {
-  cursor: pointer;
+  &.chosen {
+    border: 5px solid var(--primary);
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }
 
 .grey-border {
-  //border-top: 1px solid lightgray;
+  border-top: 1px solid var(--outline-variant);
 }
 
 .param-line {
-  //box-shadow: rgba($grey, 0.7) -2px 3px 4px 0;
   padding: 0 25px;
   margin-top: 14px;
-  //background-color: rgba($grey, 0.1);
 }
 
 .margin-top-20 {

@@ -4,6 +4,11 @@
 @use "palette" as p;
 @use "variables";
 @use 'sass:map';
+@use 'theme-helper';
+
+$bg-color: map.get(p.$primary-colors, 990);
+
+
 // Plus imports for other components in your app.
 
 
@@ -25,9 +30,9 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$primary-palette: mat.define-palette(p.$primary-colors);
-$secondary-palette: mat.define-palette(p.$secondary-colors);
-$tertiary-palette: mat.define-palette(p.$tertiary-colors);
+$primary-palette: mat.define-palette(p.$primary-colors, 600);
+$secondary-palette: mat.define-palette(p.$secondary-colors, 600);
+$tertiary-palette: mat.define-palette(p.$tertiary-colors, 600);
 
 // The warn palette is optional (defaults to red).
 $error-palette: mat.define-palette(p.$error-colors);
@@ -41,14 +46,15 @@ $light-theme: mat.define-light-theme((
     primary: $primary-palette,
     accent: $tertiary-palette,
     warn: $error-palette,
-  )
+  ),
+  density: -1
 ));
 
 $dark-theme: mat.define-dark-theme((
   color: (
-    primary: $primary-palette,
-    accent: $tertiary-palette,
-    warn: $error-palette,
+    primary: mat.define-palette(p.$primary-colors, 200),
+    accent: mat.define-palette(p.$tertiary-colors, 200),
+    warn: mat.define-palette(p.$error-colors, 200),
   )
 ));
 
@@ -66,6 +72,7 @@ $palettes: (
 // that you are using.
 @include mat.all-component-themes($light-theme);
 //@include nested-stepper.theme($light-theme);
+$bg-color: map.get(p.$primary-colors, 010);
 
 $color-config: mat.get-color-config($light-theme);
 
@@ -75,16 +82,17 @@ $color-config: mat.get-color-config($light-theme);
 @media (prefers-color-scheme: dark) {
   // Use the `-color` mixins to only apply color styles without reapplying the same
   // typography and density styles.
+  $bg-color: map.get(p.$primary-colors, 950);
+
+  $dark-theme: theme-helper.modify-background($dark-theme, p.$dark-theme-background-palette);
+  $dark-theme: theme-helper.modify-foreground($dark-theme, p.$dark-theme-foreground-palette);
 
   $color-config: mat.get-color-config($dark-theme);
-  @include mat.all-component-themes($dark-theme);
+  @include mat.all-component-colors($dark-theme);
 
 }
 
 @include variables.theme($palettes);
-
-
-
 
 
 
