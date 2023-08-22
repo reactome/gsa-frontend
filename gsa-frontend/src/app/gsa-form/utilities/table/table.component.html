@@ -1,41 +1,48 @@
-<div #root class="table-container flex horizontal relative in-front width-hundred" (blur)="deselect()"
-     *ngrxLet="settings$ as settings">
+<div #root class="table-container flex horizontal relative" (blur)="deselect()"
+     *ngrxLet="settings$ as settings" >
   <input #flyingRename (change)="renameCell(flyingRename)"
-         (blur)="blurInput()" (copy)="copyValues()"
-         (focus)="renameVisible = true"
+         (blur)="tableStore.blur()" (copy)="copyValues()"
+         (focus)="tableStore.focus()"
          (keydown.backspace)="deleteSelectedArea()" (keydown.delete)="deleteSelectedArea()"
          (mouseup)="mouseup()" (paste)="pasteValues($event)"
          [(ngModel)]="value"
          *ngIf="startCoords$ | async as start"
          (keydown)="keydown($event, flyingRename)"
-
          [ngStyle]="{
             'left': start.x + 'px',
             'top': start.y+ 'px',
             'height': start.height+ 'px',
             'width': start.width + 'px',
-            'z-index':inputLevel$ | async
+            'z-index':inputLevel$ | async,
+            'scroll-margin-top': cornerRect?.height + 'px',
+            'scroll-margin-left': cornerRect?.width + 'px'
             }"
          [ngClass]="startClasses$ | async"
-         class="flying-rename">
+         class="flying-rename"/>
   <table (mousedown)="mousedown($event)" (mouseover)="mousemove($event)" (mouseup)="mouseup()"
          (keydown)="keydown($event, undefined)"
-         class="relative align-center width-hundred"
+         class="relative align-center width-hundred spreadsheet"
          *ngIf="data$ | async as data">
     <tr *ngFor="let row of data; let y = index">
       <!-- HEADER -->
       <ng-container *ngIf="y === 0 && settings.showCols">
         <ng-container *ngFor="let cell of row; let x = index">
-          <th [attr.x]="x" [attr.y]="y" [ngClass]="{'selected': cell.selected, 'rows': x ===0, 'columns': x !== 0}">
-            <div [attr.x]="x" [attr.y]="y" [ngStyle]="{'visibility': cell.visibility }"
-                 class="flex horizontal align-center justify-between">
-              {{cell.value}}
-              <button (click)="deleteColumn(x)" *ngIf="x !== 0" class="bin-button" color="primary"
-                      mat-icon-button>
-                <span class="material-icons">delete</span>
-              </button>
-            </div>
-          </th>
+          <ng-container *ngIf="x === 0; else header">
+            <th [attr.x]="x" [attr.y]="y" class="rows" #corner></th>
+          </ng-container>
+          <ng-template #header>
+            <th [attr.x]="x" [attr.y]="y" [ngClass]="{'selected': cell.selected}" class="columns">
+              <div [attr.x]="x" [attr.y]="y"
+                   class="flex horizontal align-center justify-between">
+                {{cell.value}}
+                <button (click)="deleteColumn(x)" *ngIf="x !== 0" class="bin-button" color="primary"
+                        mat-icon-button>
+                  <span class="material-icons">delete</span>
+                </button>
+              </div>
+            </th>
+          </ng-template>
+
         </ng-container>
         <td *ngIf="settings.addColumn" class="no-padding add-column-button-container"
             rowspan="0">
@@ -50,11 +57,9 @@
       <ng-container *ngIf="y !==0">
         <ng-container *ngFor="let cell of row; let x = index">
           <th *ngIf="x === 0 && settings.showRows" [attr.x]="x" [attr.y]="y"
-              [ngStyle]="{'visibility': cell.visibility }"
               [ngClass]="{'selected': cell.selected}"
               class="border-right rows">{{cell.value}}</th>
           <td *ngIf="x !== 0" [attr.x]="x" [attr.y]="y" class="cell"
-              [ngStyle]="{'visibility': cell.visibility }"
               [ngClass]="{'selected': cell.selected}"
           >{{cell.value}}</td>
         </ng-container>

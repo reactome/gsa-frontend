@@ -14,12 +14,20 @@ import {
 import {Settings} from "../../model/table.model";
 import {Clipboard} from '@angular/cdk/clipboard';
 import {MatButton} from "@angular/material/button";
-import {Store} from "@ngrx/store";
-import {TableActions} from "./state/table.action";
-import {Cell, Coords} from "./state/table.state";
-import {combineLatest, filter, first, map, Observable, tap} from "rxjs";
-import {TableOrder} from "./state/table.util";
-import {tableFeature} from "./state/table.selector";
+import {Cell, Coords, TableStore} from "./state/table.store";
+import {
+  combineLatest,
+  combineLatestWith,
+  delay,
+  expand,
+  filter,
+  first,
+  map,
+  Observable,
+  of,
+  switchMap,
+  tap
+} from "rxjs";
 import {isDefined} from "../utils";
 import {Subset} from "../../model/utils.model";
 
@@ -49,10 +57,13 @@ type Range = { start: Coord, stop?: Coord };
   selector: 'gsa-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
+  providers: [TableStore]
 })
 export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild('flyingRename') input: ElementRef<HTMLInputElement>;
   @ViewChild('root') rootRef: ElementRef<HTMLDivElement>;
+  @ViewChild('corner') cornerRef: ElementRef<HTMLTableCellElement>;
+  cornerRect?: DOMRect;
   @ViewChild('addCol') columnButton: MatButton;
   renameVisible: boolean = false
   isDragging: boolean = false;
@@ -74,56 +85,63 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   settings$: Observable<Settings>;
   value: string;
 
-  constructor(private clipboard: Clipboard, private cd: ChangeDetectorRef, private store: Store) {
+
+  constructor(private clipboard: Clipboard, private cd: ChangeDetectorRef, public readonly tableStore: TableStore) {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(TableActions.settings({settings: this.userSettings}));
-    this.data$ = this.store.select(tableFeature.selectData(TableOrder.ROW_BY_ROW)).pipe(
+    this.tableStore.settings({settings: this.userSettings});
+    this.data$ = this.tableStore.data$.pipe(
       tap(table => this.tableChange.emit(table.map(row => row.map(cell => cell.value))))
     );
 
-    this.start$ = this.store.select(tableFeature.selectStart);
-    this.startCell$ = this.start$.pipe(map(start => this.getHTMLCellElement(start.x, start.y)));
+
+    this.start$ = this.tableStore.start$;
+    this.startCell$ = this.start$.pipe(
+      delay(0), // Allow resizing of cell before updating size of input
+      map(start => this.getHTMLCellElement(start.x, start.y))
+    );
     this.startCoords$ = this.startCell$.pipe(
       filter(isDefined),
-      map(cell => {
-        const cellRect = cell.getBoundingClientRect();
+      map(cell => ({cell, cellRect: cell.getBoundingClientRect()})),
+      map(({cell, cellRect}) => {
+        console.log({cell, cellRect})
         if (!cellRect) return cellRect;
         const tablePosition = this.rootRef?.nativeElement;
         const tableCoords = tablePosition?.getBoundingClientRect();
-        cellRect.x += tablePosition?.scrollLeft - tableCoords?.x - 1;
-        cellRect.y += tablePosition?.scrollTop - tableCoords?.y - 1;
+        cellRect.x += tablePosition?.scrollLeft - tableCoords?.x;
+        cellRect.y += tablePosition?.scrollTop - tableCoords?.y;
         let style = window.getComputedStyle(cell);
         cellRect.width -= (parseFloat(style.getPropertyValue('padding-left')) + parseFloat(style.getPropertyValue('padding-right')));
         cellRect.height -= (parseFloat(style.getPropertyValue('padding-top')) + parseFloat(style.getPropertyValue('padding-bottom')));
         return cellRect;
       })
     );
-    this.stop$ = this.store.select(tableFeature.selectStop);
-    this.startClasses$ = combineLatest([this.startCell$, this.store.select(tableFeature.selectHasFocus)],
+    this.stop$ = this.tableStore.stop$;
+    this.startClasses$ = combineLatest([this.startCell$, this.tableStore.hasFocus$],
       (start, hasFocus) =>
         Array.from(start.classList)
           .reduce((o, clazz) => ({...o, [clazz]: true}), {'visible': hasFocus} as Mapper<boolean>))
     this.inputLevel$ = this.start$.pipe(map(start => start.x === 0 ? 6 : start.y === 0 ? 4 : 2))
 
-    this.inputValue$ = this.store.select(tableFeature.selectValue).pipe(tap(value => console.log("input cell changed", value)));
+    this.inputValue$ = this.tableStore.value$;
     this.inputValue$.subscribe(value => this.value = value);
 
-    this.showChangeInput()
     this.startType$ = this.start$.pipe(map(start => start.x === 0 ? 'row' : start.y === 0 ? 'col' : 'cell'));
     this.isCell$ = this.startType$.pipe(map(type => type === 'cell'));
-    this.settings$ = this.store.select(tableFeature.selectSettings);
+    this.settings$ = this.tableStore.settings$;
 
-    this.store.dispatch(TableActions.import({
+    this.tableStore.import({
       table: this.table,
       hasColNames: true,
       hasRowNames: true,
       fullImport: true
-    }));
+    })
+
   }
 
   ngAfterViewInit() {
+    this.cornerRect = this.cornerRef.nativeElement.getBoundingClientRect();
     // Now we can find the HTML elements since they are initialised
     // this.setFirstElement()
     // this.cd.detectChanges()
@@ -131,7 +149,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
 
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['userSettings']) this.store.dispatch(TableActions.settings({settings: this.userSettings}));
+    if (changes['userSettings']) this.tableStore.settings({settings: this.userSettings});
   }
 
   mousedown($event: MouseEvent) {
@@ -149,58 +167,27 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   focusInput() {
-    this.input?.nativeElement.focus();
+    setTimeout(() => {
+      this.input?.nativeElement.focus();
+      this.input?.nativeElement.scrollIntoView({block: "nearest", inline: "nearest", behavior: 'smooth'});
+    }, 2)
   }
 
   selectCell(x: number, y: number, shift: boolean = false) {
     if (isNaN(x) || isNaN(y)) return;
-    this.store.dispatch(TableActions.select({coords: {x, y}, shift: shift}))
-    setTimeout(this.focusInput.bind(this), 0);
-
-    // this.firstSelected = new CellInfo(undefined, x, y);
-    // this.lastSelected = new CellInfo(undefined, x, y);
-    // this.showSelected("add");
+    this.tableStore.selectCell({coords: {x, y}, shift: shift});
+    this.focusInput();
   }
 
-  showSelected(method: string) {
-    // let {minX, maxX, minY, maxY} = this.computeRange();
-    // for (let x = minX; x <= maxX; x++) {
-    //   for (let y = minY; y <= maxY; y++) {
-    //     let parentElement = this.getHTMLCellElement(x, y);
-    //     switch (method) {
-    //       case "add":
-    //         parentElement?.classList.add("selected");
-    //         this.getHTMLCellElement(-1, y)?.classList.add('chosen-th');
-    //         this.getHTMLCellElement(x, -1)?.classList.add('chosen-th');
-    //         break
-    //       case "remove":
-    //         parentElement?.classList.remove("selected");
-    //         this.getHTMLCellElement(-1, y)?.classList.remove('chosen-th');
-    //         this.getHTMLCellElement(x, -1)?.classList.remove('chosen-th');
-    //         break
-    //     }
-    //
-    //   }
-    // }
-  }
+
 
   private previousStop: Coords;
 
   mousemove($event: MouseEvent) {
     if (this.isDragging) {
       let stop = this.getCell($event);
-      if (this.previousStop?.x !== stop.x || this.previousStop?.y !== stop.y) this.store.dispatch(TableActions.selectRange({stop}));
+      if (this.previousStop?.x !== stop.x || this.previousStop?.y !== stop.y) this.tableStore.selectRange({stop});
       this.previousStop = stop;
-
-      // this.deselect();
-      // let {x, y} = this.getCell($event);
-      // if (isNaN(x) && isNaN(y)) { // Cell is the same as first selected cell
-      //   this.lastSelected = new CellInfo(undefined, this.firstSelected.x, this.firstSelected.y);
-      // } else {
-      //   this.input.nativeElement.classList.add("selected");
-      //   this.lastSelected = new CellInfo(undefined, x, y);
-      // }
-      // this.showSelected("add");
     }
   }
 
@@ -209,329 +196,80 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   deselect() {
-    // if (this.settings.columns.length > 0) this.renameCell();
-    // this.showSelected("remove");
-    // this.input?.nativeElement?.classList.remove("selected");
-    // this.lastSelected = this.firstSelected
-
-    this.store.dispatch(TableActions.deselect())
-  }
-
-  focusOnCell(x: number, y: number) {
-    const parentElement = this.getHTMLCellElement(x, y);
-    // this.firstSelected = new CellInfo(undefined, x, y, this.getRelativeCoords(<HTMLElement>parentElement));
-    this.showChangeInput();
+    this.tableStore.deselect();
   }
 
   addColumn() {
-    this.store.dispatch(TableActions.addColumn())
-    // this.deselect();
-    // this.settings.columns.push("Annotation" + (this.settings.columns.length + 1));
-    // this.settings.data.forEach((row) => row.push(new CellInfo()));
-    // setTimeout(() => this.focusOnCell(this.settings.columns.length - 1, -1));
-    // this.firstSelected = new CellInfo(undefined, this.settings.columns.length - 1, -1)
-    // this.lastSelected = new CellInfo(undefined, this.settings.columns.length - 1, -1)
+    this.tableStore.addColumn();
   }
 
   addRow() {
-    this.store.dispatch(TableActions.addRow())
+    this.tableStore.addRow();
+
   }
 
-  changeValue($event: MouseEvent) {
-    // $event.preventDefault();
-    // let cell = this.getCell($event);
-    // setTimeout(() => this.firstSelected = new CellInfo(undefined, cell.x, cell.y, this.getRelativeCoords(cell.parentElement)));
-    // this.showChangeInput();
-  }
-
-  getRelativeCoords(element: HTMLElement): DOMRect {
-    let cell = element.getBoundingClientRect();
-    let tablePosition = this.rootRef.nativeElement;
-    let tableCoords = tablePosition.getBoundingClientRect();
-    cell.x -= tableCoords.x;
-    cell.y -= tableCoords.y;
-    cell.x += tablePosition.scrollLeft;
-    cell.y += tablePosition.scrollTop;
-    return cell;
-  }
-
-  showChangeInput() {
-    // let type = this.firstSelected.x === -1 ? "row" : this.firstSelected.y === -1 ? "col" : "cell";
-    // if (type === "col") { // It is a column
-    //   this.renameValue = this.settings.columns[this.firstSelected.x];
-    // } else if (type === "row") { // It is a row
-    //   this.renameValue = this.settings.rows[this.firstSelected.y];
-    // } else { // It is a cell
-    //   this.renameValue = this.settings.data[this.firstSelected.y][this.firstSelected.x].value;
-    // }
-    // if ((type === "col" && this.settings.renameCols) || (type === "row" && this.settings.renameRows) || (type === "cell" && this.settings.changeCells)) {
-    //   this.renameVisible = true
-    //   setTimeout(() => {
-    //     this.input.nativeElement.focus();
-    //     this.input.nativeElement.scrollIntoView({block: "nearest", inline: "nearest", behavior: 'smooth'});
-    //     // window.scrollBy(0, 0)
-    //   });
-    // } else {
-    //
-    //   this.renameVisible = false
-    // }
-  }
 
   renameCell(input: HTMLInputElement) {
     console.log(`Rename Cell : value ${input.value}`)
-    this.store.dispatch(TableActions.write({value: input.value}));
-    this.store.dispatch(TableActions.down({shift: false}));
-
-
-    // if (this.firstSelected.y === -1) { // It is a column
-    //   this.settings.columns[this.firstSelected.x] = this.renameValue;
-    // } else if (this.firstSelected.x === -1) { // It is a row
-    //   this.settings.rows[this.firstSelected.y] = this.renameValue;
-    // } else { // It is a cell
-    //   this.settings.data[this.firstSelected.y][this.firstSelected.x].value = this.renameValue;
-    // }
+    this.tableStore.write({value: input.value});
+    this.tableStore.down({shift: false});
   }
 
   deleteColumn(x: number) {
-    this.store.dispatch(TableActions.deleteColumn({x}))
-    // $event.preventDefault();
-    // $event.stopPropagation();
-    // this.settings.columns.splice(y, 1);
-    // this.settings.data.forEach((row) => row.splice(y, 1));
-    // this.renameVisible = false;
+    this.tableStore.deleteColumn({x});
   }
-
-  navigateTableDefault() {
-  }
-
-  // move(x: number, y: number, direction: Direction): Coord {
-  // return this.moveObj[direction]([x, y])
-  // }
-
-  // columnEndExceeded(y: number): boolean {
-  //     return y === this.settings.rows.length
-  // }
-  //
-  // rowEndExceeded(x: number): boolean {
-  //     return x === this.settings.columns.length
-  // }
-  //
-  // columnBeginExceeded(y: number): boolean {
-  //     return (y === -1 && !this.settings.renameCols) || (y === -2)
-  // }
-  //
-  // rowBeginExceeded(x: number): boolean {
-  //     return (x === -1 && !this.settings.renameRows) || (x === -2);
-  // }
-
-  // computeExceeded(x: number, y: number): Coord {
-  //     if (this.columnEndExceeded(y)) {
-  //         y = this.settings.renameCols ? -1 : 0;
-  //     }
-  //     if (this.columnBeginExceeded(y)) {
-  //         y = this.settings.rows.length - 1;
-  //     }
-  //     if (this.rowEndExceeded(x)) {
-  //         x = this.settings.renameRows ? -1 : 0;
-  //     }
-  //     if (this.rowBeginExceeded(x)) {
-  //         x = this.settings.columns.length - 1;
-  //     }
-  //     return [x, y];
-  // }
-
-  // moveCell(x: number, y: number, direction: Direction): Coord {
-  //   [x, y] = this.move(x, y, direction);
-  //   [x, y] = this.computeExceeded(x, y);
-  //   switch (direction) {
-  //     case "down":
-  //       this.store.dispatch(TableActions.down());
-  //       break;
-  //     case "up":
-  //       this.store.dispatch(TableActions.up());
-  //       break;
-  //     case "left":
-  //       this.store.dispatch(TableActions.left());
-  //       break;
-  //     case "right":
-  //       this.store.dispatch(TableActions.right());
-  //       break;
-  //   }
-  //   return [x, y];
-  // }
-
-  // findPreviousTabStop(element: HTMLElement) {
-  //     var universe = document.querySelectorAll('input, button, select, textarea, a[href]');
-  //     var list = Array.prototype.filter.call(universe, function (item) {
-  //         return item.tabIndex >= "0"
-  //     });
-  //     var index = list.indexOf(element);
-  //     return list[index - 1] || list[0];
-  // }
-  //
-  // unfocusTableBegin(x: number, y: number): boolean {
-  //     if (this.rowBeginExceeded(x - 1) && this.columnBeginExceeded(y - 1)) {
-  //         this.blurInput();
-  //         setTimeout(() => this.input.nativeElement.blur());
-  //         var nextEl = this.findPreviousTabStop(this.input.nativeElement);
-  //         nextEl.focus();
-  //         return true
-  //     }
-  //     return false
-  // }
-  //
-  // unfocusTableEnd(x: number, y: number): boolean {
-  //     if (this.rowEndExceeded(x + 1) && this.columnEndExceeded(y + 1)) {
-  //         this.renameVisible = false;
-  //         setTimeout(() => this.columnButton.focus());
-  //         return true
-  //     }
-  //     return false
-  // }
 
   focusLastCell($event: any) {
-    this.store.dispatch(TableActions.focusLast())
-    // setTimeout(() => {
-    //   let [x, y] = [this.settings.columns.length - 1, this.settings.rows.length - 1]
-    //   let parentElement = this.getHTMLCellElement(x, y);
-    //
-    //   this.firstSelected = new CellInfo(undefined, x, y, this.getRelativeCoords(parentElement as HTMLElement));
-    //   this.lastSelected = new CellInfo(undefined, x, y, this.getRelativeCoords(parentElement as HTMLElement));
-    //   this.showSelected("add")
-    //   this.showChangeInput();
-    // }, 0);
-
+    this.tableStore.focusLast()
   }
 
   keydown($event: KeyboardEvent, input?: HTMLInputElement): void {
-    // if (document.activeElement === this.input.nativeElement) return;
-    const shift = $event.shiftKey;
+    setTimeout(() => {
+      const shift = $event.shiftKey;
 
-    console.log(`KeyDown ${$event.key}, input: ${input?.value}`)
+      this.tableStore.write({value: input?.value || this.value});
 
-    this.store.dispatch(TableActions.write({value: input?.value || this.value}));
-
-    // let x = this.lastSelected.x;
-    // let y = this.lastSelected.y;
-    const keyToAction: Map<string, () => void> = new Map([
-      ["ArrowRight", () => this.store.dispatch(TableActions.right({shift}))],
-      ["ArrowLeft", () => this.store.dispatch(TableActions.left({shift}))],
-      ["ArrowUp", () => this.store.dispatch(TableActions.up({shift}))],
-      ["ArrowDown", () => this.store.dispatch(TableActions.down({shift}))],
-      ["Enter", () => this.store.dispatch(TableActions.down({shift: false}))],
-      ["Tab", () => shift
-        ? this.store.dispatch(TableActions.left({shift: false}))
-        : this.store.dispatch(TableActions.right({shift: false}))
-      ]
-    ]);
-    const action = keyToAction.get($event.key);
-    if (action) {
-      action.call(this);
-      $event.preventDefault();
-    }
-
-    // const action = keyToAction.get($event.key);
-    // if (action) {
-    //   $event.preventDefault();
-    //   let [x, y] = action();
-    //   if (x === -1 && y === -1) return
-    //   if ((!$event.shiftKey) || ($event.shiftKey && $event.key === 'Tab')) {
-    //     [x, y] = [this.firstSelected.x + (x - this.lastSelected.x), this.firstSelected.y + (y - this.lastSelected.y)]
-    //   }
-    //   let parentElement = this.getHTMLCellElement(x, y);
-    //   this.deselect();
-    //   this.input.nativeElement.classList.add("selected");
-    //
-    //   setTimeout(() => {
-    //     if ((!$event.shiftKey) || ($event.shiftKey && $event.key === 'Tab')) {
-    //       this.firstSelected = new CellInfo(undefined, x, y, this.getRelativeCoords(parentElement as HTMLElement));
-    //       this.input.nativeElement.classList.remove("selected");
-    //     }
-    //     this.lastSelected = new CellInfo(undefined, x, y, this.getRelativeCoords(parentElement as HTMLElement));
-    //     this.showSelected("add")
-    //     this.showChangeInput();
-    //   }, 0);
-
+      const keyToAction: Map<string, () => void> = new Map([
+        ["ArrowRight", () => this.tableStore.right({shift})],
+        ["ArrowLeft", () => this.tableStore.left({shift})],
+        ["ArrowUp", () => this.tableStore.up({shift})],
+        ["ArrowDown", () => this.tableStore.down({shift})],
+        ["Enter", () => this.tableStore.down({shift: false})],
+        ["Tab", () => shift
+          ? this.tableStore.left({shift: false})
+          : this.tableStore.right({shift: false})
+        ]
+      ]);
+      const action = keyToAction.get($event.key);
+      if (action) {
+        action.call(this);
+        $event.preventDefault();
+        this.focusInput();
+      }
+    })
   }
 
 
   pasteValues($event: ClipboardEvent) {
     $event.preventDefault();
     const pastedData = $event.clipboardData?.getData('text')?.split('\n').map(row => row.split('\t'));
-    if (pastedData) this.store.dispatch(TableActions.paste({table: pastedData, order: TableOrder.ROW_BY_ROW}))
-    // let rows: string[] = pastedData?.split('\n');
-    // let pasteData: string[][] = rows.map(row => row.split('\t'));
-    //
-    // let x = this.firstSelected.x;
-    // let y = this.firstSelected.y;
-    // this.renameValue = pasteData[0][0];
-    // pasteData.forEach((row, indexX) => {
-    //   row.forEach((cell, indexY) => {
-    //     this.settings.data[y + indexY][x + indexX].value = cell;
-    //   })
-    // })
-    // setTimeout(() => {
-    //   const firstSelectedHTML = this.getHTMLCellElement(x, y);
-    //   this.firstSelected.coordinate = this.getRelativeCoords(firstSelectedHTML);
-    //   this.showChangeInput()
-    // }, 0);
-
+    if (pastedData) this.tableStore.paste({table: pastedData})
   }
 
   deleteSelectedArea() {
     if (document.activeElement !== this.input.nativeElement)
-      this.store.dispatch(TableActions.delete())
-    // setTimeout(() => this.firstSelected = new CellInfo(undefined, this.firstSelected.x, this.firstSelected.y, this.getRelativeCoords(this.getHTMLCellElement(this.firstSelected.x, this.firstSelected.y))));
-    //
-    // let {minX, maxX, minY, maxY} = this.computeRange();
-    // if (minX !== maxX || minY !== maxY) {
-    //   for (let x = minX; x <= maxX; x++) {
-    //     for (let y = minY; y <= maxY; y++) {
-    //       if (y === -1) this.settings.columns[x] = ""
-    //       else if (x === -1) this.settings.rows[y] = ""
-    //       else this.settings.data[y][x].value = ""
-    //     }
-    //   }
-    //   this.renameValue = ""
-    // }
-    // this.deselect()
-    // this.selectCell(this.firstSelected.x, this.firstSelected.y)
+      this.tableStore.delete()
   }
 
   copyValues() {
-    // let copyText: string = ""
-    // let {minX, maxX, minY, maxY} = this.computeRange();
-    // for (let x = minX; x <= maxX; x++) {
-    //   for (let y = minY; y <= maxY; y++) {
-    //     copyText += this.settings.data[y][x].value;
-    //     if (y < maxY) copyText += "\t";
-    //   }
-    //   if (x < maxX) copyText += "\n";
-    // }
-    // const temp_selected = this.firstSelected;
-    // const temp_rename = this.renameValue;
-    this.store.select(tableFeature.selectRange)
-      .pipe(first())
-      .subscribe(range => this.clipboard.copy(range.map(row => row.join("\t")).join("\n")));
-    // setTimeout(() => {
-    //   this.firstSelected = temp_selected
-    //   this.lastSelected = temp_selected
-    //   this.renameValue = temp_rename
-    // })
+    this.tableStore.range$.pipe(
+      first()
+    ).subscribe(range => this.clipboard.copy(range.map(row => row.join("\t")).join("\n")));
   }
 
   getHTMLCellElement(x: number, y: number): HTMLTableCellElement {
     return this.rootRef?.nativeElement.querySelector(`[x = '${x}'][y = '${y}']`) as HTMLTableCellElement;
   }
-
-  computeRange() {
-    // const minX = Math.min(this.firstSelected.x, this.lastSelected.x);
-    // const maxX = Math.max(this.firstSelected.x, this.lastSelected.x);
-    // const minY = Math.min(this.firstSelected.y, this.lastSelected.y);
-    // const maxY = Math.max(this.firstSelected.y, this.lastSelected.y);
-    // return {minX, maxX, minY, maxY};
-  }
-
   getCell($event: MouseEvent): Coords {
     let x = parseInt(($event.target as HTMLTableCellElement).getAttribute("x") as string);
     let y = parseInt(($event.target as HTMLTableCellElement).getAttribute("y") as string);
@@ -541,20 +279,8 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
 
 
   blurInput() {
-    this.renameVisible = false;
-    // this.renameCell();
-    // this.deselect();
-    this.setFirstElement();
+    this.tableStore.blur()
   }
 
 
-  private setFirstElement() {
-    // let y: number = this.settings.renameCols ? -1 : 0;
-    // let x: number = this.settings.renameRows ? -1 : 0;
-    // this.firstSelected = new CellInfo(undefined, x, y, this.getRelativeCoords(this.getHTMLCellElement(x, y)));
-    // this.lastSelected = new CellInfo(undefined, x, y, this.getRelativeCoords(this.getHTMLCellElement(x, y)));
-    // this.renameValue = this.settings.renameCols ?
-    //   this.settings.columns[this.firstSelected.x] : this.renameValue = this.settings.renameRows ?
-    //     this.settings.rows[this.firstSelected.y] : this.settings.data[this.firstSelected.y][this.firstSelected.x].value;
-  }
 }
