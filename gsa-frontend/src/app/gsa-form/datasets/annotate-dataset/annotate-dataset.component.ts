@@ -16,13 +16,12 @@ import {datasetFeature} from "../../state/dataset/dataset.selector";
   styleUrls: ['./annotate-dataset.component.scss']
 })
 export class AnnotateDatasetComponent implements OnInit {
-  @ViewChild('hiddenText') textEl: ElementRef;
+
   @Input() datasetId: number;
   dataset$: Observable<PDataset | undefined>
   annotateDataStep: FormGroup;
   tableSettings: Subset<Settings>;
   screenIsSmall: boolean = false;
-  renameWidth: number = 100;
 
   constructor(private formBuilder: FormBuilder, private responsive: BreakpointObserver, private store: Store) {
     this.annotateDataStep = this.formBuilder.group({
@@ -38,15 +37,10 @@ export class AnnotateDatasetComponent implements OnInit {
     };
     this.dataset$ = this.store.select(datasetFeature.selectDataset(this.datasetId));
     this.responsive.observe(Breakpoints.Small).subscribe(result => this.screenIsSmall = result.matches);
-    this.resize()
   }
 
   onTableUpdate(table: string[][]) {
     this.store.dispatch(datasetActions.setAnnotations({annotations: table, id: this.datasetId}))
-  }
-
-  resize() {
-    // setTimeout(() => this.renameWidth = Math.max(100, this.textEl.nativeElement.offsetWidth));
   }
 
   updateTitle(value: string) {
