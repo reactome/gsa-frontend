@@ -1,12 +1,7 @@
 <div [formGroup]="analysisMethodStep">
-  <mat-accordion multi="false">
-    <div *ngFor="let method of methods$ | async; let i = index">
-      <gsa-method *ngIf="i === 0 else margin" [method]="method"></gsa-method>
-      <ng-template #margin>
-        <div class="expansion-panel-margin">
-          <gsa-method [method]="method"></gsa-method>
-        </div>
-      </ng-template>
+  <mat-accordion multi="false" class="flex-container gap-one">
+    <div *ngFor="let method of methods$ | async">
+      <gsa-method [method]="method"></gsa-method>
     </div>
   </mat-accordion>
 </div>
