@@ -1,8 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Store} from "@ngrx/store";
-import {TableActions} from "../../../../utilities/table/state/table.action";
-import {tableFeature} from "../../../../utilities/table/state/table.selector";
+import {TableStore} from "../../../../utilities/table/state/table.store";
 
 @Component({
   selector: 'gsa-edit-columns',
@@ -12,25 +10,25 @@ import {tableFeature} from "../../../../utilities/table/state/table.selector";
 export class EditColumnsComponent {
 
   columnStep: FormGroup;
-  columnNames$ = this.store.select(tableFeature.selectColNames)
+  @Input() store: TableStore
   @Input() datasetName: string;
 
 
-  constructor(private formBuilder: FormBuilder, private store: Store) {
+  constructor(private formBuilder: FormBuilder) {
     this.columnStep = this.formBuilder.group({
       address: ['', Validators.required]
     });
   }
 
   addColumn() {
-    this.store.dispatch(TableActions.addRow())
+    this.store.addColumn()
     // this.tableSettings.columns.push("Annotation" + (this.tableSettings.columns.length + 1));
     // this.tableSettings.data.forEach((row) => row.push(new CellInfo()));
   }
 
 
   deleteColumn(col: string) {
-    this.store.dispatch(TableActions.deleteColumn({name: col}))
+    this.store.deleteColumn({name: col});
 
     // let colIndex = this.tableSettings.columns.indexOf(col);
     // this.tableSettings.columns.splice(colIndex, 1);
@@ -42,7 +40,7 @@ export class EditColumnsComponent {
 
 
   valueChange($event: any, columnIndex: number) {
-    this.store.dispatch(TableActions.select({coords: {x:columnIndex, y: 0}}))
-    this.store.dispatch(TableActions.write({value: $event.target.value}))
+    this.store.selectCell({coords: {x:columnIndex, y: 0}})
+    this.store.write({value: $event.target.value})
   }
 }

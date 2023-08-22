@@ -1,8 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {MatSnackBar} from "@angular/material/snack-bar";
-import {Store} from "@ngrx/store";
-import {tableFeature} from "../../../utilities/table/state/table.selector";
-import {take} from "rxjs";
+import {first} from "rxjs";
+import {TableStore} from "../../../utilities/table/state/table.store";
 
 @Component({
   selector: 'gsa-save-dataset-button',
@@ -12,8 +10,9 @@ import {take} from "rxjs";
 export class SaveDatasetButtonComponent implements OnInit {
   @Input() icon: boolean;
   @Input() datasetName: string;
+  @Input() tableStore: TableStore;
 
-  constructor(private snackBar: MatSnackBar, private store: Store) {
+  constructor() {
   }
 
   ngOnInit(): void {
@@ -22,14 +21,13 @@ export class SaveDatasetButtonComponent implements OnInit {
   saveAFile(): void {
     const dlink: HTMLAnchorElement = document.createElement('a');
     dlink.download = this.datasetName + '.csv'; // the file name
-    this.store.select(tableFeature.selectRawData).pipe(take(1)).subscribe(
+    this.tableStore.rawData$.pipe(first()).subscribe(
       table => {
         dlink.href = 'data:text/plain;charset=utf-16,' + table.map(row => row.join(", ")).join("\n");
         dlink.click(); // this will trigger the dialog window
         dlink.remove();
       }
     )
-
   }
 
 }

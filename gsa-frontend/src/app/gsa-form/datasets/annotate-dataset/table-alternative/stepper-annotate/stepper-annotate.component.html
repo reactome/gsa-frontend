@@ -4,7 +4,7 @@
 
     <div class="flex-container flex-center horizontal justify-center gap-one">
       <div class="center-vertical">
-        <gsa-edit-columns
+        <gsa-edit-columns [store]="tableStore"
           [datasetName]="datasetName"
           class="full-width"></gsa-edit-columns>
       </div>
@@ -29,7 +29,7 @@
         </div>
         <div class="center-vertical">
           <div class="flex-container vertical gap-one full-width">
-            <gsa-edit-cells *ngIf="stepper.selected == editCells" [tableSettings]="tableSettings"
+            <gsa-edit-cells *ngIf="stepper.selected == editCells" [tableStore]="tableStore"
                             class="full-width"></gsa-edit-cells>
           </div>
         </div>
