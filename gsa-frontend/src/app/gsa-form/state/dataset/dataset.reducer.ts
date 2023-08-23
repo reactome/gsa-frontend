@@ -153,9 +153,9 @@ export const datasetReducer: ActionReducer<DatasetState> = createReducer(
             const defaultCovariances = new Set<string>(summary.default_parameters!
                 .find(param => param.name === 'covariates')?.value
                 .split(',') || []);
-            const defaultGroup1 = summary.default_parameters!.filter((param) => param.name === 'comparison_group_1')[0].value;
-            const defaultGroup2 = summary.default_parameters!.filter((param) => param.name === 'comparison_group_2')[0].value;
-            const defaultComparisonFactor = summary.default_parameters!.filter((param) => param.name === 'analysis_group')[0].value;
+            const defaultGroup1 = summary.default_parameters!.filter((param) => param.name === 'comparison_group_1')[0]?.value;
+            const defaultGroup2 = summary.default_parameters!.filter((param) => param.name === 'comparison_group_2')[0]?.value;
+            const defaultComparisonFactor = summary.default_parameters!.filter((param) => param.name === 'analysis_group')[0]?.value;
             return datasetAdapter.updateOne(
                 {
                     id,
