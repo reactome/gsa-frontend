@@ -13,7 +13,7 @@
     </mat-panel-description>
   </mat-expansion-panel-header>
   <div  class="grey-border flex-container vertical align-center justify-center">
-    <div *ngFor="let param of vm.parameters" class="param-line width-eighty">
+    <div *ngFor="let param of vm.parameters, trackBy: paramTracker" class="param-line width-eighty">
       <gsa-method-parameter [parameter]="param" (parameterChange)="updateParam($event, vm.parameters)"/>
     </div>
     <button (click)="setToDefault(vm.parameters)" class="margin-top-20" color="primary" mat-raised-button>Reset</button>

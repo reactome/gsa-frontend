@@ -1,13 +1,12 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
-
-import {AnalysisMethodsService} from '../../services/analysis-methods.service';
 import {datasetFeature} from '../../state/dataset/dataset.selector';
 import {filter, map, Observable} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {Parameter} from '../../state/parameter/parameter.state';
 import {datasetActions} from "../../state/dataset/dataset.actions";
 import {isDefined} from "../../utilities/utils";
+import {paramTracker} from "../../utilities/method-parameter/method-parameter.component";
 
 @Component({
     selector: 'gsa-change-analysis-params',
@@ -20,7 +19,6 @@ export class ChangeAnalysisParamsComponent implements OnInit {
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: { datasetId: number }, public store: Store,
-        public analysisMethodsService: AnalysisMethodsService,
     ) {
     }
 
@@ -34,26 +32,12 @@ export class ChangeAnalysisParamsComponent implements OnInit {
 
     reset() {
         this.store.dispatch(datasetActions.resetSummaryParameters({id: this.data.datasetId}));
-        // this.dataset.dataset.summary!.parameters = this.analysisMethodsService.selectedMethod?.parameters.filter(para =>
-        //   para.scope !== "common").map(param => {
-        //   return Object.assign({}, param)
-        // })
-
-        // this.store.dispatch(datasetActions.resetSummaryParameters())
-
-        // this.store.dispatch(parameterActions.update({
-        //   update: {
-        //     id: this.dataset$.summary!.parameters![0].id,
-        //     changes: {
-        //       value
-        //     }
-        //   }
-        // }))
-
     }
 
     updateParam(param: Parameter, parameters: Parameter[]) {
         parameters = parameters.map(srcParam => srcParam.name === param.name ? param : srcParam);
         this.store.dispatch(datasetActions.setSummaryParameters({id: this.data.datasetId, parameters}))
     }
+
+  protected readonly paramTracker = paramTracker;
 }

@@ -16,6 +16,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
     }
 }
 
+export const paramTracker: TrackByFunction<Parameter> = (i, param) => param.name;
 
 @Component({
     selector: 'gsa-method-parameter',

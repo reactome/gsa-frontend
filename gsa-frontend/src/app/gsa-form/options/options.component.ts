@@ -4,6 +4,7 @@ import {Store} from "@ngrx/store";
 import {Parameter} from "../state/parameter/parameter.state";
 import {Method} from "../state/method/method.state";
 import {methodActions} from "../state/method/method.action";
+import {paramTracker} from "../utilities/method-parameter/method-parameter.component";
 
 @Component({
     selector: 'gsa-options',
@@ -30,4 +31,6 @@ export class OptionsComponent implements OnInit {
         parameters = parameters.map(srcParam => srcParam.name === param.name ? param : srcParam);
         this.store.dispatch(methodActions.setSelectedParams({ parameters: parameters }));
     }
+
+  protected readonly paramTracker = paramTracker;
 }
