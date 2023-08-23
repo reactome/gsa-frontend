@@ -1,10 +1,8 @@
 <div #root class="table-container flex horizontal relative" (blur)="deselect()"
-     *ngrxLet="settings$ as settings" >
-  <input #flyingRename (change)="renameCell(flyingRename)"
-         (blur)="tableStore.blur()" (copy)="copyValues()"
-         (focus)="tableStore.focus()"
-         (keydown.backspace)="deleteSelectedArea()" (keydown.delete)="deleteSelectedArea()"
-         (mouseup)="mouseup()" (paste)="pasteValues($event)"
+     *ngrxLet="settings$ as settings">
+  <input #flyingRename (blur)="tableStore.blur()" (focus)="tableStore.focus()"
+         (copy)="copyValues()" (paste)="pasteValues($event)"
+         (mouseup)="mouseup()"
          [(ngModel)]="value"
          *ngIf="startCoords$ | async as start"
          (keydown)="keydown($event, flyingRename)"

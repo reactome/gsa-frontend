@@ -1,8 +1,8 @@
 import {initialUndoRedoState, UndoRedoState} from "ngrx-wieder";
 import {Settings} from "../../../model/table.model";
-import {Injectable} from "@angular/core";
+import {Injectable, OnDestroy} from "@angular/core";
 import {ComponentStore} from "@ngrx/component-store";
-import {height, numberToLetter, pushAll, width} from "./table.util";
+import {cp, height, numberToLetter, pushAll, width} from "./table.util";
 import {Subset} from "../../../model/utils.model";
 import {catchError, EMPTY, exhaustMap, Observable, tap} from "rxjs";
 import {fromPromise} from "rxjs/internal/observable/innerFrom";
@@ -37,33 +37,30 @@ export const cell = (value = '', selected = false, visibility: 'hidden' | 'visib
   visibility
 });
 
-export const initialState: TableState = {
-  dataset: [[EMPTY_CELL]],
-  start: {x: 0, y: 0},
-  stop: {x: 0, y: 0},
-  selectedCoords: [],
-  hasFocus: false,
-  settings: {
-    renameCols: true,
-    renameRows: true,
-    changeCells: true,
-    addColumn: true,
-    addRow: true,
-    showRows: true,
-    showCols: true
-  },
-  ...initialUndoRedoState,
-};
-
-
 @Injectable()
 export class TableStore extends ComponentStore<TableState> {
 
   constructor() {
-    super(initialState);
+    super({
+      dataset: [[EMPTY_CELL]],
+      start: {x: 0, y: 0},
+      stop: {x: 0, y: 0},
+      selectedCoords: [],
+      hasFocus: false,
+      settings: {
+        renameCols: true,
+        renameRows: true,
+        changeCells: true,
+        addColumn: true,
+        addRow: true,
+        showRows: true,
+        showCols: true
+      },
+      ...initialUndoRedoState,
+    });
   }
 
-  // Readers (Selectors)
+// Readers (Selectors)
 
   readonly data$ = this.select(state => state.dataset);
   readonly start$ = this.select(state => state.start);
@@ -157,7 +154,7 @@ export class TableStore extends ComponentStore<TableState> {
     const cell = state.dataset[state.start.y][state.start.x];
     state.dataset[state.start.y][state.start.x] = {...cell, value};
     state.start = {...state.start};
-    return state;
+    return {...state, dataset: [...state.dataset]};
   })
 
   readonly focus = this.updater((state) => Cells.select({
@@ -191,6 +188,8 @@ export class TableStore extends ComponentStore<TableState> {
   });
 
   readonly selectCell = this.updater((state, {coords, shift}: { coords: Coords, shift?: boolean }) => {
+    const origin = Ranges.origin(state);
+    if (coords.x < origin.x || coords.y < origin.y) return state;
     state.hasFocus = true;
     state.start = coords;
     if (!shift) state.stop = state.start;
@@ -198,19 +197,21 @@ export class TableStore extends ComponentStore<TableState> {
   });
 
   readonly selectRange = this.updater((state, {start, stop}: { start?: Coords, stop?: Coords }) => {
+    const origin = Ranges.origin(state);
+    if (start && start.x >= origin.x && start.y >= origin.y) state.start = start;
+    if (stop && stop.x >= origin.x && stop.y >= origin.y) state.stop = stop;
     state.hasFocus = true;
-    if (start) state.start = start;
-    if (stop) state.stop = stop;
     return Cells.select(state);
   });
 
   readonly delete = this.updater((state) => {
-    for (let y = state.start.y; y <= state.stop.y; y++) {
-      for (let x = state.start.x; x <= state.stop.x; x++) {
+    const range = Ranges.minMax(state.start, state.stop);
+    for (let y = range.y.min; y <= range.y.max; y++) {
+      for (let x = range.x.min; x <= range.x.max; x++) {
         state.dataset[y][x].value = '';
       }
     }
-    return state;
+    return {...state, dataset: [...state.dataset]};
   });
 
   readonly paste = this.updater((state, {table}: { table: string[][] }) => {
@@ -223,8 +224,7 @@ export class TableStore extends ComponentStore<TableState> {
     }
     state.start = {x: range.x.min, y: range.y.min};
     state.stop = Ranges.limitCoords({x: range.x.min + width(table), y: range.y.min + height(table)}, state) // Make selection range equal to the pasted region
-    Cells.select(state);
-    return state;
+    return Cells.select({...state, dataset: [...state.dataset]});
   });
 
   readonly import = this.updater((state, {table, hasRowNames, hasColNames, fullImport = false}: {
@@ -254,7 +254,7 @@ export class TableStore extends ComponentStore<TableState> {
       }
     }
 
-    return Cells.select(state);
+    return Cells.select({...state, dataset: [...state.dataset]});
   });
 
   readonly addColumn = this.updater((state) => {
@@ -262,9 +262,8 @@ export class TableStore extends ComponentStore<TableState> {
     state.dataset[0][x].value = numberToLetter(x);
     state.start = {x, y: 0};
     state.stop = state.start;
-    console.log(state)
     state.hasFocus = true;
-    return Cells.select({...state});
+    return Cells.select({...state, dataset: [...state.dataset]});
   });
 
   readonly addRow = this.updater((state) => {
@@ -273,7 +272,7 @@ export class TableStore extends ComponentStore<TableState> {
     state.start = {x: 0, y};
     state.stop = state.start;
     state.hasFocus = true;
-    return Cells.select(state);
+    return Cells.select({...state, dataset: [...state.dataset]});
   });
 
   readonly deleteColumn = this.updater((state, props: { x: number } | Named) => {
@@ -282,7 +281,7 @@ export class TableStore extends ComponentStore<TableState> {
     state.dataset.forEach(row => row.splice(x, 1))
     state.start = {x: 0, y: 0};
     state.stop = state.start;
-    return Cells.select(state);
+    return Cells.select({...state, dataset: [...state.dataset]});
   });
   readonly deleteRow = this.updater((state, props: { y: number } | Named) => {
     const y = isNamed(props) ? state.dataset.map(row => row[0]).findIndex(cell => cell.value === props.name) : props.y;
@@ -290,7 +289,7 @@ export class TableStore extends ComponentStore<TableState> {
     state.dataset.splice(y, 1);
     state.start = {x: 0, y: 0};
     state.stop = state.start;
-    return Cells.select(state);
+    return Cells.select({...state, dataset: [...state.dataset]});
   });
 
   readonly setting = this.updater((state, {setting, value}: { setting: keyof Settings, value: boolean }) => ({
@@ -402,7 +401,6 @@ namespace Cells {
   }
 
   function selectCell(coords: Coords, state: TableState): Coords {
-    // if (!cell) return cell;
     state.dataset[coords.y][coords.x].selected = true;
     state.selectedCoords.push(coords);
     return coords;

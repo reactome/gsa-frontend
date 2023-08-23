@@ -1,6 +1,6 @@
 <div class="flex-container vertical align-center" *ngrxLet="{ parameters: parameters$ } as vm">
   <div>
-    <div *ngFor="let param of vm.parameters">
+    <div *ngFor="let param of vm.parameters; trackBy: paramTracker">
       <gsa-method-parameter [parameter]="param" (parameterChange)="updateParam($event, vm.parameters)"></gsa-method-parameter>
     </div>
   </div>

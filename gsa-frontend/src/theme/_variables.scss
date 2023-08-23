@@ -1,5 +1,6 @@
 @use "@angular/material" as mat;
 @use "sass:map";
+@use "palette";
 
 @mixin theme($palettes) {
   $primary-palette: map.get($palettes, 'primary-palette');
@@ -50,7 +51,8 @@
     --surface4: #{linear-gradient(0, transparentize($primary, 0.88), transparentize($primary, 0.88)), $surface};
     --surface5: #{linear-gradient(0, transparentize($primary, 0.86), transparentize($primary, 0.86)), $surface};
 
-    --icon-positive: #0C9509
+    --icon-positive: #0C9509;
+    --hover: rgba(0, 0, 0, 0.04);
   }
 
 
@@ -95,7 +97,9 @@
       --surface4: #{linear-gradient(0, transparentize($primary, 0.88), transparentize($primary, 0.88)), $surface};
       --surface5: #{linear-gradient(0, transparentize($primary, 0.86), transparentize($primary, 0.86)), $surface};
 
-      --icon-positive: #51F44D
+      --icon-positive: #51F44D;
+      --hover: rgba(255, 255, 255, 0.04);
+
     }
   }
 }

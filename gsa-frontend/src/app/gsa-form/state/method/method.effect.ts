@@ -3,7 +3,7 @@ import {Injectable} from "@angular/core";
 import {AnalysisMethodsService, typeToParse} from "../../services/analysis-methods.service";
 import {methodActions} from "./method.action";
 import {catchError, exhaustMap, map, mergeMap, of} from "rxjs";
-import {parameterActions} from "../parameter/parameter.action";
+import {ParameterType} from "../parameter/parameter.state";
 
 @Injectable()
 export class MethodEffects {
@@ -12,7 +12,7 @@ export class MethodEffects {
       exhaustMap(() => this.methodService.getAll().pipe(
           map(methods => {
             methods.forEach(method => method.parameters.forEach(param => {
-              param.id = `${method.name} - ${param.name}`;
+              param.type = param.name === 'email' ? ParameterType.email : param.type;
               param.value = typeToParse[param.type](param.default);
               param.default = typeToParse[param.type](param.default);
             }));

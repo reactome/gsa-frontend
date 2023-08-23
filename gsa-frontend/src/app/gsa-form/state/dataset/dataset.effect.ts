@@ -194,7 +194,7 @@ export class DatasetEffects {
                     .filter((param) => param.scope === 'dataset')
                     .map(param => ({
                         ...param,
-                       // default: param.value // Method param is the default value for the dataset param
+                       default: param.value // Method param is the default value for the dataset param
                     })) || [])
             })),
         )
