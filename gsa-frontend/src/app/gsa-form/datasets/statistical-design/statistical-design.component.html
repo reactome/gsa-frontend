@@ -53,7 +53,7 @@
         </ng-template>
     </div>
 
-    <div class="flex-one flex-container align-center vertical card-design">
+    <div class="flex-one flex-container align-center vertical card-design" *ngIf="(vm.analysisGroups | keyvalue).length > 1">
         <div *ngIf="vm.dataset?.statisticalDesign?.analysisGroup !== undefined else disableCovariateSelection"
              class="flex-one flex-container align-center vertical">
             <h2 class="flex-container justify-center">Select covariates</h2>
