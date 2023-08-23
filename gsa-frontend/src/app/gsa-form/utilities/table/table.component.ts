@@ -15,19 +15,7 @@ import {Settings} from "../../model/table.model";
 import {Clipboard} from '@angular/cdk/clipboard';
 import {MatButton} from "@angular/material/button";
 import {Cell, Coords, TableStore} from "./state/table.store";
-import {
-  combineLatest,
-  combineLatestWith,
-  delay,
-  expand,
-  filter,
-  first,
-  map,
-  Observable,
-  of,
-  switchMap,
-  tap
-} from "rxjs";
+import {combineLatest, delay, filter, first, map, Observable, tap} from "rxjs";
 import {isDefined} from "../utils";
 import {Subset} from "../../model/utils.model";
 
@@ -65,7 +53,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild('corner') cornerRef: ElementRef<HTMLTableCellElement>;
   cornerRect?: DOMRect;
   @ViewChild('addCol') columnButton: MatButton;
-  renameVisible: boolean = false
   isDragging: boolean = false;
 
   @Input() userSettings: Subset<Settings>;
@@ -105,7 +92,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       filter(isDefined),
       map(cell => ({cell, cellRect: cell.getBoundingClientRect()})),
       map(({cell, cellRect}) => {
-        console.log({cell, cellRect})
         if (!cellRect) return cellRect;
         const tablePosition = this.rootRef?.nativeElement;
         const tableCoords = tablePosition?.getBoundingClientRect();
@@ -153,17 +139,10 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   mousedown($event: MouseEvent) {
-    // ($event.target as HTMLElement).getAttribute("x") !== null
-    // if (($event.target as HTMLElement).getAttribute("x") !== null) { //Don't do this when adding a column (Button does not have attribute y)
-    // this.deselect();
     this.isDragging = true;
     let {x, y} = this.getCell($event);
     this.selectCell(x, y, $event.shiftKey);
-    // this.changeValue($event);
     $event.preventDefault()
-
-
-    // }
   }
 
   focusInput() {
@@ -208,13 +187,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
 
   }
 
-
-  renameCell(input: HTMLInputElement) {
-    console.log(`Rename Cell : value ${input.value}`)
-    this.tableStore.write({value: input.value});
-    this.tableStore.down({shift: false});
-  }
-
   deleteColumn(x: number) {
     this.tableStore.deleteColumn({x});
   }
@@ -234,6 +206,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         ["ArrowLeft", () => this.tableStore.left({shift})],
         ["ArrowUp", () => this.tableStore.up({shift})],
         ["ArrowDown", () => this.tableStore.down({shift})],
+        ["Delete", () => this.tableStore.delete()],
         ["Enter", () => this.tableStore.down({shift: false})],
         ["Tab", () => shift
           ? this.tableStore.left({shift: false})
@@ -256,10 +229,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     if (pastedData) this.tableStore.paste({table: pastedData})
   }
 
-  deleteSelectedArea() {
-    if (document.activeElement !== this.input.nativeElement)
-      this.tableStore.delete()
-  }
 
   copyValues() {
     this.tableStore.range$.pipe(
@@ -273,7 +242,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   getCell($event: MouseEvent): Coords {
     let x = parseInt(($event.target as HTMLTableCellElement).getAttribute("x") as string);
     let y = parseInt(($event.target as HTMLTableCellElement).getAttribute("y") as string);
-    // const parentElement = this.getHTMLCellElement(x, y);
     return {x, y};
   }
 
