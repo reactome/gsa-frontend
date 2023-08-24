@@ -7,7 +7,9 @@
     "start-verbose": "ng serve --verbose",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "deploy-gh": "ng deploy --base-href=/gsa-frontend/",
+    "deploy-dev": "ng build --base-href=/gsa-frontend/ && rsync -Pav dist/gsa-frontend dev:site/Website/static"
   },
   "private": true,
   "dependencies": {
@@ -29,9 +31,6 @@
     "@ngrx/router-store": "^15.4.0",
     "@ngrx/store": "^15.4.0",
     "@ngrx/store-devtools": "^15.4.0",
-    "ag-grid-angular": "^28.2.0",
-    "ag-grid-community": "^28.2.0",
-    "ag-grid-enterprise": "^28.2.0",
     "bootstrap": "^5.2.2",
     "cors": "^2.8.5",
     "immer": "^9.0.21",

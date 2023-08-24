@@ -15,12 +15,8 @@ import {LetModule} from "@ngrx/component";
   imports: [
     CommonModule,
     FormsModule,
-    // StoreModule.forFeature(tableFeature),
-    // EffectsModule.forFeature(TableEffects),
     MatButtonModule,
     LetModule,
-    // StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
-
   ]
 })
 export class TableModule {
