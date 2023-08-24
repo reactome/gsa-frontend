@@ -1,4 +1,4 @@
-import {AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {MatStepper} from "@angular/material/stepper";
 import {MatDialog} from "@angular/material/dialog";
 import {ScrollService} from "../../services/scroll.service";
@@ -17,7 +17,7 @@ import {Parameter} from "../../state/parameter/parameter.state";
   styleUrls: ['./nested-stepper.component.scss']
 })
 @UntilDestroy()
-export class NestedStepperComponent implements OnInit, AfterViewInit, AfterViewChecked {
+export class NestedStepperComponent implements OnInit {
 
   @ViewChild('nestedStepper') public stepper: MatStepper;
   @ViewChild('selectStep') selectStep: CdkStep
@@ -31,8 +31,7 @@ export class NestedStepperComponent implements OnInit, AfterViewInit, AfterViewC
   annotationComplete$: Observable<boolean> = of(false);
   statisticalDesignComplete$: Observable<boolean> = of(false);
 
-  //TODO  remove cdr
-  constructor(private cdr: ChangeDetectorRef, public dialog: MatDialog,
+  constructor(public dialog: MatDialog,
               public scrollService: ScrollService, private store: Store) {
   }
 
@@ -45,20 +44,6 @@ export class NestedStepperComponent implements OnInit, AfterViewInit, AfterViewC
     this.statisticalDesignComplete$ = this.store.select(datasetFeature.selectStatisticalDesignComplete(this.datasetId)).pipe(distinctUntilChanged(), share());
   }
 
-
-  ngAfterViewInit() {
-    // this.loadDatasetService.dataset$.subscribe(dataset => {
-    //   this.dataset = dataset;
-    //   this.cdr.detectChanges();
-    //   this.stepper.selected = this.annotateStep;
-    // });
-  }
-
-
-  ngAfterViewChecked(): void {
-    // this.cdr.detectChanges();
-  }
-
   deleteDataset($event: MouseEvent) {
     $event.stopPropagation();
     this.store.dispatch(datasetActions.delete({id: this.datasetId}))
@@ -68,20 +53,13 @@ export class NestedStepperComponent implements OnInit, AfterViewInit, AfterViewC
     this.store.dispatch(datasetActions.save({id: this.datasetId}))
   }
 
-  changeParameters() {
-
+  changeParameters($event: Event) {
+    $event.stopPropagation();
     this.store.dispatch(datasetActions.openSummaryParameters({id: this.datasetId}))
-
   }
-
 
   updateScroll() {
     setTimeout(() => this.scrollService.triggerResize(), 300);
-  }
-
-  checkAnnotationData(): boolean {
-    // return this.loadDatasetService?.computeValidColumns(this.dataset).length > 0;
-    return true;
   }
 
   protected readonly console = console;
