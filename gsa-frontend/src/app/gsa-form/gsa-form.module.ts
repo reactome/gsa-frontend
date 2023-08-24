@@ -27,7 +27,6 @@ import {
   ExternalParameterComponent
 } from "./datasets/select-dataset/dataset-types/external-data/external-parameter/external-parameter.component";
 import {MethodParameterComponent} from "./utilities/method-parameter/method-parameter.component";
-import {AgGridModule} from "ag-grid-angular";
 import {BrowserModule} from '@angular/platform-browser';
 import {LoadingProgressComponent} from './datasets/select-dataset/loading-progress/loading-progress.component';
 import {StatisticalDesignComponent} from './datasets/statistical-design/statistical-design.component';
@@ -97,7 +96,6 @@ import {AnalysisEffects} from "./state/analysis/analysis.effect";
     ReactiveFormsModule,
     RouterOutlet,
     MatProgressSpinnerModule,
-    AgGridModule,
     BrowserModule,
     MatMenuModule,
     MatCheckboxModule,

@@ -1,6 +1,6 @@
 {
   "/GSAServer": {
-    "target": "http://gsa.reactome.org",
+    "target": "https://gsa.reactome.org",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug",

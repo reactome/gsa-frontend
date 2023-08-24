@@ -18,6 +18,7 @@ import {Cell, Coords, TableStore} from "./state/table.store";
 import {combineLatest, delay, filter, first, map, Observable, tap} from "rxjs";
 import {isDefined} from "../utils";
 import {Subset} from "../../model/utils.model";
+import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 
 
 type CellCoord = { x: number, y: number, parentElement: any };
@@ -40,7 +41,7 @@ type Direction = "up" | "down" | "left" | "right";
 type Coord = [number, number];
 type Range = { start: Coord, stop?: Coord };
 
-
+@UntilDestroy()
 @Component({
   selector: 'gsa-table',
   templateUrl: './table.component.html',
@@ -101,8 +102,15 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         cellRect.width -= (parseFloat(style.getPropertyValue('padding-left')) + parseFloat(style.getPropertyValue('padding-right')));
         cellRect.height -= (parseFloat(style.getPropertyValue('padding-top')) + parseFloat(style.getPropertyValue('padding-bottom')));
         return cellRect;
-      })
+      }),
+      // tap(() =>this.focusInput())
     );
+    // Focus input after position and size updated
+    this.startCoords$.pipe(
+      delay(1),
+      untilDestroyed(this)
+    ).subscribe(() => this.focusInput());
+
     this.stop$ = this.tableStore.stop$;
     this.startClasses$ = combineLatest([this.startCell$, this.tableStore.hasFocus$],
       (start, hasFocus) =>
@@ -111,7 +119,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     this.inputLevel$ = this.start$.pipe(map(start => start.x === 0 ? 6 : start.y === 0 ? 4 : 2))
 
     this.inputValue$ = this.tableStore.value$;
-    this.inputValue$.subscribe(value => this.value = value);
+    this.inputValue$.pipe(untilDestroyed(this)).subscribe(value => this.value = value);
 
     this.startType$ = this.start$.pipe(map(start => start.x === 0 ? 'row' : start.y === 0 ? 'col' : 'cell'));
     this.isCell$ = this.startType$.pipe(map(type => type === 'cell'));
@@ -141,15 +149,16 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   mousedown($event: MouseEvent) {
     this.isDragging = true;
     let {x, y} = this.getCell($event);
+    this.tableStore.write({value: this.value});
     this.selectCell(x, y, $event.shiftKey);
     $event.preventDefault()
   }
 
   focusInput() {
-    setTimeout(() => {
-      this.input?.nativeElement.focus();
-      this.input?.nativeElement.scrollIntoView({block: "nearest", inline: "nearest", behavior: 'smooth'});
-    }, 2)
+      const input = this.input?.nativeElement;
+      input?.focus();
+      input?.setSelectionRange(input?.value.length, input?.value.length)
+      input?.scrollIntoView({block: "nearest", inline: "nearest", behavior: 'smooth'});
   }
 
   selectCell(x: number, y: number, shift: boolean = false) {
@@ -217,7 +226,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       if (action) {
         action.call(this);
         $event.preventDefault();
-        this.focusInput();
       }
     })
   }
