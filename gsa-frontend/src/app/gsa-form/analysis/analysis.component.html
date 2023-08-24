@@ -47,7 +47,6 @@
             class="grey description"><span
             *ngIf="vm.analysisLoadingStatus?.status === 'running'">{{vm.analysisLoadingStatus?.description}}</span>
           </div>
-
           <mat-progress-bar class="progress-bar" mode="determinate"
                             value="{{vm.analysisLoadingStatus?.completed! * 100}}"></mat-progress-bar>
         </div>
