@@ -86,7 +86,7 @@
       --surface: #{$surface};
       --on-surface: #{mat.get-color-from-palette($neutral-palette, 100)};
 
-      --surface-variant: #{mat.get-color-from-palette($neutral-variant-palette, 700)};
+      --surface-variant: #{mat.get-color-from-palette($neutral-variant-palette, 800)};
       --on-surface-variant: #{mat.get-color-from-palette($neutral-variant-palette, 200)};
       --outline: #{mat.get-color-from-palette($neutral-variant-palette, 400)};
       --outline-variant: #{mat.get-color-from-palette($neutral-variant-palette, 700)};
