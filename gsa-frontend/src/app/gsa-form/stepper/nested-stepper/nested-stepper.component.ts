@@ -31,8 +31,7 @@ export class NestedStepperComponent implements OnInit {
   annotationComplete$: Observable<boolean> = of(false);
   statisticalDesignComplete$: Observable<boolean> = of(false);
 
-  //TODO  remove cdr
-  constructor(private cdr: ChangeDetectorRef, public dialog: MatDialog,
+  constructor(public dialog: MatDialog,
               public scrollService: ScrollService, private store: Store) {
   }
 
@@ -45,7 +44,6 @@ export class NestedStepperComponent implements OnInit {
     this.statisticalDesignComplete$ = this.store.select(datasetFeature.selectStatisticalDesignComplete(this.datasetId)).pipe(distinctUntilChanged(), share());
   }
 
-
   deleteDataset($event: MouseEvent) {
     $event.stopPropagation();
     this.store.dispatch(datasetActions.delete({id: this.datasetId}))
@@ -55,10 +53,10 @@ export class NestedStepperComponent implements OnInit {
     this.store.dispatch(datasetActions.save({id: this.datasetId}))
   }
 
-  changeParameters() {
+  changeParameters($event: Event) {
+    $event.stopPropagation();
     this.store.dispatch(datasetActions.openSummaryParameters({id: this.datasetId}))
   }
-
 
   updateScroll() {
     setTimeout(() => this.scrollService.triggerResize(), 300);

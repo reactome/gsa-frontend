@@ -28,7 +28,7 @@
         </div>
       </ng-template>
       <div class="flex-container horizontal align-center justify-center" *ngrxLet="parameters$ as parameters">
-        <button (click)="changeParameters()" [disabled]="parameters.length === 0"
+        <button (click)="changeParameters($event)" [disabled]="parameters.length === 0"
                 color="primary"
                 mat-icon-button
                 matTooltip="Edit analysis parameters of specific dataset"><span

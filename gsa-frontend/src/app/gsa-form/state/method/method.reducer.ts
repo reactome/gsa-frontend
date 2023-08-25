@@ -7,20 +7,17 @@ import {methodActions} from "./method.action";
 
 export const methodReducer: ActionReducer<MethodState> = createReducer(
   initialState,
-  on(methodActions.loadSuccess, (state, {methods}) => methodAdapter.addMany(methods.map(method => ({
-    ...method,
-    parameters: method.parameters.filter(param => param.name !== 'sample_groups')
-  })), state)),
+  on(methodActions.loadSuccess, (state, {methods}) => methodAdapter.addMany(methods, state)),
   on(methodActions.update, (state, {update}) => methodAdapter.updateOne(update, state)),
   on(methodActions.setParams, (state, {methodName, parameters}) => methodAdapter.updateOne({
     id: methodName,
     changes: {parameters}
   }, state)),
-  on(methodActions.setSelectedParams, (state, {parameters}) => state.selectedMethodName ?
+  on(methodActions.setSelectedParams, (state, {parameters}) => !state.selectedMethodName ?
+    state :
     methodAdapter.updateOne({
-      id: state.selectedMethodName,
-      changes: {parameters}
-    }, state) :
-    state),
+    id: state.selectedMethodName,
+    changes: {parameters}
+  }, state)),
   on(methodActions.select, (state, {methodName}) => ({...state, selectedMethodName: methodName})),
 )
