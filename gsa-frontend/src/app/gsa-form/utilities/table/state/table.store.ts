@@ -1,8 +1,8 @@
 import {initialUndoRedoState, UndoRedoState} from "ngrx-wieder";
 import {Settings} from "../../../model/table.model";
-import {Injectable, OnDestroy} from "@angular/core";
+import {Injectable} from "@angular/core";
 import {ComponentStore} from "@ngrx/component-store";
-import {cp, height, numberToLetter, pushAll, width} from "./table.util";
+import {height, numberToLetter, pushAll, width} from "./table.util";
 import {Subset} from "../../../model/utils.model";
 import {catchError, EMPTY, exhaustMap, Observable, tap} from "rxjs";
 import {fromPromise} from "rxjs/internal/observable/innerFrom";

@@ -1,4 +1,4 @@
-import {AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {MatStepper} from "@angular/material/stepper";
 import {MatDialog} from "@angular/material/dialog";
 import {ScrollService} from "../../services/scroll.service";
@@ -17,7 +17,7 @@ import {Parameter} from "../../model/parameter.model";
   styleUrls: ['./nested-stepper.component.scss']
 })
 @UntilDestroy()
-export class NestedStepperComponent implements OnInit, AfterViewInit, AfterViewChecked {
+export class NestedStepperComponent implements OnInit {
 
   @ViewChild('nestedStepper') public stepper: MatStepper;
   @ViewChild('selectStep') selectStep: CdkStep
@@ -46,19 +46,6 @@ export class NestedStepperComponent implements OnInit, AfterViewInit, AfterViewC
   }
 
 
-  ngAfterViewInit() {
-    // this.loadDatasetService.dataset$.subscribe(dataset => {
-    //   this.dataset = dataset;
-    //   this.cdr.detectChanges();
-    //   this.stepper.selected = this.annotateStep;
-    // });
-  }
-
-
-  ngAfterViewChecked(): void {
-    // this.cdr.detectChanges();
-  }
-
   deleteDataset($event: MouseEvent) {
     $event.stopPropagation();
     this.store.dispatch(datasetActions.delete({id: this.datasetId}))
@@ -69,22 +56,13 @@ export class NestedStepperComponent implements OnInit, AfterViewInit, AfterViewC
   }
 
   changeParameters() {
-
     this.store.dispatch(datasetActions.openSummaryParameters({id: this.datasetId}))
-
   }
 
 
   updateScroll() {
     setTimeout(() => this.scrollService.triggerResize(), 300);
   }
-
-  checkAnnotationData(): boolean {
-    // return this.loadDatasetService?.computeValidColumns(this.dataset).length > 0;
-    return true;
-  }
-
-  protected readonly console = console;
 
   stepChange($event: StepperSelectionEvent) {
     switch ($event.selectedStep) {
