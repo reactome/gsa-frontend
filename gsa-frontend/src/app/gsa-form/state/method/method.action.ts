@@ -4,10 +4,10 @@ import {Update} from "@ngrx/entity";
 import {Parameter} from "../../model/parameter.model";
 
 export const methodActions = createActionGroup({
-  source: 'GSA Methods',
+  source: 'GSA Method',
   events: {
     'load': emptyProps(),
-    'load success': props<{ methods: MethodJSON[] }>(),
+    'load success': props<{ methods: Method[] }>(),
     'load failure': props<{ error: any }>(),
     'select': props<{ methodName: string }>(),
     'update': props<{ update: Update<Method> }>(),
