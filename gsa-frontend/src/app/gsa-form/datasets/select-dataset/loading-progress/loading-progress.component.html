@@ -6,6 +6,9 @@
           <mat-spinner diameter="140"></mat-spinner>
         </div>
         <h2 class="text-margin">Loading Dataset</h2>
+        <div class="grey">
+          <span *ngIf="status.status === 'running'">{{status.description}}</span>
+        </div>
       </div>
       <div *ngSwitchCase="'failed'" class="flex-container vertical justify-center align-center">
         <div class="material-icons mat-error big-size">error</div>

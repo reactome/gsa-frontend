@@ -12,6 +12,9 @@
                 </div>
                 <div class="big-text">Analysis loading: {{vm.analysisLoadingStatus?.completed! * 100}}%
                 </div>
+                <div class="grey description">
+                  <span *ngIf="vm.analysisLoadingStatus?.status === 'running'">{{vm.analysisLoadingStatus?.description}}</span>
+                </div>
               </div>
             </div>
             <div *ngSwitchCase="'failed'"
@@ -25,15 +28,14 @@
                 <div class="big-text">Congratulations, your analysis has finished!</div>
                 <a color="primary" href="{{vm.result?.reactome_links?.[0]?.url}}" mat-raised-button target="_blank">
                   <div class="flex-container horizontal align-center">
-                    <mat-icon class="padding-right-ten"><span class="material-icons-outlined">
-                    visibility
-                  </span></mat-icon>
+                    <mat-icon class="padding-right-ten">
+                      <span class="material-icons-outlined">visibility</span>
+                    </mat-icon>
                     <span>Results</span>
                   </div>
                 </a>
                 <br>
-                <div *ngIf="vm.reportsRequired && vm.reportLoadingStatus?.status !== 'complete'"
-                     class="grey">
+                <div *ngIf="vm.reportsRequired && vm.reportLoadingStatus?.status !== 'complete'" class="grey">
                   Don't hesitate! You can already analyse while the reports are loading.
                 </div>
               </div>
@@ -43,15 +45,11 @@
       </div>
       <mat-card-footer>
         <div class="flex-container vertical  justify-end footer-height">
-          <div
-            class="grey description"><span
-            *ngIf="vm.analysisLoadingStatus?.status === 'running'">{{vm.analysisLoadingStatus?.description}}</span>
-          </div>
           <mat-progress-bar class="progress-bar" mode="determinate"
-                            value="{{vm.analysisLoadingStatus?.completed! * 100}}"></mat-progress-bar>
+                            value="{{vm.analysisLoadingStatus?.completed! * 100}}">
+          </mat-progress-bar>
         </div>
       </mat-card-footer>
-
     </mat-card>
 
 
@@ -69,6 +67,9 @@
                   <mat-spinner class="padding-right-ten" diameter="100"></mat-spinner>
                 </div>
                 <div class="big-text">Report loading: {{vm.reportLoadingStatus?.completed! * 100}}%</div>
+                <div class="grey description"><span
+                  *ngIf="vm.reportLoadingStatus?.status === 'running'">{{vm.reportLoadingStatus?.description}}</span>
+                </div>
               </div>
             </div>
             <div *ngSwitchCase="'failed'"
@@ -84,7 +85,6 @@
                   <div *ngFor="let report of vm.reportLoadingStatus?.reports">
                     <a color="primary" href="{{report.url}}" mat-raised-button target="_blank">
                         <span [ngSwitch]="report.name" class="float-right">
-
                           <ng-template [ngSwitchCase]="'MS Excel Report (xlsx)'">
                             <div class="flex-container horizontal align-center">
                               <mat-icon class="padding-right-ten"><span
@@ -93,25 +93,23 @@
                           </ng-template>
 
                           <ng-template [ngSwitchCase]="'PDF Report'">
-                                                        <div class="flex-container horizontal align-center">
-
-                            <mat-icon class="padding-right-ten"><span
-                              class="material-icons-outlined">picture_as_pdf</span></mat-icon>
-                                                         <span>{{report.name}}</span>
-                                                        </div>
+                              <div class="flex-container horizontal align-center">
+                            <mat-icon class="padding-right-ten">
+                              <span class="material-icons-outlined">picture_as_pdf</span>
+                            </mat-icon>
+                             <span>{{report.name}}</span>
+                             </div>
                           </ng-template>
                           <ng-template [ngSwitchCase]="'R Script'">
-                                                        <div class="flex-container horizontal align-center">
-                            <mat-icon class="padding-right-ten"><span
-                              class="material-icons-outlined">description</span></mat-icon>
-                                                         <span>{{report.name}}</span>
-                                                        </div>
+                               <div class="flex-container horizontal align-center">
+                            <mat-icon class="padding-right-ten">
+                              <span class="material-icons-outlined">description</span>
+                            </mat-icon>
+                             <span>{{report.name}}</span>
+                                </div>
                           </ng-template>
                         </span>
-
                     </a>
-
-
                   </div>
                 </div>
                 <br>
@@ -122,11 +120,9 @@
       </div>
       <mat-card-footer>
         <div class="flex-container vertical justify-end footer-height">
-          <div class="grey description"><span
-            *ngIf="vm.reportLoadingStatus?.status === 'running'">{{vm.reportLoadingStatus?.description}}</span>
-          </div>
           <mat-progress-bar class="progress-bar" mode="determinate"
-                            value="{{vm.reportLoadingStatus?.completed! * 100}}"></mat-progress-bar>
+                            value="{{vm.reportLoadingStatus?.completed! * 100}}">
+          </mat-progress-bar>
         </div>
 
       </mat-card-footer>
