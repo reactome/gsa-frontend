@@ -3,7 +3,6 @@ import {Injectable} from "@angular/core";
 import {catchError, exhaustMap, map, mergeMap, of, take} from "rxjs";
 import {FetchDatasetService} from "../../services/fetch-dataset.service";
 import {datasetSourceActions} from "./dataset-source.action";
-import {parameterActions} from "../parameter/parameter.action";
 import {typeToParse} from "../../services/analysis-methods.service";
 
 @Injectable()

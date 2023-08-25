@@ -23,9 +23,6 @@ import {StepperComponent} from './stepper/stepper.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {LocalDataComponent} from './datasets/select-dataset/dataset-types/local-data/local-data.component';
 import {ExternalDataComponent} from './datasets/select-dataset/dataset-types/external-data/external-data.component';
-import {
-  ExternalParameterComponent
-} from "./datasets/select-dataset/dataset-types/external-data/external-parameter/external-parameter.component";
 import {MethodParameterComponent} from "./utilities/method-parameter/method-parameter.component";
 import {BrowserModule} from '@angular/platform-browser';
 import {LoadingProgressComponent} from './datasets/select-dataset/loading-progress/loading-progress.component';
@@ -61,7 +58,6 @@ import {StoreModule} from "@ngrx/store";
 import {methodFeature} from "./state/method/method.selector";
 import {EffectsModule} from "@ngrx/effects";
 import {MethodEffects} from "./state/method/method.effect";
-import {parameterFeature} from "./state/parameter/parameter.selector";
 import {datasetSourceFeature} from "./state/dataset-source/dataset-source.selector";
 import {DatasetSourceEffects} from "./state/dataset-source/dataset-source.effect";
 import {datasetFeature} from "./state/dataset/dataset.selector";
@@ -72,7 +68,7 @@ import {AnalysisEffects} from "./state/analysis/analysis.effect";
 
 @NgModule({
   declarations: [
-    AnalysisMethodsComponent, MethodComponent, MethodParameterComponent, SelectDatasetComponent, ExampleDataComponent, AnnotateDatasetComponent, StepperComponent, LocalDataComponent, ExternalDataComponent, ExternalParameterComponent, LoadingProgressComponent, StatisticalDesignComponent, DropdownComponent, NestedStepperComponent, OptionsComponent, AnalysisComponent, EditColumnsComponent, EditCellsComponent, StepperAnnotateComponent, AddDatasetButtonComponent, ChangeAnalysisParamsComponent, ScrollableComponent, SaveDatasetButtonComponent, WarningSnackbarComponent
+    AnalysisMethodsComponent, MethodComponent, MethodParameterComponent, SelectDatasetComponent, ExampleDataComponent, AnnotateDatasetComponent, StepperComponent, LocalDataComponent, ExternalDataComponent, LoadingProgressComponent, StatisticalDesignComponent, DropdownComponent, NestedStepperComponent, OptionsComponent, AnalysisComponent, EditColumnsComponent, EditCellsComponent, StepperAnnotateComponent, AddDatasetButtonComponent, ChangeAnalysisParamsComponent, ScrollableComponent, SaveDatasetButtonComponent, WarningSnackbarComponent
   ],
   exports: [
     StepperComponent
@@ -107,7 +103,6 @@ import {AnalysisEffects} from "./state/analysis/analysis.effect";
     MatPaginatorModule,
     MatSortModule,
     StoreModule.forFeature(methodFeature),
-    StoreModule.forFeature(parameterFeature),
     StoreModule.forFeature(datasetSourceFeature),
     StoreModule.forFeature(datasetFeature),
     StoreModule.forFeature(analysisFeature),
