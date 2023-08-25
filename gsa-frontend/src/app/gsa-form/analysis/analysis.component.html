@@ -12,7 +12,7 @@
                 </div>
                 <div class="big-text">Analysis loading: {{vm.analysisLoadingStatus?.completed! * 100}}%
                 </div>
-                <div class="grey description">
+                <div class="outline description">
                   <span *ngIf="vm.analysisLoadingStatus?.status === 'running'">{{vm.analysisLoadingStatus?.description}}</span>
                 </div>
               </div>
@@ -35,7 +35,8 @@
                   </div>
                 </a>
                 <br>
-                <div *ngIf="vm.reportsRequired && vm.reportLoadingStatus?.status !== 'complete'" class="grey">
+                <div *ngIf="vm.reportsRequired && vm.reportLoadingStatus?.status !== 'complete'"
+                     class="outline">
                   Don't hesitate! You can already analyse while the reports are loading.
                 </div>
               </div>
@@ -67,7 +68,7 @@
                   <mat-spinner class="padding-right-ten" diameter="100"></mat-spinner>
                 </div>
                 <div class="big-text">Report loading: {{vm.reportLoadingStatus?.completed! * 100}}%</div>
-                <div class="grey description"><span
+                <div class="outline description"><span
                   *ngIf="vm.reportLoadingStatus?.status === 'running'">{{vm.reportLoadingStatus?.description}}</span>
                 </div>
               </div>
@@ -109,7 +110,10 @@
                                 </div>
                           </ng-template>
                         </span>
+
                     </a>
+
+
                   </div>
                 </div>
                 <br>

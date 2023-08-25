@@ -2,8 +2,6 @@ import {Component, EventEmitter, Input, OnInit, Output, TrackByFunction} from '@
 import {ParameterType} from "../../model/methods.model";
 import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
 import {FormControl, Validators} from "@angular/forms";
-
-import {Store} from "@ngrx/store";
 import {Parameter} from "../../state/parameter/parameter.state";
 import {map, Observable} from "rxjs";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
@@ -19,25 +17,27 @@ export const paramTracker: TrackByFunction<Parameter> = (i, param) => param.name
 })
 export class MethodParameterComponent implements OnInit {
   @Input() parameter: Parameter;
+  @Input() infoTooltip: boolean = true;
   @Output() parameterChange = new EventEmitter<Parameter>();
   types = ParameterType;
   screenIsSmall$: Observable<boolean>;
-  control = new FormControl('', [Validators.email]);
-  // matcher = new MyErrorStateMatcher();
+  control = new FormControl('', {
+    validators: [Validators.email],
+    updateOn: 'blur'
+  });
 
   options: any = {updateOn: 'blur'}
 
-  constructor(private responsive: BreakpointObserver, private store: Store) {
+  constructor(private responsive: BreakpointObserver) {
   }
 
   update(value: any) {
-    console.log('update', value)
     this.parameterChange.next({...this.parameter, value})
   }
 
   ngOnInit(): void {
     this.control.setValue(this.parameter.value);
     this.control.valueChanges.pipe(untilDestroyed(this)).subscribe(this.update.bind(this))
-    this.screenIsSmall$ = this.responsive.observe(Breakpoints.Small).pipe(map(res => res.matches));
+    this.screenIsSmall$ = this.responsive.observe([Breakpoints.Small, Breakpoints.XSmall]).pipe(map(res => res.matches));
   }
 }
