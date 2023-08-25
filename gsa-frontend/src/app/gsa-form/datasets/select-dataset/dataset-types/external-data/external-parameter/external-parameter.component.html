@@ -6,7 +6,7 @@
           <mat-label>{{parameter.display_name}}</mat-label>
           <input [(ngModel)]="parameter.value" matInput required type="text">
         </mat-form-field>
-        <i class="material-icons grey" matTooltip="{{parameter.description}}">info_outline</i>
+        <i class="material-icons outline" matTooltip="{{parameter.description}}">info_outline</i>
 
       </ng-template>
       <ng-template [ngSwitchCase]="types.int">
@@ -15,7 +15,7 @@
           <input [(ngModel)]="parameter.value" matInput required step="1" type="number">
           <!--          <mat-hint>{{parameter.description}}</mat-hint>-->
         </mat-form-field>
-        <i class="material-icons grey" matTooltip="{{parameter.description}}">info_outline</i>
+        <i class="material-icons outline" matTooltip="{{parameter.description}}">info_outline</i>
 
       </ng-template>
     </span>

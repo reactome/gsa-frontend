@@ -33,7 +33,7 @@
                 </a>
                 <br>
                 <div *ngIf="vm.reportsRequired && vm.reportLoadingStatus?.status !== 'complete'"
-                     class="grey">
+                     class="outline">
                   Don't hesitate! You can already analyse while the reports are loading.
                 </div>
               </div>
@@ -44,7 +44,7 @@
       <mat-card-footer>
         <div class="flex-container vertical  justify-end footer-height">
           <div
-            class="grey description"><span
+            class="outline description"><span
             *ngIf="vm.analysisLoadingStatus?.status === 'running'">{{vm.analysisLoadingStatus?.description}}</span>
           </div>
 
@@ -123,7 +123,7 @@
       </div>
       <mat-card-footer>
         <div class="flex-container vertical justify-end footer-height">
-          <div class="grey description"><span
+          <div class="outline description"><span
             *ngIf="vm.reportLoadingStatus?.status === 'running'">{{vm.reportLoadingStatus?.description}}</span>
           </div>
           <mat-progress-bar class="progress-bar" mode="determinate"
