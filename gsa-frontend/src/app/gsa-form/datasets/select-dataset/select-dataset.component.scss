@@ -6,3 +6,8 @@ h2 {
 .margin-bottom-10 {
   margin-bottom: 7px !important;
 }
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
