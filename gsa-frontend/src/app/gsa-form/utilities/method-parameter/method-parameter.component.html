@@ -13,7 +13,7 @@
   <div class="align-center justify-end width-hundred" style="min-width: 100%">
     <div *ngIf="parameter.values !== undefined; else inputField">
       <mat-form-field appearance="outline" subscriptSizing="dynamic" class="width-hundred">
-        <mat-select [ngModel]="parameter.value" (ngModelChange)="update($event)" class="width-hundred">
+        <mat-select [formControl]="control" class="width-hundred">
           <mat-option *ngFor="let value of parameter.values" [value]="value">
             {{value}}
           </mat-option>
@@ -23,33 +23,28 @@
     <ng-template #inputField>
     <span [ngSwitch]="parameter.type">
       <ng-template [ngSwitchCase]="types.bool">
-        <mat-slide-toggle [ngModel]="parameter.value" [ngModelOptions]="options" (ngModelChange)="update($event)"
+        <mat-slide-toggle [formControl]="control"
                           color="primary"></mat-slide-toggle>
       </ng-template>
       <ng-template [ngSwitchCase]="types.string">
         <mat-form-field appearance="outline" subscriptSizing="dynamic" class="width-hundred">
-          <input #input [ngModel]="parameter.value" [ngModelOptions]="options" (change)="update(input.value)" matInput
-                 type="text" class="width-hundred">
+          <input [formControl]="control" matInput type="text" class="width-hundred">
         </mat-form-field>
       </ng-template>
       <ng-template [ngSwitchCase]="types.email">
         <mat-form-field appearance="outline" subscriptSizing="dynamic" class="width-hundred">
           <input [formControl]="control" matInput type="email">
-            <mat-error *ngIf="control.invalid">
-              Please enter a valid email address
-            </mat-error>
+            <mat-error *ngIf="control.invalid">Please enter a valid email address</mat-error>
         </mat-form-field>
       </ng-template>
       <ng-template [ngSwitchCase]="types.float">
         <mat-form-field appearance="outline" subscriptSizing="dynamic" class="width-hundred">
-            <input [ngModel]="parameter.value" [ngModelOptions]="options" (ngModelChange)="update($event)" matInput
-                   step="0.1" type="number">
+            <input [formControl]="control" matInput step="0.1" type="number">
         </mat-form-field>
       </ng-template>
       <ng-template [ngSwitchCase]="types.int">
         <mat-form-field appearance="outline" subscriptSizing="dynamic" class="width-hundred">
-          <input [ngModel]="parameter.value" [ngModelOptions]="options" (ngModelChange)="update($event)" matInput
-                 type="number">
+          <input [formControl]="control" matInput type="number">
         </mat-form-field>
       </ng-template>
     </span>

@@ -3,7 +3,6 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  EventEmitter,
   Input,
   OnChanges,
   OnInit,
@@ -15,7 +14,7 @@ import {Settings} from "../../model/table.model";
 import {Clipboard} from '@angular/cdk/clipboard';
 import {MatButton} from "@angular/material/button";
 import {Cell, Coords, TableStore} from "./state/table.store";
-import {combineLatest, delay, filter, first, map, Observable, tap} from "rxjs";
+import {combineLatest, delay, filter, first, map, Observable} from "rxjs";
 import {isDefined} from "../utils";
 import {Subset} from "../../model/utils.model";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
@@ -58,72 +57,60 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
 
   @Input() userSettings: Subset<Settings>;
   @Input() table: string[][];
-  @Output() tableChange: EventEmitter<string[][]> = new EventEmitter<string[][]>();
 
-  start$: Observable<Coords>;
-  startCell$: Observable<HTMLTableCellElement>;
-  startClasses$: Observable<Mapper<boolean>>;
-  startCoords$: Observable<DOMRect>;
-  stop$: Observable<Coords>;
-  startType$: Observable<'row' | 'col' | 'cell'>;
-  inputLevel$: Observable<number>;
-  isCell$: Observable<boolean>;
-  inputValue$: Observable<string>;
-  data$: Observable<Cell[][]>;
-  settings$: Observable<Settings>;
+
+  data$: Observable<Cell[][]> = this.tableStore.data$;
+  start$: Observable<Coords> = this.tableStore.start$;
+  stop$: Observable<Coords> = this.tableStore.stop$;
+  startCell$: Observable<HTMLTableCellElement> = this.start$.pipe(
+    delay(0), // Allow resizing of cell before updating size of input
+    map(start => this.getHTMLCellElement(start.x, start.y))
+  );
+  startCoords$: Observable<DOMRect> = this.startCell$.pipe(
+    filter(isDefined),
+    map(cell => ({cell, cellRect: cell.getBoundingClientRect()})),
+    map(({cell, cellRect}) => {
+      if (!cellRect) return cellRect;
+      const tablePosition = this.rootRef?.nativeElement;
+      const tableCoords = tablePosition?.getBoundingClientRect();
+      cellRect.x += tablePosition?.scrollLeft - tableCoords?.x;
+      cellRect.y += tablePosition?.scrollTop - tableCoords?.y;
+      let style = window.getComputedStyle(cell);
+      cellRect.width -= (parseFloat(style.getPropertyValue('padding-left')) + parseFloat(style.getPropertyValue('padding-right')));
+      cellRect.height -= (parseFloat(style.getPropertyValue('padding-top')) + parseFloat(style.getPropertyValue('padding-bottom')));
+      return cellRect;
+    })
+  );
+  startClasses$: Observable<Mapper<boolean>> = combineLatest([this.startCell$, this.tableStore.hasFocus$],
+    (start, hasFocus) =>
+      Array.from(start.classList)
+        .reduce((o, clazz) => ({...o, [clazz]: true}), {'visible': hasFocus} as Mapper<boolean>));
+  inputLevel$: Observable<number> = this.start$.pipe(map(start => start.x === 0 ? 6 : start.y === 0 ? 4 : 2));
+  inputValue$: Observable<string> = this.tableStore.value$;
+  settings$: Observable<Settings> = this.tableStore.settings$;
   value: string;
+
+  @Output() tableChange: Observable<string[][]> = this.data$.pipe(
+    map(table => table.map(row => row.map(cell => cell.value)))
+  );
 
 
   constructor(private clipboard: Clipboard, private cd: ChangeDetectorRef, public readonly tableStore: TableStore) {
   }
 
   ngOnInit(): void {
+    //Initialize settings
     this.tableStore.settings({settings: this.userSettings});
-    this.data$ = this.tableStore.data$.pipe(
-      tap(table => this.tableChange.emit(table.map(row => row.map(cell => cell.value))))
-    );
 
-
-    this.start$ = this.tableStore.start$;
-    this.startCell$ = this.start$.pipe(
-      delay(0), // Allow resizing of cell before updating size of input
-      map(start => this.getHTMLCellElement(start.x, start.y))
-    );
-    this.startCoords$ = this.startCell$.pipe(
-      filter(isDefined),
-      map(cell => ({cell, cellRect: cell.getBoundingClientRect()})),
-      map(({cell, cellRect}) => {
-        if (!cellRect) return cellRect;
-        const tablePosition = this.rootRef?.nativeElement;
-        const tableCoords = tablePosition?.getBoundingClientRect();
-        cellRect.x += tablePosition?.scrollLeft - tableCoords?.x;
-        cellRect.y += tablePosition?.scrollTop - tableCoords?.y;
-        let style = window.getComputedStyle(cell);
-        cellRect.width -= (parseFloat(style.getPropertyValue('padding-left')) + parseFloat(style.getPropertyValue('padding-right')));
-        cellRect.height -= (parseFloat(style.getPropertyValue('padding-top')) + parseFloat(style.getPropertyValue('padding-bottom')));
-        return cellRect;
-      }),
-      // tap(() =>this.focusInput())
-    );
     // Focus input after position and size updated
     this.startCoords$.pipe(
       delay(1),
       untilDestroyed(this)
     ).subscribe(() => this.focusInput());
 
-    this.stop$ = this.tableStore.stop$;
-    this.startClasses$ = combineLatest([this.startCell$, this.tableStore.hasFocus$],
-      (start, hasFocus) =>
-        Array.from(start.classList)
-          .reduce((o, clazz) => ({...o, [clazz]: true}), {'visible': hasFocus} as Mapper<boolean>))
-    this.inputLevel$ = this.start$.pipe(map(start => start.x === 0 ? 6 : start.y === 0 ? 4 : 2))
-
-    this.inputValue$ = this.tableStore.value$;
-    this.inputValue$.pipe(untilDestroyed(this)).subscribe(value => this.value = value);
-
-    this.startType$ = this.start$.pipe(map(start => start.x === 0 ? 'row' : start.y === 0 ? 'col' : 'cell'));
-    this.isCell$ = this.startType$.pipe(map(type => type === 'cell'));
-    this.settings$ = this.tableStore.settings$;
+    this.inputValue$.pipe(
+      untilDestroyed(this)
+    ).subscribe(value => this.value = value);
 
     this.tableStore.import({
       table: this.table,
@@ -136,9 +123,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngAfterViewInit() {
     this.cornerRect = this.cornerRef.nativeElement.getBoundingClientRect();
-    // Now we can find the HTML elements since they are initialised
-    // this.setFirstElement()
-    // this.cd.detectChanges()
   }
 
 
@@ -155,10 +139,10 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   focusInput() {
-      const input = this.input?.nativeElement;
-      input?.focus();
-      input?.setSelectionRange(input?.value.length, input?.value.length)
-      input?.scrollIntoView({block: "nearest", inline: "nearest", behavior: 'smooth'});
+    const input = this.input?.nativeElement;
+    input?.focus();
+    input?.setSelectionRange(input?.value.length, input?.value.length)
+    input?.scrollIntoView({block: "nearest", inline: "nearest", behavior: 'smooth'});
   }
 
   selectCell(x: number, y: number, shift: boolean = false) {
@@ -166,7 +150,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     this.tableStore.selectCell({coords: {x, y}, shift: shift});
     this.focusInput();
   }
-
 
 
   private previousStop: Coords;
@@ -247,6 +230,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   getHTMLCellElement(x: number, y: number): HTMLTableCellElement {
     return this.rootRef?.nativeElement.querySelector(`[x = '${x}'][y = '${y}']`) as HTMLTableCellElement;
   }
+
   getCell($event: MouseEvent): Coords {
     let x = parseInt(($event.target as HTMLTableCellElement).getAttribute("x") as string);
     let y = parseInt(($event.target as HTMLTableCellElement).getAttribute("y") as string);

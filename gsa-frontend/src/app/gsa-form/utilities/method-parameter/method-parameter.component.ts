@@ -18,26 +18,29 @@ export const paramTracker: TrackByFunction<Parameter> = (i, param) => param.name
 export class MethodParameterComponent implements OnInit {
   @Input() parameter: Parameter;
   @Input() infoTooltip: boolean = true;
-  @Output() parameterChange = new EventEmitter<Parameter>();
-  types = ParameterType;
-  screenIsSmall$: Observable<boolean>;
+
   control = new FormControl('', {
-    validators: [Validators.email],
+    validators: [],
     updateOn: 'blur'
   });
+  types = ParameterType;
+  screenIsSmall$: Observable<boolean>;
 
-  options: any = {updateOn: 'blur'}
+  @Output() parameterChange: Observable<Parameter> = this.control.valueChanges.pipe(
+    // tap(x => console.log('update', x)),
+    map(value => ({...this.parameter, value})),
+  );
+
 
   constructor(private responsive: BreakpointObserver) {
   }
 
-  update(value: any) {
-    this.parameterChange.next({...this.parameter, value})
-  }
-
   ngOnInit(): void {
-    this.control.setValue(this.parameter.value);
-    this.control.valueChanges.pipe(untilDestroyed(this)).subscribe(this.update.bind(this))
+    if (this.parameter.type === 'email' || this.parameter.name.toLowerCase().includes('email')) {
+      this.control.addValidators([Validators.email])
+    }
+
+    this.control.setValue(this.parameter.value, {emitEvent: false});
     this.screenIsSmall$ = this.responsive.observe([Breakpoints.Small, Breakpoints.XSmall]).pipe(map(res => res.matches));
   }
 }
