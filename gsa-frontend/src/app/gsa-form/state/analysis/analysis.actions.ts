@@ -3,7 +3,7 @@ import {AnalysisResult} from "../../model/analysis-result.model";
 import {LoadingStatus, PLoadingStatus} from "../../model/load-dataset.model";
 import {Dataset} from "../dataset/dataset.state";
 import {Method} from "../method/method.state";
-import {Parameter} from "../parameter/parameter.state";
+import {Parameter} from "../../model/parameter.model";
 
 
 export const analysisActions = createActionGroup({

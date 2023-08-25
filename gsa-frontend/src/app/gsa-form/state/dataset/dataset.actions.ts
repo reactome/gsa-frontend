@@ -3,7 +3,7 @@ import {DataSummary, PLoadingStatus} from "../../model/load-dataset.model";
 import {StatisticalDesign} from "../../model/dataset.model";
 import {UploadData} from "../../model/upload-dataset-model";
 import {Update} from "@ngrx/entity";
-import {Parameter} from "../parameter/parameter.state";
+import {Parameter} from "../../model/parameter.model";
 
 
 export const datasetActions = createActionGroup({

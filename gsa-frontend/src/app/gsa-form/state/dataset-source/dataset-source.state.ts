@@ -1,6 +1,6 @@
 import {createEntityAdapter, EntityState} from "@ngrx/entity";
 import {PartialRequired} from "../../model/utils.model";
-import {Parameter} from "../parameter/parameter.state";
+import {Parameter} from "../../model/parameter.model";
 
 export type Source = 'External' | 'Local' | 'Example';
 

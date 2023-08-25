@@ -1,7 +1,7 @@
-import {Component, Inject, Input, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {Store} from "@ngrx/store";
 import {datasetFeature} from "../../../state/dataset/dataset.selector";
-import {filter, map, Observable, tap} from "rxjs";
+import {filter, map, Observable} from "rxjs";
 import {PLoadingStatus} from "../../../model/load-dataset.model";
 import {isDefined} from "../../../utilities/utils";
 import {MAT_DIALOG_DATA} from "@angular/material/dialog";

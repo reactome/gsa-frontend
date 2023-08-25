@@ -3,7 +3,7 @@ import {createFeature, createSelector} from '@ngrx/store';
 import {datasetReducer} from './dataset.reducer';
 import {transpose} from '../../utilities/table/state/table.util';
 import {Covariate} from "../../model/dataset.model";
-import {Parameter} from "../parameter/parameter.state";
+import {Parameter} from "../../model/parameter.model";
 
 export type AnalysisGroups = { [name: string]: string[] };
 export const datasetFeature = createFeature({

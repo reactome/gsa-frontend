@@ -1,7 +1,6 @@
 import {createActionGroup, emptyProps, props} from '@ngrx/store';
 import {PDatasetSource} from "./dataset-source.state";
-import {DatasetSourceJSON} from "../../services/fetch-dataset.service";
-import {Parameter} from "../parameter/parameter.state";
+import {Parameter} from "../../model/parameter.model";
 
 export const datasetSourceActions = createActionGroup({
   source: 'GSA Dataset Sources',
@@ -15,7 +14,7 @@ export const datasetSourceActions = createActionGroup({
     'load examples failure': props<{error: any}>(),
 
     'load external': emptyProps(),
-    'load external success': props<{externals: DatasetSourceJSON[]}>(),
+    'load external success': props<{externals: PDatasetSource[]}>(),
     'load external failure': props<{error: any}>(),
 
     'select': props<{toBeSelected: PDatasetSource}>(),

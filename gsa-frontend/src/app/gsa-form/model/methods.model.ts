@@ -1,4 +1,4 @@
-import {Parameter, Scope} from "../state/parameter/parameter.state";
+import {Parameter, Scope} from "./parameter.model";
 
 export interface ParameterJSON {
   default: string;

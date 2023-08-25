@@ -3,7 +3,7 @@ import {Injectable} from "@angular/core";
 import {AnalysisMethodsService, typeToParse} from "../../services/analysis-methods.service";
 import {methodActions} from "./method.action";
 import {catchError, exhaustMap, map, mergeMap, of} from "rxjs";
-import {ParameterType} from "../parameter/parameter.state";
+import {ParameterType} from "../../model/methods.model";
 
 @Injectable()
 export class MethodEffects {

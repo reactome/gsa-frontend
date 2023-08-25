@@ -1,10 +1,10 @@
-import {Component, EventEmitter, Input, OnInit, Output, TrackByFunction} from '@angular/core';
+import {Component, Input, OnInit, Output, TrackByFunction} from '@angular/core';
 import {ParameterType} from "../../model/methods.model";
 import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
 import {FormControl, Validators} from "@angular/forms";
-import {Parameter} from "../../state/parameter/parameter.state";
 import {map, Observable} from "rxjs";
-import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
+import {UntilDestroy} from "@ngneat/until-destroy";
+import {Parameter} from "../../model/parameter.model";
 
 
 export const paramTracker: TrackByFunction<Parameter> = (i, param) => param.name;

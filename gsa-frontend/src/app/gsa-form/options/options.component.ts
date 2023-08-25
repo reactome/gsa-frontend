@@ -1,10 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Store} from "@ngrx/store";
-import {Parameter} from "../state/parameter/parameter.state";
 import {Method} from "../state/method/method.state";
 import {methodActions} from "../state/method/method.action";
 import {paramTracker} from "../utilities/method-parameter/method-parameter.component";
+import {Parameter} from "../model/parameter.model";
 
 @Component({
     selector: 'gsa-options',

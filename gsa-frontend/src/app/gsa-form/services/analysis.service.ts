@@ -7,8 +7,8 @@ import {Request} from "../model/analysis.model";
 import {catchError, Observable, throwError} from "rxjs";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Method} from "../state/method/method.state";
-import {Parameter} from "../state/parameter/parameter.state";
 import {Dataset} from "../state/dataset/dataset.state";
+import {Parameter} from "../model/parameter.model";
 
 @Injectable({
     providedIn: 'root'

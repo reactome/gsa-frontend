@@ -1,6 +1,6 @@
 import {createEntityAdapter, EntityState} from "@ngrx/entity";
-import {Parameter} from "../parameter/parameter.state";
-import {Mapper} from "../../utilities/table/table.component";
+import {Parameter} from "../../model/parameter.model";
+
 
 export interface Method {
   name: string;

@@ -2,10 +2,11 @@ import {Component, Input, OnInit} from '@angular/core';
 import {PDatasetSource} from "../../../../state/dataset-source/dataset-source.state";
 import {Store} from "@ngrx/store";
 import {Observable} from "rxjs";
-import {Parameter} from "../../../../state/parameter/parameter.state";
 import {datasetSourceActions} from "../../../../state/dataset-source/dataset-source.action";
 import {datasetSourceFeature} from "../../../../state/dataset-source/dataset-source.selector";
 import {datasetActions} from "../../../../state/dataset/dataset.actions";
+import {Parameter} from "../../../../model/parameter.model";
+
 
 @Component({
     selector: 'gsa-external-data',

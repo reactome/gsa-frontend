@@ -9,7 +9,7 @@ import {delay, distinctUntilChanged, Observable, of, share} from "rxjs";
 import {PDataset} from "../../state/dataset/dataset.state";
 import {datasetActions} from "../../state/dataset/dataset.actions";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
-import {Parameter} from "../../state/parameter/parameter.state";
+import {Parameter} from "../../model/parameter.model";
 
 @Component({
   selector: 'gsa-nested-stepper',

@@ -1,8 +1,7 @@
 import {createActionGroup, emptyProps, props} from '@ngrx/store';
 import {Method} from "./method.state";
 import {Update} from "@ngrx/entity";
-import {MethodJSON} from "../../services/analysis-methods.service";
-import {Parameter} from "../parameter/parameter.state";
+import {Parameter} from "../../model/parameter.model";
 
 export const methodActions = createActionGroup({
   source: 'GSA Methods',

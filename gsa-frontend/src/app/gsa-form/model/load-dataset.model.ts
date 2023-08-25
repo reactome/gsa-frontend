@@ -1,7 +1,6 @@
 import {Report} from "./report-status.model";
-import {MethodParameter} from "./methods.model";
 import {PartialRequired} from "./utils.model";
-import {Parameter} from "../state/parameter/parameter.state";
+import {Parameter} from "./parameter.model";
 
 export interface LoadingStatus {
   completed: number

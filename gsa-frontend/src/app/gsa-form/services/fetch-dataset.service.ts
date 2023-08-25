@@ -3,12 +3,7 @@ import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {catchError, Observable, throwError} from "rxjs";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {PDatasetSource} from "../state/dataset-source/dataset-source.state";
-import {Parameter} from "../state/parameter/parameter.state";
-
-export interface DatasetSourceJSON extends PDatasetSource {
-    parameters: Parameter[]
-}
+import {DatasetSource} from "../state/dataset-source/dataset-source.state";
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +16,8 @@ export class FetchDatasetService {
   constructor(private http: HttpClient, private snackBar: MatSnackBar) {
   }
 
-  fetchExampleDataSources(): Observable<DatasetSourceJSON[]> {
-    return this.http.get<DatasetSourceJSON[]>(this.exampleDataUrl)
+  fetchExampleDataSources(): Observable<DatasetSource[]> {
+    return this.http.get<DatasetSource[]>(this.exampleDataUrl)
       .pipe(catchError((err: Error) => {
         this.snackBar.open("The dataset options could not been loaded: \n" + err.message, "Close", {
           panelClass: ['warning-snackbar'],
@@ -32,8 +27,8 @@ export class FetchDatasetService {
       }));
   }
 
-  fetchExternalDataSources(): Observable<DatasetSourceJSON[]> {
-    return this.http.get<DatasetSourceJSON[]>(this.inputDataUrl)
+  fetchExternalDataSources(): Observable<DatasetSource[]> {
+    return this.http.get<DatasetSource[]>(this.inputDataUrl)
       .pipe(catchError((err: Error) => {
         this.snackBar.open("The dataset options could not been loaded: \n" + err.message, "Close", {
           panelClass: ['warning-snackbar'],
@@ -43,8 +38,8 @@ export class FetchDatasetService {
       }));
   }
 
-  fetchLocalDataSources(): Observable<DatasetSourceJSON[]> {
-    return this.http.get<DatasetSourceJSON[]>(this.localDataUrl)
+  fetchLocalDataSources(): Observable<DatasetSource[]> {
+    return this.http.get<DatasetSource[]>(this.localDataUrl)
       .pipe(catchError((err: Error) => {
         this.snackBar.open("The dataset options could not been loaded: \n" + err.message, "Close", {
           panelClass: ['warning-snackbar'],

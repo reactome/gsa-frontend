@@ -1,13 +1,13 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ScrollService} from "../../services/scroll.service";
 import {Method} from "../../state/method/method.state";
 import {Store} from "@ngrx/store";
 import {methodActions} from "../../state/method/method.action";
 import {filter, map, Observable} from "rxjs";
 import {methodFeature} from "../../state/method/method.selector";
-import {Parameter} from "../../state/parameter/parameter.state";
 import {isDefined} from "../../utilities/utils";
 import {paramTracker} from "../../utilities/method-parameter/method-parameter.component";
+import {Parameter} from "../../model/parameter.model";
 
 @Component({
   selector: 'gsa-method',

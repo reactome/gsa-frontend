@@ -5,7 +5,7 @@ export namespace Request {
     parameters: Parameter[];
   }
 
-  export interface Dataset {
+  interface Dataset {
     data: string;
     design: DataInformation;
     name: string;
@@ -13,7 +13,7 @@ export namespace Request {
     parameters?: Parameter[];
   }
 
-  export interface DataInformation {
+  interface DataInformation {
     analysisGroup: string[];
     comparison: Comparison;
     samples: string[];
@@ -21,7 +21,7 @@ export namespace Request {
     [covariant: string]: string[] | Comparison;
   }
 
-  export interface Samples {
+  interface Samples {
     sample: string[]
 
     [covariant: string]: string[]
@@ -29,12 +29,12 @@ export namespace Request {
   }
 
 
-  export interface Comparison {
+  interface Comparison {
     group1: string;
     group2: string;
   }
 
-  export interface Parameter {
+  interface Parameter {
     name: string
     value: any
   }

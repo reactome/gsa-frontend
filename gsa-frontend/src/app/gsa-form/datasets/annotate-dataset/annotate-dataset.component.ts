@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Settings} from "../../model/table.model";
 import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";

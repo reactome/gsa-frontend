@@ -3,10 +3,10 @@ import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {datasetFeature} from '../../state/dataset/dataset.selector';
 import {filter, map, Observable} from 'rxjs';
 import {Store} from '@ngrx/store';
-import {Parameter} from '../../state/parameter/parameter.state';
 import {datasetActions} from "../../state/dataset/dataset.actions";
 import {isDefined} from "../../utilities/utils";
 import {paramTracker} from "../../utilities/method-parameter/method-parameter.component";
+import {Parameter} from "../../model/parameter.model";
 
 @Component({
     selector: 'gsa-change-analysis-params',
