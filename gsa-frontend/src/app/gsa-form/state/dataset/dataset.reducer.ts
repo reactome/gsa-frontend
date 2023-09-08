@@ -125,12 +125,12 @@ export const datasetReducer: ActionReducer<DatasetState> = createReducer(
   on(datasetActions.initStatisticalDesign, (state, {id}) =>
     helper.update(id, state, dataset => {
         const summary = dataset.summary!;
-        const defaultCovariances = new Set<string>(summary.default_parameters!
+        const defaultCovariances = new Set<string>((summary.default_parameters || [])
           .find(param => param.name === 'covariates')?.value
-          .split(',') || []);
-        const defaultGroup1 = summary.default_parameters!.filter((param) => param.name === 'comparison_group_1')[0]?.value;
-        const defaultGroup2 = summary.default_parameters!.filter((param) => param.name === 'comparison_group_2')[0]?.value;
-        const defaultComparisonFactor = summary.default_parameters!.filter((param) => param.name === 'analysis_group')[0]?.value;
+          .split(','));
+        const defaultGroup1 = (summary.default_parameters || []).filter((param) => param.name === 'comparison_group_1')[0]?.value;
+        const defaultGroup2 = (summary.default_parameters || []).filter((param) => param.name === 'comparison_group_2')[0]?.value;
+        const defaultComparisonFactor = (summary.default_parameters || []).filter((param) => param.name === 'analysis_group')[0]?.value;
 
         return {
           statisticalDesign: {
