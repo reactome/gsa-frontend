@@ -24,6 +24,14 @@ h2 {
   font-size: x-large;
 }
 
+.text {
+  font-size: large;
+}
+
+.failed{
+  color: var(--error);
+}
+
 .gap-three {
   gap: 3em;
 }
@@ -34,6 +42,7 @@ h2 {
 
 .big-error {
   font-size: 60px;
+  color: var(--error);
 }
 
 .description {
@@ -52,4 +61,11 @@ mat-card-footer {
 
 .justify-end {
   justify-content: end;
+}
+
+.error-message{
+  color: var(--on-error-container);
+  background: var(--error-container);
+  padding: 10px;
+  border: 5px solid var(--error);
 }

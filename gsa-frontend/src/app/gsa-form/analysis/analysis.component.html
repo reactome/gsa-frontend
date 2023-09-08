@@ -20,8 +20,9 @@
             <div *ngSwitchCase="'failed'"
                  class="flex-container vertical align-center gap-one justify-center">
               <div class="material-icons mat-error big-error">error</div>
-              <span class="big-text">Analysis failed, please contact help@reactome.org</span>
-              <div class="text-margin">{{vm.analysisLoadingStatus!.description}}</div>
+              <span class="big-text failed">Oops! An error has occurred</span>
+              <span class="text failed">Analysis failed, please contact help@reactome.org</span>
+              <div class="text-margin error-message">{{vm.analysisLoadingStatus!.description}}</div>
             </div>
             <div *ngSwitchCase="'complete'">
               <div class="flex-container vertical align-center gap-one">
