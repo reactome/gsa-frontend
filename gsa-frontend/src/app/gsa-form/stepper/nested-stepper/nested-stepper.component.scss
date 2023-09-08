@@ -15,10 +15,8 @@
   visibility: hidden;
   margin-right: 24px;
   width: 0px;
-  //color: white;
   border-bottom-right-radius: 4px;
   border-top-right-radius: 4px;
-  transition: visibility .5s, width .5s
 }
 
 .flex {
@@ -28,7 +26,7 @@
 .border-blue-left {
   &:hover .saved {
     background-color: var(--primary);
-    color: var(--on-primary);
+    color: var(--on-outline-variant);
   }
   border-left: 5px solid var(--primary);
   border-radius: 4px;
