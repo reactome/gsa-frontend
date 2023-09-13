@@ -18,11 +18,8 @@ export class LoadDatasetService {
     summaryDataUrl = `${environment.ApiRoot}/data/summary/`;
     uploadDataUrl = `${environment.ApiSecretRoot}/upload`;
 
-
-
     constructor(private http: HttpClient, public dialog: MatDialog, private snackBar: MatSnackBar) {
     }
-
 
     snackError<T>(err: Error, failValue$: Observable<T>): Observable<T> {
         this.snackBar.open("The chosen dataset could not been loaded: \n" + err.message, "Close", {
@@ -33,7 +30,6 @@ export class LoadDatasetService {
     }
 
     submitLoadDataset(resourceId: string, postParameters: { name: string, value: any }[]): Observable<string> {
-        console.log(postParameters)
         return this.http.post(this.loadDataUrl + resourceId, postParameters, {responseType: 'text'})
             .pipe(catchError((err: Error) => {
                 this.snackBar.open("The chosen dataset could not been loaded: \n" + err.message, "Close", {
@@ -68,5 +64,4 @@ export class LoadDatasetService {
                 return throwError(() => err);    //Rethrow it back to component
             }))
     }
-
 }

@@ -9,11 +9,6 @@ export class DatasetTable {
     public dataset: CellInfo[][]
   ) {
   }
-
-  column(columnName: string): any[] {
-    let colIndex = this.columns.indexOf(columnName);
-    return this.dataset.map(row => row[colIndex].value) || [];
-  }
 }
 
 export interface StatisticalDesign {

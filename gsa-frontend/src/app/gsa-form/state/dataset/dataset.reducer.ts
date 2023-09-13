@@ -2,7 +2,6 @@ import {ActionReducer, createReducer, on} from '@ngrx/store';
 import {datasetAdapter, DatasetState, initialState, PDataset} from './dataset.state';
 import {datasetActions} from './dataset.actions';
 import {DataSummary} from '../../model/load-dataset.model';
-import {StatisticalDesign} from "../../model/dataset.model";
 import {Subset} from "../../model/utils.model";
 import {cp, transpose} from "../../utilities/table/state/table.util";
 import {EntityHelper, isDefined} from "../../utilities/utils";
@@ -110,15 +109,6 @@ export const datasetReducer: ActionReducer<DatasetState> = createReducer(
       summary: {
         ...dataset.summary,
         ...(update.changes as Subset<DataSummary>),
-      },
-    }))),
-
-  //todo delete this reducer
-  on(datasetActions.updateStatisticalDesign, (state, {update}) =>
-    helper.update(update.id, state, dataset => ({
-      statisticalDesign: {
-        ...dataset.statisticalDesign,
-        ...(update.changes as Subset<StatisticalDesign>),
       },
     }))),
 

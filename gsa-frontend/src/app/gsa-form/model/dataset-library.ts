@@ -65,54 +65,6 @@ export namespace Library {
   export interface Result extends Abstract.Paginated<Dataset, ContinuousFields | DiscreteFields> {
 
   }
-
-  const exampleQuery: Query = {
-    query: "*",
-    filters: [
-      {name: 'species', values: ['Homo sapiens', 'Mus musculus']},
-      {name: 'sample-count', min: 15, max: 40},
-      {name: "category", values: ["dermatology"]}
-    ],
-    sortBy: [
-      {field: "category"},
-      {field: "sample-count", order: "DESC"}
-    ],
-    page: 0,
-    pageSize: 50
-  }
-
-  const exampleResponse: Result = {
-    content: [
-      {
-        id: 'melanoma57',
-        categories: ["dermatology"],
-        species: "Homo sapiens",
-        description: "*",
-        label: "*"
-
-      },
-      {
-        id: 'melanoma50',
-        categories: ["dermatology"],
-        species: "Mus musculus",
-        description: "*",
-        label: "*"
-      }
-    ],
-    pageable: {
-      first: true,
-      last: false,
-      paged: true,
-      pageSize: 50,
-      pageNumber: 0,
-      totalPages: 10
-    },
-    sort: [
-      {field: "category"},
-      {field: "sample-count", order: "DESC"}
-    ],
-    totalElements: 480
-  }
 }
 
 export interface SearchLibraryDataset {
