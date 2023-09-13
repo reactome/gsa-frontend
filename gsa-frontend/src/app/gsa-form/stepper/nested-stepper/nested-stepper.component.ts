@@ -10,6 +10,8 @@ import {PDataset} from "../../state/dataset/dataset.state";
 import {datasetActions} from "../../state/dataset/dataset.actions";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 import {Parameter} from "../../model/parameter.model";
+import {Method} from "../../state/method/method.state";
+
 
 @Component({
   selector: 'gsa-nested-stepper',
@@ -24,6 +26,7 @@ export class NestedStepperComponent implements OnInit {
   @ViewChild('annotateStep') annotateStep: CdkStep
   @ViewChild('statisticalDesignStep') statisticalDesignStep: CdkStep
   @Input() datasetId: number;
+  @Input() method : Method
 
   dataset$: Observable<PDataset | undefined>;
   parameters$: Observable<Parameter[]>;
