@@ -2,7 +2,7 @@ import {Component, Input, OnInit, Output, TrackByFunction} from '@angular/core';
 import {ParameterType} from "../../model/methods.model";
 import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
 import {FormControl, Validators} from "@angular/forms";
-import {map, Observable, tap} from "rxjs";
+import {map, Observable} from "rxjs";
 import {UntilDestroy} from "@ngneat/until-destroy";
 import {Parameter} from "../../model/parameter.model";
 

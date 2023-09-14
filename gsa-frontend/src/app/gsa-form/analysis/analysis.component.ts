@@ -24,10 +24,6 @@ export class AnalysisComponent implements OnInit {
 
     }
 
-    openLink(url: string) {
-        window.open(url, '_blank');
-    }
-
     ngOnInit(): void {
 
     }

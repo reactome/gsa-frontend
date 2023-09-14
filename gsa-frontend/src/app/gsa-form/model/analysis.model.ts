@@ -21,14 +21,6 @@ export namespace Request {
     [covariant: string]: string[] | Comparison;
   }
 
-  interface Samples {
-    sample: string[]
-
-    [covariant: string]: string[]
-
-  }
-
-
   interface Comparison {
     group1: string;
     group2: string;

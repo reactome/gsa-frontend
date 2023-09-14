@@ -4,11 +4,3 @@ export interface Report {
   mimetype: string;
 }
 
-export interface ReportStatus {
-  id: string;
-  status: string;
-  description: string;
-  completed: number;
-  reports: Report[];
-}
-

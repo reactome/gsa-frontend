@@ -18,25 +18,10 @@ export interface LoadParameter {
   value: any
 }
 
-export class LoadParameterClass implements LoadParameter {
-  name: string
-  value: any
-
-  constructor(name: string, value: any) {
-    this.name = name
-    this.value = value
-  }
-}
-
 export interface SampleMetadata {
   name: string;
   values: string[];
 }
-
-// export interface Parameter {
-//   name: string;
-//   value: string;
-// }
 
 export class DataSummary {
   id: string;
@@ -49,10 +34,6 @@ export class DataSummary {
   default_parameters?: Parameter[];
   parameters?: Parameter[];
   complete?: boolean = false;
-}
-
-export function isComplete(loadingStatus: PLoadingStatus): loadingStatus is LoadingStatus {
-  return (loadingStatus as LoadingStatus).dataset_id !== undefined
 }
 
 
