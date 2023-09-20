@@ -150,6 +150,8 @@ export class TableStore extends ComponentStore<TableState> {
   })
 
   readonly write = this.updater((state, {value}: { value: string }) => {
+    if (Ranges.equals(Ranges.origin(state), state.start)) return state
+    if (state.start)
     state.hasFocus = true;
     const cell = state.dataset[state.start.y][state.start.x];
     state.dataset[state.start.y][state.start.x] = {...cell, value};
@@ -348,6 +350,10 @@ namespace Ranges {
       x: state.settings.renameRows ? 0 : 1,
       y: state.settings.renameCols ? 0 : 1
     }
+  }
+
+  export function equals(a:Coords,b:Coords): boolean {
+    return a.x === b.x && a.y === b.y;
   }
 
   export function limits(state: TableState): Range {
