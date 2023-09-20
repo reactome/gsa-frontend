@@ -281,6 +281,7 @@ export class TableStore extends ComponentStore<TableState> {
     state.dataset.forEach(row => row.splice(x, 1))
     state.start = {x: 0, y: 0};
     state.stop = state.start;
+    state.hasFocus = false;
     return Cells.select({...state, dataset: [...state.dataset]});
   });
   readonly deleteRow = this.updater((state, props: { y: number } | Named) => {
@@ -289,6 +290,7 @@ export class TableStore extends ComponentStore<TableState> {
     state.dataset.splice(y, 1);
     state.start = {x: 0, y: 0};
     state.stop = state.start;
+    state.hasFocus = false;
     return Cells.select({...state, dataset: [...state.dataset]});
   });
 
@@ -382,8 +384,10 @@ namespace Cells {
   export function select(state: TableState): TableState {
     state.selectedCoords.forEach(coords => {
       let cell = state.dataset[coords.y][coords.x];
-      cell.selected = false;
-      cell.visibility = 'visible';
+      if (cell) {
+        cell.selected = false;
+        cell.visibility = 'visible';
+      }
     });
     state.selectedCoords = [];
     if (!state.hasFocus) return state
