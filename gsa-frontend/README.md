@@ -33,7 +33,7 @@ To deploy on dev, run
 npm run deploy-dev
 ```
 
-Be sure that the apache directory the website gets deployed to contains at its root the following .htaccess file:
+This command will also upload the following apache configuration to make sure Angular routing works fine
 ```apacheconf
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
