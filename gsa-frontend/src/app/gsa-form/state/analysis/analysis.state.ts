@@ -2,6 +2,7 @@ import {PLoadingStatus} from "../../model/load-dataset.model";
 import {AnalysisResult} from "../../model/analysis-result.model";
 
 export interface AnalysisState {
+    analysisId: string | null,
     analysisLoadingStatus: PLoadingStatus | null,
     reportLoadingStatus: PLoadingStatus | null,
     analysisResult: AnalysisResult | null,
@@ -9,6 +10,7 @@ export interface AnalysisState {
 }
 
 export const initialState: AnalysisState = {
+    analysisId: null,
     analysisLoadingStatus: null,
     reportLoadingStatus: null,
     analysisResult: null,

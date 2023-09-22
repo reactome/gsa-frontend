@@ -2,12 +2,14 @@ import {AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild} from '@a
 import {MatStepper} from "@angular/material/stepper";
 import {Store} from "@ngrx/store";
 import {methodFeature} from "./state/method/method.selector";
-import {map, Observable} from "rxjs";
+import {filter, map, Observable, take} from "rxjs";
 import {datasetFeature} from "./state/dataset/dataset.selector";
 import {datasetActions} from "./state/dataset/dataset.actions";
 import {analysisActions} from "./state/analysis/analysis.actions";
 import {Dataset} from "./state/dataset/dataset.state";
 import {CdkStep, StepperSelectionEvent} from "@angular/cdk/stepper";
+import {analysisFeature} from "./state/analysis/analysis.selector";
+import {isDefined} from "./utilities/utils";
 
 
 @Component({
@@ -31,6 +33,7 @@ export class GsaFormComponent implements AfterViewInit, OnInit {
   datasetIds$ = this.store.select(datasetFeature.selectIds) as Observable<number[]>;
   datasets$ = this.store.select(datasetFeature.selectAll) as Observable<Dataset[]>;
   allSaved$: Observable<boolean> = this.store.select(datasetFeature.selectAllSaved);
+  analysisId$: Observable<string> = this.store.select(analysisFeature.selectAnalysisId).pipe(filter(isDefined));
 
   constructor(private cdr: ChangeDetectorRef, private store: Store) {
   }
@@ -57,8 +60,12 @@ export class GsaFormComponent implements AfterViewInit, OnInit {
         this.store.dispatch(datasetActions.initAnnotationColumns())
         break;
       case this.analysisStep:
-        this.store.dispatch(analysisActions.load({...vm}))
+        this.store.dispatch(analysisActions.load(vm))
         break;
+    }
+
+    if ($event.previouslySelectedStep === this.analysisStep) {
+      this.analysisId$.pipe(take(1)).subscribe(analysisId => this.store.dispatch(analysisActions.cancel({analysisId})))
     }
   }
 }
