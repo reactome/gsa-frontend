@@ -3,7 +3,7 @@ import {ScrollService} from "../../services/scroll.service";
 import {Method} from "../../state/method/method.state";
 import {Store} from "@ngrx/store";
 import {methodActions} from "../../state/method/method.action";
-import {filter, map, Observable} from "rxjs";
+import {filter, map, Observable, tap} from "rxjs";
 import {methodFeature} from "../../state/method/method.selector";
 import {isDefined} from "../../utilities/utils";
 import {paramTracker} from "../../utilities/method-parameter/method-parameter.component";
@@ -23,7 +23,9 @@ export class MethodComponent implements OnInit {
 
   ngOnInit(): void {
     this.method$ = this.store.select(methodFeature.selectMethod(this.methodName)).pipe(filter(isDefined))
-    this.parameters$ = this.method$.pipe(map(method => method.parameters.filter(p => p.scope === 'analysis' || p.scope === 'dataset')))
+    this.parameters$ = this.method$.pipe(
+      map(method => Object.values(method.parameters).filter(p => p.scope === 'analysis' || p.scope === 'dataset'))
+    )
   }
 
   constructor(private scrollService: ScrollService, private store: Store) {
@@ -35,15 +37,14 @@ export class MethodComponent implements OnInit {
 
   setToDefault(parameters: Parameter[]) {
     parameters = parameters.map(p => ({...p, value: p.default}));
-    this.store.dispatch(methodActions.setSelectedParams({parameters}))
+    this.store.dispatch(methodActions.updateSelectedParams({parameters}))
   }
 
   updateScroll() {
     setTimeout(() => this.scrollService.triggerResize(), 120);
   }
 
-  updateParam(param: Parameter, parameters: Parameter[]) {
-    parameters = parameters.map(para => para.name === param.name ? param : para);
-    this.store.dispatch(methodActions.setParams({methodName: this.methodName, parameters}));
+  updateParam(param: Parameter) {
+    this.store.dispatch(methodActions.updateSelectedParam({param}));
   }
 }

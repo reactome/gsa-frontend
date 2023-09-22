@@ -1,9 +1,10 @@
 import {ActionReducer, createReducer, on} from "@ngrx/store";
-import {initialState, methodAdapter, MethodState} from "./method.state";
+import {initialState, Method, methodAdapter, MethodState} from "./method.state";
 import {methodActions} from "./method.action";
+import {EntityHelper} from "../../utilities/utils";
 
 
-// const helper = new EntityHelper<Method, MethodState>(methodAdapter);
+const helper = new EntityHelper<Method, MethodState>(methodAdapter);
 
 export const methodReducer: ActionReducer<MethodState> = createReducer(
   initialState,
@@ -13,11 +14,24 @@ export const methodReducer: ActionReducer<MethodState> = createReducer(
     id: methodName,
     changes: {parameters}
   }, state)),
-  on(methodActions.setSelectedParams, (state, {parameters}) => !state.selectedMethodName ?
+  on(methodActions.resetParams, (state, {methodName}) => helper.update(methodName, state,
+    method => ({
+      parameters: method.parameters.map(param => ({...param, value: param.default}))
+    }))
+  ),
+  on(methodActions.updateSelectedParams, (state, {parameters}) => !state.selectedMethodName ?
     state :
-    methodAdapter.updateOne({
-    id: state.selectedMethodName,
-    changes: {parameters}
-  }, state)),
+    helper.update(state.selectedMethodName, state,
+      method => ({
+        parameters: method.parameters.map(originalParam => parameters.find(param => param.name === originalParam.name) || originalParam)
+      }))
+  ),
+  on(methodActions.updateSelectedParam, (state, {param}) => !state.selectedMethodName ?
+    state :
+    helper.update(state.selectedMethodName, state,
+      method => ({
+        parameters: method.parameters.map(originalParam => originalParam.name === param.name ? param : originalParam)
+      })
+    )),
   on(methodActions.select, (state, {methodName}) => ({...state, selectedMethodName: methodName})),
 )

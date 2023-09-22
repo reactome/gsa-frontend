@@ -7,30 +7,29 @@ import {paramTracker} from "../utilities/method-parameter/method-parameter.compo
 import {Parameter} from "../model/parameter.model";
 
 @Component({
-    selector: 'gsa-options',
-    templateUrl: './options.component.html',
-    styleUrls: ['./options.component.scss']
+  selector: 'gsa-options',
+  templateUrl: './options.component.html',
+  styleUrls: ['./options.component.scss']
 })
 export class OptionsComponent implements OnInit {
-    @Input() method: Method;
-    analysisOptionsStep: FormGroup;
+  @Input() method: Method;
+  analysisOptionsStep: FormGroup;
 
-    parameters: Parameter[];
+  parameters: Parameter[];
 
-    constructor(private formBuilder: FormBuilder, public store: Store) {
-        this.analysisOptionsStep = this.formBuilder.group({
-            name: ['', Validators.required]
-        });
-    }
+  constructor(private formBuilder: FormBuilder, public store: Store) {
+    this.analysisOptionsStep = this.formBuilder.group({
+      name: ['', Validators.required]
+    });
+  }
 
-    ngOnInit(): void {
-        this.parameters = this.method.parameters.filter(p =>  p.scope === 'common')
-    }
+  ngOnInit(): void {
+    this.parameters = this.method.parameters.filter(p => p.scope === 'common')
+  }
 
-    updateParam(param: Parameter, parameters: Parameter[]) {
-        parameters = parameters.map(srcParam => srcParam.name === param.name ? param : srcParam);
-        this.store.dispatch(methodActions.setSelectedParams({ parameters: parameters }));
-    }
+  updateParam(param: Parameter) {
+    this.store.dispatch(methodActions.updateSelectedParam({param}));
+  }
 
   protected readonly paramTracker = paramTracker;
 }

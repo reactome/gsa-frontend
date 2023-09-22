@@ -12,6 +12,8 @@ export const methodActions = createActionGroup({
     'select': props<{ methodName: string }>(),
     'update': props<{ update: Update<Method> }>(),
     'set params': props<{ methodName: string, parameters: Parameter[] }>(),
-    'set selected params': props<{ parameters: Parameter[] }>(),
+    'reset params': props<{ methodName: string }>(),
+    'update selected param': props<{ param: Parameter }>(),
+    'update selected params': props<{ parameters: Parameter[] }>(),
   }
 })
