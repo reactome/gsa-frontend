@@ -9,7 +9,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "deploy-gh": "ng deploy --base-href=/gsa-frontend/",
-    "deploy-dev": "ng build --base-href=/gsa-frontend/ && rsync -Pav dist/gsa-frontend dev:site/Website/static"
+    "deploy-dev": "ng build --base-href=/gsa-frontend/ && rsync -Pav dist/gsa-frontend dev:site/Website/static --delete"
   },
   "private": true,
   "dependencies": {

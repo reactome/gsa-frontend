@@ -13,7 +13,9 @@ export const typeToParse: { [p: string]: (value: string) => any } = {
   string: value => value
 }
 
-@Injectable({providedIn: 'root'})
+@Injectable({
+  providedIn: 'root'
+})
 export class AnalysisMethodsService {
   methodsUrl = `${environment.ApiRoot}/methods`;
 

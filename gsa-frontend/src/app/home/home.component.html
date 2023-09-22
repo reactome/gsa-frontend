@@ -1,0 +1,57 @@
+<div class="flex-container justify-center align-center height-hundred width-hundred" *ngrxLet="screenSize$ as screenSize">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title><h1>Welcome to Reactome Gene Set Analysis</h1></mat-card-title>
+    </mat-card-header>
+
+
+    <mat-card-content>
+      <p>Reactome GSA analysis is a powerful tool for understanding the biological significance of gene sets or
+        pathways. It allows researchers to uncover the functional relevance of a list of genes in the context of
+        biological pathways and processes.</p>
+
+      <ng-container *ngIf="screenSize.breakpoints[sizes.Medium]">
+
+        <h2 >Key Features:</h2>
+        <ul>
+          <li>Pathway Enrichment Analysis: Identifies Reactome pathways that are significantly enriched in your gene
+            list.
+          </li>
+          <li>Visualization Tools: Provides interactive visualizations to help you explore enriched pathways and their
+            relationships.
+          </li>
+          <li>Biological Context: Helps you understand how your genes contribute to specific biological processes.</li>
+          <li>Statistical Insights: Utilizes statistical methods to assess the significance of pathway enrichment.</li>
+        </ul>
+
+        <h2>How to Get Started:</h2>
+        <ol>
+          <li>Upload Your Gene List: Input your list of genes or proteins of interest into the Reactome GSA tool.</li>
+          <li>Run the Analysis: Start the analysis to identify enriched pathways and gain biological insights.</li>
+          <li>Explore Results: Visualize and explore the results to understand the functional context of your gene list.
+          </li>
+          <li>Interpret Findings: Interpret the findings in the context of your research goals and biological questions.
+          </li>
+        </ol>
+
+      </ng-container>
+
+      <ng-container *ngIf="screenSize.breakpoints[sizes.Small]">
+        <p>Reactome GSA analysis is a valuable resource for researchers in genomics, systems biology, and bioinformatics.
+          It can help you uncover the hidden biological connections within your gene sets and enhance your understanding
+          of complex biological systems.</p>
+      </ng-container>
+
+      <p>Get started with Reactome GSA analysis today and unlock the power of pathway enrichment analysis!</p>
+    </mat-card-content>
+
+    <mat-card-actions class="justify-center">
+      <button mat-raised-button color="primary" routerLink="/form">START</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+
+
+
+

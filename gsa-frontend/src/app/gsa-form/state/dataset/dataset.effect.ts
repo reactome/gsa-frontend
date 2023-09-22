@@ -17,10 +17,14 @@ import {datasetActions} from "./dataset.actions";
 import {LoadDatasetService} from "../../services/load-dataset.service";
 import {TypedAction} from "@ngrx/store/src/models";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {LoadingProgressComponent} from "../../datasets/select-dataset/loading-progress/loading-progress.component";
-import {ChangeAnalysisParamsComponent} from "../../datasets/change-analysis-params/change-analysis-params.component";
 import {Store} from "@ngrx/store";
 import {methodFeature} from "../method/method.selector";
+import {
+  LoadingProgressComponent
+} from "../../dataset-form/datasets/select-dataset/loading-progress/loading-progress.component";
+import {
+  ChangeAnalysisParamsComponent
+} from "../../dataset-form/datasets/change-analysis-params/change-analysis-params.component";
 
 
 @Injectable()

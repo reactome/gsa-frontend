@@ -18,7 +18,7 @@ export class LoadDatasetService {
     summaryDataUrl = `${environment.ApiRoot}/data/summary/`;
     uploadDataUrl = `${environment.ApiSecretRoot}/upload`;
 
-    constructor(private http: HttpClient, public dialog: MatDialog, private snackBar: MatSnackBar) {
+    constructor(private http: HttpClient, private snackBar: MatSnackBar) {
     }
 
     snackError<T>(err: Error, failValue$: Observable<T>): Observable<T> {

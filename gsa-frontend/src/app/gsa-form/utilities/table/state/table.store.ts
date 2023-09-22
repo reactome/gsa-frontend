@@ -150,6 +150,8 @@ export class TableStore extends ComponentStore<TableState> {
   })
 
   readonly write = this.updater((state, {value}: { value: string }) => {
+    if (Ranges.equals(Ranges.origin(state), state.start)) return state
+    if (state.start)
     state.hasFocus = true;
     const cell = state.dataset[state.start.y][state.start.x];
     state.dataset[state.start.y][state.start.x] = {...cell, value};
@@ -281,6 +283,7 @@ export class TableStore extends ComponentStore<TableState> {
     state.dataset.forEach(row => row.splice(x, 1))
     state.start = {x: 0, y: 0};
     state.stop = state.start;
+    state.hasFocus = false;
     return Cells.select({...state, dataset: [...state.dataset]});
   });
   readonly deleteRow = this.updater((state, props: { y: number } | Named) => {
@@ -289,6 +292,7 @@ export class TableStore extends ComponentStore<TableState> {
     state.dataset.splice(y, 1);
     state.start = {x: 0, y: 0};
     state.stop = state.start;
+    state.hasFocus = false;
     return Cells.select({...state, dataset: [...state.dataset]});
   });
 
@@ -348,6 +352,10 @@ namespace Ranges {
     }
   }
 
+  export function equals(a:Coords,b:Coords): boolean {
+    return a.x === b.x && a.y === b.y;
+  }
+
   export function limits(state: TableState): Range {
     const origin = Ranges.origin(state);
     return {
@@ -382,8 +390,10 @@ namespace Cells {
   export function select(state: TableState): TableState {
     state.selectedCoords.forEach(coords => {
       let cell = state.dataset[coords.y][coords.x];
-      cell.selected = false;
-      cell.visibility = 'visible';
+      if (cell) {
+        cell.selected = false;
+        cell.visibility = 'visible';
+      }
     });
     state.selectedCoords = [];
     if (!state.hasFocus) return state

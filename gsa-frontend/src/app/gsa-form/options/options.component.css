@@ -5,4 +5,8 @@
   background-color: rgba(var(--outline-variant), 0.1);
 }
 
+.disclaimer {
+  padding: 10px;
+}
+
 /*# sourceMappingURL=options.component.css.map */

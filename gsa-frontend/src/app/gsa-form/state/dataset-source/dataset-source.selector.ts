@@ -14,7 +14,7 @@ export const datasetSourceFeature = createFeature({
         .filter(entity => entity?.source === source)
         .filter(isDefined)
       // filter examples based on the selected analysis method, B_CELLS is only compatible with ssGSEA analysis method
-      if (method.name === 'ssGSEA')  return filteredEntities;
+      if (method?.name === 'ssGSEA')  return filteredEntities;
       return filteredEntities.filter(entity => entity.id != 'EXAMPLE_SC_B_CELLS');
     }),
     selectDatasetSource: (id: string) => createSelector(selectEntities, entities => entities[id]),

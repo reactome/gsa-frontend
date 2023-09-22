@@ -11,17 +11,23 @@ import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 import {EffectsModule} from '@ngrx/effects';
 import {routerReducer, StoreRouterConnectingModule} from '@ngrx/router-store';
 import {RouterModule} from "@angular/router";
-import {routes} from "./app.routes";
+import {AppRoutingModule, routes} from "./app-routing.module";
+import { HomeComponent } from './home/home.component';
+import {HomeModule} from "./home/home.module";
+import {CommonModule} from "@angular/common";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
+    AppRoutingModule,
+    CommonModule,
     BrowserModule,
     HttpClientModule,
-    GsaFormModule,
     BrowserAnimationsModule,
+    MatSnackBarModule,
     StoreModule.forRoot({
       router: routerReducer
     }, {}),
@@ -33,7 +39,6 @@ import {routes} from "./app.routes";
       traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
     }),
     EffectsModule.forRoot([]),
-    RouterModule.forRoot(routes),
     StoreRouterConnectingModule.forRoot(),
   ],
   providers: [],
