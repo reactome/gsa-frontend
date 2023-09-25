@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {LoadingStatus} from "../model/load-dataset.model";
 import {environment} from "../../../environments/environment";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {AnalysisResult} from "../model/analysis-result.model";
 import {Request} from "../model/analysis.model";
 import {catchError, EMPTY, Observable, throwError} from "rxjs";
@@ -9,6 +9,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {Method} from "../state/method/method.state";
 import {Dataset} from "../state/dataset/dataset.state";
 import {Parameter} from "../model/parameter.model";
+import {extractErrorMessage} from "../utilities/utils";
 
 @Injectable({
   providedIn: 'root'
@@ -52,8 +53,8 @@ export class AnalysisService {
       })),
     };
     return this.http.post(this.submitAnalysisUrl, query, {responseType: 'text'})
-      .pipe(catchError((err: Error) => {
-        this.snackBar.open("The analysis could not be performed: \n" + err.message, "Close", {
+      .pipe(catchError((err: HttpErrorResponse) => {
+        this.snackBar.open("The analysis could not be performed: \n" + extractErrorMessage(err), "Close", {
           panelClass: ['warning-snackbar']
         });
         return throwError(() => err);    //Rethrow it back to component
@@ -66,8 +67,8 @@ export class AnalysisService {
 
   getAnalysisLoadingStatus(analysisId: string): Observable<LoadingStatus> {
     return this.http.get<LoadingStatus>(this.analysisStatusUrl + analysisId)
-      .pipe(catchError((err: Error) => {
-        this.snackBar.open("The analysis could not be performed: \n" + err.message, "Close", {
+      .pipe(catchError((err: HttpErrorResponse) => {
+        this.snackBar.open("The analysis could not be performed: \n" + extractErrorMessage(err), "Close", {
           panelClass: ['warning-snackbar']
         });
         return throwError(() => err);    //Rethrow it back to component
@@ -76,8 +77,8 @@ export class AnalysisService {
 
   getAnalysisResults(analysisId: string): Observable<AnalysisResult> {
     return this.http.get<AnalysisResult>(this.analysisResultUrl + analysisId)
-      .pipe(catchError((err: Error) => {
-        this.snackBar.open("The analysis could not been performed: \n" + err.message, "Close", {
+      .pipe(catchError((err: HttpErrorResponse) => {
+        this.snackBar.open("The analysis could not been performed: \n" + extractErrorMessage(err), "Close", {
           panelClass: ['warning-snackbar']
         });
         return throwError(() => err);    //Rethrow it back to component
@@ -86,8 +87,8 @@ export class AnalysisService {
 
   getReportLoadingStatus(analysisId: string): Observable<LoadingStatus> {
     return this.http.get<LoadingStatus>(this.reportStatusUrl + analysisId)
-      .pipe(catchError((err: Error) => {
-        this.snackBar.open("The reports could not been loaded: \n" + err.message, "Close", {
+      .pipe(catchError((err: HttpErrorResponse) => {
+        this.snackBar.open("The reports could not been loaded: \n" + extractErrorMessage(err), "Close", {
           panelClass: ['warning-snackbar']
         });
         return throwError(() => err);    //Rethrow it back to component
