@@ -14,13 +14,11 @@ import {Settings} from "../../model/table.model";
 import {Clipboard} from '@angular/cdk/clipboard';
 import {MatButton} from "@angular/material/button";
 import {Cell, Coords, TableStore} from "./state/table.store";
-import {combineLatest, delay, filter, first, map, Observable} from "rxjs";
+import {combineLatest, delay, filter, first, map, Observable, skip} from "rxjs";
 import {isDefined} from "../utils";
 import {Subset} from "../../model/utils.model";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 
-
-type CellCoord = { x: number, y: number, parentElement: any };
 
 export type Mapper<T> = {
   [p: string | number]: T
@@ -83,7 +81,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   );
   startClasses$: Observable<Mapper<boolean>> = combineLatest([this.startCell$, this.tableStore.hasFocus$],
     (start, hasFocus) =>
-      Array.from(start.classList)
+      Array.from(start?.classList || [])
         .reduce((o, clazz) => ({...o, [clazz]: true}), {'visible': hasFocus} as Mapper<boolean>));
   inputLevel$: Observable<number> = this.start$.pipe(map(start => start.x === 0 ? 6 : start.y === 0 ? 4 : 2));
   inputValue$: Observable<string> = this.tableStore.value$;
@@ -91,7 +89,8 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   value: string;
 
   @Output() tableChange: Observable<string[][]> = this.data$.pipe(
-    map(table => table.map(row => row.map(cell => cell.value)))
+    skip(1),
+    map((data) => data.map(row => row.map(cell => cell.value)))
   );
 
 
@@ -118,17 +117,17 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       hasRowNames: true,
       fullImport: true
     })
-
   }
 
   ngAfterViewInit() {
-    this.cornerRect = this.cornerRef.nativeElement.getBoundingClientRect();
+    this.cornerRect = this.cornerRef?.nativeElement.getBoundingClientRect();
   }
 
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['userSettings']) this.tableStore.settings({settings: this.userSettings});
+    if (changes['userSettings'] && !changes['userSettings'].firstChange) this.tableStore.settings({settings: this.userSettings});
   }
+
 
   mousedown($event: MouseEvent) {
     this.isDragging = true;
