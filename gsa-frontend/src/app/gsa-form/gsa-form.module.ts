@@ -80,10 +80,15 @@ import {
 import {DatasetFormComponent} from "./dataset-form/dataset-form.component";
 import {GsaFormRoutingModule} from "./gsa-form-routing.module";
 import {CommonModule} from "@angular/common";
+import {SearchResultComponent} from "./dataset-form/datasets/select-dataset/dataset-types/search-result/search-result.component";
+import {SearchResultEffects} from "./state/search-result/search-result.effect";
+import {searchResultFeature} from "./state/search-result/search-result.selector";
+import { SpeciesPipe } from './utilities/species/species.pipe';
+
 
 @NgModule({
   declarations: [
-    AnalysisMethodsComponent, MethodComponent, MethodParameterComponent, SelectDatasetComponent, ExampleDataComponent, AnnotateDatasetComponent, GsaFormComponent, LocalDataComponent, ExternalDataComponent, LoadingProgressComponent, StatisticalDesignComponent, DropdownComponent, DatasetFormComponent, OptionsComponent, AnalysisComponent, EditColumnsComponent, EditCellsComponent, StepperAnnotateComponent, AddDatasetButtonComponent, ChangeAnalysisParamsComponent, ScrollableComponent, SaveDatasetButtonComponent, WarningSnackbarComponent
+    AnalysisMethodsComponent, MethodComponent, MethodParameterComponent, SelectDatasetComponent, ExampleDataComponent, AnnotateDatasetComponent, GsaFormComponent, LocalDataComponent, ExternalDataComponent, LoadingProgressComponent, StatisticalDesignComponent, DropdownComponent, DatasetFormComponent, OptionsComponent, AnalysisComponent, EditColumnsComponent, EditCellsComponent, StepperAnnotateComponent, AddDatasetButtonComponent, ChangeAnalysisParamsComponent, ScrollableComponent, SaveDatasetButtonComponent, WarningSnackbarComponent, SearchResultComponent, SpeciesPipe
   ],
   exports: [
     GsaFormComponent
@@ -120,10 +125,12 @@ import {CommonModule} from "@angular/common";
     StoreModule.forFeature(datasetSourceFeature),
     StoreModule.forFeature(datasetFeature),
     StoreModule.forFeature(analysisFeature),
+    StoreModule.forFeature(searchResultFeature),
     EffectsModule.forFeature(MethodEffects),
     EffectsModule.forFeature(DatasetSourceEffects),
     EffectsModule.forFeature(DatasetEffects),
     EffectsModule.forFeature(AnalysisEffects),
+    EffectsModule.forFeature(SearchResultEffects),
     LetModule,
   ],
   bootstrap: [GsaFormComponent]

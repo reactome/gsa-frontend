@@ -1,0 +1,35 @@
+<div class="dataset-card-content" (click)="toggleSelected()">
+  <p class="bold">Search</p>
+  <p>Search across Expression Atlas and GREIN dataset</p>
+  <ng-container *ngIf="selected">
+    <form [formGroup]="searchForm" >
+      <mat-form-field id="species"  subscriptSizing="dynamic" appearance="outline">
+        <mat-label>species</mat-label>
+        <mat-select formControlName="species">
+          <mat-option *ngFor="let se of species$ | async" [value]="se">
+            <i>{{se}}</i>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field id="keywords" subscriptSizing="dynamic" appearance="outline">
+        <mat-label>keywords</mat-label>
+        <input matInput type="text" formControlName="keywords">
+        <button type="submit" mat-icon-button matIconSuffix (click)="search()" [disabled]="!searchForm.valid">
+          <mat-icon fontIcon="search"></mat-icon>
+        </button>
+      </mat-form-field>
+    </form>
+    <div>
+      <ng-container *ngFor="let result of results$ | async; let last = last" >
+        <div (click)="select(result)" class="result-card">
+          <p class="bold">{{result.title}}</p>
+          {{result.resource_name}} - {{result.id}} - {{result.species}}
+        </div>
+        <mat-divider *ngIf="!last"></mat-divider>
+      </ng-container>
+    </div>
+  </ng-container>
+
+</div>
+
+
