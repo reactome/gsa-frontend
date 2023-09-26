@@ -152,7 +152,7 @@ export class TableStore extends ComponentStore<TableState> {
   readonly write = this.updater((state, {value}: { value: string }) => {
     if (Ranges.equals(Ranges.origin(state), state.start)) return state
     if (state.start)
-    state.hasFocus = true;
+      state.hasFocus = true;
     const cell = state.dataset[state.start.y][state.start.x];
     state.dataset[state.start.y][state.start.x] = {...cell, value};
     state.start = {...state.start};
@@ -228,6 +228,13 @@ export class TableStore extends ComponentStore<TableState> {
     state.stop = Ranges.limitCoords({x: range.x.min + width(table), y: range.y.min + height(table)}, state) // Make selection range equal to the pasted region
     return Cells.select({...state, dataset: [...state.dataset]});
   });
+
+  readonly clear = this.updater((state) => ({
+    ...state,
+    start: {x: 0, y: 0},
+    stop: {x: 0, y: 0},
+    dataset: [[cell()]]
+  }));
 
   readonly import = this.updater((state, {table, hasRowNames, hasColNames, fullImport = false}: {
     table: string[][], hasRowNames: boolean, hasColNames: boolean, fullImport?: boolean
@@ -352,7 +359,7 @@ namespace Ranges {
     }
   }
 
-  export function equals(a:Coords,b:Coords): boolean {
+  export function equals(a: Coords, b: Coords): boolean {
     return a.x === b.x && a.y === b.y;
   }
 
