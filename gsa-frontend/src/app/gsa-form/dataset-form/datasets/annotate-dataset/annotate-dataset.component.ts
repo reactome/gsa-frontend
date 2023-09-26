@@ -2,13 +2,14 @@ import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
-import {Observable} from "rxjs";
+import {filter, map, Observable} from "rxjs";
 import {Store} from "@ngrx/store";
 import {PDataset} from "../../../state/dataset/dataset.state";
 import {Subset} from "../../../model/utils.model";
 import {Settings} from "../../../model/table.model";
 import {datasetFeature} from "../../../state/dataset/dataset.selector";
 import {datasetActions} from "../../../state/dataset/dataset.actions";
+import {isDefined} from "../../../utilities/utils";
 
 
 @Component({
@@ -20,6 +21,7 @@ export class AnnotateDatasetComponent implements OnInit {
 
   @Input() datasetId: number;
   dataset$: Observable<PDataset | undefined>
+  annotations$ : Observable<string[][]>
   annotateDataStep: FormGroup;
   tableSettings: Subset<Settings>;
   screenIsSmall: boolean = false;
@@ -37,6 +39,11 @@ export class AnnotateDatasetComponent implements OnInit {
       addRow: false
     };
     this.dataset$ = this.store.select(datasetFeature.selectDataset(this.datasetId));
+    this.annotations$ = this.dataset$.pipe(
+      filter(isDefined),
+      map(d => d.annotations),
+      filter(isDefined)
+    );
     this.responsive.observe(Breakpoints.Small).subscribe(result => this.screenIsSmall = result.matches);
   }
 

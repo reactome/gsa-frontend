@@ -57,15 +57,6 @@ import {
 } from "./dataset-form/datasets/select-dataset/loading-progress/loading-progress.component";
 import {StatisticalDesignComponent} from "./dataset-form/datasets/statistical-design/statistical-design.component";
 import {
-  EditColumnsComponent
-} from "./dataset-form/datasets/annotate-dataset/table-alternative/edit-columns/edit-columns.component";
-import {
-  EditCellsComponent
-} from "./dataset-form/datasets/annotate-dataset/table-alternative/edit-cells/edit-cells.component";
-import {
-  StepperAnnotateComponent
-} from "./dataset-form/datasets/annotate-dataset/table-alternative/stepper-annotate/stepper-annotate.component";
-import {
   AddDatasetButtonComponent
 } from "./dataset-form/datasets/annotate-dataset/add-dataset-button/add-dataset-button.component";
 import {
@@ -83,7 +74,7 @@ import {CommonModule} from "@angular/common";
 
 @NgModule({
   declarations: [
-    AnalysisMethodsComponent, MethodComponent, MethodParameterComponent, SelectDatasetComponent, ExampleDataComponent, AnnotateDatasetComponent, GsaFormComponent, LocalDataComponent, ExternalDataComponent, LoadingProgressComponent, StatisticalDesignComponent, DropdownComponent, DatasetFormComponent, OptionsComponent, AnalysisComponent, EditColumnsComponent, EditCellsComponent, StepperAnnotateComponent, AddDatasetButtonComponent, ChangeAnalysisParamsComponent, ScrollableComponent, SaveDatasetButtonComponent, WarningSnackbarComponent
+    AnalysisMethodsComponent, MethodComponent, MethodParameterComponent, SelectDatasetComponent, ExampleDataComponent, AnnotateDatasetComponent, GsaFormComponent, LocalDataComponent, ExternalDataComponent, LoadingProgressComponent, StatisticalDesignComponent, DropdownComponent, DatasetFormComponent, OptionsComponent, AnalysisComponent, AddDatasetButtonComponent, ChangeAnalysisParamsComponent, ScrollableComponent, SaveDatasetButtonComponent, WarningSnackbarComponent
   ],
   exports: [
     GsaFormComponent

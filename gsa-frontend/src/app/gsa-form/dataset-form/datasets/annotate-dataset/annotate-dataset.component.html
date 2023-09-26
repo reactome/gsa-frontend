@@ -11,7 +11,7 @@
       </div>
       <p class="outline">Please add the annotations for the given dataset. The minimum requirement is to specify one
         annotation (comparison group). For example, "Group" with values "Treatment" and "Control").</p>
-      <ng-container *ngIf="!screenIsSmall; else small">
+
         <div class="align-center flex-container justify-center gap-one vertical width-hundred">
           <gsa-table [userSettings]="tableSettings" [table]="dataset.annotations || [['']]"
                      (tableChange)="onTableUpdate($event)" #table class="width-hundred"></gsa-table>
@@ -21,11 +21,6 @@
                                      [tableStore]="table.tableStore"></gsa-save-dataset-button>
           </div>
         </div>
-      </ng-container>
-      <ng-template #small>
-        <gsa-stepper-annotate [datasetName]="dataset.summary!.title!" [tableSettings]="tableSettings"
-                              class="width-hundred"></gsa-stepper-annotate>
-      </ng-template>
     </div>
   </div>
 </div>
