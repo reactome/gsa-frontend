@@ -1,0 +1,36 @@
+<form [formGroup]="searchForm" (click)="$event.stopPropagation()">
+
+  <mat-form-field id="species" appearance="outline">
+    <mat-label>species</mat-label>
+    <mat-select formControlName="species">
+      <mat-option>No species</mat-option>
+      <mat-option *ngFor="let species of species$ | async" [value]="species">
+        <i>{{species}}</i>
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field id="keywords" appearance="outline" subscriptSizing="dynamic">
+    <mat-label>keywords</mat-label>
+    <input matInput type="text" formControlName="keywords">
+    <button type="submit" mat-icon-button matIconSuffix (click)="search()" [disabled]="!searchForm.valid">
+      <mat-icon fontIcon="search"></mat-icon>
+    </button>
+  </mat-form-field>
+</form>
+<div>
+  <ng-container *ngIf="firstQuery || (results$ | async)?.length !== 0; else noResults">
+    <ng-container *ngFor="let result of results$ | async; let last = last">
+      <div (click)="select(result)" class="result-card">
+        <p class="bold">{{result.title}}</p>
+        {{result.resource_name}} - {{result.id}} - {{result.species}}
+      </div>
+      <mat-divider *ngIf="!last"></mat-divider>
+    </ng-container>
+  </ng-container>
+  <ng-template #noResults>
+    No results found for this species and those keywords, try another combination
+  </ng-template>
+
+</div>
+

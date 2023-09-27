@@ -1,18 +1,18 @@
 import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Store} from "@ngrx/store";
-import {searchResultActions} from "../../../../../state/search-result/search-result.action";
 import {Observable} from "rxjs";
-import {searchResultFeature} from "../../../../../state/search-result/search-result.selector";
-import {SearchResult} from "../../../../../state/search-result/search-result.state";
-import {datasetActions} from "../../../../../state/dataset/dataset.actions";
+import {searchResultFeature} from "../../../../../../state/search-result/search-result.selector";
+import {SearchResult} from "../../../../../../state/search-result/search-result.state";
+import {searchResultActions} from "../../../../../../state/search-result/search-result.action";
+import {datasetActions} from "../../../../../../state/dataset/dataset.actions";
 
 @Component({
-  selector: 'gsa-search-result',
-  templateUrl: './search-result.component.html',
-  styleUrls: ['./search-result.component.scss']
+  selector: 'gsa-search',
+  templateUrl: './search.component.html',
+  styleUrls: ['./search.component.scss']
 })
-export class SearchResultComponent implements OnInit, AfterViewInit {
+export class SearchComponent implements OnInit, AfterViewInit {
 
   @Input() datasetId: number;
 
@@ -21,7 +21,7 @@ export class SearchResultComponent implements OnInit, AfterViewInit {
     keywords: new FormControl('')
   })
 
-  selected = false;
+  firstQuery = true;
   species$: Observable<string[]> = this.store.select(searchResultFeature.selectSpeciesList);
   results$: Observable<SearchResult[]> = this.store.select(searchResultFeature.selectAll);
 
@@ -31,7 +31,6 @@ export class SearchResultComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.store.dispatch(searchResultActions.loadSpecies());
-    this.store.dispatch(searchResultActions.search({species: 'Homo sapiens', keywords: 'pten'}))
 
   }
 
@@ -39,15 +38,12 @@ export class SearchResultComponent implements OnInit, AfterViewInit {
     this.searchForm.controls['keywords'].addValidators([Validators.required])
   }
 
-
-  toggleSelected() {
-    this.selected = !this.selected;
-  }
   search() {
     this.store.dispatch(searchResultActions.search({
       species: this.searchForm.value.species,
       keywords: this.searchForm.value.keywords as string
     }))
+    this.firstQuery = false;
   }
 
   select(result: SearchResult): void {

@@ -1,18 +1,26 @@
 <div (click)="select()" [ngClass]="(isSelected$ | async)?'hover-opponent':'dataset-card-content'">
-  <div>
-    <p class="bold no-wrap">{{source.name}}</p>
-    <p>{{source.description}}</p>
-    <form *ngIf="isSelected$ | async">
-      <div class="flex-container vertical gap-one align-center">
-        <gsa-method-parameter *ngFor="let param of source.parameters" class="width-hundred"
-                              [parameter]="param" [infoTooltip]="false"
-                              (parameterChange)="updateParam($event, source.parameters || [])"/>
+  <p class="bold no-wrap">{{source.name}}</p>
+  <p>{{source.description}}</p>
+  <div [ngClass]="{'visible': isSelected$ | async}" class="invisible">
+    <ng-container *ngIf="source.id !== 'search'; else search">
+        <form>
+          <div class="flex-container vertical gap-one align-center">
+            <gsa-method-parameter *ngFor="let param of source.parameters" class="width-hundred"
+                                  [parameter]="param" [infoTooltip]="false"
+                                  (parameterChange)="updateParam($event, source.parameters || [])"/>
 
-        <button (click)="loadData(source.parameters || [])" class="blue-border" color="primary" mat-stroked-button
-                type="submit">Import
-        </button>
-      </div>
-    </form>
+            <button (click)="loadData(source.parameters || [])" class="blue-border" color="primary" mat-stroked-button
+                    type="submit">Import
+            </button>
+          </div>
+        </form>
+
+    </ng-container>
+    <ng-template #search>
+      <gsa-search [datasetId]="datasetId"></gsa-search>
+    </ng-template>
   </div>
 </div>
+
+
 

@@ -71,7 +71,7 @@ import {
 import {DatasetFormComponent} from "./dataset-form/dataset-form.component";
 import {GsaFormRoutingModule} from "./gsa-form-routing.module";
 import {CommonModule} from "@angular/common";
-import {SearchResultComponent} from "./dataset-form/datasets/select-dataset/dataset-types/search-result/search-result.component";
+import {SearchComponent} from "./dataset-form/datasets/select-dataset/dataset-types/external-data/search/search.component";
 import {SearchResultEffects} from "./state/search-result/search-result.effect";
 import {searchResultFeature} from "./state/search-result/search-result.selector";
 import { SpeciesPipe } from './utilities/species/species.pipe';
@@ -79,7 +79,7 @@ import { SpeciesPipe } from './utilities/species/species.pipe';
 
 @NgModule({
   declarations: [
-    AnalysisMethodsComponent, MethodComponent, MethodParameterComponent, SelectDatasetComponent, ExampleDataComponent, AnnotateDatasetComponent, GsaFormComponent, LocalDataComponent, ExternalDataComponent, LoadingProgressComponent, StatisticalDesignComponent, DropdownComponent, DatasetFormComponent, OptionsComponent, AnalysisComponent, AddDatasetButtonComponent, ChangeAnalysisParamsComponent, ScrollableComponent, SaveDatasetButtonComponent, WarningSnackbarComponent, SearchResultComponent, SpeciesPipe
+    AnalysisMethodsComponent, MethodComponent, MethodParameterComponent, SelectDatasetComponent, ExampleDataComponent, AnnotateDatasetComponent, GsaFormComponent, LocalDataComponent, ExternalDataComponent, LoadingProgressComponent, StatisticalDesignComponent, DropdownComponent, DatasetFormComponent, OptionsComponent, AnalysisComponent, AddDatasetButtonComponent, ChangeAnalysisParamsComponent, ScrollableComponent, SaveDatasetButtonComponent, WarningSnackbarComponent, SearchComponent, SpeciesPipe
   ],
   exports: [
     GsaFormComponent

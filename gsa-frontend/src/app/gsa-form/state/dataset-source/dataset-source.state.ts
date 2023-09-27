@@ -25,6 +25,15 @@ export interface DatasetSourceState extends EntityState<PDatasetSource> {
 export const datasetSourceAdapter = createEntityAdapter<PDatasetSource>();
 
 export const initialState: DatasetSourceState = datasetSourceAdapter.getInitialState({
+  ids: ['search'],
+  entities: {
+    search: {
+      id: 'search',
+      name: 'Search',
+      description: 'Search across Expression Atlas and GREIN dataset',
+      source: 'External'
+    }
+  },
   selectedSourceId: null
 });
 

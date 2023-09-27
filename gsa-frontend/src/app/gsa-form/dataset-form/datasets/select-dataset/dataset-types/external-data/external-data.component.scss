@@ -5,3 +5,15 @@
   border-radius: 10px;
   border: 2px solid var(--primary);
 }
+
+.invisible {
+  visibility: hidden;
+  height: 0;
+  max-height: 0;
+}
+
+.visible {
+  visibility: visible;
+  height: fit-content;
+  max-height: fit-content;
+}
