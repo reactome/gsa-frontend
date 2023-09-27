@@ -1,6 +1,6 @@
 <mat-expansion-panel *ngIf="(dataset$ | async) as dataset" #mep="matExpansionPanel" (closed)="updateScroll()"
                      [expanded]="!dataset.saved" hideToggle>
-  <mat-expansion-panel-header class="padding-left-zero">
+  <mat-expansion-panel-header class="padding-left-zero"> <!--style="height: fit-content"-->
     <div *ngIf="dataset.saved; else unsaved" class="border-blue-left">
       <div class="saved flex-container align-center justify-center"><span class="no-wrap">Saved</span>
       </div>
@@ -11,23 +11,25 @@
         </div>
       </div>
     </ng-template>
-    <div class="flex-container width-hundred horizontal align-center justify-between">
+    <div class="flex-container width-hundred horizontal align-center justify-between no-wrap ellipsis">
       <div *ngIf="!(summaryComplete$ | async); else title" class="italic">
         New Dataset
       </div>
       <ng-template #title>
-        <div class="flex-container vertical justify-center">
-          <span class="bold">{{dataset.summary?.title}}</span>
-          <span
-            *ngIf="dataset.statisticalDesign?.analysisGroup"> {{dataset.statisticalDesign?.analysisGroup}}
+        <div class="flex-container vertical justify-center flex-one ellipsis">
+          <span class="bold ellipsis">{{dataset.summary?.title}}</span>
+          <span *ngIf="dataset.statisticalDesign?.analysisGroup">
+            {{dataset.statisticalDesign?.analysisGroup}}
             :
             <span *ngIf="dataset.statisticalDesign?.comparisonGroup1">
                   {{dataset.statisticalDesign?.comparisonGroup1}}
               vs. {{dataset.statisticalDesign?.comparisonGroup2}}
-          </span></span>
+            </span>
+          </span>
         </div>
       </ng-template>
-      <div class="flex-container horizontal align-center justify-center" *ngrxLet="parameters$ as parameters">
+      <div class="flex-container horizontal align-center justify-center no-wrap" *ngrxLet="parameters$ as parameters"
+           style="flex-shrink: 0">
         <button (click)="changeParameters($event)" [disabled]="parameters.length === 0"
                 color="primary"
                 mat-icon-button
