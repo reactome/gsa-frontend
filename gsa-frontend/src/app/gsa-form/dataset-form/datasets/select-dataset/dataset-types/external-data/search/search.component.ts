@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder} from "@angular/forms";
 import {Store} from "@ngrx/store";
 import {Observable} from "rxjs";
 import {searchResultFeature} from "../../../../../../state/search-result/search-result.selector";
@@ -12,30 +12,29 @@ import {datasetActions} from "../../../../../../state/dataset/dataset.actions";
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
-export class SearchComponent implements OnInit, AfterViewInit {
+export class SearchComponent implements OnInit {
 
   @Input() datasetId: number;
 
-  searchForm = new FormGroup({
-    species: new FormControl(''),
-    keywords: new FormControl('')
+  searchForm = this.builder.group({
+    species: [''],
+    keywords: ['']
+  }, {
+    validators: (group) => {
+      return group.value.species || group.value.keywords ? null : {noInput: true}
+    }
   })
 
-  firstQuery = true;
+  searchStatus$: Observable<'pending' | 'finished' | 'waiting'> = this.store.select(searchResultFeature.selectSearchStatus);
   species$: Observable<string[]> = this.store.select(searchResultFeature.selectSpeciesList);
   results$: Observable<SearchResult[]> = this.store.select(searchResultFeature.selectAll);
 
-  constructor(private store: Store) {
+  constructor(private store: Store, private builder: FormBuilder) {
 
   }
 
   ngOnInit(): void {
     this.store.dispatch(searchResultActions.loadSpecies());
-
-  }
-
-  ngAfterViewInit(): void {
-    this.searchForm.controls['keywords'].addValidators([Validators.required])
   }
 
   search() {
@@ -43,7 +42,6 @@ export class SearchComponent implements OnInit, AfterViewInit {
       species: this.searchForm.value.species,
       keywords: this.searchForm.value.keywords as string
     }))
-    this.firstQuery = false;
   }
 
   select(result: SearchResult): void {

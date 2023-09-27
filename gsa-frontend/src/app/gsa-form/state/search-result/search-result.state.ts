@@ -11,16 +11,17 @@ export interface SearchResult {
   resource_loading_id: string;
   species: string;
   title: string;
-
 }
 
 export interface SearchResultState extends EntityState<SearchResult> {
   speciesList: string[];
+  searchStatus: 'finished' | 'pending' | 'waiting';
 }
 
 export const searchResultAdapter = createEntityAdapter<SearchResult>();
 
 export const initialState: SearchResultState = searchResultAdapter.getInitialState({
-  speciesList: []
+  speciesList: [],
+  searchStatus: 'waiting'
 })
 

@@ -3,19 +3,20 @@ form {
   flex-direction: column;
 }
 
-form #species {
-  //width: 120px;
-}
-
 form #keywords {
   flex: 1;
 }
 
 .result-card {
+  cursor: pointer;
   padding: 1em;
 
   &:hover, &:focus, &:active {
     background: var(--surface2)
   }
+}
+
+.padding-top-ten {
+  padding-top: 10px;
 }
 

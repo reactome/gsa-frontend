@@ -18,19 +18,25 @@
     </button>
   </mat-form-field>
 </form>
-<div>
-  <ng-container *ngIf="firstQuery || (results$ | async)?.length !== 0; else noResults">
-    <ng-container *ngFor="let result of results$ | async; let last = last">
-      <div (click)="select(result)" class="result-card">
-        <p class="bold">{{result.title}}</p>
-        {{result.resource_name}} - {{result.id}} - {{result.species}}
-      </div>
-      <mat-divider *ngIf="!last"></mat-divider>
+<div [ngSwitch]="searchStatus$ | async">
+  <div *ngSwitchCase="'finished'">
+    <ng-container *ngIf="(results$ | async)?.length !== 0; else noResults">
+      <ng-container *ngFor="let result of results$ | async; let last = last">
+        <div (click)="select(result)" class="result-card">
+          <p class="bold">{{result.title}}</p>
+          {{result.resource_name}} - {{result.id}} - {{result.species}}
+        </div>
+        <mat-divider *ngIf="!last"></mat-divider>
+      </ng-container>
     </ng-container>
-  </ng-container>
-  <ng-template #noResults>
-    No results found for this species and those keywords, try another combination
-  </ng-template>
+    <ng-template #noResults>
+      No results found for this species and those keywords, try another combination
+    </ng-template>
+  </div>
+
+  <div *ngSwitchCase="'pending'" class="flex justify-center padding-top-ten">
+      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+  </div>
 
 </div>
 
