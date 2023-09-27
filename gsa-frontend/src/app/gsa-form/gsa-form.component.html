@@ -33,7 +33,7 @@ datasetIds: datasetIds$
   <mat-step #addDataStep [completed]="vm.allSaved">
     <ng-template matStepLabel>Add datasets</ng-template>
     <h1>Step 2: Add and annotate your datasets</h1>
-    <div class="flex-container horizontal gap-one justify-evenly">
+    <div class="flex-container horizontal gap-one justify-evenly" *ngIf="vm.method">
       <div class="nav-button-container align-center flex-container justify-center vertical">
         <button class="margin-top-30" color="primary" mat-fab matStepperPrevious>
           <mat-icon>keyboard_arrow_left</mat-icon>
@@ -41,10 +41,10 @@ datasetIds: datasetIds$
         <div class="outline margin-top-10">Back</div>
       </div>
       <gsa-scrollable #scrollable [bottomMargin]="57" class="width-seventy">
-        <mat-accordion (change)="scrollable.updateShadows()" class="width-hundred"
+        <mat-accordion (change)="scrollable.updateShadows()" class="width-hundred flex-container no-wrap justify-center vertical gap-one"
                        multi="false">
-          <div *ngFor="let id of vm.datasetIds; let i = index " class="gap-one">
-            <gsa-dataset-form [datasetId]="id"
+          <div *ngFor="let id of vm.datasetIds; let i = index ">
+            <gsa-dataset-form [datasetId]="id"  [method]="vm.method"
                                 [ngClass]="{'width-hundred': i === 0}"></gsa-dataset-form>
           </div>
         </mat-accordion>

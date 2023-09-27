@@ -26,7 +26,7 @@ export namespace Request {
     group2: string;
   }
 
-  interface Parameter {
+  export interface Parameter {
     name: string
     value: any
   }

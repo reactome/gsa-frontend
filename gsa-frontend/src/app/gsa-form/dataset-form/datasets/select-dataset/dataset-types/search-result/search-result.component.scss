@@ -1,0 +1,22 @@
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form #species {
+  //width: 120px;
+}
+
+form #keywords {
+  flex: 1;
+}
+
+.result-card {
+  padding: 1em;
+
+  &:hover, &:focus, &:active {
+    background: var(--surface2)
+  }
+}
+
+

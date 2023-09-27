@@ -15,8 +15,11 @@
   visibility: hidden;
   margin-right: 24px;
   width: 0px;
+  color: var(--surface);
   border-bottom-right-radius: 4px;
   border-top-right-radius: 4px;
+  transition: visibility .5s, width .5s;
+  opacity: 0;
 }
 
 .flex {
@@ -26,7 +29,8 @@
 .border-blue-left {
   &:hover .saved {
     background-color: var(--primary);
-    color: var(--on-outline-variant);
+    visibility: visible;
+    opacity: 1;
   }
   border-left: 5px solid var(--primary);
   border-radius: 4px;
@@ -35,7 +39,8 @@
 .border-grey-left {
    &:hover .saved {
      background-color: var(--outline-variant);
-     color: var(--on-outline-variant);
+     visibility: visible;
+     opacity: 1;
    }
   border-left: 5px solid var(--outline-variant);
   border-radius: 4px;
