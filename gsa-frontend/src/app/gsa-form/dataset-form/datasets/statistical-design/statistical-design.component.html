@@ -57,12 +57,12 @@
         <div *ngIf="vm.dataset?.statisticalDesign?.analysisGroup !== undefined else disableCovariateSelection"
              class="flex-one flex-container align-center vertical">
             <h2 class="flex-container justify-center">Select covariates</h2>
-            <div class="flex-container vertical">
+            <div class="flex-container vertical width-hundred" >
                 <mat-checkbox (change)="changeAllCovariates($event.checked)" [checked]="vm.all"
-                              [indeterminate]="vm.some && ! vm.all" class="negative-margin-left" color="primary"
+                              [indeterminate]="vm.some && ! vm.all" color="primary"
                 >Select all
                 </mat-checkbox>
-                <section>
+                <section style="padding-left: 20px" class="flex-container vertical no-wrap">
                     <mat-checkbox class="example-margin"
                                   color="primary" *ngFor="let cov of vm.covariates" class="example-section"
                                   [checked]="cov.value" (change)="setCovariance($event, cov.name)">
