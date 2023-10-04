@@ -9,12 +9,6 @@
   margin-top: -20px;
 }
 
-.shadow-bottom-transition {
-  opacity: var(--primary);
-  transition: opacity 0ms;
-  box-shadow: 0 -10px 10px -10px #8d8c8c inset;
-}
-
 .shadow-top-transition {
   opacity: 0;
   transition: opacity 0ms;
@@ -50,7 +44,7 @@
 
 
 .center-vertical {
-  height: calc(100vh - 130px);
+  height: calc(100vh - 210px);
   overflow-y: auto;
   overflow-x: hidden;
 
