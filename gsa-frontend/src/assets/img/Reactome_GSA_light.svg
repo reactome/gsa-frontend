@@ -29,7 +29,7 @@
     }
 
     .cls-7 {
-      fill: var(--on-surface, #fff);
+      fill: #000
     }</style>
   </defs>
   <title>Reactome_GSA</title>
