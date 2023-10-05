@@ -1,11 +1,7 @@
 {
   "name": "reactome-table",
   "version": "0.0.1",
-  "exports": {
-    ".": {
-      "fonts": "./assets/*"
-    }
-  },
+
   "peerDependencies": {
     "@angular/common": "^15.2.0",
     "@angular/core": "^15.2.0",
