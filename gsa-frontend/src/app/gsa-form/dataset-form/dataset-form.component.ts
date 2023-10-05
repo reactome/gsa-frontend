@@ -1,17 +1,16 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatStepper} from "@angular/material/stepper";
 import {MatDialog} from "@angular/material/dialog";
 import {ScrollService} from "../services/scroll.service";
 import {CdkStep, StepperSelectionEvent} from "@angular/cdk/stepper";
 import {Store} from "@ngrx/store";
 import {datasetFeature} from "../state/dataset/dataset.selector";
-import {delay, distinctUntilChanged, Observable, of, share} from "rxjs";
+import {delay, distinctUntilChanged, Observable, share} from "rxjs";
 import {PDataset} from "../state/dataset/dataset.state";
 import {datasetActions} from "../state/dataset/dataset.actions";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 import {Parameter} from "../model/parameter.model";
 import {Method} from "../state/method/method.state";
-
 
 @Component({
   selector: 'gsa-dataset-form',
@@ -19,7 +18,7 @@ import {Method} from "../state/method/method.state";
   styleUrls: ['./dataset-form.component.scss']
 })
 @UntilDestroy()
-export class DatasetFormComponent implements OnInit {
+export class DatasetFormComponent implements OnInit, OnDestroy {
 
   @ViewChild('nestedStepper') public stepper: MatStepper;
   @ViewChild('selectStep') selectStep: CdkStep
@@ -30,9 +29,9 @@ export class DatasetFormComponent implements OnInit {
 
   dataset$: Observable<PDataset | undefined>;
   parameters$: Observable<Parameter[]>;
-  summaryComplete$: Observable<boolean> = of(false);
-  annotationComplete$: Observable<boolean> = of(false);
-  statisticalDesignComplete$: Observable<boolean> = of(false);
+  summaryComplete$: Observable<boolean>;
+  annotationComplete$: Observable<boolean>;
+  statisticalDesignComplete$: Observable<boolean>;
 
   constructor(public dialog: MatDialog,
               public scrollService: ScrollService, private store: Store) {
@@ -45,6 +44,10 @@ export class DatasetFormComponent implements OnInit {
     this.summaryComplete$.pipe(delay(0), untilDestroyed(this)).subscribe(() => this.stepper.next());
     this.annotationComplete$ = this.store.select(datasetFeature.selectAnnotationComplete(this.datasetId)).pipe(distinctUntilChanged(), share());
     this.statisticalDesignComplete$ = this.store.select(datasetFeature.selectStatisticalDesignComplete(this.datasetId)).pipe(distinctUntilChanged(), share());
+  }
+
+  ngOnDestroy(): void {
+    this.store.dispatch(datasetActions.clear({id: this.datasetId}))
   }
 
   deleteDataset($event: MouseEvent) {

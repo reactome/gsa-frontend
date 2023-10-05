@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatStepper} from "@angular/material/stepper";
 import {Store} from "@ngrx/store";
 import {methodFeature} from "./state/method/method.selector";
@@ -17,7 +17,7 @@ import {isDefined} from "./utilities/utils";
   templateUrl: './gsa-form.component.html',
   styleUrls: ['./gsa-form.component.scss']
 })
-export class GsaFormComponent implements AfterViewInit, OnInit {
+export class GsaFormComponent implements AfterViewInit, OnInit, OnDestroy {
   @ViewChild('stepper') stepper: MatStepper;
 
   @ViewChild('setMethodStep') setMethodStep: CdkStep;
@@ -43,7 +43,13 @@ export class GsaFormComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit(): void {
-    this.addDataset();
+    this.datasets$
+      .pipe(take(1))
+      .subscribe(datasets => datasets.length === 0 ? this.addDataset() : null)
+  }
+
+  ngOnDestroy(): void {
+    this.cancelAnalysis()
   }
 
   addDataset() {
@@ -65,7 +71,11 @@ export class GsaFormComponent implements AfterViewInit, OnInit {
     }
 
     if ($event.previouslySelectedStep === this.analysisStep) {
-      this.analysisId$.pipe(take(1)).subscribe(analysisId => this.store.dispatch(analysisActions.cancel({analysisId})))
+      this.cancelAnalysis();
     }
+  }
+
+  private cancelAnalysis() {
+    this.analysisId$.pipe(take(1)).subscribe(analysisId => this.store.dispatch(analysisActions.cancel({analysisId})))
   }
 }
