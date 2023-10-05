@@ -4,16 +4,12 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
 import {HttpClientModule} from "@angular/common/http";
-import {GsaFormModule} from './gsa-form/gsa-form.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {StoreModule} from '@ngrx/store';
 import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 import {EffectsModule} from '@ngrx/effects';
 import {routerReducer, StoreRouterConnectingModule} from '@ngrx/router-store';
-import {RouterModule} from "@angular/router";
-import {AppRoutingModule, routes} from "./app-routing.module";
-import { HomeComponent } from './home/home.component';
-import {HomeModule} from "./home/home.module";
+import {AppRoutingModule} from "./app-routing.module";
 import {CommonModule} from "@angular/common";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 

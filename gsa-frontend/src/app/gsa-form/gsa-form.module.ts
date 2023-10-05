@@ -28,10 +28,6 @@ import {AnalysisComponent} from './analysis/analysis.component';
 
 import {MatDialogModule} from "@angular/material/dialog";
 import {ScrollableComponent} from './utilities/scrollable/scrollable.component';
-import {TableModule} from "./utilities/table/table.module";
-import {MatTableModule} from '@angular/material/table';
-import {MatPaginatorModule} from '@angular/material/paginator';
-import {MatSortModule} from '@angular/material/sort';
 import {StoreModule} from "@ngrx/store";
 import {methodFeature} from "./state/method/method.selector";
 import {EffectsModule} from "@ngrx/effects";
@@ -57,29 +53,23 @@ import {
 } from "./dataset-form/datasets/select-dataset/loading-progress/loading-progress.component";
 import {StatisticalDesignComponent} from "./dataset-form/datasets/statistical-design/statistical-design.component";
 import {
-  AddDatasetButtonComponent
-} from "./dataset-form/datasets/annotate-dataset/add-dataset-button/add-dataset-button.component";
-import {
   ChangeAnalysisParamsComponent
 } from "./dataset-form/datasets/change-analysis-params/change-analysis-params.component";
-import {
-  SaveDatasetButtonComponent
-} from "./dataset-form/datasets/annotate-dataset/save-dataset-button/save-dataset-button.component";
-import {
-  WarningSnackbarComponent
-} from "./dataset-form/datasets/annotate-dataset/add-dataset-button/warning-snackbar/warning-snackbar.component";
 import {DatasetFormComponent} from "./dataset-form/dataset-form.component";
 import {GsaFormRoutingModule} from "./gsa-form-routing.module";
 import {CommonModule} from "@angular/common";
-import {SearchComponent} from "./dataset-form/datasets/select-dataset/dataset-types/external-data/search/search.component";
+import {
+  SearchComponent
+} from "./dataset-form/datasets/select-dataset/dataset-types/external-data/search/search.component";
 import {SearchResultEffects} from "./state/search-result/search-result.effect";
 import {searchResultFeature} from "./state/search-result/search-result.selector";
-import { SpeciesPipe } from './utilities/species/species.pipe';
+import {SpeciesPipe} from './utilities/species/species.pipe';
+import {ReactomeTableModule} from "reactome-table";
 
 
 @NgModule({
   declarations: [
-    AnalysisMethodsComponent, MethodComponent, MethodParameterComponent, SelectDatasetComponent, ExampleDataComponent, AnnotateDatasetComponent, GsaFormComponent, LocalDataComponent, ExternalDataComponent, LoadingProgressComponent, StatisticalDesignComponent, DropdownComponent, DatasetFormComponent, OptionsComponent, AnalysisComponent, AddDatasetButtonComponent, ChangeAnalysisParamsComponent, ScrollableComponent, SaveDatasetButtonComponent, WarningSnackbarComponent, SearchComponent, SpeciesPipe
+    AnalysisMethodsComponent, MethodComponent, MethodParameterComponent, SelectDatasetComponent, ExampleDataComponent, AnnotateDatasetComponent, GsaFormComponent, LocalDataComponent, ExternalDataComponent, LoadingProgressComponent, StatisticalDesignComponent, DropdownComponent, DatasetFormComponent, OptionsComponent, AnalysisComponent, ChangeAnalysisParamsComponent, ScrollableComponent, SearchComponent, SpeciesPipe
   ],
   exports: [
     GsaFormComponent
@@ -108,10 +98,9 @@ import { SpeciesPipe } from './utilities/species/species.pipe';
     MatCheckboxModule,
     MatExpansionModule,
     MatDialogModule,
-    TableModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
+
+    ReactomeTableModule,
+
     StoreModule.forFeature(methodFeature),
     StoreModule.forFeature(datasetSourceFeature),
     StoreModule.forFeature(datasetFeature),

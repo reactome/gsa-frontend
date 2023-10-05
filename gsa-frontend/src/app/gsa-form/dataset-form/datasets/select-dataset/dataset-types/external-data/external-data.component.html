@@ -1,25 +1,37 @@
-<div (click)="select()" [ngClass]="(isSelected$ | async)?'hover-opponent':'dataset-card-content'">
-  <p class="bold no-wrap">{{source.name}}</p>
-  <p>{{source.description}}</p>
-  <div [ngClass]="{'visible': isSelected$ | async}" class="invisible">
-    <ng-container *ngIf="source.id !== 'search'; else search">
-        <form>
-          <div class="flex-container vertical gap-one align-center">
-            <gsa-method-parameter *ngFor="let param of source.parameters" class="width-hundred"
-                                  [parameter]="param" [infoTooltip]="false"
-                                  (parameterChange)="updateParam($event, source.parameters || [])"/>
+<div (click)="select()" [ngClass]="{
+'hover-opponent': (isSelected$ | async),
+'dataset-card-content': !(isSelected$ | async),
+'contrast': source.id === 'search'
+}">
 
-            <button (click)="loadData(source.parameters || [])" class="blue-border" color="primary" mat-stroked-button
-                    type="submit">Import
-            </button>
-          </div>
-        </form>
+  <div *ngIf="source.id === 'search'; else other" >
+    <p class="bold no-wrap">
+      <mat-icon *ngIf="source.id === 'search'" style="vertical-align: middle">search</mat-icon>
+      {{source.name}}
+    </p>
+    <p>{{source.description}}</p>
 
-    </ng-container>
-    <ng-template #search>
-      <gsa-search [datasetId]="datasetId"></gsa-search>
-    </ng-template>
+    <gsa-search [datasetId]="datasetId"></gsa-search>
+
   </div>
+
+  <ng-template #other>
+    <p class="bold no-wrap">      {{source.name}}    </p>
+    <p>{{source.description}}</p>
+    <div [ngClass]="{'visible': isSelected$ | async}" class="invisible">
+      <form>
+        <div class="flex-container vertical gap-one align-center">
+          <gsa-method-parameter *ngFor="let param of source.parameters" class="width-hundred"
+                                [parameter]="param" [infoTooltip]="false"
+                                (parameterChange)="updateParam($event, source.parameters || [])"/>
+
+          <button (click)="loadData(source.parameters || [])" class="blue-border" color="primary" mat-stroked-button
+                  type="submit">Import
+          </button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
 </div>
 
 

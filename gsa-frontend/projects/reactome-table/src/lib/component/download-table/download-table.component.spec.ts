@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SaveDatasetButtonComponent } from './save-dataset-button.component';
+import { DownloadTableComponent } from './download-table.component';
 
 describe('SaveDatasetButtonComponent', () => {
-  let component: SaveDatasetButtonComponent;
-  let fixture: ComponentFixture<SaveDatasetButtonComponent>;
+  let component: DownloadTableComponent;
+  let fixture: ComponentFixture<DownloadTableComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SaveDatasetButtonComponent ]
+      declarations: [ DownloadTableComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(SaveDatasetButtonComponent);
+    fixture = TestBed.createComponent(DownloadTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

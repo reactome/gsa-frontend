@@ -1,11 +1,11 @@
-import {initialUndoRedoState, UndoRedoState} from "ngrx-wieder";
-import {Settings} from "../../../model/table.model";
+import {Settings} from "../model/table.model";
 import {Injectable} from "@angular/core";
 import {ComponentStore} from "@ngrx/component-store";
-import {height, numberToLetter, pushAll, width} from "./table.util";
-import {Subset} from "../../../model/utils.model";
+import {height, numberToLetter, pushAll, width} from "../utils/table.util";
+import {Subset} from "../model/utils.model";
 import {catchError, EMPTY, exhaustMap, Observable, tap} from "rxjs";
 import {fromPromise} from "rxjs/internal/observable/innerFrom";
+import {initialUndoRedoState, UndoRedoState} from "ngrx-wieder";
 
 export type Coords = { x: number, y: number };
 export type Named = { name: string };
@@ -54,7 +54,9 @@ export class TableStore extends ComponentStore<TableState> {
         addColumn: true,
         addRow: true,
         showRows: true,
-        showCols: true
+        showCols: true,
+        uploadButton: "text",
+        downloadButton: "text"
       },
       ...initialUndoRedoState,
     });

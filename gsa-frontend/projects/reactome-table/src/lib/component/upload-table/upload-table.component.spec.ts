@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddDatasetButtonComponent } from './add-dataset-button.component';
+import { UploadTableComponent } from './upload-table.component';
 
 describe('AddDatasetButtonComponent', () => {
-  let component: AddDatasetButtonComponent;
-  let fixture: ComponentFixture<AddDatasetButtonComponent>;
+  let component: UploadTableComponent;
+  let fixture: ComponentFixture<UploadTableComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AddDatasetButtonComponent ]
+      declarations: [ UploadTableComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AddDatasetButtonComponent);
+    fixture = TestBed.createComponent(UploadTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

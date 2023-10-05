@@ -4,6 +4,7 @@
   margin: 3px !important;
   border-radius: 10px;
   border: 2px solid var(--primary);
+
 }
 
 .invisible {
@@ -16,4 +17,9 @@
   visibility: visible;
   height: fit-content;
   max-height: fit-content;
+}
+
+.contrast {
+  //color: var(--on-surface);
+  //border: 4px double var(--on-surface);
 }

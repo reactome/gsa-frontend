@@ -1,7 +1,7 @@
 import {datasetAdapter} from './dataset.state';
 import {createFeature, createSelector} from '@ngrx/store';
 import {datasetReducer} from './dataset.reducer';
-import {transpose} from '../../utilities/table/state/table.util';
+import {transpose} from 'reactome-table';
 import {Covariate} from "../../model/dataset.model";
 import {Parameter} from "../../model/parameter.model";
 

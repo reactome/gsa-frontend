@@ -1,3 +1,7 @@
+@font-face {
+  font-family: "Roboto Mono";
+  src: url("~src/assets/fonts/RobotoMono-VariableFont_wght.ttf") format("truetype");
+}
 /* You can add global styles to this file, and also import other style files */
 
 
@@ -19,10 +23,6 @@ body {
   }
 }
 
-mat-vertical-stepper, mat-horizontal-stepper {
-  background: transparent !important;
-}
-
 
 .outline {
   color: var(--outline);
@@ -37,6 +37,10 @@ h1 {
   justify-content: center;
   margin-bottom: 10px;
   font-weight: bold !important;
+}
+
+h2 {
+  font-weight: 100!important;
 }
 
 //Width

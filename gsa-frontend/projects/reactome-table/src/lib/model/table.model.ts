@@ -1,4 +1,4 @@
-import {Mapper} from "../utilities/table/table.component";
+import {Mapper} from "./utils.model";
 
 export class CellInfo {
   value: any
@@ -14,7 +14,7 @@ export class CellInfo {
   }
 }
 
-export interface Settings extends Mapper<boolean>{
+export interface Settings extends Mapper<boolean | string>{
   renameCols: boolean;
   renameRows: boolean;
   changeCells: boolean;
@@ -22,6 +22,9 @@ export interface Settings extends Mapper<boolean>{
   addRow: boolean;
   showCols: boolean;
   showRows: boolean;
+
+  uploadButton: 'icon' | 'text' | false;
+  downloadButton: 'icon' | 'text' | false;
 }
 
 

@@ -1,5 +1,5 @@
 import {DataSummary} from "./load-dataset.model";
-import {CellInfo} from "./table.model";
+import {CellInfo} from "reactome-table";
 
 
 export class DatasetTable {

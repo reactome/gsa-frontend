@@ -13,13 +13,8 @@
         annotation (comparison group). For example, "Group" with values "Treatment" and "Control").</p>
 
         <div class="align-center flex-container justify-center gap-one vertical width-hundred">
-          <gsa-table [userSettings]="tableSettings" [table]="dataset.annotations || [['']]"
-                     (tableChange)="onTableUpdate($event)" #table class="width-hundred"></gsa-table>
-          <div class="flex-container horizontal gap-one">
-            <gsa-add-dataset-button [icon]="false" [tableStore]="table.tableStore"></gsa-add-dataset-button>
-            <gsa-save-dataset-button [datasetName]="dataset.summary!.title!" [icon]="false"
-                                     [tableStore]="table.tableStore"></gsa-save-dataset-button>
-          </div>
+          <reactome-table [userSettings]="tableSettings" [table]="dataset.annotations || [['']]"
+                     (tableChange)="onTableUpdate($event)"  class="width-hundred"></reactome-table>
         </div>
     </div>
   </div>

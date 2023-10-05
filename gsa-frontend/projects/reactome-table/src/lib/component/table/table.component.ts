@@ -13,16 +13,13 @@ import {
 import {Settings} from "../../model/table.model";
 import {Clipboard} from '@angular/cdk/clipboard';
 import {MatButton} from "@angular/material/button";
-import {Cell, Coords, TableStore} from "./state/table.store";
+import {Cell, Coords, TableStore} from "../../state/table.store";
 import {combineLatest, delay, filter, first, map, Observable, skip} from "rxjs";
-import {isDefined} from "../utils";
+import {isDefined, Mapper} from "../../model/utils.model";
 import {Subset} from "../../model/utils.model";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 
 
-export type Mapper<T> = {
-  [p: string | number]: T
-}
 
 interface SelectedCellRange {
   minX: number
@@ -40,7 +37,7 @@ type Range = { start: Coord, stop?: Coord };
 
 @UntilDestroy()
 @Component({
-  selector: 'gsa-table',
+  selector: 'reactome-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
   providers: [TableStore]
@@ -55,6 +52,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
 
   @Input() userSettings: Subset<Settings>;
   @Input() table: string[][];
+  @Input() name: string;
 
 
   data$: Observable<Cell[][]> = this.tableStore.data$;

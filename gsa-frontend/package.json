@@ -8,6 +8,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "build-table": "ng build reactome-table",
     "deploy-gh": "ng deploy --base-href=/gsa-frontend/",
     "deploy-dev": "ng build --base-href=/gsa-frontend/ && rsync -Pav dist/gsa-frontend dev:site/Website/static --delete"
   },
@@ -54,6 +55,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
+    "ng-packagr": "^15.2.2",
     "typescript": "~4.9.5"
   }
 }

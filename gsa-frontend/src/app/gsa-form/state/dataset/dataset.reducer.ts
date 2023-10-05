@@ -3,7 +3,7 @@ import {datasetAdapter, DatasetState, initialState, PDataset} from './dataset.st
 import {datasetActions} from './dataset.actions';
 import {DataSummary} from '../../model/load-dataset.model';
 import {Subset} from "../../model/utils.model";
-import {cp, transpose} from "../../utilities/table/state/table.util";
+import {cp, transpose} from "reactome-table";
 import {EntityHelper, isDefined} from "../../utilities/utils";
 
 

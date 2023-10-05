@@ -2,7 +2,7 @@
 
   <mat-form-field id="species" appearance="outline">
     <mat-label>species</mat-label>
-    <mat-select formControlName="species" (change)="search()">
+    <mat-select formControlName="species" (selectionChange)="search()" >
       <mat-option>No species</mat-option>
       <mat-option *ngFor="let species of species$ | async" [value]="species">
         <i>{{species}}</i>

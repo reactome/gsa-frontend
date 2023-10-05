@@ -17,7 +17,7 @@ export class SearchComponent implements OnInit {
   @Input() datasetId: number;
 
   searchForm = this.builder.group({
-    species: [''],
+    species: ['Homo sapiens'],
     keywords: ['']
   }, {
     validators: (group) => {
@@ -35,7 +35,6 @@ export class SearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(searchResultActions.loadSpecies());
-    this.searchForm.get('species')?.setValue('Homo sapiens')
   }
 
   search() {

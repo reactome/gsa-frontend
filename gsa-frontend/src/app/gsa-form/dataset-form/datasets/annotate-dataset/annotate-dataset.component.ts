@@ -6,10 +6,10 @@ import {filter, map, Observable} from "rxjs";
 import {Store} from "@ngrx/store";
 import {PDataset} from "../../../state/dataset/dataset.state";
 import {Subset} from "../../../model/utils.model";
-import {Settings} from "../../../model/table.model";
 import {datasetFeature} from "../../../state/dataset/dataset.selector";
 import {datasetActions} from "../../../state/dataset/dataset.actions";
 import {isDefined} from "../../../utilities/utils";
+import {Settings} from "reactome-table";
 
 
 @Component({
