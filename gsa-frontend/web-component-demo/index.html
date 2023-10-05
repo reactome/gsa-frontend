@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reactome Table Demo</title>
+</head>
+<body>
+<div id="wrapper">
+
+</div>
+
+
+<link href="reactome-table-styles.css" rel="stylesheet"> <!-- IMPORT Styles -->
+<script type="application/javascript" src="./reactome-table-wc.js"></script>  <!-- IMPORT Web Component -->
+<script type="application/javascript">
+  const table = [
+    ["", "A", "B"],
+    ["1", "a", "b"],
+    ["2", "c", "d"]
+  ];
+  const myElement = document.createElement('reactome-table-wc');
+  myElement.addEventListener('tableChange', (table) => {
+    console.log('Table changed', table)
+  });
+  myElement.setAttribute('table', JSON.stringify(table));
+  const wrapper = document.getElementById("wrapper");
+  wrapper.appendChild(myElement);
+</script>
+</body>
+<!-- Define colors of table -->
+<style>
+  :root {
+    --primary: #006782; /* Input border + selected effect */
+    --primary-container: #baeaff; /* Column header bg */
+    --on-primary-container: #001f29; /* Column header fg */
+    --surface: #fafdff; /* Cell bg  */
+    --on-surface: #001f25; /* Cell fg */
+    --surface-variant: #e9f2f6; /* Row header bg */
+    --on-surface-variant: #40484c; /* Row header fg */
+    --outline-variant: #c0c8cc; /* Cell border color */
+  }
+</style>
+</html>

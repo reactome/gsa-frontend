@@ -174,7 +174,9 @@
             "tsConfig": "projects/reactome-table-wc/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [],
-            "styles": [],
+            "styles": [
+              "projects/reactome-table/src/assets/_index.scss"
+            ],
             "scripts": []
           },
           "configurations": {

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reactome Table Demo</title>
+</head>
+<body>
+<div id="wrapper" style="position: relative">
+
+</div>
+
+<style>
+  :root {
+    --primary: #006782;
+    --on-primary: rgba(0, 103, 130, 0);
+    --primary-container: #baeaff;
+    --on-primary-container: #001f29;
+    --secondary: #006782;
+    --on-secondary: rgba(0, 103, 130, 0);
+    --secondary-container: #baeaff;
+    --on-secondary-container: #001f29;
+    --tertiary: #1660a5;
+    --on-tertiary: rgba(22, 96, 165, 0);
+    --tertiary-container: #d3e4ff;
+    --on-tertiary-container: #001c38;
+    --error: #de3730;
+    --on-error: rgba(255, 84, 73, 0);
+    --error-container: #ffedea;
+    --on-error-container: #690005;
+    --background: #fafdff;
+    --on-background: #001f25;
+    --surface: #fafdff;
+    --on-surface: #001f25;
+    --surface-variant: #e9f2f6;
+    --on-surface-variant: #40484c;
+    --outline: #70787d;
+    --outline-variant: #c0c8cc;
+    --surface1: linear-gradient(0, rgba(0, 103, 130, 0.05), rgba(0, 103, 130, 0.05)), #fafdff;
+    --surface2: linear-gradient(0, rgba(0, 103, 130, 0.08), rgba(0, 103, 130, 0.08)), #fafdff;
+    --surface3: linear-gradient(0, rgba(0, 103, 130, 0.11), rgba(0, 103, 130, 0.11)), #fafdff;
+    --surface4: linear-gradient(0, rgba(0, 103, 130, 0.12), rgba(0, 103, 130, 0.12)), #fafdff;
+    --surface5: linear-gradient(0, rgba(0, 103, 130, 0.14), rgba(0, 103, 130, 0.14)), #fafdff;
+    --icon-positive: #0C9509;
+    --hover: rgba(0, 0, 0, 0.04);
+  }
+</style>
+
+<script type="application/javascript" src="./reactome-table-wc.js"></script>
+
+
+<script type="application/javascript">
+  const table = [
+    ["", "A", "B"],
+    ["1", "a", "b"],
+    ["2", "c", "d"]
+  ];
+  const myElement = document.createElement('reactome-table-wc');
+  myElement.addEventListener('tableChange', (table) => {
+    console.log('Table changed', table)
+  });
+  myElement.setAttribute('table', JSON.stringify(table));
+  const wrapper = document.getElementById("wrapper");
+  wrapper.appendChild(myElement);
+</script>
+</body>
+</html>

@@ -1,6 +1,5 @@
 import {
   AfterViewInit,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
@@ -15,8 +14,7 @@ import {Clipboard} from '@angular/cdk/clipboard';
 import {MatButton} from "@angular/material/button";
 import {Cell, Coords, TableStore} from "../../state/table.store";
 import {combineLatest, delay, filter, first, map, Observable, skip} from "rxjs";
-import {isDefined, Mapper} from "../../model/utils.model";
-import {Subset} from "../../model/utils.model";
+import {isDefined, Mapper, Subset} from "../../model/utils.model";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 import {safeInput} from "../../utils/web-component-utils";
 
@@ -91,7 +89,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   );
 
 
-  constructor(private clipboard: Clipboard, private cd: ChangeDetectorRef, public readonly tableStore: TableStore) {
+  constructor(private clipboard: Clipboard, public readonly tableStore: TableStore) {
   }
 
   ngOnInit(): void {
