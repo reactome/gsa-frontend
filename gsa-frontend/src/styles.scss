@@ -10,6 +10,10 @@ html, body {
   overflow: hidden !important;
 }
 
+a {
+  color: var(--primary)
+}
+
 body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   background-color: var(--surface);
@@ -218,4 +222,14 @@ mat-icon {
 
 .mat-mdc-text-field-wrapper {
   flex: 0 !important;
+  //background: var(--surface);
+}
+
+.mat-expansion-panel {
+  // background: rgb(255 255 255 / 10%); // Wild frosty glass dreams
+  // backdrop-filter: blur(5px); // Wild frosty glass dreams
+}
+
+mat-vertical-stepper, mat-horizontal-stepper {
+  background: transparent !important;
 }
