@@ -2,6 +2,11 @@
 
 This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.0.
 
+## Importing styles
+
+To import styles required for the table to work correctly, please use the following in one of your style files
+
+
 ## Code scaffolding
 
 Run `ng generate component component-name --project reactome-table` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project reactome-table`.
