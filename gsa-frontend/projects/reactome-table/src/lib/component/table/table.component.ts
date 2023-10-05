@@ -18,8 +18,7 @@ import {combineLatest, delay, filter, first, map, Observable, skip} from "rxjs";
 import {isDefined, Mapper} from "../../model/utils.model";
 import {Subset} from "../../model/utils.model";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
-
-
+import {safeInput} from "../../utils/web-component-utils";
 
 interface SelectedCellRange {
   minX: number
@@ -96,6 +95,9 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngOnInit(): void {
+    safeInput(this, 'table');
+    safeInput(this,'userSettings');
+
     //Initialize settings
     this.tableStore.settings({settings: this.userSettings});
 
