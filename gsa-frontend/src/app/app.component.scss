@@ -12,6 +12,6 @@ svg {
 
 @media (prefers-color-scheme: dark) {
   img[src*="assets/img/Reactome_GSA_light.svg"] {
-    content: url("/assets/img/Reactome_GSA_dark.svg");
+    content: url("../assets/img/Reactome_GSA_dark.svg");
   }
 }
