@@ -1,8 +1,9 @@
 import {ActionReducer, createReducer, on} from "@ngrx/store";
-import {datasetSourceAdapter, DatasetSourceState, initialState} from "./dataset-source.state";
+import {datasetSourceAdapter, DatasetSourceState, initialState, PDatasetSource} from "./dataset-source.state";
 import {datasetSourceActions} from "./dataset-source.action";
+import {EntityHelper} from "../../utilities/utils";
 
-// const helper = new EntityHelper<PDatasetSource, DatasetSourceState>(datasetSourceAdapter);
+const helper = new EntityHelper<PDatasetSource, DatasetSourceState>(datasetSourceAdapter);
 
 export const datasetSourceReducer: ActionReducer<DatasetSourceState> = createReducer(
   initialState,
@@ -24,6 +25,12 @@ export const datasetSourceReducer: ActionReducer<DatasetSourceState> = createRed
     ...state,
     selectedSourceId: toBeSelected.id
   })),
+  on(datasetSourceActions.setParameter, (state, {id, param}) =>
+    helper.update(id, state,
+      source => ({
+        parameters: source.parameters?.map(originalParam => originalParam.name === param.name ? param : originalParam)
+      })
+    )),
   on(datasetSourceActions.setParameters, (state, {id, parameters}) =>
     datasetSourceAdapter.updateOne({
       id,

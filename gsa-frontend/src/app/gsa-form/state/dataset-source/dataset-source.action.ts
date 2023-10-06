@@ -18,6 +18,7 @@ export const datasetSourceActions = createActionGroup({
     'load external failure': props<{error: any}>(),
 
     'select': props<{toBeSelected: PDatasetSource}>(),
+    'set parameter': props<{id: string, param: Parameter}>(),
     'set parameters': props<{id: string, parameters: Parameter[]}>(),
   }
 })

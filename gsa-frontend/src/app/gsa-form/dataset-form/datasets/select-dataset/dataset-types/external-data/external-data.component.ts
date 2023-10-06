@@ -41,9 +41,8 @@ export class ExternalDataComponent implements OnInit {
     }))
   }
 
-  updateParam(param: Parameter, parameters: Parameter[]) {
-    parameters = parameters.map(srcParam => srcParam.name === param.name ? param : srcParam);
-    this.store.dispatch(datasetSourceActions.setParameters({id: this.source.id, parameters}))
+  updateParam(param: Parameter) {
+    this.store.dispatch(datasetSourceActions.setParameter({id: this.source.id, param}))
   }
 
   protected readonly paramTracker = paramTracker;
