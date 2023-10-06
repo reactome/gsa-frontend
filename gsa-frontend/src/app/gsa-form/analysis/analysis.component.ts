@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {AnalysisService} from "../services/analysis.service";
 import {Store} from "@ngrx/store";
 import {analysisFeature} from "../state/analysis/analysis.selector";
+import {CdkStep} from "@angular/cdk/stepper";
 
 
 @Component({
@@ -17,7 +17,10 @@ export class AnalysisComponent implements OnInit {
     reportLoadingStatus$ = this.store.select(analysisFeature.selectReportLoadingStatus)
     result$ = this.store.select(analysisFeature.selectAnalysisResult)
 
-    constructor(private formBuilder: FormBuilder, public analysisService: AnalysisService, public store: Store) {
+    @Input() setMethodStep: CdkStep;
+    @Input() datasetId: number;
+
+    constructor(private formBuilder: FormBuilder, public store: Store) {
         this.analysisStep = this.formBuilder.group({
             name: ['', Validators.required]
         });
@@ -27,4 +30,8 @@ export class AnalysisComponent implements OnInit {
     ngOnInit(): void {
 
     }
+
+  goToSelectMethod() {
+    this.setMethodStep.select();
+  }
 }

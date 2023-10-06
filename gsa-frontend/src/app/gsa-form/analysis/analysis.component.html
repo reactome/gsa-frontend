@@ -35,6 +35,14 @@
                     <span>Results</span>
                   </div>
                 </a>
+
+                <button (click)="goToSelectMethod()" color="primary" mat-raised-button>
+                  <mat-icon class="padding-right-ten">
+                    <span class="material-symbols-outlined">restart_alt</span>
+                  </mat-icon>
+                   <span>Start a new analysis</span>
+                </button>
+
                 <br>
                 <div *ngIf="vm.reportsRequired && vm.reportLoadingStatus?.status !== 'complete'"
                      class="outline">
