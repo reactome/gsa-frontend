@@ -33,7 +33,6 @@ export class ExternalDataComponent implements OnInit {
 
 
   loadData(parameters: Parameter[]): void {
-    console.log('load data')
     this.store.dispatch(datasetActions.load({
       id: this.datasetId,
       resourceId: this.source.id,

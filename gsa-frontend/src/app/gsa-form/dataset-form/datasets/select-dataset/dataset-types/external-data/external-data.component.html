@@ -4,7 +4,7 @@
 'contrast': source.id === 'search'
 }">
 
-  <div *ngIf="source.id === 'search'; else other" >
+  <div *ngIf="source.id === 'search'; else other">
     <p class="bold no-wrap">
       <mat-icon *ngIf="source.id === 'search'" style="vertical-align: middle">search</mat-icon>
       {{source.name}}
@@ -16,17 +16,19 @@
   </div>
 
   <ng-template #other>
-    <p class="bold no-wrap">      {{source.name}}    </p>
+    <p class="bold no-wrap">{{source.name}}</p>
     <p>{{source.description}}</p>
     <div [ngClass]="{'visible': isSelected$ | async}" class="invisible">
       <form>
         <div class="flex-container vertical gap-one align-center">
-          <gsa-method-parameter *ngFor="let param of source.parameters" class="width-hundred"
+          <gsa-method-parameter *ngFor="let param of source.parameters; trackBy: paramTracker" class="width-hundred"
                                 [parameter]="param" [infoTooltip]="false"
-                                (parameterChange)="updateParam($event, source.parameters || [])"/>
+                                (parameterChange)="updateParam($event)"/>
 
-          <button (click)="loadData(source.parameters || [])" class="blue-border" color="primary" mat-stroked-button
-                  type="submit">Import
+          <button (mouseup)="loadData(source.parameters || [])"
+                  (click)="loadData(source.parameters || [])"
+                  class="blue-border" color="primary" mat-stroked-button type="submit">
+            Import
           </button>
         </div>
       </form>
