@@ -10,8 +10,8 @@
     "test": "ng test",
     "build-table": "ng build reactome-table",
     "build-table-wc": "npm run build-table && ng build reactome-table-wc --output-hashing none && node projects/reactome-table-wc/build-wc.js",
-    "deploy-gh": "ng deploy --base-href=/gsa-frontend/",
-    "deploy-dev": "ng build --base-href=/gsa-frontend/ && rsync -Pav dist/gsa-frontend dev:site/Website/static --delete"
+    "deploy-gh": "ng deploy --base-href=/gsa/",
+    "deploy-dev": "ng build --base-href=/gsa/ && rsync -Pav dist/gsa dev:site/Website/static --delete"
   },
   "private": true,
   "dependencies": {
