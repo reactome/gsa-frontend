@@ -47,7 +47,7 @@ export class DatasetFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.store.dispatch(datasetActions.clear({id: this.datasetId}))
+    this.store.dispatch(datasetActions.delete({id: this.datasetId}))
   }
 
   deleteDataset($event: MouseEvent) {
