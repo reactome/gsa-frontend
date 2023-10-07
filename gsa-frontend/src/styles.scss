@@ -223,13 +223,20 @@ mat-icon {
 
 .mat-mdc-text-field-wrapper {
   flex: 0 !important;
-  //background: var(--surface);
 }
 
-.mat-expansion-panel {
-  // background: rgb(255 255 255 / 10%); // Wild frosty glass dreams
-  // backdrop-filter: blur(5px); // Wild frosty glass dreams
+@media (prefers-color-scheme: dark) {
+  .mat-expansion-panel, .mat-mdc-card {
+    background: rgb(255 255 255 / 5%) !important;
+    backdrop-filter: blur(5px);
+  }
+
+  .mat-mdc-text-field-wrapper {
+    background: var(--surface);
+  }
+
 }
+
 
 mat-vertical-stepper, mat-horizontal-stepper {
   background: transparent !important;
