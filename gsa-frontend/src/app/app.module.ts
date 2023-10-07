@@ -12,10 +12,19 @@ import {routerReducer, StoreRouterConnectingModule} from '@ngrx/router-store';
 import {AppRoutingModule} from "./app-routing.module";
 import {CommonModule} from "@angular/common";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {TourMatMenuModule} from "ngx-ui-tour-md-menu";
+import {MatButtonModule} from "@angular/material/button";
+import {MatCardModule} from "@angular/material/card";
+import {MatIconModule} from "@angular/material/icon";
+import { BackgroundComponent } from './background/background.component';
+import { TourComponent } from './tour/tour.component';
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    BackgroundComponent,
+    TourComponent
   ],
   imports: [
     AppRoutingModule,
@@ -36,6 +45,10 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
     }),
     EffectsModule.forRoot([]),
     StoreRouterConnectingModule.forRoot(),
+    TourMatMenuModule,
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]

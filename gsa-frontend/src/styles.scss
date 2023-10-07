@@ -6,10 +6,8 @@
 
 @import "reactome-table";
 
-
 html, body {
-  height: 100%;
-  overflow: hidden !important;
+  max-height: 100vh;
 }
 
 a {
@@ -20,7 +18,8 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   background-color: var(--surface);
   color: black;
-  margin: 8px;
+  max-height: calc(100vh - 8px);
+  margin: 0 8px 8px;
 }
 
 @media (prefers-color-scheme: dark) {

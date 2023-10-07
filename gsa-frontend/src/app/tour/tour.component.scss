@@ -1,0 +1,24 @@
+.header-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: -8px;
+  width: 100%;
+}
+
+#tour-controls-wrapper {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+}
+
+#tour-controls {
+  background: var(--surface);
+  border-radius: 21px;
+  z-index: 9000;
+  * {
+    z-index: 9000;
+  }
+}
+

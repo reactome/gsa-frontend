@@ -1,6 +1,6 @@
 <mat-expansion-panel *ngIf="(dataset$ | async) as dataset" #mep="matExpansionPanel" (closed)="updateScroll()"
                      [expanded]="!dataset.saved" hideToggle>
-  <mat-expansion-panel-header class="padding-left-zero"> <!--style="height: fit-content"-->
+  <mat-expansion-panel-header class="padding-left-zero">
     <div *ngIf="dataset.saved; else unsaved" class="border-blue-left">
       <div class="saved flex-container align-center justify-center"><span class="no-wrap">Saved</span>
       </div>
@@ -34,12 +34,12 @@
                 color="primary"
                 mat-icon-button
                 matTooltip="Edit analysis parameters of specific dataset"><span
-          class="material-icons">bar_chart</span>
+            class="material-icons">bar_chart</span>
         </button>
         <button (click)="deleteDataset($event)" color="primary"
                 mat-icon-button
                 matTooltip="Delete dataset"><span
-          class="material-icons">delete</span>
+            class="material-icons">delete</span>
         </button>
       </div>
 
@@ -65,7 +65,8 @@
         </button>
         <gsa-annotate-dataset [datasetId]="datasetId" *ngIf="nestedStepper.selected === annotateStep"
                               class="width-hundred"/>
-        <button [disabled]="!annotateStep.completed" class="nav-button-margin" color="accent" mat-fab matStepperNext>
+        <button [disabled]="!annotateStep.completed" class="nav-button-margin" color="accent" mat-fab matStepperNext
+                tourAnchor="annotate.done">
           <mat-icon>keyboard_arrow_down</mat-icon>
         </button>
       </div>
@@ -81,7 +82,7 @@
                                 class="width-hundred"/>
         <button (click)="saveData(); mep.expanded = false;"
                 [disabled]="!statisticalDesignStep.completed" class="nav-button-margin"
-                color="primary"
+                color="primary" tourAnchor="dataset.save"
                 mat-raised-button>
           Save Dataset
         </button>

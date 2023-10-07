@@ -1,6 +1,8 @@
-import {AfterViewInit, Component, ElementRef, Input, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild} from '@angular/core';
 import {ScrollService} from "../../services/scroll.service";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
+import {TourService} from "ngx-ui-tour-md-menu";
+import {merge, mergeAll} from "rxjs";
 
 @UntilDestroy()
 @Component({
@@ -11,23 +13,49 @@ import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 export class ScrollableComponent implements AfterViewInit {
   @Input() topMargin: number = 0;
   @Input() bottomMargin: number = 0;
+  @Input() name: string = '';
   @ViewChild('scrollable') scrollable: ElementRef<HTMLDivElement>;
 
-  scroll: boolean = false;
+  scroll: boolean = true;
+  tourActive: boolean = false;
   shadows = {top: false, bottom: true};
 
-  constructor(private scrollService: ScrollService) {
+  constructor(private scrollService: ScrollService, private tourService: TourService) {
     this.scrollService.resize$.pipe(untilDestroyed(this)).subscribe(() => this.updateShadows());
-  }
 
+    this.tourService.start$.pipe(untilDestroyed(this)).subscribe(() => {
+      this.scroll = false;
+      this.tourActive = true;
+      console.log('start')
+    } );
+    this.tourService.end$.pipe(untilDestroyed(this)).subscribe(() => {
+      this.scroll = true;
+      this.tourActive = false;
+      console.log('end')
+    });
+    this.tourService.resume$.pipe(untilDestroyed(this)).subscribe(() => {
+      this.scroll = false
+      console.log('resume')
+    });
+    this.tourService.pause$.pipe(untilDestroyed(this)).subscribe(() => {
+      this.scroll = true
+      console.log('pause')
+    });
+
+
+    this.scroll = this.tourService.getStatus() !== 1;
+    this.tourActive = this.tourService.getStatus() !== 0;
+  }
 
   ngAfterViewInit() {
     this.updateShadows();
+    this.tourService.setDefaults({
+      scrollContainer: this.scrollable.nativeElement,
+      isAsync: true
+    });
   }
 
   scrolling() {
-    this.scroll = true
-    setTimeout(() => this.scroll = false, 2000);
     this.updateShadows();
   }
 
@@ -38,5 +66,4 @@ export class ScrollableComponent implements AfterViewInit {
       this.shadows.bottom = scrollable.clientHeight + scrollable.scrollTop + this.bottomMargin < scrollable.scrollHeight;
     })
   }
-
 }

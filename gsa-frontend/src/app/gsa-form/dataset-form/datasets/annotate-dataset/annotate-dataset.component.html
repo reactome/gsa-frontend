@@ -1,21 +1,22 @@
-<div [formGroup]="annotateDataStep" *ngIf="(dataset$ | async) as dataset">
+<div [formGroup]="annotateDataStep" >
   <div class="flex-container horizontal justify-center">
     <div [ngClass]="screenIsSmall ? 'width-hundred': 'width-eighty'"
          class="flex-container vertical gap-one align-center">
-      <div class="flex-container horizontal align-center justify-center gap-one width-hundred">
-        <span>Dataset name:</span>
-        <mat-form-field class="flex-one">
-          <input [ngModel]="dataset.summary?.title" (ngModelChange)="updateTitle($event)"
+      <div class="flex-container horizontal align-center justify-center gap-one width-hundred" tourAnchor="annotate.name">
+        <mat-form-field class="flex-one" [subscriptSizing]="'dynamic'" >
+          <mat-label>Dataset name:</mat-label>
+          <input [ngModel]="(dataset$ | async)?.summary?.title" (ngModelChange)="updateTitle($event)"
                  [ngModelOptions]="{standalone: true}" matInput type="text">
         </mat-form-field>
       </div>
       <p class="outline">Please add the annotations for the given dataset. The minimum requirement is to specify one
         annotation (comparison group). For example, "Group" with values "Treatment" and "Control").</p>
 
-        <div class="align-center flex-container justify-center gap-one vertical width-hundred">
-          <reactome-table [userSettings]="tableSettings" [table]="dataset.annotations || [['']]"
-                     (tableChange)="onTableUpdate($event)"  class="width-hundred"></reactome-table>
-        </div>
+      <div class="align-center flex-container justify-center gap-one vertical width-hundred"
+           tourAnchor="annotate.table">
+        <reactome-table *ngIf="(dataset$ | async) as dataset" [userSettings]="tableSettings" [table]="dataset?.annotations || [['']]"
+                        (tableChange)="onTableUpdate($event)" class="width-hundred"></reactome-table>
+      </div>
     </div>
   </div>
 </div>

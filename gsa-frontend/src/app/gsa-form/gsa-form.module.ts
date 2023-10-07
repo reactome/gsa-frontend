@@ -65,6 +65,7 @@ import {SearchResultEffects} from "./state/search-result/search-result.effect";
 import {searchResultFeature} from "./state/search-result/search-result.selector";
 import {SpeciesPipe} from './utilities/species/species.pipe';
 import {ReactomeTableModule} from "reactome-table";
+import {TourAnchorMatMenuDirective} from "ngx-ui-tour-md-menu";
 
 
 @NgModule({
@@ -112,6 +113,7 @@ import {ReactomeTableModule} from "reactome-table";
     EffectsModule.forFeature(AnalysisEffects),
     EffectsModule.forFeature(SearchResultEffects),
     LetModule,
+    TourAnchorMatMenuDirective,
   ],
   bootstrap: [GsaFormComponent]
 })

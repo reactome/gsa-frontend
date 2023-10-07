@@ -41,9 +41,17 @@
 }
 
 .center-vertical {
-  height: calc(100vh - 210px);
+  height: calc(100vh - 233px);
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+.tour-active {
+  height: calc(100vh - 274px);
+}
+
+.overflow-hide {
+  overflow: hidden;
 }
 
 .width-98 {

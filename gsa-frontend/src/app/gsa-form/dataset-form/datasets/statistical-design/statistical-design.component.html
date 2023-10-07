@@ -2,7 +2,7 @@
      *ngrxLet="{ dataset: dataset$, analysisGroups: analysisGroups$, covariates: covariates$, all: allSelected$, some: someSelected$} as vm"
      class="flex-container gap-one horizontal full-width">
 
-    <div class="flex-one flex-container align-center vertical card-design">
+    <div class="flex-one flex-container align-center vertical card-design" tourAnchor="stat.factor">
         <h2 class="flex-container justify-center" class="flex-container justify-center">Select comparison factor</h2>
         <mat-form-field appearance="outline">
             <mat-select #groups [value]="vm.dataset?.statisticalDesign?.analysisGroup"
@@ -14,7 +14,7 @@
         </mat-form-field>
     </div>
 
-    <div class="flex-one flex-container align-center vertical card-design">
+    <div class="flex-one flex-container align-center vertical card-design" tourAnchor="stat.groups">
         <div *ngIf="vm.dataset?.statisticalDesign?.analysisGroup !== undefined else disableGroupSelection"
              class="flex-one flex-container align-center vertical">
             <h2 class="flex-container justify-center">Set 1st group</h2>
@@ -53,7 +53,7 @@
         </ng-template>
     </div>
 
-    <div class="flex-one flex-container align-center vertical card-design" *ngIf="(vm.analysisGroups | keyvalue).length > 1">
+    <div class="flex-one flex-container align-center vertical card-design" *ngIf="(vm.analysisGroups | keyvalue).length > 1" tourAnchor="stat.cofactor">
         <div *ngIf="vm.dataset?.statisticalDesign?.analysisGroup !== undefined else disableCovariateSelection"
              class="flex-one flex-container align-center vertical">
             <h2 class="flex-container justify-center">Select covariates</h2>

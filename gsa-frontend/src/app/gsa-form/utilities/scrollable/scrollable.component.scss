@@ -44,13 +44,20 @@
 
 
 .center-vertical {
-  height: calc(100vh - 210px);
+  height: calc(100vh - 233px); // No tour controller
   overflow-y: auto;
   overflow-x: hidden;
-
-
+  //height: 100%;
   //-ms-overflow-style: none; /* IE and Edge */
   //scrollbar-width: none;
+}
+
+.tour-active {
+  height: calc(100vh - 274px); // With tour controller
+}
+
+.overflow-hide {
+  overflow: hidden;
 }
 
 .width-98 {

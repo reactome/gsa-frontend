@@ -1,4 +1,7 @@
 mat-card {
-  max-width: max(50%, 830px);
+  max-width: max(50%, 865px);
+}
 
+:host {
+  height: calc(100vh - 90px);
 }

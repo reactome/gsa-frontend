@@ -2,7 +2,7 @@ import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {Injectable} from "@angular/core";
 import {AnalysisMethodsService, typeToParse} from "../../services/analysis-methods.service";
 import {methodActions} from "./method.action";
-import {catchError, exhaustMap, map, mergeMap, of} from "rxjs";
+import {catchError, exhaustMap, map, of} from "rxjs";
 import {ParameterType} from "../../model/methods.model";
 
 @Injectable()
@@ -16,12 +16,8 @@ export class MethodEffects {
               param.value = typeToParse[param.type](param.default);
               param.default = typeToParse[param.type](param.default);
             }));
-            return methods;
+            return methodActions.loadSuccess({methods})
           }),
-          mergeMap(methods => [
-            methodActions.loadSuccess({methods}),
-            // parameterActions.addMany({parameters: methods.flatMap(method => method.parameters)})
-          ]),
           catchError((err) => of(methodActions.loadFailure({error: err})))
         )
       )

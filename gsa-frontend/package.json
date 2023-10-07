@@ -34,6 +34,7 @@
     "@ngrx/router-store": "^15.4.0",
     "@ngrx/store": "^15.4.0",
     "@ngrx/store-devtools": "^15.4.0",
+    "ngx-ui-tour-md-menu": "^10.0.0",
     "bootstrap": "^5.2.2",
     "cors": "^2.8.5",
     "immer": "^9.0.21",
