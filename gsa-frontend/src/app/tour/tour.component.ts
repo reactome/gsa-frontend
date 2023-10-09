@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {TourService} from "ngx-ui-tour-md-menu";
 import {IMdStepOption} from "ngx-ui-tour-md-menu/lib/step-option.interface";
-import {start} from "repl";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
@@ -32,8 +31,10 @@ export class TourComponent {
     this.tourService.initialize([
       {
         anchorId: 'Camera',
+        icon: 'ads_click',
         title: 'Select method',
-        content: "Camera is a good choice for a first analysis: it's the fastest to perform",
+        content: "Click bellow to select Camera method.<br>" +
+          "Camera is a good choice for a first analysis: it's the fastest to perform",
         route: 'form',
         delayAfterNavigation: 1000,
         nextOnAnchorClick: true,
@@ -43,6 +44,7 @@ export class TourComponent {
         closeOnOutsideClick: false,
       }, {
         anchorId: 'method.done',
+        icon: 'ads_click',
         title: 'Continue',
         content: "Click this button to go to the next step",
         nextOnAnchorClick: true,
@@ -52,14 +54,14 @@ export class TourComponent {
       }, {
         anchorId: 'source.local',
         title: 'Local data',
-        content: 'You can upload your own data by clicking one of the options bellow',
+        content: 'You can upload your own data in the following section',
         delayBeforeStepShow: 1000,
         isAsync: true,
         scrollContainer: '#scroll-container-dataset',
       }, {
         anchorId: 'source.public',
         title: 'Public data',
-        content: 'You can use already published dataset by clicking one of the options bellow',
+        content: 'You can use already published dataset in the following section',
         scrollContainer: '#scroll-container-dataset',
       }, {
         anchorId: 'search',
@@ -71,12 +73,13 @@ export class TourComponent {
       }, {
         anchorId: 'source.example',
         title: 'Example data',
-        content: 'The simplest way to perform quickly an analysis, use one of the bellow examples',
+        content: 'The simplest way to perform quickly an analysis: use one of the bellow examples',
         scrollContainer: '#scroll-container-dataset',
       }, {
         anchorId: 'EXAMPLE_MEL_RNA',
-        title: 'First dataset',
-        content: 'Click on this dataset to analyse it',
+        icon: 'ads_click',
+        title: 'First example',
+        content: 'Click on this example dataset to analyse it',
         nextOnAnchorClick: true,
         scrollContainer: '#scroll-container-dataset',
         closeOnOutsideClick: false,
@@ -97,7 +100,8 @@ export class TourComponent {
         scrollContainer: '#scroll-container-dataset',
       }, {
         anchorId: 'annotate.done',
-        title: 'Annotation finished',
+        icon: 'ads_click',
+        title: 'Continue',
         content: 'Once the annotation of the dataset is finished, you can go to the next step by clicking this button',
         nextOnAnchorClick: true,
         scrollContainer: '#scroll-container-dataset',
@@ -125,8 +129,10 @@ export class TourComponent {
         scrollContainer: '#scroll-container-dataset',
       }, {
         anchorId: 'dataset.save',
-        title: 'Save the dataset',
-        content: 'Once you are satisfied with the statistical design, you can save your dataset',
+        icon: 'ads_click',
+        title: 'Save dataset',
+        content: 'Click on this button.<br>' +
+          'All datatasets must be saved to continue further the analysis',
         nextOnAnchorClick: true,
         scrollContainer: '#scroll-container-dataset',
         closeOnOutsideClick: false,
@@ -139,8 +145,9 @@ export class TourComponent {
         scrollContainer: '#scroll-container-dataset',
       }, {
         anchorId: 'dataset.done',
-        title: 'Datasets finished',
-        content: 'Once the selection of datasets is finished, you can go to the next step by clicking this button',
+        icon: 'ads_click',
+        title: 'Continue',
+        content: 'Click on this button once the selection of datasets is finished',
         nextOnAnchorClick: true,
         scrollContainer: '#scroll-container-dataset',
         closeOnOutsideClick: false,
@@ -154,8 +161,9 @@ export class TourComponent {
         scrollContainer: '#scroll-container-options',
       }, {
         anchorId: 'options.done',
-        title: 'Options finished',
-        content: 'Once the you selected your desired outputs, you can go to the next step by clicking this button',
+        icon: 'ads_click',
+        title: 'Continue',
+        content: 'Click on this button once you selected your desired outputs',
         nextOnAnchorClick: true,
         scrollContainer: '#scroll-container-options',
         closeOnOutsideClick: false,
@@ -167,7 +175,7 @@ export class TourComponent {
         isAsync: true,
         scrollContainer: '#scroll-container-results',
       }
-    ])
+    ] as IMdStepOption[])
   }
 
   end() {

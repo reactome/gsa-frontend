@@ -7,6 +7,7 @@
       <mat-card-header>
         <div class="header-group">
           <mat-card-title>
+            <mat-icon *ngIf="step.icon" style="vertical-align: sub">{{step.icon}}</mat-icon>
             {{step.title}}
           </mat-card-title>
           <button mat-icon-button (click)="pause()" class="close">
