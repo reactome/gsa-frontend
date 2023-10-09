@@ -1,5 +1,5 @@
 <div (click)="select()">
-  <div class="dataset-card-content" [tourAnchor]="source.id">
+  <div class="dataset-card-content" [tourAnchor]="source.id + '-' + datasetId">
     <p class="bold no-wrap">{{source.title}}</p>
     <p>{{source.description}}</p>
   </div>
