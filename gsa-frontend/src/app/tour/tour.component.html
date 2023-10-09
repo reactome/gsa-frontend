@@ -35,14 +35,15 @@
 </tour-step-template>
 
 <div id="tour-controls-wrapper" class="flex-container justify-center" *ngIf="tourOn">
+
   <div id="tour-controls" class="flex-container gap-one">
-    <button mat-icon-button color="primary" (click)="resume()" *ngIf="tourPaused">
+    <button mat-icon-button color="primary" (click)="resume()" *ngIf="tourPaused" matTooltip="Resume guided tour">
       <mat-icon>play_arrow</mat-icon>
     </button>
-    <button mat-icon-button color="primary" (click)="pause()" *ngIf="!tourPaused">
+    <button mat-icon-button color="primary" (click)="pause()" *ngIf="!tourPaused" matTooltip="Pause guided tour">
       <mat-icon>pause</mat-icon>
     </button>
-    <button mat-icon-button color="primary" (click)="end()">
+    <button mat-icon-button color="primary" (click)="end()" matTooltip="End guided tour">
       <mat-icon>stop</mat-icon>
     </button>
   </div>

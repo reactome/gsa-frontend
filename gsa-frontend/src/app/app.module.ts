@@ -18,6 +18,7 @@ import {MatCardModule} from "@angular/material/card";
 import {MatIconModule} from "@angular/material/icon";
 import { BackgroundComponent } from './background/background.component';
 import { TourComponent } from './tour/tour.component';
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import { TourComponent } from './tour/tour.component';
     TourMatMenuModule,
     MatButtonModule,
     MatCardModule,
-    MatIconModule
+    MatIconModule,
+    MatTooltipModule
   ],
   providers: [],
   bootstrap: [AppComponent]
