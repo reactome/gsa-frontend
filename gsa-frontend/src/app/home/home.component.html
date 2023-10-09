@@ -28,6 +28,9 @@
 
         <h2>How to Get Started:</h2>
         <ol>
+          <li>
+            For your first time using Reactome GSA, follow our guided tour.
+          </li>
           <li>Upload Your Gene Expression Dataset: Input a tabular data with gene or protein identifiers by row, and
             sample by column.
           </li>
@@ -56,8 +59,11 @@
       </p>
     </mat-card-content>
 
-    <mat-card-actions class="justify-center gap-one">
-      <button mat-raised-button color="primary" (click)="startTour()">Start a tour</button>
+    <mat-card-actions class="gap-one" align="end">
+      <button mat-stroked-button color="primary" (click)="startTour()" style="vertical-align: sub" class="justify-center">
+        Guided Tour
+        <mat-icon color="primary">explore</mat-icon>
+      </button>
       <button mat-raised-button color="primary" routerLink="/form" tourAnchor="start">START</button>
     </mat-card-actions>
   </mat-card>

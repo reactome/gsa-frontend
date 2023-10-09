@@ -6,6 +6,7 @@ import {MatCardModule} from "@angular/material/card";
 import {MatButtonModule} from "@angular/material/button";
 import {LetModule} from "@ngrx/component";
 import {TourAnchorMatMenuDirective} from "ngx-ui-tour-md-menu";
+import {MatIconModule} from "@angular/material/icon";
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import {TourAnchorMatMenuDirective} from "ngx-ui-tour-md-menu";
     MatButtonModule,
     LetModule,
     TourAnchorMatMenuDirective,
+    MatIconModule,
   ]
 })
 export class HomeModule {
