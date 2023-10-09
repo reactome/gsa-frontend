@@ -1,4 +1,5 @@
-<div [formGroup]="analysisStep" *ngrxLet="{analysisLoadingStatus: analysisLoadingStatus$, reportLoadingStatus: reportLoadingStatus$, reportsRequired: reportsRequired$, result: result$} as vm">
+<div [formGroup]="analysisStep"
+     *ngrxLet="{analysisLoadingStatus: analysisLoadingStatus$, reportLoadingStatus: reportLoadingStatus$, reportsRequired: reportsRequired$, result: result$} as vm">
   <div class="flex-container horizontal gap-one ">
     <mat-card class="flex-one">
       <div class="flex-container align-start vertical content-height">
@@ -13,7 +14,8 @@
                 <div class="big-text">Analysis loading: {{vm.analysisLoadingStatus?.completed! * 100}}%
                 </div>
                 <div class="outline description">
-                  <span *ngIf="vm.analysisLoadingStatus?.status === 'running'">{{vm.analysisLoadingStatus?.description}}</span>
+                  <span
+                    *ngIf="vm.analysisLoadingStatus?.status === 'running'">{{vm.analysisLoadingStatus?.description}}</span>
                 </div>
               </div>
             </div>
@@ -36,13 +38,9 @@
                   </div>
                 </a>
 
-                <button (click)="goToSelectMethod()" color="primary" mat-raised-button>
-                  <div class="flex-container horizontal align-center">
-                  <mat-icon class="padding-right-ten">
-                    <span class="material-symbols-outlined">restart_alt</span>
-                  </mat-icon>
-                   <span>Start a new analysis</span>
-                  </div>
+                <button (click)="goToSelectMethod()" color="primary" mat-stroked-button>
+                    <mat-icon color="primary">restart_alt</mat-icon>
+                    Start a new analysis
                 </button>
 
                 <br>
