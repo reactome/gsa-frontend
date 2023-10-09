@@ -77,7 +77,7 @@ export class TourComponent {
         content: 'The simplest way to perform quickly an analysis: use one of the bellow examples',
         scrollContainer: '#scroll-container-dataset',
       }, {
-        anchorId: 'EXAMPLE_MEL_RNA-0',
+        anchorId: 'source.example.1',
         icon: 'ads_click',
         title: 'First example',
         content: 'Click on this example dataset to analyse it',
