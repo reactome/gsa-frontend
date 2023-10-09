@@ -20,7 +20,7 @@ export class TourComponent {
       smoothScroll: true,
       centerAnchorOnScroll: true,
       disablePageScrolling: false,
-      allowUserInitiatedNavigation: true
+      closeOnOutsideClick: true,
     });
 
 
@@ -39,7 +39,8 @@ export class TourComponent {
         nextOnAnchorClick: true,
         isAsync: true,
         scrollContainer: '#scroll-container-method',
-        centerAnchorOnScroll: false
+        centerAnchorOnScroll: false,
+        closeOnOutsideClick: false,
       }, {
         anchorId: 'method.done',
         title: 'Continue',
@@ -47,6 +48,7 @@ export class TourComponent {
         nextOnAnchorClick: true,
         scrollContainer: '#scroll-container-method',
         centerAnchorOnScroll: false,
+        closeOnOutsideClick: false,
       }, {
         anchorId: 'source.local',
         title: 'Local data',
@@ -77,6 +79,7 @@ export class TourComponent {
         content: 'Click on this dataset to analyse it',
         nextOnAnchorClick: true,
         scrollContainer: '#scroll-container-dataset',
+        closeOnOutsideClick: false,
       },
       {
         anchorId: 'annotate.name',
@@ -98,6 +101,7 @@ export class TourComponent {
         content: 'Once the annotation of the dataset is finished, you can go to the next step by clicking this button',
         nextOnAnchorClick: true,
         scrollContainer: '#scroll-container-dataset',
+        closeOnOutsideClick: false,
       }, {
         anchorId: 'stat.factor',
         title: 'Comparison factor',
@@ -125,6 +129,7 @@ export class TourComponent {
         content: 'Once you are satisfied with the statistical design, you can save your dataset',
         nextOnAnchorClick: true,
         scrollContainer: '#scroll-container-dataset',
+        closeOnOutsideClick: false,
       }, {
         anchorId: 'dataset.add',
         title: 'Add more datasets',
@@ -138,6 +143,7 @@ export class TourComponent {
         content: 'Once the selection of datasets is finished, you can go to the next step by clicking this button',
         nextOnAnchorClick: true,
         scrollContainer: '#scroll-container-dataset',
+        closeOnOutsideClick: false,
       }, {
         anchorId: 'options',
         title: 'Options',
@@ -152,6 +158,7 @@ export class TourComponent {
         content: 'Once the you selected your desired outputs, you can go to the next step by clicking this button',
         nextOnAnchorClick: true,
         scrollContainer: '#scroll-container-options',
+        closeOnOutsideClick: false,
       }, {
         anchorId: 'results',
         title: 'Waiting for results',
