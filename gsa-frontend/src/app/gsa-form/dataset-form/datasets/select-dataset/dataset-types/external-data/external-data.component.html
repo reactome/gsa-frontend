@@ -1,10 +1,5 @@
-<div (click)="select()" [ngClass]="{
-'hover-opponent': (isSelected$ | async),
-'dataset-card-content': !(isSelected$ | async),
-'contrast': source.id === 'search'
-}">
-
-  <div *ngIf="source.id === 'search'; else other">
+<div (click)="select()">
+  <div *ngIf="source.id === 'search'; else other" tourAnchor="search" class="dataset-card-content contrast" [ngClass]="{'hover-opponent': (isSelected$ | async)}">
     <p class="bold no-wrap">
       <mat-icon *ngIf="source.id === 'search'" style="vertical-align: middle">search</mat-icon>
       {{source.name}}
@@ -16,22 +11,24 @@
   </div>
 
   <ng-template #other>
-    <p class="bold no-wrap">{{source.name}}</p>
-    <p>{{source.description}}</p>
-    <div [ngClass]="{'visible': isSelected$ | async}" class="invisible">
-      <form>
-        <div class="flex-container vertical gap-one align-center">
-          <gsa-method-parameter *ngFor="let param of source.parameters; trackBy: paramTracker" class="width-hundred"
-                                [parameter]="param" [infoTooltip]="false"
-                                (parameterChange)="updateParam($event)"/>
+    <div class="dataset-card-content" [ngClass]="{'hover-opponent': (isSelected$ | async)}">
+      <p class="bold no-wrap">{{source.name}}</p>
+      <p>{{source.description}}</p>
+      <div [ngClass]="{'visible': isSelected$ | async}" class="invisible">
+        <form>
+          <div class="flex-container vertical gap-one align-center">
+            <gsa-method-parameter *ngFor="let param of source.parameters; trackBy: paramTracker" class="width-hundred"
+                                  [parameter]="param" [infoTooltip]="false"
+                                  (parameterChange)="updateParam($event)"/>
 
-          <button (mouseup)="loadData(source.parameters || [])"
-                  (click)="loadData(source.parameters || [])"
-                  class="blue-border" color="primary" mat-stroked-button type="submit">
-            Import
-          </button>
-        </div>
-      </form>
+            <button (mouseup)="loadData(source.parameters || [])"
+                    (click)="loadData(source.parameters || [])"
+                    class="blue-border" color="primary" mat-stroked-button type="submit">
+              Import
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </ng-template>
 </div>

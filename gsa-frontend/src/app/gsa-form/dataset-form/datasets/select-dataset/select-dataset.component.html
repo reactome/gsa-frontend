@@ -3,14 +3,14 @@
     <div tourAnchor="source.local" class="flex-one">
       <h2 >Local Dataset</h2>
       <div *ngFor="let source of localSources$ | async" class="margin-bottom-10">
-        <gsa-local-data [source]="source" [datasetId]="datasetId" [tourAnchor]="source.id"></gsa-local-data>
+        <gsa-local-data [source]="source" [datasetId]="datasetId"></gsa-local-data>
       </div>
     </div>
 
     <div tourAnchor="source.example" class="flex-one">
       <h2>Example Dataset</h2>
       <div *ngFor="let source of exampleSources$ | async" class="margin-bottom-10">
-        <gsa-example-data [source]="source" [datasetId]="datasetId" [tourAnchor]="source.id"></gsa-example-data>
+        <gsa-example-data [source]="source" [datasetId]="datasetId" ></gsa-example-data>
       </div>
     </div>
 
@@ -19,7 +19,7 @@
       <div *ngFor="let source of externalSources$ | async" class="margin-bottom-10">
         <gsa-external-data *ngIf="source.name !== 'Example datasets'"
                            [source]="source"
-                           [datasetId]="datasetId" [tourAnchor]="source.id"></gsa-external-data>
+                           [datasetId]="datasetId"></gsa-external-data>
       </div>
     </div>
   </div>

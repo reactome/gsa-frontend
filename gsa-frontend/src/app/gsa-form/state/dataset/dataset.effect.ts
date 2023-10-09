@@ -92,7 +92,6 @@ export class DatasetEffects {
         });
       }),
       delay(500),
-      tap(() => this.tourService.pause()),
       map(({loadingId, id}) => datasetActions.getLoadStatus({loadingId, id}),
       ),
     ),
@@ -155,7 +154,7 @@ export class DatasetEffects {
     this.actions$.pipe(
       ofType(datasetActions.setSummary),
       map(({summary, id}) => {
-        setTimeout(() => this.tourService.resume(), 500);
+        setTimeout(() => this.tourService.getStatus() === 2 ? this.tourService.resume() : null, 1000);
         const table: string[][] = !summary.sample_metadata
           ? [[''], ...summary.sample_ids.map((sampleId) => [sampleId])]
           : [
