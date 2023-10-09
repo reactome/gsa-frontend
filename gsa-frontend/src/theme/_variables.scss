@@ -15,22 +15,22 @@
   $surface: mat.get-color-from-palette($neutral-palette, 010);
   :root {
     --primary: #{$primary};
-    --on-primary: #{mat.get-color-from-palette($primary-palette, 000)};
+    --on-primary: #{mat.get-color-from-palette($primary-palette, 002)};
     --primary-container: #{mat.get-color-from-palette($primary-palette, 100)};
     --on-primary-container: #{mat.get-color-from-palette($primary-palette, 900)};
 
     --secondary: #{ mat.get-color-from-palette($secondary-palette, 600)};
-    --on-secondary: #{mat.get-color-from-palette($secondary-palette, 000)};
+    --on-secondary: #{mat.get-color-from-palette($secondary-palette, 002)};
     --secondary-container: #{ mat.get-color-from-palette($secondary-palette, 100)};
     --on-secondary-container: #{ mat.get-color-from-palette($secondary-palette, 900)};
 
     --tertiary: #{mat.get-color-from-palette($tertiary-palette, 600)};
-    --on-tertiary: #{mat.get-color-from-palette($tertiary-palette, 000)};
+    --on-tertiary: #{mat.get-color-from-palette($tertiary-palette, 002)};
     --tertiary-container: #{ mat.get-color-from-palette($tertiary-palette, 100)};
     --on-tertiary-container: #{ mat.get-color-from-palette($tertiary-palette, 900)};
 
     --error: #{mat.get-color-from-palette($error-palette, 600)};
-    --on-error: #{mat.get-color-from-palette($error-palette, 000)};
+    --on-error: #{mat.get-color-from-palette($error-palette, 002)};
     --error-container: #{ mat.get-color-from-palette($error-palette, 100)};
     --on-error-container: #{mat.get-color-from-palette($error-palette, 900)};
 

@@ -10,6 +10,11 @@
   max-height: 100vh;
   max-width: 100vw;
 }
+//
+//.touranchor--is-active, .touranchor--is-active > * {
+//  box-shadow: 0 0 20px var(--primary);
+//}
+
 html, body {
   max-height: 100vh;
 }
@@ -49,7 +54,7 @@ h1 {
 }
 
 h2 {
-  font-weight: 100!important;
+  font-weight: 100 !important;
 }
 
 //Width
