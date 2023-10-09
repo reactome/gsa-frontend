@@ -26,21 +26,13 @@ export class ScrollableComponent implements AfterViewInit {
     this.tourService.start$.pipe(untilDestroyed(this)).subscribe(() => {
       this.scroll = false;
       this.tourActive = true;
-      console.log('start')
     } );
     this.tourService.end$.pipe(untilDestroyed(this)).subscribe(() => {
       this.scroll = true;
       this.tourActive = false;
-      console.log('end')
     });
-    this.tourService.resume$.pipe(untilDestroyed(this)).subscribe(() => {
-      this.scroll = false
-      console.log('resume')
-    });
-    this.tourService.pause$.pipe(untilDestroyed(this)).subscribe(() => {
-      this.scroll = true
-      console.log('pause')
-    });
+    this.tourService.resume$.pipe(untilDestroyed(this)).subscribe(() => this.scroll = false);
+    this.tourService.pause$.pipe(untilDestroyed(this)).subscribe(() => this.scroll = true);
 
 
     this.scroll = this.tourService.getStatus() !== 1;
