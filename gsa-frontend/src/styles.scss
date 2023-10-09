@@ -10,10 +10,15 @@
   max-height: 100vh;
   max-width: 100vw;
 }
-//
-//.touranchor--is-active, .touranchor--is-active > * {
-//  box-shadow: 0 0 20px var(--primary);
-//}
+
+.touranchor--is-active {
+  filter: invert(0.1);
+  //filter: drop-shadow(0 4px 4px var(--primary));
+}
+
+button.touranchor--is-active {
+  filter: invert(1);
+}
 
 html, body {
   max-height: 100vh;
@@ -198,6 +203,7 @@ mat-icon {
   margin: 3px !important;
   border-radius: 10px;
   border: 1px solid var(--primary);
+  background: var(--surface);
 }
 
 .dataset-card-content:hover {
@@ -235,7 +241,7 @@ mat-icon {
 }
 
 @media (prefers-color-scheme: dark) {
-  .mat-expansion-panel, .mat-mdc-card {
+  .no-tour .mat-expansion-panel,.no-tour .mat-mdc-card {
     background: rgb(255 255 255 / 5%) !important;
     backdrop-filter: blur(5px);
   }

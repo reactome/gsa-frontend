@@ -12,10 +12,10 @@ export class TourComponent {
   tourOn: boolean = false;
   tourPaused: boolean = false;
 
-  constructor(public tourService: TourService, private snackBar: MatSnackBar) {
+  constructor(public tourService: TourService) {
     this.tourService.setDefaults({
       placement: {yPosition: 'above'},
-      enableBackdrop: true,
+      enableBackdrop: false,
       smoothScroll: true,
       centerAnchorOnScroll: true,
       disablePageScrolling: false,
