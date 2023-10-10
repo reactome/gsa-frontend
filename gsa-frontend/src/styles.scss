@@ -1,7 +1,3 @@
-//@font-face {
-//  font-family: "Roboto Mono";
-//  src: url("~src/assets/fonts/RobotoMono-VariableFont_wght.ttf") format("truetype");
-//}
 /* You can add global styles to this file, and also import other style files */
 
 @import "reactome-table";
@@ -62,6 +58,13 @@ h2 {
   font-weight: 100 !important;
 }
 
+.no-margin {
+  margin: 0 !important;
+}
+
+.no-padding {
+  padding: 0 !important;
+}
 //Width
 
 .width-forty {
@@ -238,6 +241,12 @@ mat-icon {
 
 .mat-mdc-text-field-wrapper {
   flex: 0 !important;
+}
+
+@media (max-height: 500px) {
+  .mat-horizontal-content-container {
+    padding-bottom: 0!important;
+  }
 }
 
 @media (prefers-color-scheme: dark) {

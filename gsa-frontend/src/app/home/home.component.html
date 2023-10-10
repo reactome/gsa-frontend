@@ -15,15 +15,17 @@
 
       <ng-container *ngIf="screenSize.breakpoints[sizes.Medium]">
 
-        <h2>Key Features:</h2>
-        <ul>
-          <li>Gene Set Analysis: Identifies Reactome pathways that are significantly enriched in expressed genes.</li>
-          <li>Visualization Tools: Provides interactive visualizations to help you explore enriched pathways and their
-            relationships.
-          </li>
-          <li>Biological Context: Helps you understand how your genes contribute to specific biological processes.</li>
-          <li>Statistical Insights: Utilizes statistical methods to assess the significance of pathway enrichment.</li>
-        </ul>
+        <ng-container *ngIf="(height.big$ | async)">
+          <h2>Key Features:</h2>
+          <ul>
+            <li>Gene Set Analysis: Identifies Reactome pathways that are significantly enriched in expressed genes.</li>
+            <li>Visualization Tools: Provides interactive visualizations to help you explore enriched pathways and their
+              relationships.
+            </li>
+            <li>Biological Context: Helps you understand how your genes contribute to specific biological processes.</li>
+            <li>Statistical Insights: Utilizes statistical methods to assess the significance of pathway enrichment.</li>
+          </ul>
+        </ng-container>
 
         <h2>How to Get Started:</h2>
         <ol>
@@ -42,7 +44,7 @@
 
       </ng-container>
 
-      <ng-container *ngIf="screenSize.breakpoints[sizes.Small]">
+      <ng-container *ngIf="screenSize.breakpoints[sizes.Small] && (height.big$ | async)">
         <p>Reactome GSA analysis is a valuable resource for researchers in genomics, systems biology, and
           bioinformatics.
           It can help you uncover the hidden biological connections within your gene sets and enhance your understanding

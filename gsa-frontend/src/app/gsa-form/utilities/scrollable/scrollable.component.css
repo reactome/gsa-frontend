@@ -50,6 +50,10 @@
   height: calc(100vh - 274px);
 }
 
+.small-screen {
+  height: calc(100vh - 115px);
+}
+
 .overflow-hide {
   overflow: hidden;
 }

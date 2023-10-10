@@ -10,7 +10,8 @@ import {Dataset} from "./state/dataset/dataset.state";
 import {CdkStep, StepperSelectionEvent} from "@angular/cdk/stepper";
 import {analysisFeature} from "./state/analysis/analysis.selector";
 import {isDefined} from "./utilities/utils";
-import {TourService} from "ngx-ui-tour-md-menu";
+import {HeightService} from "../services/height.service";
+import {TourUtilsService} from "../services/tour-utils.service";
 
 
 @Component({
@@ -36,11 +37,7 @@ export class GsaFormComponent implements AfterViewInit, OnInit, OnDestroy {
   allSaved$: Observable<boolean> = this.store.select(datasetFeature.selectAllSaved);
   analysisId$: Observable<string> = this.store.select(analysisFeature.selectAnalysisId).pipe(filter(isDefined));
 
-  hasTour = this.tourService.getStatus() !== 0;
-
-  constructor(private cdr: ChangeDetectorRef, private store: Store, private tourService: TourService) {
-    this.tourService.start$.subscribe(() => this.hasTour = true);
-    this.tourService.end$.subscribe(() => this.hasTour = false);
+  constructor(private cdr: ChangeDetectorRef, private store: Store, public tour: TourUtilsService, public height: HeightService) {
   }
 
   ngAfterViewInit() {

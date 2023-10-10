@@ -2,6 +2,8 @@ import {Component} from '@angular/core';
 import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
 import {Observable, tap} from "rxjs";
 import {TourService} from "ngx-ui-tour-md-menu";
+import {TourUtilsService} from "../services/tour-utils.service";
+import {HeightService} from "../services/height.service";
 
 @Component({
   selector: 'gsa-home',
@@ -16,7 +18,7 @@ export class HomeComponent {
     Medium: '(min-width: 960px)'
   };
 
-  constructor(breakpointObserver: BreakpointObserver, private tourService: TourService) {
+  constructor(breakpointObserver: BreakpointObserver, private tour: TourUtilsService, public height: HeightService) {
     this.screenSize$ = breakpointObserver.observe([
       this.sizes.Small,
       this.sizes.Medium
@@ -24,7 +26,6 @@ export class HomeComponent {
   }
 
   startTour() {
-    this.tourService.start();
-    // this.tourService.pause();
+    this.tour.start();
   }
 }

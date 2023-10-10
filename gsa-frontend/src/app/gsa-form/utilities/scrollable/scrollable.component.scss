@@ -42,7 +42,6 @@
   background-color: var(--outline-variant);
 }
 
-
 .center-vertical {
   height: calc(100vh - 233px); // No tour controller
   overflow-y: auto;
@@ -55,6 +54,11 @@
 .tour-active {
   height: calc(100vh - 274px); // With tour controller
 }
+
+.small-screen {
+  height: calc(100vh - 115px); // Small screen => without tour controller
+}
+
 
 .overflow-hide {
   overflow: hidden;

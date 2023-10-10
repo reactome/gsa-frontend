@@ -2,7 +2,8 @@ import {Injectable} from "@angular/core";
 import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {
   catchError,
-  combineLatestWith, delay,
+  combineLatestWith,
+  delay,
   delayWhen,
   exhaustMap,
   filter,
@@ -25,7 +26,7 @@ import {
 import {
   ChangeAnalysisParamsComponent
 } from "../../dataset-form/datasets/change-analysis-params/change-analysis-params.component";
-import {TourService} from "ngx-ui-tour-md-menu";
+import {TourUtilsService} from "../../../services/tour-utils.service";
 
 
 @Injectable()
@@ -154,7 +155,7 @@ export class DatasetEffects {
     this.actions$.pipe(
       ofType(datasetActions.setSummary),
       map(({summary, id}) => {
-        setTimeout(() => this.tourService.getStatus() === 2 ? this.tourService.resume() : null, 1000);
+        setTimeout(() => this.tour.paused ? this.tour.resume() : null, 1000);
         const table: string[][] = !summary.sample_metadata
           ? [[''], ...summary.sample_ids.map((sampleId) => [sampleId])]
           : [
@@ -231,7 +232,7 @@ export class DatasetEffects {
     private dialog: MatDialog,
     private loadDatasetService: LoadDatasetService,
     private store: Store,
-    private tourService: TourService
+    private tour: TourUtilsService
   ) {
   }
 }

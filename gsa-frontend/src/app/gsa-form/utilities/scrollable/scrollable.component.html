@@ -1,4 +1,4 @@
-<div #scrollable (scroll)="scrolling()" [ngClass]="{'overflow-hide': !scroll, 'tour-active': tourActive}" id="scroll-container-{{name}}"
+<div #scrollable (scroll)="scrolling()" [ngClass]="{'overflow-hide': tourVisible | async, 'tour-active': tour.on, 'small-screen': !(height.medium$ | async)}" id="scroll-container-{{name}}"
      class="center-vertical width-hundred relative flex-container align-center justify-center scrollbar">
   <div class="flex-container vertical justify-center align-center width-98">
     <div *ngIf="shadows.top" class="shadow shadow-top width-hundred"></div>

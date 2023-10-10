@@ -1,8 +1,9 @@
-import {AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, ViewChild} from '@angular/core';
 import {ScrollService} from "../../services/scroll.service";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
-import {TourService} from "ngx-ui-tour-md-menu";
-import {merge, mergeAll} from "rxjs";
+import {map} from "rxjs";
+import {HeightService} from "../../../services/height.service";
+import {TourUtilsService} from "../../../services/tour-utils.service";
 
 @UntilDestroy()
 @Component({
@@ -16,35 +17,16 @@ export class ScrollableComponent implements AfterViewInit {
   @Input() name: string = '';
   @ViewChild('scrollable') scrollable: ElementRef<HTMLDivElement>;
 
-  scroll: boolean = true;
-  tourActive: boolean = false;
+  tourVisible = this.tour.state$.pipe(map(state => state === 'on'))
+
   shadows = {top: false, bottom: true};
 
-  constructor(private scrollService: ScrollService, private tourService: TourService) {
+  constructor(private scrollService: ScrollService, public tour: TourUtilsService, public height: HeightService) {
     this.scrollService.resize$.pipe(untilDestroyed(this)).subscribe(() => this.updateShadows());
-
-    this.tourService.start$.pipe(untilDestroyed(this)).subscribe(() => {
-      this.scroll = false;
-      this.tourActive = true;
-    } );
-    this.tourService.end$.pipe(untilDestroyed(this)).subscribe(() => {
-      this.scroll = true;
-      this.tourActive = false;
-    });
-    this.tourService.resume$.pipe(untilDestroyed(this)).subscribe(() => this.scroll = false);
-    this.tourService.pause$.pipe(untilDestroyed(this)).subscribe(() => this.scroll = true);
-
-
-    this.scroll = this.tourService.getStatus() !== 1;
-    this.tourActive = this.tourService.getStatus() !== 0;
   }
 
   ngAfterViewInit() {
     this.updateShadows();
-    this.tourService.setDefaults({
-      scrollContainer: this.scrollable.nativeElement,
-      isAsync: true
-    });
   }
 
   scrolling() {

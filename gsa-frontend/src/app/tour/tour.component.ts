@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
 import {TourService} from "ngx-ui-tour-md-menu";
 import {IMdStepOption} from "ngx-ui-tour-md-menu/lib/step-option.interface";
-import {MatSnackBar} from "@angular/material/snack-bar";
+import {HeightService} from "../services/height.service";
+import {TourUtilsService} from "../services/tour-utils.service";
 
 @Component({
   selector: 'gsa-tour',
@@ -9,10 +10,8 @@ import {MatSnackBar} from "@angular/material/snack-bar";
   styleUrls: ['./tour.component.scss']
 })
 export class TourComponent {
-  tourOn: boolean = false;
-  tourPaused: boolean = false;
 
-  constructor(public tourService: TourService) {
+  constructor(public tourService: TourService, public tour: TourUtilsService, public height: HeightService) {
     this.tourService.setDefaults({
       placement: {yPosition: 'above'},
       enableBackdrop: false,
@@ -22,12 +21,6 @@ export class TourComponent {
       closeOnOutsideClick: true,
       duplicateAnchorHandling: 'registerFirst'
     });
-
-
-    this.tourService.start$.subscribe(() => this.tourOn = true);
-    this.tourService.end$.subscribe(() => this.tourOn = false);
-    this.tourService.pause$.subscribe(() => this.tourPaused = true);
-    this.tourService.resume$.subscribe(() => this.tourPaused = false);
 
     this.tourService.initialize([
       {
@@ -84,16 +77,14 @@ export class TourComponent {
         nextOnAnchorClick: true,
         scrollContainer: '#scroll-container-dataset',
         closeOnOutsideClick: false,
-      },
-      {
+      }, {
         anchorId: 'annotate.name',
         title: 'Name your dataset',
         content: 'You can rename your dataset here',
         delayBeforeStepShow: 1500,
         isAsync: true,
         scrollContainer: '#scroll-container-dataset',
-      },
-      {
+      }, {
         anchorId: 'annotate.table',
         title: 'Dataset annotation',
         content: 'In this step, you need to provide meta-data on the different samples in the dataset.<br> ' +
@@ -178,29 +169,4 @@ export class TourComponent {
       }
     ] as IMdStepOption[])
   }
-
-  end() {
-    this.tourService.end();
-  }
-
-  hasNext(step: IMdStepOption): boolean {
-    return this.tourService.hasNext(step);
-  }
-
-  next() {
-    this.tourService.next()
-  }
-
-  pause() {
-    this.tourService.pause()
-  }
-
-  resume() {
-    this.tourService.resume()
-  }
-
-  start() {
-    this.tourService.start()
-  }
-
 }

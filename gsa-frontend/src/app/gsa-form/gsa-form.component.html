@@ -6,11 +6,11 @@ methodSelected: methodSelected$,
 parameters: methodParameters$,
 datasets: datasets$,
 datasetIds: datasetIds$
-} as vm" (selectionChange)="stepChange($event, vm)" class="flex-container" [ngClass]="{'no-tour': !hasTour}">
+} as vm" (selectionChange)="stepChange($event, vm)" class="flex-container" [ngClass]="{'no-tour': !tour.on}">
   <mat-step #setMethodStep [completed]="vm.methodSelected" class="flex-one">
 
     <ng-template matStepLabel>Select method</ng-template>
-    <h1>Step 1: Select one of the available analysis methods</h1>
+    <h1 *ngIf="height.medium$ | async">Step 1: Select one of the available analysis methods</h1>
 
     <div class="flex-container horizontal gap-one justify-evenly">
       <div class="nav-button-container"></div>
@@ -31,7 +31,7 @@ datasetIds: datasetIds$
 
   <mat-step #addDataStep [completed]="vm.allSaved">
     <ng-template matStepLabel>Add datasets</ng-template>
-    <h1>Step 2: Add and annotate your datasets</h1>
+    <h1 *ngIf="height.medium$ | async">Step 2: Add and annotate your datasets</h1>
     <div class="flex-container horizontal gap-one justify-evenly" *ngIf="vm.method">
       <div class="nav-button-container align-center flex-container justify-center vertical">
         <button class="margin-top-30" color="primary" mat-fab matStepperPrevious>
@@ -71,7 +71,7 @@ datasetIds: datasetIds$
   </mat-step>
   <mat-step #optionStep>
     <ng-template matStepLabel>Options</ng-template>
-    <h1>Step 3: Analysis Options</h1>
+    <h1 *ngIf="height.medium$ | async">Step 3: Analysis Options</h1>
     <div class="flex-container horizontal gap-one justify-evenly" *ngIf="vm.method">
       <div class="nav-button-container align-center justify-center flex-container vertical">
         <button class="margin-top-30" color="primary" mat-fab matStepperPrevious>
@@ -94,7 +94,7 @@ datasetIds: datasetIds$
 
   <mat-step #analysisStep>
     <ng-template matStepLabel>Analysis</ng-template>
-    <h1>Step 4: Analysis</h1>
+    <h1 *ngIf="height.medium$ | async">Step 4: Analysis</h1>
     <div class="flex-container horizontal gap-one justify-evenly">
       <div class="nav-button-container align-center justify-center flex-container vertical">
         <button class="margin-top-30" color="primary" mat-fab matStepperPrevious>
