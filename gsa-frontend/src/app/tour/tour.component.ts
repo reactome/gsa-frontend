@@ -27,7 +27,7 @@ export class TourComponent {
         anchorId: 'Camera',
         icon: 'ads_click',
         title: 'Select method',
-        content: "Click bellow to select Camera method.<br>" +
+        content: "Click \"Camera\" panel to select the Camera analysis method.<br>" +
           "Camera is a good choice for a first analysis: it's the fastest to perform",
         route: 'form',
         delayAfterNavigation: 1000,
@@ -40,7 +40,7 @@ export class TourComponent {
         anchorId: 'method.done',
         icon: 'ads_click',
         title: 'Continue',
-        content: "Click this button to go to the next step",
+        content: "Click \"Continue\" button to go to the next step",
         nextOnAnchorClick: true,
         scrollContainer: '#scroll-container-method',
         centerAnchorOnScroll: false,
@@ -73,7 +73,7 @@ export class TourComponent {
         anchorId: 'source.example.1',
         icon: 'ads_click',
         title: 'First example',
-        content: 'Click on this example dataset to analyse it',
+        content: 'Click on "Melanoma RNA-seq example" to analyse this dataset',
         nextOnAnchorClick: true,
         scrollContainer: '#scroll-container-dataset',
         closeOnOutsideClick: false,
@@ -87,14 +87,14 @@ export class TourComponent {
       }, {
         anchorId: 'annotate.table',
         title: 'Dataset annotation',
-        content: 'In this step, you need to provide meta-data on the different samples in the dataset.<br> ' +
-          'Because you are using an exemple, the data is already annotated for you',
+        content: 'In this step, you need to provide meta-data on the different samples in the dataset, like condition, gender, etc.<br> ' +
+          'Because you are using an exemple, the data is already annotated for you.',
         scrollContainer: '#scroll-container-dataset',
       }, {
         anchorId: 'annotate.done',
         icon: 'ads_click',
         title: 'Continue',
-        content: 'Once the annotation of the dataset is finished, you can go to the next step by clicking this button',
+        content: 'Click on the "⌄" button, once you finished annotating the dataset',
         nextOnAnchorClick: true,
         scrollContainer: '#scroll-container-dataset',
         closeOnOutsideClick: false,
@@ -123,7 +123,7 @@ export class TourComponent {
         anchorId: 'dataset.save',
         icon: 'ads_click',
         title: 'Save dataset',
-        content: 'Click on this button.<br>' +
+        content: 'Click on the "Save" button.<br>' +
           'All datatasets must be saved to continue further the analysis',
         nextOnAnchorClick: true,
         scrollContainer: '#scroll-container-dataset',
@@ -155,7 +155,7 @@ export class TourComponent {
         anchorId: 'options.done',
         icon: 'ads_click',
         title: 'Continue',
-        content: 'Click on this button once you selected your desired outputs',
+        content: 'Click on the "Continue" button once you selected your desired outputs',
         nextOnAnchorClick: true,
         scrollContainer: '#scroll-container-options',
         closeOnOutsideClick: false,
