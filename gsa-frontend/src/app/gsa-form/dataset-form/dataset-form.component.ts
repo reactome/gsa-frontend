@@ -11,6 +11,7 @@ import {datasetActions} from "../state/dataset/dataset.actions";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 import {Parameter} from "../model/parameter.model";
 import {Method} from "../state/method/method.state";
+import {TourUtilsService} from "../../services/tour-utils.service";
 
 @Component({
   selector: 'gsa-dataset-form',
@@ -33,7 +34,7 @@ export class DatasetFormComponent implements OnInit, OnDestroy {
   annotationComplete$: Observable<boolean>;
   statisticalDesignComplete$: Observable<boolean>;
 
-  constructor(public dialog: MatDialog,
+  constructor(public dialog: MatDialog, public tour: TourUtilsService,
               public scrollService: ScrollService, private store: Store) {
   }
 
