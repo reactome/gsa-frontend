@@ -46,7 +46,7 @@
     </div>
   </mat-expansion-panel-header>
 
-  <mat-vertical-stepper #nestedStepper linear (selectionChange)="stepChange($event)" [animationDuration]="(tour.state$ | async) === 'on' ? '0' : '500'">
+  <mat-vertical-stepper #nestedStepper linear (selectionChange)="stepChange($event)" [animationDuration]="tour.on ? '0' : '500'">
     <mat-step #selectStep [completed]="(summaryComplete$ | async) || false">
       <ng-template matStepLabel>Select a dataset</ng-template>
       <div class="flex-container align-center vertical">

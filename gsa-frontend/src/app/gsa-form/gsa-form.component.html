@@ -6,7 +6,7 @@ methodSelected: methodSelected$,
 parameters: methodParameters$,
 datasets: datasets$,
 datasetIds: datasetIds$
-} as vm" (selectionChange)="stepChange($event, vm)" class="flex-container" [ngClass]="{'no-tour': !tour.on}" [animationDuration]="(tour.state$ | async) === 'on' ? '0' : '500'">
+} as vm" (selectionChange)="stepChange($event, vm)" class="flex-container" [ngClass]="{'no-tour': !tour.on}" [animationDuration]="tour.on ? '0' : '500'">
   <mat-step #setMethodStep [completed]="vm.methodSelected" class="flex-one">
 
     <ng-template matStepLabel>Select method</ng-template>
