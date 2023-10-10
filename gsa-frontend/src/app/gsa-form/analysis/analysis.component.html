@@ -97,20 +97,20 @@
                         <span [ngSwitch]="report.name" class="float-right">
                           <ng-template [ngSwitchCase]="'MS Excel Report (xlsx)'">
                             <div class="flex-container horizontal align-center">
-                              <mat-icon>table_view</mat-icon>
+                              <mat-icon class="padding-right-ten">table_view</mat-icon>
                               <span>Excel Report</span>
                               </div>
                           </ng-template>
 
                           <ng-template [ngSwitchCase]="'PDF Report'">
                               <div class="flex-container horizontal align-center">
-                            <mat-icon>picture_as_pdf</mat-icon>
+                            <mat-icon class="padding-right-ten">picture_as_pdf</mat-icon>
                              <span>{{report.name}}</span>
                              </div>
                           </ng-template>
                           <ng-template [ngSwitchCase]="'R Script'">
                                <div class="flex-container horizontal align-center">
-                            <mat-icon>code_blocks</mat-icon>
+                            <mat-icon class="padding-right-ten">code_blocks</mat-icon>
                              <span>{{report.name}}</span>
                                 </div>
                           </ng-template>
