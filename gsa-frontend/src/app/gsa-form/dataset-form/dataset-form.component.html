@@ -34,19 +34,20 @@
                 color="primary"
                 mat-icon-button
                 matTooltip="Edit analysis parameters of specific dataset"><span
-            class="material-icons">bar_chart</span>
+          class="material-icons">bar_chart</span>
         </button>
         <button (click)="deleteDataset($event)" color="primary"
                 mat-icon-button
                 matTooltip="Delete dataset"><span
-            class="material-icons">delete</span>
+          class="material-icons">delete</span>
         </button>
       </div>
 
     </div>
   </mat-expansion-panel-header>
 
-  <mat-vertical-stepper #nestedStepper linear (selectionChange)="stepChange($event)" [animationDuration]="tour.on ? '0' : '500'">
+  <mat-vertical-stepper #nestedStepper linear (selectionChange)="stepChange($event)"
+                        [animationDuration]="tour.on ? '0' : '500'">
     <mat-step #selectStep [completed]="(summaryComplete$ | async) || false">
       <ng-template matStepLabel>Select a dataset</ng-template>
       <div class="flex-container align-center vertical">
@@ -65,10 +66,11 @@
         </button>
         <gsa-annotate-dataset [datasetId]="datasetId" *ngIf="nestedStepper.selected === annotateStep"
                               class="width-hundred"/>
-        <button [disabled]="!annotateStep.completed" class="nav-button-margin" color="accent" mat-fab matStepperNext
-                tourAnchor="annotate.done">
-          <mat-icon>keyboard_arrow_down</mat-icon>
-        </button>
+        <div tourAnchor="annotate.done" clickable>
+          <button [disabled]="!annotateStep.completed" class="nav-button-margin" color="accent" mat-fab matStepperNext>
+            <mat-icon>keyboard_arrow_down</mat-icon>
+          </button>
+        </div>
       </div>
     </mat-step>
 
@@ -82,7 +84,7 @@
                                 class="width-hundred"/>
         <button (click)="saveData(); mep.expanded = false;"
                 [disabled]="!statisticalDesignStep.completed" class="nav-button-margin"
-                color="primary" tourAnchor="dataset.save"
+                color="primary" tourAnchor="dataset.save" clickable
                 mat-raised-button>
           Save Dataset
         </button>

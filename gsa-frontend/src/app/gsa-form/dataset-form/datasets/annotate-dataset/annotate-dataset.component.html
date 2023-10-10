@@ -2,7 +2,7 @@
   <div class="flex-container horizontal justify-center">
     <div [ngClass]="screenIsSmall ? 'width-hundred': 'width-eighty'"
          class="flex-container vertical gap-one align-center">
-      <div class="flex-container horizontal align-center justify-center gap-one width-hundred" tourAnchor="annotate.name">
+      <div class="flex-container horizontal align-center justify-center gap-one width-hundred" tourAnchor="annotate.name" clickable>
         <mat-form-field class="flex-one" [subscriptSizing]="'dynamic'" >
           <mat-label>Dataset name:</mat-label>
           <input [ngModel]="(dataset$ | async)?.summary?.title" (ngModelChange)="updateTitle($event)"

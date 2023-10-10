@@ -169,6 +169,9 @@ h2 {
   flex-direction: column;
 }
 
+.no-radius {
+  border-radius: 0 !important;
+}
 
 //Angular Material
 mat-icon {
@@ -196,7 +199,7 @@ mat-icon {
 }
 
 .dataset-card-content:hover {
-  background: rgba(var(--primary), 0.2);
+  background: var(--surface2);
   cursor: pointer;
 }
 
@@ -231,12 +234,12 @@ mat-icon {
 
 @media (max-height: 500px) {
   .mat-horizontal-content-container {
-    padding-bottom: 0!important;
+    padding-bottom: 0 !important;
   }
 }
 
 @media (prefers-color-scheme: dark) {
-  .no-tour .mat-expansion-panel,.no-tour .mat-mdc-card {
+  .no-tour .mat-expansion-panel, .no-tour .mat-mdc-card {
     background: rgb(255 255 255 / 5%) !important;
     backdrop-filter: blur(5px);
   }
@@ -244,41 +247,31 @@ mat-icon {
   .mat-mdc-text-field-wrapper {
     background: var(--surface);
   }
-
 }
 
 
 mat-vertical-stepper, mat-horizontal-stepper {
   background: transparent !important;
 }
+
 // Tour
+.color-backdrop {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  pointer-events: auto;
+  background: rgba(black, 0.5);
+  opacity: 1 !important;
+  z-index: 998;
+}
+
 .touranchor--is-active {
-  filter: invert(0.05);
+  position: relative;
+  z-index: 999;
+  background-color: var(--surface);
   &[clickable] {
-    animation: light-invert 0.5s infinite alternate;
-
-  }
-  &:is(button) {
-    animation: full-invert 0.5s infinite alternate;
+    z-index: 1003;
   }
 }
-
-
-@keyframes light-invert {
-  0% {
-    filter: invert(0.05);
-  }
-  100% {
-    filter: invert(0);
-  }
-}
-
-@keyframes full-invert {
-  0% {
-    filter: invert(1);
-  }
-  100% {
-    filter: invert(0);
-  }
-}
-

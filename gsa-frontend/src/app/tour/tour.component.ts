@@ -19,7 +19,8 @@ export class TourComponent {
       centerAnchorOnScroll: true,
       disablePageScrolling: false,
       closeOnOutsideClick: true,
-      duplicateAnchorHandling: 'registerFirst'
+      duplicateAnchorHandling: 'registerFirst',
+      popoverClass: 'no-radius'
     });
 
     this.tourService.initialize([
@@ -30,12 +31,10 @@ export class TourComponent {
         content: "Click \"Camera\" panel to select the Camera analysis method.<br>" +
           "Camera is a good choice for a first analysis: it's the fastest to perform",
         route: 'form',
-        delayAfterNavigation: 1000,
         nextOnAnchorClick: true,
         isAsync: true,
         scrollContainer: '#scroll-container-method',
         centerAnchorOnScroll: false,
-        closeOnOutsideClick: false,
       }, {
         anchorId: 'method.done',
         icon: 'ads_click',
@@ -44,12 +43,10 @@ export class TourComponent {
         nextOnAnchorClick: true,
         scrollContainer: '#scroll-container-method',
         centerAnchorOnScroll: false,
-        closeOnOutsideClick: false,
       }, {
         anchorId: 'source.local',
         title: 'Local data',
         content: 'You can upload your own data in the following section',
-        delayBeforeStepShow: 1000,
         isAsync: true,
         scrollContainer: '#scroll-container-dataset',
       }, {
@@ -76,12 +73,11 @@ export class TourComponent {
         content: 'Click on "Melanoma RNA-seq example" to analyse this dataset',
         nextOnAnchorClick: true,
         scrollContainer: '#scroll-container-dataset',
-        closeOnOutsideClick: false,
       }, {
         anchorId: 'annotate.name',
         title: 'Name your dataset',
         content: 'You can rename your dataset here',
-        delayBeforeStepShow: 1500,
+        delayBeforeStepShow: 1750,
         isAsync: true,
         scrollContainer: '#scroll-container-dataset',
       }, {
@@ -97,7 +93,6 @@ export class TourComponent {
         content: 'Click on the "⌄" button, once you finished annotating the dataset',
         nextOnAnchorClick: true,
         scrollContainer: '#scroll-container-dataset',
-        closeOnOutsideClick: false,
       }, {
         anchorId: 'stat.factor',
         title: 'Comparison factor',
@@ -127,7 +122,6 @@ export class TourComponent {
           'All datatasets must be saved to continue further the analysis',
         nextOnAnchorClick: true,
         scrollContainer: '#scroll-container-dataset',
-        closeOnOutsideClick: false,
       }, {
         anchorId: 'dataset.add',
         title: 'Add more datasets',
@@ -142,7 +136,6 @@ export class TourComponent {
         content: 'Click on this button once the selection of datasets is finished',
         nextOnAnchorClick: true,
         scrollContainer: '#scroll-container-dataset',
-        closeOnOutsideClick: false,
       }, {
         anchorId: 'options',
         title: 'Options',
@@ -158,7 +151,6 @@ export class TourComponent {
         content: 'Click on the "Continue" button once you selected your desired outputs',
         nextOnAnchorClick: true,
         scrollContainer: '#scroll-container-options',
-        closeOnOutsideClick: false,
       }, {
         anchorId: 'results',
         title: 'Waiting for results',
