@@ -1,6 +1,6 @@
 <div (click)="select()">
   <ng-container *ngIf="source.id === 'EXAMPLE_MEL_RNA'; else other">
-    <div class="dataset-card-content" tourAnchor="source.example.1">
+    <div class="dataset-card-content" tourAnchor="source.example.1" clickable>
       <p class="bold no-wrap">{{source.title}}</p>
       <p>{{source.description}}</p>
     </div>

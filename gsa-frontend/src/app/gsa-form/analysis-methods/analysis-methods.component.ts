@@ -20,7 +20,7 @@ export class AnalysisMethodsComponent implements OnInit {
   methods$: Observable<Method[]> = this.store.select(methodFeature.selectAll);
   @ViewChild('flyingRename') input: ElementRef<HTMLInputElement>;
 
-  constructor(private formBuilder: FormBuilder, private responsive: BreakpointObserver, private store: Store) {
+  constructor(private store: Store) {
   }
 
   ngOnInit(): void {
