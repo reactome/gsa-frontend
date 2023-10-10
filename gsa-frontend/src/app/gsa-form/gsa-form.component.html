@@ -48,9 +48,9 @@ datasetIds: datasetIds$
                               [ngClass]="{'width-hundred': i === 0}"></gsa-dataset-form>
           </div>
         </mat-accordion>
-        <div tourAnchor="dataset.add" class="margin-top-30">
-          <button (click)="addDataset()" class="blue-border" color="primary"
-                  mat-stroked-button>
+        <div class="margin-top-30">
+          <button (click)="addDataset()" class="primary-border" color="primary" tourAnchor="dataset.add"
+                  mat-stroked-button style="background: var(--surface)">
             Add Dataset
           </button>
         </div>
