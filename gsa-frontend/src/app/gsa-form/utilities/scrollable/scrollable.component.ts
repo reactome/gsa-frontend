@@ -15,7 +15,9 @@ export class ScrollableComponent implements AfterViewInit {
   @Input() topMargin: number = 0;
   @Input() bottomMargin: number = 0;
   @Input() name: string = '';
+  @Input() innerClasses: string = '';
   @ViewChild('scrollable') scrollable: ElementRef<HTMLDivElement>;
+
 
   tourVisible = this.tour.state$.pipe(map(state => state === 'on'))
 

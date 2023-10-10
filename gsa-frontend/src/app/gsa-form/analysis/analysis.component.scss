@@ -1,19 +1,16 @@
 .content-height {
-  min-height: 50vh;
+  min-height: 100%;
 }
 
-.footer-height {
-  min-height: 15vh;
+.container {
+  --mdc-linear-progress-track-height: 10px;
+  height: calc(100% - var(--mdc-linear-progress-track-height));
 }
+
 
 .progress-bar {
   border-bottom-right-radius: 4px;
   border-bottom-left-radius: 4px;
-  --mdc-linear-progress-track-height: 10px;
-}
-
-.height-fifteen {
-  min-height: 15vh;
 }
 
 h2 {
@@ -28,7 +25,7 @@ h2 {
   font-size: large;
 }
 
-.failed{
+.failed {
   color: var(--error);
 }
 
@@ -50,10 +47,6 @@ h2 {
   padding-left: 16px;
 }
 
-mat-card-footer {
-  margin-top: 30px !important;
-}
-
 .flex-twelve {
   flex: 12;
 }
@@ -63,9 +56,13 @@ mat-card-footer {
   justify-content: end;
 }
 
-.error-message{
+.error-message {
   color: var(--on-error-container);
   background: var(--error-container);
   padding: 10px;
   border: 5px solid var(--error);
+}
+
+:host {
+  height: 100%;
 }

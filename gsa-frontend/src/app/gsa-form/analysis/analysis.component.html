@@ -1,7 +1,7 @@
-<div [formGroup]="analysisStep"
+<div [formGroup]="analysisStep" class="container"
      *ngrxLet="{analysisLoadingStatus: analysisLoadingStatus$, reportLoadingStatus: reportLoadingStatus$, reportsRequired: reportsRequired$, result: result$} as vm">
-  <div class="flex-container horizontal gap-one ">
-    <mat-card class="flex-one">
+  <div class="flex-container horizontal gap-one height-hundred">
+    <mat-card class="flex-one height-hundred">
       <div class="flex-container align-start vertical content-height">
         <h2 class="flex-one height-fifteen">Analysis</h2>
         <div class="flex-container vertical align-center justify-center height-hundred width-hundred flex-twelve">
@@ -39,8 +39,8 @@
                 </a>
 
                 <button (click)="goToSelectMethod()" color="primary" mat-stroked-button>
-                    <mat-icon color="primary">restart_alt</mat-icon>
-                    Start a new analysis
+                  <mat-icon color="primary">restart_alt</mat-icon>
+                  Start a new analysis
                 </button>
 
                 <br>
@@ -62,8 +62,7 @@
       </mat-card-footer>
     </mat-card>
 
-
-    <mat-card *ngIf="vm.reportsRequired" class="flex-one ">
+    <mat-card *ngIf="vm.reportsRequired" class="flex-one height-hundred">
       <div class="flex-container align-start vertical content-height">
         <h2 class="flex-one height-fifteen">Report</h2>
         <div class="flex-container vertical align-center justify-center height-hundred width-hundred flex-twelve">
@@ -97,24 +96,20 @@
                         <span [ngSwitch]="report.name" class="float-right">
                           <ng-template [ngSwitchCase]="'MS Excel Report (xlsx)'">
                             <div class="flex-container horizontal align-center">
-                              <mat-icon class="padding-right-ten"><span
-                                class="material-icons-outlined">table_view</span></mat-icon><span>Excel Report</span>
+                              <mat-icon>table_view</mat-icon>
+                              <span>Excel Report</span>
                               </div>
                           </ng-template>
 
                           <ng-template [ngSwitchCase]="'PDF Report'">
                               <div class="flex-container horizontal align-center">
-                            <mat-icon class="padding-right-ten">
-                              <span class="material-icons-outlined">picture_as_pdf</span>
-                            </mat-icon>
+                            <mat-icon>picture_as_pdf</mat-icon>
                              <span>{{report.name}}</span>
                              </div>
                           </ng-template>
                           <ng-template [ngSwitchCase]="'R Script'">
                                <div class="flex-container horizontal align-center">
-                            <mat-icon class="padding-right-ten">
-                              <span class="material-icons-outlined">description</span>
-                            </mat-icon>
+                            <mat-icon>code_blocks</mat-icon>
                              <span>{{report.name}}</span>
                                 </div>
                           </ng-template>
