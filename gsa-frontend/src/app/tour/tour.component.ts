@@ -3,6 +3,7 @@ import {TourService} from "ngx-ui-tour-md-menu";
 import {IMdStepOption} from "ngx-ui-tour-md-menu/lib/step-option.interface";
 import {HeightService} from "../services/height.service";
 import {TourUtilsService} from "../services/tour-utils.service";
+import {debounceTime, firstValueFrom, fromEvent, map, of, timeout} from "rxjs";
 
 @Component({
   selector: 'gsa-tour',
@@ -17,11 +18,13 @@ export class TourComponent {
       enableBackdrop: false,
       smoothScroll: true,
       centerAnchorOnScroll: true,
-      disablePageScrolling: false,
+      disablePageScrolling: true,
+      disableScrollToAnchor: false,
       closeOnOutsideClick: true,
       duplicateAnchorHandling: 'registerFirst',
       popoverClass: 'no-radius'
     });
+
 
     this.tourService.initialize([
       {
@@ -34,7 +37,7 @@ export class TourComponent {
         nextOnAnchorClick: true,
         isAsync: true,
         scrollContainer: '#scroll-container-method',
-        centerAnchorOnScroll: false,
+        centerAnchorOnScroll: true,
       }, {
         anchorId: 'method.done',
         icon: 'ads_click',
@@ -49,11 +52,13 @@ export class TourComponent {
         content: 'You can upload your own data in the following section',
         isAsync: true,
         scrollContainer: '#scroll-container-dataset',
+        disableScrollToAnchor: true,
       }, {
         anchorId: 'source.public',
         title: 'Public data',
         content: 'You can use already published dataset in the following section',
         scrollContainer: '#scroll-container-dataset',
+        disableScrollToAnchor: true,
       }, {
         anchorId: 'search',
         title: 'Search',
@@ -61,11 +66,13 @@ export class TourComponent {
           '<a href="https://www.ebi.ac.uk/gxa/home">Expression Atlas</a> ' +
           'and <a href="http://www.ilincs.org/apps/grein/">GREIN</a>',
         scrollContainer: '#scroll-container-dataset',
+        disableScrollToAnchor: true,
       }, {
         anchorId: 'source.example',
         title: 'Example data',
         content: 'The simplest way to perform quickly an analysis: use one of the bellow examples',
         scrollContainer: '#scroll-container-dataset',
+        disableScrollToAnchor: true,
       }, {
         anchorId: 'source.example.1',
         icon: 'ads_click',
@@ -73,6 +80,7 @@ export class TourComponent {
         content: 'Click on "Melanoma RNA-seq example" to analyse this dataset',
         nextOnAnchorClick: true,
         scrollContainer: '#scroll-container-dataset',
+        disableScrollToAnchor: true,
       }, {
         anchorId: 'annotate.name',
         title: 'Name your dataset',
@@ -86,6 +94,7 @@ export class TourComponent {
         content: 'In this step, you need to provide meta-data on the different samples in the dataset, like condition, gender, etc.<br> ' +
           'Because you are using an exemple, the data is already annotated for you.',
         scrollContainer: '#scroll-container-dataset',
+        disableScrollToAnchor: true,
       }, {
         anchorId: 'annotate.done',
         icon: 'ads_click',
@@ -93,6 +102,7 @@ export class TourComponent {
         content: 'Click on the "⌄" button once you finished annotating the dataset',
         nextOnAnchorClick: true,
         scrollContainer: '#scroll-container-dataset',
+        disableScrollToAnchor: true,
       }, {
         anchorId: 'stat.factor',
         title: 'Comparison factor',
@@ -160,5 +170,47 @@ export class TourComponent {
         scrollContainer: '#scroll-container-results',
       }
     ] as IMdStepOption[])
+  }
+
+  async next() {
+    const currentStep = this.tourService.currentStep;
+    const nextStep = this.tourService.steps[this.tourService.steps.indexOf(currentStep) + 1];
+    if (nextStep.disableScrollToAnchor) {
+      const elt = this.tourService.anchors[nextStep.anchorId as string].element.nativeElement;
+      elt?.scrollIntoView({
+        block: "start",
+        behavior: "smooth",
+        inline: "nearest"
+      });
+      await firstValueFrom(this.waitForScrollFinish$(nextStep));
+    }
+
+    this.tour.next()
+  }
+
+  private waitForScrollFinish$(step: IMdStepOption) {
+    const userScrollContainer = step.scrollContainer,
+      scrollContainer = this.getScrollContainer(userScrollContainer) ?? document;
+
+    return fromEvent(scrollContainer, 'scroll')
+      .pipe(
+        timeout({
+          each: 75,
+          with: () => of(undefined)
+        }),
+        debounceTime(50),
+        map(() => undefined)
+      );
+  }
+
+  private getScrollContainer(userScrollContainer: string | HTMLElement | undefined): Element | null {
+    if (typeof userScrollContainer === 'string') {
+      return document.documentElement.querySelector(userScrollContainer);
+    }
+    if (userScrollContainer instanceof HTMLElement) {
+      return userScrollContainer;
+    }
+
+    return null;
   }
 }
