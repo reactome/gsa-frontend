@@ -265,12 +265,15 @@ mat-vertical-stepper, mat-horizontal-stepper {
   background: rgba(black, 0.5);
   opacity: 1 !important;
   z-index: 998;
+
+  @media (prefers-color-scheme: dark) {
+    background: rgba(black, 0.7);
+  }
 }
 
 .touranchor--is-active {
   position: relative;
   z-index: 999;
-  background-color: var(--surface);
   &[clickable] {
     z-index: 1003;
   }
