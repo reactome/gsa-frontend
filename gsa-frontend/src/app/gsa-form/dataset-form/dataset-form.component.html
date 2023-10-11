@@ -66,8 +66,8 @@
         </button>
         <gsa-annotate-dataset [datasetId]="datasetId" *ngIf="nestedStepper.selected === annotateStep"
                               class="width-hundred"/>
-        <div tourAnchor="annotate.done" clickable>
-          <button [disabled]="!annotateStep.completed" class="nav-button-margin" color="accent" mat-fab matStepperNext>
+        <div class="nav-button-area nav-button-margin" tourAnchor="annotate.done" clickable>
+          <button [disabled]="!annotateStep.completed" color="accent" mat-fab matStepperNext>
             <mat-icon>keyboard_arrow_down</mat-icon>
           </button>
         </div>

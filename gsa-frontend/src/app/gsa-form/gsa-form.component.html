@@ -20,13 +20,13 @@ datasetIds: datasetIds$
       </gsa-scrollable>
 
       <div class="nav-button-container align-center flex-container justify-center vertical">
-        <div tourAnchor="method.done" clickable class="flex-container align-center vertical width-hundred">
-          <button [disabled]="!setMethodStep.completed" class="margin-top-30" color="primary"
+        <div class="flex-container align-center vertical nav-button-area margin-top-30" tourAnchor="method.done" clickable>
+          <button [disabled]="!setMethodStep.completed" color="primary"
                   mat-fab matStepperNext>
             <mat-icon>keyboard_arrow_right</mat-icon>
           </button>
-          <div class="outline margin-top-10">Continue</div>
         </div>
+        <div class="outline margin-top-10">Continue</div>
       </div>
     </div>
   </mat-step>
@@ -62,12 +62,12 @@ datasetIds: datasetIds$
       </gsa-scrollable>
 
       <div class="nav-button-container align-center flex-container justify-center vertical">
-        <div tourAnchor="dataset.done" clickable class="flex-container align-center vertical width-hundred">
-          <button [disabled]="!addDataStep.completed" class="margin-top-30" color="primary" mat-fab matStepperNext>
+        <div class="flex-container align-center vertical margin-top-30 nav-button-area" tourAnchor="dataset.done" clickable>
+          <button [disabled]="!addDataStep.completed" color="primary" mat-fab matStepperNext>
             <mat-icon>keyboard_arrow_right</mat-icon>
           </button>
-          <div class="outline margin-top-10">Continue</div>
         </div>
+        <div class="outline margin-top-10">Continue</div>
       </div>
 
     </div>
@@ -89,12 +89,12 @@ datasetIds: datasetIds$
         <gsa-options class="width-hundred" [method]="vm.method"></gsa-options>
       </gsa-scrollable>
       <div class="nav-button-container align-center justify-center flex-container vertical">
-        <div tourAnchor="options.done" clickable class="flex-container align-center vertical width-hundred">
-          <button class="margin-top-30" color="primary" mat-fab matStepperNext>
+        <div class="flex-container align-center vertical margin-top-30 nav-button-area" tourAnchor="options.done" clickable>
+          <button color="primary" mat-fab matStepperNext>
             <mat-icon>keyboard_arrow_right</mat-icon>
           </button>
-          <div class="outline margin-top-10">Continue</div>
         </div>
+        <div class="outline margin-top-10">Continue</div>
       </div>
     </div>
   </mat-step>

@@ -97,6 +97,10 @@ h2 {
   border: 2px solid var(--primary) !important;
 }
 
+.surface {
+  background: var(--surface);
+}
+
 /*Fonts*/
 
 .bold {
@@ -276,5 +280,24 @@ mat-vertical-stepper, mat-horizontal-stepper {
   z-index: 999;
   &[clickable] {
     z-index: 1003;
+
+    &:is(button) {
+      box-sizing: content-box;
+      border: 5px solid var(--surface);
+      border-radius: 0 0 4px 4px;
+    }
   }
+}
+
+.nav-button-area {
+  padding: 8px;
+  border-radius: 0 0 200px 200px;
+
+  &.touranchor--is-active {
+    background: var(--card);
+  }
+}
+
+div[tourAnchor="annotate.table"].touranchor--is-active {
+  background: var(--card);
 }
