@@ -25,8 +25,14 @@ export class TourUtilsService {
   );
 
   constructor(private tourService: TourService) {
-    this.tourService.start$.pipe(untilDestroyed(this)).subscribe(() => this.on = true);
-    this.tourService.end$.pipe(untilDestroyed(this)).subscribe(() => this.on = false);
+    this.tourService.start$.pipe(untilDestroyed(this)).subscribe(() => {
+      this.on = true;
+      this.paused = false;
+    });
+    this.tourService.end$.pipe(untilDestroyed(this)).subscribe(() => {
+      this.on = false;
+      this.paused = false;
+    });
     this.tourService.pause$.pipe(untilDestroyed(this)).subscribe(() => this.paused = true);
     this.tourService.resume$.pipe(untilDestroyed(this)).subscribe(() => this.paused = false);
   }
