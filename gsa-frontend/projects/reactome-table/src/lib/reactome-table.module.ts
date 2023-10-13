@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
-import {LetModule} from "@ngrx/component";
+import {LetDirective} from "@ngrx/component";
 import {TableComponent} from "./component/table/table.component";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {UploadTableComponent} from "./component/upload-table/upload-table.component";
@@ -22,7 +22,7 @@ import {MatIconModule} from "@angular/material/icon";
     FormsModule,
     MatButtonModule,
     MatSnackBarModule,
-    LetModule,
+    LetDirective,
     MatTooltipModule,
     MatIconModule,
   ],

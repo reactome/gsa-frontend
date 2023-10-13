@@ -36,7 +36,7 @@ import {datasetSourceFeature} from "./state/dataset-source/dataset-source.select
 import {DatasetSourceEffects} from "./state/dataset-source/dataset-source.effect";
 import {datasetFeature} from "./state/dataset/dataset.selector";
 import {DatasetEffects} from "./state/dataset/dataset.effect";
-import {LetModule} from "@ngrx/component";
+import {LetDirective} from "@ngrx/component";
 import {analysisFeature} from "./state/analysis/analysis.selector";
 import {AnalysisEffects} from "./state/analysis/analysis.effect";
 import {SelectDatasetComponent} from "./dataset-form/datasets/select-dataset/select-dataset.component";
@@ -112,7 +112,7 @@ import {TourAnchorMatMenuDirective} from "ngx-ui-tour-md-menu";
     EffectsModule.forFeature(DatasetEffects),
     EffectsModule.forFeature(AnalysisEffects),
     EffectsModule.forFeature(SearchResultEffects),
-    LetModule,
+    LetDirective,
     TourAnchorMatMenuDirective,
   ],
   bootstrap: [GsaFormComponent]

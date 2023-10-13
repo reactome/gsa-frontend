@@ -19,7 +19,7 @@ import {MatIconModule} from "@angular/material/icon";
 import { BackgroundComponent } from './background/background.component';
 import { TourComponent } from './tour/tour.component';
 import {MatTooltipModule} from "@angular/material/tooltip";
-import {LetModule} from "@ngrx/component";
+import {LetDirective} from "@ngrx/component";
 
 
 @NgModule({
@@ -52,7 +52,7 @@ import {LetModule} from "@ngrx/component";
     MatCardModule,
     MatIconModule,
     MatTooltipModule,
-    LetModule
+    LetDirective
   ],
   providers: [],
   bootstrap: [AppComponent]
