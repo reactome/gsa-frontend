@@ -33,10 +33,8 @@ To deploy on dev, run
 npm run deploy-dev
 ```
 
-This command will also upload the following apache configuration to make sure Angular routing works fine
-```apacheconf
-RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.html
+To make sure that it works, please install the latest version of rsync using the command and restarting your terminal
+```shell
+brew install rsync
 ```
+
