@@ -6,30 +6,30 @@ import {CdkStep} from "@angular/cdk/stepper";
 
 
 @Component({
-    selector: 'gsa-analysis',
-    templateUrl: './analysis.component.html',
-    styleUrls: ['./analysis.component.scss']
+  selector: 'gsa-analysis',
+  templateUrl: './analysis.component.html',
+  styleUrls: ['./analysis.component.scss']
 })
 export class AnalysisComponent implements OnInit {
-    analysisStep: FormGroup;
-    reportsRequired$ = this.store.select(analysisFeature.selectReportsRequired)
-    analysisLoadingStatus$ = this.store.select(analysisFeature.selectAnalysisLoadingStatus)
-    reportLoadingStatus$ = this.store.select(analysisFeature.selectReportLoadingStatus)
-    result$ = this.store.select(analysisFeature.selectAnalysisResult)
+  analysisStep: FormGroup;
+  reportsRequired$ = this.store.select(analysisFeature.selectReportsRequired)
+  analysisLoadingStatus$ = this.store.select(analysisFeature.selectAnalysisLoadingStatus)
+  reportLoadingStatus$ = this.store.select(analysisFeature.selectReportLoadingStatus)
+  result$ = this.store.select(analysisFeature.selectAnalysisResult)
 
-    @Input() setMethodStep: CdkStep;
-    @Input() datasetId: number;
+  @Input() setMethodStep: CdkStep;
+  @Input() datasetId: number;
 
-    constructor(private formBuilder: FormBuilder, public store: Store) {
-        this.analysisStep = this.formBuilder.group({
-            name: ['', Validators.required]
-        });
+  constructor(private formBuilder: FormBuilder, public store: Store) {
+    this.analysisStep = this.formBuilder.group({
+      name: ['', Validators.required]
+    });
 
-    }
+  }
 
-    ngOnInit(): void {
+  ngOnInit(): void {
 
-    }
+  }
 
   goToSelectMethod() {
     this.setMethodStep.select();
