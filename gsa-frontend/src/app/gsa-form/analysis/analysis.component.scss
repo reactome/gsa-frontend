@@ -2,8 +2,12 @@
   min-height: 100%;
 }
 
+.container, .mat-mdc-progress-bar {
+  --mdc-linear-progress-track-height: 10px ;
+  --mdc-linear-progress-active-indicator-height: var(--mdc-linear-progress-track-height);
+}
+
 .container {
-  --mdc-linear-progress-track-height: 10px;
   height: calc(100% - var(--mdc-linear-progress-track-height));
 }
 
