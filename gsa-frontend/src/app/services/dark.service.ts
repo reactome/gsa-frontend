@@ -5,14 +5,16 @@ import {Injectable} from '@angular/core';
 })
 export class DarkService {
 
-  private _isDark: boolean = false
+  private _body: HTMLBodyElement | null;
+  private _isDark: boolean = false;
 
   constructor() {
+    this._body = document.querySelector('body');
+
     const localValue = localStorage.getItem('is-dark');
-    if (localValue) this._isDark = JSON.parse(localValue);
+    if (localValue) this.isDark = JSON.parse(localValue);
     else if (window.matchMedia('(prefers-color-scheme)').media !== 'not all') {
-      // Set colorScheme to Dark if prefers-color-scheme is dark. Otherwise, set it to Light.
-      this._isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      this.isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     }
   }
 
@@ -22,6 +24,8 @@ export class DarkService {
 
   set isDark(value: boolean) {
     this._isDark = value;
-    localStorage.setItem('is-dark', JSON.stringify(value))
+    localStorage.setItem('is-dark', JSON.stringify(value));
+    if (value) this._body?.classList.add('dark');
+    else this._body?.classList.remove('dark');
   }
 }

@@ -12,12 +12,6 @@ img {
   margin: 0 20px;
 }
 
-.dark {
-  img[src*="assets/img/Reactome_GSA_light.svg"] {
-    content: url("../assets/img/Reactome_GSA_dark.svg");
-  }
-}
-
 :host {
   display: flex;
   flex-direction: column;
