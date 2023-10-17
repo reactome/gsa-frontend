@@ -23,7 +23,7 @@
 
       <mat-card-actions align="end" *ngIf="!step.nextOnAnchorClick">
         <button class="next" *ngIf="tour.hasNext(step) && !step.nextOnAnchorClick"
-                (click)="next()" mat-button>
+                (click)="tour.next()" mat-button>
           {{step.nextBtnTitle}}
           <mat-icon iconPositionEnd>chevron_right</mat-icon>
         </button>
