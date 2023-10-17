@@ -20,6 +20,8 @@ import { BackgroundComponent } from './background/background.component';
 import { TourComponent } from './tour/tour.component';
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {LetDirective} from "@ngrx/component";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {FormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -52,7 +54,9 @@ import {LetDirective} from "@ngrx/component";
     MatCardModule,
     MatIconModule,
     MatTooltipModule,
-    LetDirective
+    LetDirective,
+    MatSlideToggleModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

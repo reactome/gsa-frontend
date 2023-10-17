@@ -1,8 +1,18 @@
-img{
-  width: 200px; display: block; margin: auto; padding-top: 24px
+img {
+  width: 200px;
+  display: block;
+  margin: auto;
 }
 
-@media (prefers-color-scheme: dark) {
+.padding-top-24 {
+  padding-top: 24px;
+}
+
+.header {
+  margin: 0 20px;
+}
+
+.dark {
   img[src*="assets/img/Reactome_GSA_light.svg"] {
     content: url("../assets/img/Reactome_GSA_dark.svg");
   }
@@ -17,3 +27,8 @@ img{
     flex: 1 1 auto;
   }
 }
+
+.reactome {
+  font-weight: 400;
+}
+

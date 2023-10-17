@@ -1,16 +1,31 @@
-<header class="flex-container justify-evenly" >
-  <a [routerLink]="'home'" *ngIf="height.medium$ | async; else small">
-    <img src="assets/img/Reactome_GSA_light.svg" >
-  </a>
-  <ng-template #small>
-    <a [routerLink]="'home'" style="color: var(--on-surface); text-decoration: none; margin-top: 5px">
-      <h1 class="no-margin">Reactome GSA</h1>
+<div [class.dark]="dark.isDark">
+  <header class="header flex-container justify-between align-center" [class.padding-top-24]="height.medium$ | async">
+
+    <a href="/" mat-button class="reactome" #reactome>
+      <mat-icon color="primary">home</mat-icon>
+      Reactome
     </a>
-  </ng-template>
-</header>
 
-<gsa-background></gsa-background>
-<gsa-tour></gsa-tour>
-<router-outlet></router-outlet>
+    <ng-container *ngIf="height.medium$ | async; else small">
+      <a [routerLink]="'home'">
+        <img src="assets/img/Reactome_GSA_light.svg">
+      </a>
+    </ng-container>
+    <ng-template #small>
+      <a [routerLink]="'home'" style="color: var(--on-surface); text-decoration: none; margin-top: 5px">
+        <h1 class="no-margin">Reactome GSA</h1>
+      </a>
+    </ng-template>
 
+    <span [style.width]="reactome._elementRef.nativeElement.offsetWidth + 'px'" style="text-align: end">
+            <mat-slide-toggle #darkToggle [(ngModel)]="dark.isDark" color="primary"></mat-slide-toggle>
+    </span>
+
+  </header>
+
+  <gsa-background></gsa-background>
+  <gsa-tour></gsa-tour>
+  <router-outlet></router-outlet>
+
+</div>
 

@@ -18,10 +18,8 @@ body {
   margin: 0 8px 8px;
 }
 
-@media (prefers-color-scheme: dark) {
-  body {
-    color: white;
-  }
+.dark {
+  color: white;
 }
 
 
@@ -51,6 +49,7 @@ h2 {
 .no-padding {
   padding: 0 !important;
 }
+
 //Width
 
 .width-forty {
@@ -242,7 +241,7 @@ mat-icon {
   }
 }
 
-@media (prefers-color-scheme: dark) {
+.dark {
   .no-tour .mat-expansion-panel, .no-tour .mat-mdc-card {
     background: rgb(255 255 255 / 5%) !important;
     backdrop-filter: blur(5px);
@@ -270,7 +269,7 @@ mat-vertical-stepper, mat-horizontal-stepper {
   opacity: 1 !important;
   z-index: 998;
 
-  @media (prefers-color-scheme: dark) {
+  .dark {
     background: rgba(black, 0.7);
   }
 }
@@ -278,6 +277,7 @@ mat-vertical-stepper, mat-horizontal-stepper {
 .touranchor--is-active {
   position: relative;
   z-index: 999;
+
   &[clickable] {
     z-index: 1003;
 
