@@ -11,9 +11,12 @@ export class DarkService {
   constructor() {
     this._body = document.querySelector('body');
 
-    const localValue = localStorage.getItem('is-dark');
     // Update theme if other tabs are changing it
-    window.addEventListener('storage', (e) => e.key === 'is-dark' ? this.isDark = JSON.parse(e.newValue || 'false') : null);
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'is-dark') this.isDark = JSON.parse(e.newValue || 'false');
+    });
+
+    const localValue = localStorage.getItem('is-dark');
     if (localValue) this.isDark = JSON.parse(localValue);
     else if (window.matchMedia('(prefers-color-scheme)').media !== 'not all') {
       this.isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
