@@ -1,5 +1,5 @@
 <div (click)="select()">
-  <div *ngIf="source.id === 'search'; else other" tourAnchor="search" class="dataset-card-content contrast" [ngClass]="{'hover-opponent': (isSelected$ | async)}">
+  <div *ngIf="source.id === 'search'; else other" tourAnchor="search" class="dataset-card-content no-hover contrast" [ngClass]="{'hover-opponent': (isSelected$ | async)}">
     <p class="bold no-wrap">
       <mat-icon *ngIf="source.id === 'search'" style="vertical-align: middle">search</mat-icon>
       {{source.name}}

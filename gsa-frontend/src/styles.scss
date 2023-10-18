@@ -204,6 +204,10 @@ mat-icon {
 .dataset-card-content:hover {
   background: var(--surface2);
   cursor: pointer;
+
+  &.no-hover {
+    background: var(--surface);
+  }
 }
 
 .warning-snackbar {
