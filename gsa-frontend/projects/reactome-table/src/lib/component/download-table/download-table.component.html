@@ -1,12 +1,12 @@
 <ng-container *ngIf="(type$| async) === 'icon'; else stroked">
   <button (click)="saveAFile()" color="accent" mat-icon-button
-          matTooltip="Download the current data as a csv">
+          matTooltip="Download the current table data as a csv">
     <mat-icon>cloud_download</mat-icon>
   </button>
 </ng-container>
 <ng-template #stroked>
   <button (click)="saveAFile()" color="primary" mat-stroked-button>
-    Download data
+    Download table
   </button>
 </ng-template>
 
