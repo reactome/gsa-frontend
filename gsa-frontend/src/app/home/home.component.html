@@ -2,13 +2,13 @@
      *ngrxLet="screenSize$ as screenSize">
   <mat-card>
     <mat-card-header>
-      <mat-card-title><h1>Welcome to Reactome Gene Set Analysis</h1></mat-card-title>
+      <mat-card-title><h1>Welcome to Reactome Pathway Analysis</h1></mat-card-title>
     </mat-card-header>
 
 
     <mat-card-content>
       <p>
-        Reactome GSA analysis is a powerful tool for understanding the biological significance of genes and their
+        ReactomeGSA is a powerful tool for understanding the biological significance of gene sets and their
         expression.
         It allows researchers to uncover the functional relevance of a list of genes, associated with quantitative data,
         in the context of biological pathways and processes.</p>
@@ -18,7 +18,12 @@
         <ng-container *ngIf="(height.big$ | async)">
           <h2>Key Features:</h2>
           <ul>
-            <li>Gene Set Analysis: Identifies Reactome pathways that are significantly enriched in expressed genes.</li>
+            <li>Pathway Analysis: Identifies Reactome pathways that are significantly enriched in input datasets.</li>
+            <li>Database integration: Provides direct access to major public expression data resources
+              <a href="https://www.ebi.ac.uk/gxa/home">Expression Atlas</a>
+              and
+              <a href="http://www.ilincs.org/apps/grein/">GREIN</a>.
+            </li>
             <li>Visualization Tools: Provides interactive visualizations to help you explore enriched pathways and their
               relationships.
             </li>
@@ -32,7 +37,7 @@
         <h2>How to Get Started:</h2>
         <ol>
           <li>
-            For your first time using Reactome GSA, follow our guided tour.
+            For your first time using ReactomeGSA, follow our guided tour.
           </li>
           <li>Upload Your Gene Expression Dataset: Input a tabular data with gene or protein identifiers by row, and
             sample by column.
@@ -47,18 +52,18 @@
       </ng-container>
 
       <ng-container *ngIf="screenSize.breakpoints[sizes.Small] && (height.big$ | async)">
-        <p>Reactome GSA analysis is a valuable resource for researchers in genomics, systems biology, and
+        <p>ReactomeGSA is a valuable resource for researchers in genomics, systems biology, and
           bioinformatics.
           It can help you uncover the hidden biological connections within your gene sets and enhance your understanding
           of complex biological systems.</p>
       </ng-container>
 
-      <p>Get started with Reactome GSA analysis today and unlock the power of pathway enrichment analysis!</p>
+      <p>Get started with ReactomeGSA analysis today and unlock the power of pathway enrichment analysis!</p>
 
       <p>
-        <i>For detailed information, please visit <a
-          href="https://pubmed.ncbi.nlm.nih.gov/32907876/"
-          target="_blank">here</a>.
+        <i>For detailed information, please see <a
+          href="https://europepmc.org/article/MED/32907876"
+          target="_blank">[ Griss J et al, MCP, 2020 ]</a>.
         </i>
       </p>
     </mat-card-content>
