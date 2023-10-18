@@ -3,8 +3,8 @@ import {PDatasetSource} from "../../../../../state/dataset-source/dataset-source
 import {Store} from "@ngrx/store";
 import {datasetSourceActions} from "../../../../../state/dataset-source/dataset-source.action";
 import {datasetActions} from "../../../../../state/dataset/dataset.actions";
-import {TourService} from "ngx-ui-tour-md-menu";
 import {TourUtilsService} from "../../../../../../services/tour-utils.service";
+import {DownloadDatasetService} from "../../../../../services/download-dataset.service";
 
 @Component({
   selector: 'gsa-example-data',
@@ -15,7 +15,7 @@ export class ExampleDataComponent {
   @Input() source: PDatasetSource;
   @Input() datasetId: number;
 
-  constructor(public store: Store, private tour: TourUtilsService) {
+  constructor(public store: Store, private tour: TourUtilsService, public download: DownloadDatasetService) {
   }
 
   select() {

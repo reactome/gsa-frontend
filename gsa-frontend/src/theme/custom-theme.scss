@@ -91,6 +91,7 @@ $palettes: (
 @include mat.expansion-theme($light-theme);
 @include mat.icon-theme($light-theme);
 @include mat.stepper-theme($light-theme);
+@include mat.menu-theme($light-theme);
 
 
 //@include nested-stepper.theme($light-theme);
@@ -131,6 +132,7 @@ $color-config: mat.get-color-config($light-theme);
   @include mat.expansion-color($dark-theme);
   @include mat.icon-color($dark-theme);
   @include mat.stepper-color($dark-theme);
+  @include mat.menu-color($dark-theme);
 
 }
 
