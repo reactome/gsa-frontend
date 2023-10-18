@@ -3,7 +3,6 @@ import {environment} from "../../../environments/environment";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {DataSummary, LoadingStatus, PLoadingStatus} from "../model/load-dataset.model";
 import {UploadData} from "../model/upload-dataset-model";
-import {MatDialog} from "@angular/material/dialog";
 import {catchError, EMPTY, Observable, of, throwError} from "rxjs";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {extractErrorMessage} from "../utilities/utils";

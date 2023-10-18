@@ -30,6 +30,19 @@
       </ng-template>
       <div class="flex-container horizontal align-center justify-center no-wrap" *ngrxLet="parameters$ as parameters"
            style="flex-shrink: 0">
+        <button [disabled]="!(summaryComplete$ | async)" (click)="$event.stopPropagation()"
+                color="primary" [matMenuTriggerFor]="menu" mat-icon-button>
+          <mat-icon>file_download</mat-icon>
+        </button>
+        <mat-menu #menu>
+          <a mat-menu-item download [href]="download.url(dataset.summary?.id || '' , 'expr')">
+            Download dataset
+          </a>
+          <a mat-menu-item download [href]="download.url(dataset.summary?.id || '', 'meta')"
+            *ngIf="(dataset.summary?.sample_metadata?.length || 0) > 0">
+            Download meta-data
+          </a>
+        </mat-menu>
         <button (click)="changeParameters($event)" [disabled]="parameters.length === 0"
                 color="primary"
                 mat-icon-button
