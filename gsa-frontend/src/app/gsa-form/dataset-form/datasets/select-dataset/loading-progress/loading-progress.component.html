@@ -1,13 +1,22 @@
 <div class="flex-container justify-center align-center height-hundred">
   <mat-dialog-content *ngIf="loadingStatus$ | async as status">
     <div [ngSwitch]="status.status">
+      <div *ngSwitchCase="'pending'" class="flex-container vertical justify-center align-center">
+        <div class="spinner-box">
+          <mat-spinner diameter="140"></mat-spinner>
+        </div>
+        <h2 class="text-margin">Sending request</h2>
+        <div class="grey">
+          <span>{{status.description}}</span>
+        </div>
+      </div>
       <div *ngSwitchCase="'running'" class="flex-container vertical justify-center align-center">
         <div class="spinner-box">
           <mat-spinner diameter="140"></mat-spinner>
         </div>
         <h2 class="text-margin">Loading Dataset</h2>
         <div class="grey">
-          <span *ngIf="status.status === 'running'">{{status.description}}</span>
+          <span>{{status.description}}</span>
         </div>
       </div>
       <div *ngSwitchCase="'failed'" class="flex-container vertical justify-center align-center">

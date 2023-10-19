@@ -2,9 +2,21 @@
      *ngrxLet="{analysisLoadingStatus: analysisLoadingStatus$, reportLoadingStatus: reportLoadingStatus$, reportsRequired: reportsRequired$, result: result$} as vm">
   <div class="flex-container horizontal gap-one height-hundred">
     <mat-card class="flex-one height-hundred justify-between">
-      <mat-card-title> Analysis</mat-card-title>
+      <mat-card-title>Analysis</mat-card-title>
 
       <div [ngSwitch]="vm.analysisLoadingStatus?.status" class="card-body">
+
+        <div *ngSwitchCase="'pending'">
+          <div class="flex-container vertical justify-center align-center gap-three">
+            <div class="spinner-box">
+              <mat-spinner class="padding-right-ten" diameter="100"></mat-spinner>
+            </div>
+            <div class="big-text">Requesting Analysis</div>
+            <div class="outline description">
+              {{vm.analysisLoadingStatus?.description}}
+            </div>
+          </div>
+        </div>
 
         <div *ngSwitchCase="'running'">
           <div class="flex-container vertical justify-center align-center gap-three">
@@ -14,9 +26,7 @@
             <div class="big-text">Analysis loading: {{vm.analysisLoadingStatus?.completed! * 100}}%
             </div>
             <div class="outline description">
-                  <span *ngIf="vm.analysisLoadingStatus?.status === 'running'">
-                    {{vm.analysisLoadingStatus?.description}}
-                  </span>
+              <span>{{vm.analysisLoadingStatus?.description}}</span>
             </div>
           </div>
         </div>

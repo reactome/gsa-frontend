@@ -29,6 +29,12 @@ export const datasetReducer: ActionReducer<DatasetState> = createReducer(
   on(datasetActions.save, (state, {id}) =>
     datasetAdapter.updateOne({id, changes: {saved: true},}, state),
   ),
+  on(datasetActions.load, (state, {id}) => datasetAdapter.updateOne({
+    id, changes: {loadingStatus: {id: 'unknown', status: 'pending', description: 'Sending load request to server'}}
+  }, state)),
+  on(datasetActions.upload, (state, {id}) => datasetAdapter.updateOne({
+    id, changes: {loadingStatus: {id: 'unknown', status: 'pending', description: 'Sending your data to servers'}}
+  }, state)),
   on(datasetActions.loadSubmitted, (state, {loadingId, id}) =>
     datasetAdapter.updateOne(
       {

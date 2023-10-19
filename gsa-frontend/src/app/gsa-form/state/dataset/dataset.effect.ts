@@ -34,6 +34,14 @@ export class DatasetEffects {
   upload = createEffect(() =>
     this.actions$.pipe(
       ofType(datasetActions.upload),
+      tap(({id}) => {
+        this.dialogRef = this.dialog.open(LoadingProgressComponent, {
+          width: '50%',
+          height: '50%',
+          disableClose: true,
+          data: {datasetId: id},
+        });
+      }),
       exhaustMap(({file, typeId, id}) =>
         this.loadDatasetService.uploadFile(file).pipe(
           map((uploadData) =>
@@ -70,6 +78,14 @@ export class DatasetEffects {
   load = createEffect(() =>
     this.actions$.pipe(
       ofType(datasetActions.load),
+      tap(({id}) => {
+        this.dialogRef = this.dialog.open(LoadingProgressComponent, {
+          width: '50%',
+          height: '50%',
+          disableClose: true,
+          data: {datasetId: id},
+        });
+      }),
       exhaustMap(({resourceId, parameters, id}) =>
         this.loadDatasetService.submitLoadDataset(resourceId, parameters).pipe(
           map((loadingId) => datasetActions.loadSubmitted({loadingId, id})),
@@ -84,14 +100,6 @@ export class DatasetEffects {
   loadSubmitted = createEffect(() =>
     this.actions$.pipe(
       ofType(datasetActions.loadSubmitted),
-      tap(({id}) => {
-        this.dialogRef = this.dialog.open(LoadingProgressComponent, {
-          width: '50%',
-          height: '50%',
-          disableClose: true,
-          data: {datasetId: id},
-        });
-      }),
       delay(500),
       map(({loadingId, id}) => datasetActions.getLoadStatus({loadingId, id}),
       ),
@@ -145,7 +153,6 @@ export class DatasetEffects {
           catchError((error) =>
             of(datasetActions.loadSubmittedError({error, id})),
           ),
-          tap(() => setTimeout(() => this.dialogRef.close(), 500)),
         ),
       ),
     ),
@@ -154,6 +161,7 @@ export class DatasetEffects {
   summaryToAnnotate = createEffect(() =>
     this.actions$.pipe(
       ofType(datasetActions.setSummary),
+      tap(() => setTimeout(() => this.dialogRef.close(), 500)),
       map(({summary, id}) => {
         setTimeout(() => this.tour.paused ? this.tour.resume() : null, 1000);
         const table: string[][] = !summary.sample_metadata
