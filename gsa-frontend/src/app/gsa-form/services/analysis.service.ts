@@ -53,12 +53,6 @@ export class AnalysisService {
       })),
     };
     return this.http.post(this.submitAnalysisUrl, query, {responseType: 'text'})
-      .pipe(catchError((err: HttpErrorResponse) => {
-        this.snackBar.open("The analysis could not be performed: \n" + extractErrorMessage(err), "Close", {
-          panelClass: ['warning-snackbar']
-        });
-        return throwError(() => err);    //Rethrow it back to component
-      }))
   }
 
   cancelAnalysis(analysisId: string): Observable<never> {
