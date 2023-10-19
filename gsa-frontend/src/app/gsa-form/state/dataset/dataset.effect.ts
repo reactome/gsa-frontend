@@ -124,10 +124,18 @@ export class DatasetEffects {
               ? timer(500)
               : timer(0),
           ),
-          catchError((error) => of(datasetActions.loadSubmittedError({error, id})),
+          catchError((error) => of(datasetActions.getLoadStatusError({error, id})),
           ),
         ),
       ),
+    ),
+  );
+
+  loadError = createEffect(() =>
+    this.actions$.pipe(
+      ofType(datasetActions.loadSubmittedError, datasetActions.getLoadStatusError),
+      delay(1000),
+      tap(() => this.dialogRef.close())
     ),
   );
 

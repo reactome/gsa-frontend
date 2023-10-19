@@ -34,7 +34,10 @@
         <div *ngSwitchCase="'failed'" class="flex-container vertical align-center gap-one justify-center">
           <div class="material-icons mat-error big-error">error</div>
           <span class="big-text failed">Oops! An error has occurred</span>
-          <span class="text failed">Analysis failed, please contact help@reactome.org</span>
+          <span class="text failed">Analysis failed, please contact
+            <a href="mailto:help@reactome.org?subject=Reactome%20GSA%20failed">help@reactome.org</a>
+            if the problem persist
+          </span>
           <div class="text-margin error-message">{{vm.analysisLoadingStatus!.description}}</div>
         </div>
 
