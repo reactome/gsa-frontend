@@ -15,7 +15,7 @@
       <div class="align-center flex-container justify-center gap-one vertical width-hundred"
            tourAnchor="annotate.table">
         <reactome-table *ngIf="(dataset$ | async) as dataset" [userSettings]="tableSettings" [table]="dataset?.annotations || [['']]"
-                        (tableChange)="onTableUpdate($event)" class="width-hundred"></reactome-table>
+                        (tableChange)="onTableUpdate($event)" [name]="dataset.summary?.title + '_metadata'" class="width-hundred"></reactome-table>
       </div>
     </div>
   </div>
