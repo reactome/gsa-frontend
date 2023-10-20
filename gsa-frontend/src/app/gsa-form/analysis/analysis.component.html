@@ -23,7 +23,7 @@
             <div class="spinner-box">
               <mat-spinner class="padding-right-ten" diameter="100"></mat-spinner>
             </div>
-            <div class="big-text">Analysis loading: {{vm.analysisLoadingStatus?.completed! * 100}}%
+            <div class="big-text">Analysis loading: {{vm.analysisLoadingStatus?.completed! * 100 | number: '1.0-0'}}%
             </div>
             <div class="outline description">
               <span>{{vm.analysisLoadingStatus?.description}}</span>
