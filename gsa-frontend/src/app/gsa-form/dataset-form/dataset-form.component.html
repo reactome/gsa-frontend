@@ -17,7 +17,13 @@
       </div>
       <ng-template #title>
         <div class="flex-container vertical justify-center flex-one ellipsis">
-          <span class="bold ellipsis">{{dataset.summary?.title}}</span>
+          <div class="flex horizontal ellipsis">
+            <span [matTooltip]="dataset.originalTitle || ''" class="bold ellipsis flex-shrink">{{dataset.summary?.title}}</span>
+            <mat-icon class="lock flex-zero" inline="true" [class.public]="dataset.public"
+                      [matTooltip]="dataset.public ? 'Public dataset' : 'Private dataset'">
+              {{dataset.public ? 'lock_open_right' : 'lock'}}
+            </mat-icon>
+          </div>
           <span *ngIf="dataset.statisticalDesign?.analysisGroup">
             {{dataset.statisticalDesign?.analysisGroup}}
             :
