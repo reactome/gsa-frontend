@@ -32,7 +32,7 @@
         </div>
 
         <div *ngSwitchCase="'failed'" class="flex-container vertical align-center gap-one justify-center">
-          <div class="material-icons mat-error big-error">error</div>
+          <div class="material-symbols-outlined mat-error big-error">error</div>
           <span class="big-text failed">Oops! An error has occurred</span>
           <span class="text failed">Analysis failed, please contact
             <a href="mailto:help@reactome.org?subject=Reactome%20GSA%20failed">help@reactome.org</a>
@@ -48,7 +48,7 @@
               <a color="primary" href="{{vm.result?.reactome_links?.[0]?.url}}" mat-raised-button target="_blank">
                 <div class="flex-container horizontal align-center">
                   <mat-icon class="padding-right-ten">
-                    <span class="material-icons-outlined">visibility</span>
+                    <span class="material-symbols-outlined-outlined">visibility</span>
                   </mat-icon>
                   <span>Results</span>
                 </div>
@@ -97,7 +97,7 @@
         </div>
 
         <div *ngSwitchCase="'failed'" class="flex-container vertical align-center">
-          <div class="material-icons mat-error big-error">error</div>
+          <div class="material-symbols-outlined mat-error big-error">error</div>
           <span class="big-text">Report generation failed, please contact help@reactome.org</span>
           <div class="text-margin">{{vm.reportLoadingStatus!.description}}</div>
         </div>

@@ -20,12 +20,12 @@
         </div>
       </div>
       <div *ngSwitchCase="'failed'" class="flex-container vertical justify-center align-center">
-        <div class="material-icons mat-error big-size">error</div>
+        <div class="material-symbols-outlined mat-error big-size">error</div>
         <h2 class="text-margin text-center">{{status.description}}</h2>
         <button color="primary" mat-dialog-close mat-raised-button>Cancel</button>
       </div>
       <div *ngSwitchCase="'complete'" class="flex-container vertical justify-center align-center">
-        <div class="material-icons big-size green">check_circle</div>
+        <div class="material-symbols-outlined big-size green">check_circle</div>
         <h2 class="text-margin text-center">Dataset loaded</h2>
       </div>
     </div>

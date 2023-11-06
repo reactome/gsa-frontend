@@ -30,20 +30,21 @@
       </ng-template>
       <div class="flex-container horizontal align-center justify-center no-wrap" *ngrxLet="parameters$ as parameters"
            style="flex-shrink: 0">
-        <a [disabled]="!(summaryComplete$ | async)" (click)="$event.stopPropagation()" matTooltip="Download input dataset"
+        <a [disabled]="!(summaryComplete$ | async)" (click)="$event.stopPropagation()"
+           matTooltip="Download input dataset"
            color="primary" mat-icon-button download [href]="download.url(dataset.summary?.id || '' )">
-          <mat-icon>file_download</mat-icon>
+          <mat-icon>download</mat-icon>
         </a>
         <button (click)="changeParameters($event)" [disabled]="parameters.length === 0"
                 color="primary"
                 mat-icon-button
                 matTooltip="Edit analysis parameters of specific dataset"><span
-          class="material-icons">bar_chart</span>
+          class="material-symbols-outlined">bar_chart</span>
         </button>
         <button (click)="deleteDataset($event)" color="primary"
                 mat-icon-button
                 matTooltip="Delete dataset"><span
-          class="material-icons">delete</span>
+          class="material-symbols-outlined">delete</span>
         </button>
       </div>
 

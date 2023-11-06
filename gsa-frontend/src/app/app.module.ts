@@ -15,7 +15,7 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {TourMatMenuModule} from "ngx-ui-tour-md-menu";
 import {MatButtonModule} from "@angular/material/button";
 import {MatCardModule} from "@angular/material/card";
-import {MatIconModule} from "@angular/material/icon";
+import {MatIconModule, MatIconRegistry} from "@angular/material/icon";
 import {BackgroundComponent} from './background/background.component';
 import {TourComponent} from './tour/tour.component';
 import {MatTooltipModule} from "@angular/material/tooltip";
@@ -62,4 +62,7 @@ import {FormsModule} from "@angular/forms";
   bootstrap: [AppComponent]
 })
 export class AppModule {
+  constructor(icons: MatIconRegistry) {
+    icons.setDefaultFontSetClass('material-symbols-outlined')
+  }
 }
