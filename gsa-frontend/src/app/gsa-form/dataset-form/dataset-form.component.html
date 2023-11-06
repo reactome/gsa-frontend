@@ -1,6 +1,6 @@
 <mat-expansion-panel *ngIf="(dataset$ | async) as dataset" #mep="matExpansionPanel" (closed)="updateScroll()"
                      [expanded]="!dataset.saved" hideToggle>
-  <mat-expansion-panel-header class="padding-left-zero">
+  <mat-expansion-panel-header class="no-padding">
     <div *ngIf="dataset.saved; else unsaved" class="border-blue-left">
       <div class="saved flex-container align-center justify-center"><span class="no-wrap">Saved</span>
       </div>
