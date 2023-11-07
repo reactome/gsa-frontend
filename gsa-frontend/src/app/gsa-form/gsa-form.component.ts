@@ -2,7 +2,7 @@ import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChil
 import {MatStepper} from "@angular/material/stepper";
 import {Store} from "@ngrx/store";
 import {methodFeature} from "./state/method/method.selector";
-import {filter, map, Observable, take} from "rxjs";
+import {filter, firstValueFrom, map, Observable, take} from "rxjs";
 import {datasetFeature} from "./state/dataset/dataset.selector";
 import {datasetActions} from "./state/dataset/dataset.actions";
 import {analysisActions} from "./state/analysis/analysis.actions";
@@ -12,6 +12,8 @@ import {analysisFeature} from "./state/analysis/analysis.selector";
 import {isDefined} from "./utilities/utils";
 import {HeightService} from "../services/height.service";
 import {TourUtilsService} from "../services/tour-utils.service";
+import {MatDialog} from "@angular/material/dialog";
+import {CancelDialogComponent} from "./cancel-dialog/cancel-dialog.component";
 
 
 @Component({
@@ -37,7 +39,9 @@ export class GsaFormComponent implements AfterViewInit, OnInit, OnDestroy {
   allSaved$: Observable<boolean> = this.store.select(datasetFeature.selectAllSaved);
   analysisId$: Observable<string> = this.store.select(analysisFeature.selectAnalysisId).pipe(filter(isDefined));
 
-  constructor(private cdr: ChangeDetectorRef, private store: Store, public tour: TourUtilsService, public height: HeightService) {
+  editable = true;
+
+  constructor(private cdr: ChangeDetectorRef, private store: Store, public tour: TourUtilsService, public height: HeightService, private dialog: MatDialog) {
   }
 
   ngAfterViewInit() {
@@ -51,14 +55,14 @@ export class GsaFormComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.cancelAnalysis()
+    this.analysisId$.pipe(take(1)).subscribe(analysisId => this.store.dispatch(analysisActions.cancel({analysisId})))
   }
 
   addDataset() {
     this.store.dispatch(datasetActions.add());
   }
 
-  stepChange($event: StepperSelectionEvent, vm: any) {
+  async stepChange($event: StepperSelectionEvent, vm: any) {
     switch ($event.selectedStep) {
       case this.setMethodStep:
         break;
@@ -68,16 +72,21 @@ export class GsaFormComponent implements AfterViewInit, OnInit, OnDestroy {
         this.store.dispatch(datasetActions.initAnnotationColumns())
         break;
       case this.analysisStep:
-        this.store.dispatch(analysisActions.load(vm))
+        this.store.dispatch(analysisActions.load(vm));
+        this.editable = false;
         break;
-    }
-
-    if ($event.previouslySelectedStep === this.analysisStep) {
-      this.cancelAnalysis();
     }
   }
 
-  private cancelAnalysis() {
-    this.analysisId$.pipe(take(1)).subscribe(analysisId => this.store.dispatch(analysisActions.cancel({analysisId})))
+  async cancel() {
+    if (this.stepper.selected === this.analysisStep) {
+      const dialogRef = this.dialog.open(CancelDialogComponent, {autoFocus: '#cancel', role: "alertdialog"});
+      const cancel = await firstValueFrom(dialogRef.afterClosed());
+      if (cancel) {
+        this.editable = true;
+        setTimeout(() => this.stepper.previous());
+        this.analysisId$.pipe(take(1)).subscribe(analysisId => this.store.dispatch(analysisActions.cancel({analysisId})))
+      }
+    }
   }
 }

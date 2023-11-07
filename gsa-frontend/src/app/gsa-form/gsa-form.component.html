@@ -8,7 +8,7 @@ datasets: datasets$,
 datasetIds: datasetIds$
 } as vm" (selectionChange)="stepChange($event, vm)" class="flex-container" [ngClass]="{'no-tour': !tour.on}"
                         [animationDuration]="tour.on ? '0' : '500'">
-  <mat-step #setMethodStep [completed]="vm.methodSelected" class="flex-one">
+  <mat-step #setMethodStep [completed]="vm.methodSelected" class="flex-one" [editable]="editable">
 
     <ng-template matStepLabel>Select method</ng-template>
     <h1 *ngIf="height.medium$ | async">Step 1: Select one of the available analysis methods</h1>
@@ -32,7 +32,7 @@ datasetIds: datasetIds$
   </mat-step>
 
 
-  <mat-step #addDataStep [completed]="vm.allSaved">
+  <mat-step #addDataStep [completed]="vm.allSaved" [editable]="editable">
     <ng-template matStepLabel>Add datasets</ng-template>
     <h1 *ngIf="height.medium$ | async">Step 2: Add and annotate your datasets</h1>
     <div class="flex-container horizontal gap-one justify-evenly" *ngIf="vm.method">
@@ -73,7 +73,7 @@ datasetIds: datasetIds$
     </div>
 
   </mat-step>
-  <mat-step #optionStep>
+  <mat-step #optionStep [editable]="editable">
     <ng-template matStepLabel>Options</ng-template>
     <h1 *ngIf="height.medium$ | async">Step 3: Analysis Options</h1>
     <div class="flex-container horizontal gap-one justify-evenly" *ngIf="vm.method">
@@ -106,7 +106,7 @@ datasetIds: datasetIds$
     <div class="flex-container horizontal gap-one justify-evenly">
       <div class="nav-button-container align-center justify-center flex-container vertical">
         <div class="flex-container align-center vertical width-hundred">
-          <button class="margin-top-30" color="primary" mat-fab matStepperPrevious>
+          <button class="margin-top-30" color="primary" mat-fab matStepperPrevious (click)="cancel()">
             <mat-icon>keyboard_arrow_left</mat-icon>
           </button>
           <div class="outline margin-top-10">Back</div>

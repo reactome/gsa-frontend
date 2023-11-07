@@ -1,0 +1,16 @@
+<h1 mat-dialog-title class="error">
+  <mat-icon style="vertical-align: sub">warning</mat-icon>
+  Cancel analysis
+</h1>
+<div mat-dialog-content>
+  Going back in the workflow will cancel the current analysis.<br>
+  Are you sure you want to cancel your analysis?
+</div>
+<div mat-dialog-actions class="actions">
+  <button mat-stroked-button color="primary" [mat-dialog-close]="false">
+    <mat-icon>resume</mat-icon> Continue analysis
+  </button>
+  <button mat-raised-button color="warn" [mat-dialog-close]="true" id="cancel">
+    <mat-icon>close</mat-icon> Cancel analysis
+  </button>
+</div>
