@@ -8,7 +8,15 @@ export const analysisReducer: ActionReducer<AnalysisState> = createReducer(
   on(analysisActions.load, (state, {reportsRequired}) => ({
     ...state,
     reportsRequired,
-    analysisLoadingStatus: {status: 'pending', id: 'unknown', description: 'Sending request to server', completed: 0}
+    analysisLoadingStatus: {status: 'pending', id: 'unknown', description: 'Sending request to servers', completed: 0}
+  })),
+  on(analysisActions.loadOverloaded, (state) => ({...state,
+    analysisLoadingStatus: {
+      status: 'pending',
+      id: 'unknown',
+      description: 'Servers are up-scaling, retrying analysis in a minute ',
+      completed: 0
+    }
   })),
   on(analysisActions.loadSuccess, (state, {analysisId}) => ({...state, analysisId})),
   on(analysisActions.loadFailure, (state, {error}) => ({

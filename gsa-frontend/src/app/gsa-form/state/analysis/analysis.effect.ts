@@ -1,7 +1,7 @@
 import {Actions, createEffect, ofType} from "@ngrx/effects";
 
 
-import {catchError, delayWhen, filter, map, mergeMap, of, switchMap, tap, timer} from "rxjs";
+import {catchError, delay, delayWhen, filter, map, mergeMap, of, switchMap, tap, timer} from "rxjs";
 import {AnalysisService} from "../../services/analysis.service";
 import {analysisActions} from "./analysis.actions";
 import {TypedAction} from "@ngrx/store/src/models";
@@ -20,9 +20,18 @@ export class AnalysisEffects {
                }) => this.analysisService.submitQuery(method, parameters, datasets).pipe(
       tap(() => this.reportsRequired = reportsRequired),
       map((analysisId) => analysisActions.loadSuccess({analysisId})),
-      catchError((error) => of(analysisActions.loadFailure({error}))),
+      catchError((error) =>
+        error.status === 503 ?
+          of(analysisActions.loadOverloaded({method, parameters, datasets, reportsRequired})) :
+          of(analysisActions.loadFailure({error}))),
     ))
   ));
+
+  loadOverloaded$ = createEffect(() => this.actions$.pipe(
+    ofType(analysisActions.loadOverloaded),
+    delay(60_000),
+    map((params) => analysisActions.load(params))
+  ))
 
   loadSuccessToGetLoadingStatus$ = createEffect(() => this.actions$.pipe(
     ofType(analysisActions.loadSuccess),
