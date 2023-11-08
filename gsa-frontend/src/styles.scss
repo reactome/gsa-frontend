@@ -31,6 +31,18 @@ body {
   color: var(--outline-variant)
 }
 
+.secondary {
+  color: var(--secondary);
+}
+
+.tertiary {
+  color: var(--tertiary);
+}
+
+.error {
+  color: var(--error) !important;
+}
+
 .mdc-tooltip__surface {
   text-align: justify;
 }
