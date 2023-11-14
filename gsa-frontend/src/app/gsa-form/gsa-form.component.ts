@@ -89,4 +89,9 @@ export class GsaFormComponent implements AfterViewInit, OnInit, OnDestroy {
       }
     }
   }
+
+  restartAnalysis() {
+    this.editable = true;
+    setTimeout(() => this.stepper.selected = this.setMethodStep);
+  }
 }
