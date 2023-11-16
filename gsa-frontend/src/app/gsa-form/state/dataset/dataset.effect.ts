@@ -115,8 +115,9 @@ export class DatasetEffects {
             const actions: TypedAction<any>[] = [datasetActions.setLoadStatus({loadingStatus, id})];
             if (loadingStatus.status === 'running')
               actions.push(datasetActions.getLoadStatus({loadingId, id}));
-            else if (loadingStatus.status === 'failed')
+            else if (loadingStatus.status === 'failed') {
               actions.push(datasetActions.getLoadStatusError({error: loadingStatus.reports, id}));
+            }
             return actions;
           }),
           delayWhen((action) =>
@@ -134,9 +135,9 @@ export class DatasetEffects {
   loadError = createEffect(() =>
     this.actions$.pipe(
       ofType(datasetActions.loadSubmittedError, datasetActions.getLoadStatusError),
-      delay(1000),
+      delay(2000),
       tap(() => this.dialogRef.close())
-    ),
+    ), {dispatch: false}
   );
 
   loadingToSummary = createEffect(() =>
@@ -158,9 +159,7 @@ export class DatasetEffects {
       exhaustMap(({datasetId, id}) =>
         this.loadDatasetService.getSummary(datasetId).pipe(
           map((summary) => datasetActions.setSummary({summary, id})),
-          catchError((error) =>
-            of(datasetActions.loadSubmittedError({error, id})),
-          ),
+          catchError((error) => of(datasetActions.loadSubmittedError({error, id}))),
         ),
       ),
     ),
