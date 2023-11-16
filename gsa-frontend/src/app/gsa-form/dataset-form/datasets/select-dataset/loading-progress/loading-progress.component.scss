@@ -1,6 +1,10 @@
 .big-size {
-  font-size: 150px;
+  --size: 150px;
+  font-size: var(--size);
+  width: var(--size);
+  height: var(--size);
 }
+
 
 .green {
   color: var(--icon-positive);
