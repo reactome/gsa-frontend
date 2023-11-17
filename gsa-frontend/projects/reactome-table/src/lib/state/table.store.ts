@@ -152,7 +152,7 @@ export class TableStore extends ComponentStore<TableState> {
   })
 
   readonly write = this.updater((state, {value}: { value: string }) => {
-    if (Ranges.equals(Ranges.origin(state), state.start)) return state
+    if (Ranges.equals({x: 0, y: 0}, state.start)) return state
     if (state.start)
       state.hasFocus = true;
     const cell = state.dataset[state.start.y][state.start.x];
