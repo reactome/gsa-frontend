@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, Output, TrackByFunction} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, Output, SimpleChanges, TrackByFunction} from '@angular/core';
 import {ParameterType} from "../../model/methods.model";
 import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
 import {FormControl, Validators} from "@angular/forms";
@@ -15,7 +15,7 @@ export const paramTracker: TrackByFunction<Parameter> = (i, param) => param.valu
   templateUrl: './method-parameter.component.html',
   styleUrls: ['./method-parameter.component.scss']
 })
-export class MethodParameterComponent implements OnInit {
+export class MethodParameterComponent implements OnInit, OnChanges {
   @Input() parameter: Parameter;
   @Input() infoTooltip: boolean = true;
   types = ParameterType;
@@ -28,10 +28,11 @@ export class MethodParameterComponent implements OnInit {
 
 
   @Output() parameterChange: Observable<Parameter> = this.control.valueChanges.pipe(
-     map(value => ({...this.parameter, value})),
+    map(value => ({...this.parameter, value})),
   )
 
-constructor(private responsive: BreakpointObserver) {}
+  constructor(private responsive: BreakpointObserver) {
+  }
 
   ngOnInit(): void {
     if (this.parameter.type === 'email' || this.parameter.name.toLowerCase().includes('email')) {
@@ -40,5 +41,10 @@ constructor(private responsive: BreakpointObserver) {}
 
     this.control.setValue(this.parameter.value, {emitEvent: false});
     this.screenIsSmall$ = this.responsive.observe([Breakpoints.Small, Breakpoints.XSmall]).pipe(map(res => res.matches));
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const paramChange = changes['parameter'];
+    if (paramChange) this.control.setValue(this.parameter.value, {emitEvent: false});
   }
 }

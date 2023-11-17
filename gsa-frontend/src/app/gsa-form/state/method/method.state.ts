@@ -10,10 +10,11 @@ export interface Method {
 
 export interface MethodState extends EntityState<Method> {
   selectedMethodName: string | null;
+  commonParameters: Parameter[]
 }
 
 export const methodAdapter = createEntityAdapter<Method>({
   selectId: model => model.name
 })
 
-export const initialState: MethodState = methodAdapter.getInitialState({selectedMethodName: null})
+export const initialState: MethodState = methodAdapter.getInitialState({selectedMethodName: null, commonParameters: []})

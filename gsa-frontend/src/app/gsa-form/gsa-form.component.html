@@ -3,7 +3,7 @@ reportsRequired: reportRequired$,
 allSaved: allSaved$,
 method: selectedMethod$,
 methodSelected: methodSelected$,
-parameters: methodParameters$,
+parameters: parameters$,
 datasets: datasets$,
 datasetIds: datasetIds$
 } as vm" (selectionChange)="stepChange($event, vm)" class="flex-container" [ngClass]="{'no-tour': !tour.on}"
@@ -86,7 +86,7 @@ datasetIds: datasetIds$
         </div>
       </div>
       <gsa-scrollable [bottomMargin]="57" class="width-seventy" name="options">
-        <gsa-options class="width-hundred" [method]="vm.method"></gsa-options>
+        <gsa-options class="width-hundred"></gsa-options>
       </gsa-scrollable>
       <div class="nav-button-container align-center justify-center flex-container vertical">
         <div class="flex-container align-center vertical margin-top-30 nav-button-area" tourAnchor="options.done" clickable>

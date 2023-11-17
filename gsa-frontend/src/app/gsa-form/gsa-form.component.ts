@@ -2,7 +2,7 @@ import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChil
 import {MatStepper} from "@angular/material/stepper";
 import {Store} from "@ngrx/store";
 import {methodFeature} from "./state/method/method.selector";
-import {filter, firstValueFrom, map, Observable, take} from "rxjs";
+import {filter, firstValueFrom, map, Observable, take, combineLatest, flatMap, tap} from "rxjs";
 import {datasetFeature} from "./state/dataset/dataset.selector";
 import {datasetActions} from "./state/dataset/dataset.actions";
 import {analysisActions} from "./state/analysis/analysis.actions";
@@ -14,7 +14,6 @@ import {HeightService} from "../services/height.service";
 import {TourUtilsService} from "../services/tour-utils.service";
 import {MatDialog} from "@angular/material/dialog";
 import {CancelDialogComponent} from "./cancel-dialog/cancel-dialog.component";
-
 
 @Component({
   selector: 'gsa-form',
@@ -33,7 +32,10 @@ export class GsaFormComponent implements AfterViewInit, OnInit, OnDestroy {
   methodSelected$ = this.selectedMethod$.pipe(map(method => method !== null))
 
   methodParameters$ = this.selectedMethod$.pipe(map(method => method?.parameters))
-  reportRequired$ = this.methodParameters$.pipe(map(parameters => (parameters?.find(parameter => parameter.name === 'create_reports')?.value || false) as boolean))
+  commonParameters$ = this.store.select(methodFeature.selectCommonParameters);
+  parameters$ = combineLatest([this.methodParameters$, this.commonParameters$]).pipe(map(([method, common]) => [...(method || []) , ...common]))
+  reportRequired$ = this.commonParameters$.pipe(map(parameters => (parameters?.find(parameter => parameter.name === 'create_reports')?.value || false) as boolean))
+
   datasetIds$ = this.store.select(datasetFeature.selectIds) as Observable<number[]>;
   datasets$ = this.store.select(datasetFeature.selectAll) as Observable<Dataset[]>;
   allSaved$: Observable<boolean> = this.store.select(datasetFeature.selectAllSaved);

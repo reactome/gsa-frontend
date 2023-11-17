@@ -8,7 +8,15 @@ const helper = new EntityHelper<Method, MethodState>(methodAdapter);
 
 export const methodReducer: ActionReducer<MethodState> = createReducer(
   initialState,
-  on(methodActions.loadSuccess, (state, {methods}) => methodAdapter.addMany(methods, state)),
+  on(methodActions.loadSuccess, (state, {methods}) =>
+    methodAdapter.addMany(methods.map(method => ({
+        ...method,
+        parameters: method.parameters.filter(param => param.scope !== 'common') // Method sdo not keep common
+      })), {
+        ...state,
+        commonParameters: methods[0].parameters.filter(param => param.scope === 'common') // They are transferred to global status
+      }
+    )),
   on(methodActions.update, (state, {update}) => methodAdapter.updateOne(update, state)),
   on(methodActions.setParams, (state, {methodName, parameters}) => methodAdapter.updateOne({
     id: methodName,
@@ -33,5 +41,9 @@ export const methodReducer: ActionReducer<MethodState> = createReducer(
         parameters: method.parameters.map(originalParam => originalParam.name === param.name ? param : originalParam)
       })
     )),
+  on(methodActions.updateCommonParam, (state, {param}) => ({
+    ...state,
+    commonParameters: state.commonParameters.map(originalParam => originalParam.name === param.name ? param : originalParam)
+  })),
   on(methodActions.select, (state, {methodName}) => ({...state, selectedMethodName: methodName})),
 )
