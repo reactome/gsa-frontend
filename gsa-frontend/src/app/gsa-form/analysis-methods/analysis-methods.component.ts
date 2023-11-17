@@ -18,7 +18,6 @@ export class AnalysisMethodsComponent implements OnInit {
 
   methodNames$: Observable<string[]> = this.store.select(methodFeature.selectIds) as Observable<string[]>;
   methods$: Observable<Method[]> = this.store.select(methodFeature.selectAll);
-  @ViewChild('flyingRename') input: ElementRef<HTMLInputElement>;
 
   constructor(private store: Store) {
   }
