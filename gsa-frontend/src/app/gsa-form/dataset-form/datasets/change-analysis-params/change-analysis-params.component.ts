@@ -16,6 +16,7 @@ import {Parameter} from "../../../model/parameter.model";
 export class ChangeAnalysisParamsComponent implements OnInit {
 
     parameters$: Observable<Parameter[]>;
+    name$: Observable<string>;
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: { datasetId: number }, public store: Store,
@@ -28,6 +29,10 @@ export class ChangeAnalysisParamsComponent implements OnInit {
             filter(isDefined),
             map(params => params.filter(param => param.scope === 'dataset'))
         );
+        this.name$ = this.store.select(datasetFeature.selectDataset(this.data.datasetId)).pipe(
+          filter(isDefined),
+          map(dataset=> dataset.summary!.title)
+        )
     }
 
     reset() {

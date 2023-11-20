@@ -227,11 +227,7 @@ export class DatasetEffects {
     this.actions$.pipe(
       ofType(datasetActions.openSummaryParameters),
       map(({id}) => {
-        this.changeAnalysisParamsDialogRef = this.dialog.open(ChangeAnalysisParamsComponent, {
-          width: '50%',
-          height: '50%',
-          data: {datasetId: id},
-        })
+        this.changeAnalysisParamsDialogRef = this.dialog.open(ChangeAnalysisParamsComponent, {data: {datasetId: id}})
         return datasetActions.openSummaryParametersSuccess({id})
       }),
     ))

@@ -1,11 +1,15 @@
-<div class="grey-border flex-container vertical align-center  justify-center" *ngrxLet="{ parameters: parameters$ } as vm">
-  <div>
-    <div *ngFor="let param of vm.parameters; trackBy: paramTracker" class="param-line width-eighty">
-      <gsa-method-parameter [parameter]="param" (parameterChange)="updateParam($event, vm.parameters)"></gsa-method-parameter>
-    </div>
+<div class="flex-container vertical align-center justify-center parameters"
+     *ngrxLet="{ parameters: parameters$, name: name$ } as vm">
+  <h2 class="no-margin">Edit analysis parameters for "{{vm.name}}"</h2>
+
+  <div class="flex vertical gap-one width-hundred">
+    <gsa-method-parameter [parameter]="param" (parameterChange)="updateParam($event, vm.parameters)"
+                          *ngFor="let param of vm.parameters; trackBy: paramTracker">
+    </gsa-method-parameter>
   </div>
-  <div class="flex-container horizontal gap-one">
-    <button (click)="reset()" color="primary" class="margin-top-20" mat-raised-button>Reset</button>
-    <button color="primary"  class="margin-top-20" mat-dialog-close mat-raised-button>Finish</button>
+
+  <div class="flex-container horizontal gap-one justify-between width-hundred">
+    <button (click)="reset()" color="primary" mat-stroked-button>Reset</button>
+    <button color="primary" mat-dialog-close mat-raised-button>Finish</button>
   </div>
 </div>
