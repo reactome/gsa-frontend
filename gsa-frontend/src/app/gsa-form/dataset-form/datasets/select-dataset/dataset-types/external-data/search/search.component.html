@@ -2,7 +2,7 @@
 
   <mat-form-field id="species" appearance="outline">
     <mat-label>species</mat-label>
-    <mat-select formControlName="species" (selectionChange)="search()" >
+    <mat-select formControlName="species" (selectionChange)="search()">
       <mat-option>No species</mat-option>
       <mat-option *ngFor="let species of species$ | async" [value]="species">
         <i>{{species}}</i>
@@ -25,6 +25,12 @@
         <div (click)="select(result)" class="result-card">
           <p class="bold">{{result.title}}</p>
           {{result.resource_name}} - {{result.id}} - {{result.species}}
+          <ng-container *ngIf="result.web_link">
+            -
+            <a [href]="result.web_link" matTooltip="Open dataset origin" style="vertical-align: top" target="_blank" (click)="$event.stopPropagation()">
+              <mat-icon [inline]="true">open_in_new</mat-icon>
+            </a>
+          </ng-container>
         </div>
         <mat-divider *ngIf="!last"></mat-divider>
       </ng-container>
@@ -35,7 +41,7 @@
   </div>
 
   <div *ngSwitchCase="'pending'" class="flex justify-center padding-top-ten">
-      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
   </div>
 
 </div>

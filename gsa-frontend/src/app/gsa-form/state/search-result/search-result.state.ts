@@ -11,6 +11,7 @@ export interface SearchResult {
   resource_loading_id: string;
   species: string;
   title: string;
+  web_link?: string;
 }
 
 export interface SearchResultState extends EntityState<SearchResult> {
