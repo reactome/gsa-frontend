@@ -46,8 +46,8 @@ export class AnalysisEffects {
         : this.analysisService.getAnalysisLoadingStatus(analysisId).pipe(
           mergeMap((status) => {
             const actions: TypedAction<any>[] = [analysisActions.setLoadingStatus({status})];
-            if (status.status === 'running') actions.push(analysisActions.getLoadingStatus({analysisId}));
             if (status.status === 'failed') actions.push(analysisActions.getLoadingStatusError({error: status.description}));
+            else if (status.status !== 'complete') actions.push(analysisActions.getLoadingStatus({analysisId}));
             return actions;
           }),
           delayWhen((action) =>
@@ -80,8 +80,8 @@ export class AnalysisEffects {
         : this.analysisService.getReportLoadingStatus(analysisId).pipe(
           mergeMap((status) => {
             const actions: TypedAction<any>[] = [analysisActions.setReportLoadingStatus({status})];
-            if (status.status === 'running') actions.push(analysisActions.getReportLoadingStatus({analysisId}));
             if (status.status === 'failed') actions.push(analysisActions.getLoadingStatusError({error: status.description}));
+            else if (status.status !== 'complete') actions.push(analysisActions.getReportLoadingStatus({analysisId}));
             return actions;
           }),
           delayWhen((action) =>
