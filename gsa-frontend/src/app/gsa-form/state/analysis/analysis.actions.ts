@@ -13,16 +13,16 @@ export const analysisActions = createActionGroup({
       'load success': props<{analysisId: string}>(),
       'load failure': props<{error: any}>(),
       'load overloaded': props<{method: Method, datasets: Dataset[], parameters: Parameter[], reportsRequired: boolean}>(),
-      'get loading status': props<{analysisId: string}>(),
 
+      'get loading status': props<{analysisId: string}>(),
       'set loading status': props<{status: PLoadingStatus}>(),
       'get loading status error': props<{error: any}>(),
-      'get analysis results': props<{analysisId: string}>(),
 
+      'get analysis results': props<{analysisId: string}>(),
       'set analysis results': props<{result: AnalysisResult}>(),
       'get analysis results error': props<{error: any}>(),
-      'get report loading status': props<{analysisId: string}>(),
 
+      'get report loading status': props<{analysisId: string}>(),
       'set report loading status': props<{status: LoadingStatus}>(),
       'get report loading status error': props<{error: any}>(),
 

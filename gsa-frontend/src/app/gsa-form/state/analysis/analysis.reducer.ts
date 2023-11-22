@@ -26,6 +26,6 @@ export const analysisReducer: ActionReducer<AnalysisState> = createReducer(
   on(analysisActions.setLoadingStatus, (state, {status}) => ({...state, analysisLoadingStatus: status})),
   on(analysisActions.setReportLoadingStatus, (state, {status}) => ({...state, reportLoadingStatus: status})),
   on(analysisActions.setAnalysisResults, (state, {result}) => ({...state, analysisResult: result})),
+  on(analysisActions.cancel, () => ({...initialState})),
 )
-
 

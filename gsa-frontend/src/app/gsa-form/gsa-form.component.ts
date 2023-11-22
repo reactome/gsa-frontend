@@ -95,5 +95,6 @@ export class GsaFormComponent implements AfterViewInit, OnInit, OnDestroy {
   restartAnalysis() {
     this.editable = true;
     setTimeout(() => this.stepper.selected = this.setMethodStep);
+    this.analysisId$.pipe(take(1)).subscribe(analysisId => this.store.dispatch(analysisActions.cancel({analysisId})))
   }
 }
