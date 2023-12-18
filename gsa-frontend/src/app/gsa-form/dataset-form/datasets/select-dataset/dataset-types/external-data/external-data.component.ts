@@ -36,7 +36,7 @@ export class ExternalDataComponent implements OnInit {
     this.store.dispatch(datasetActions.load({
       id: this.datasetId,
       resourceId: this.source.id,
-      parameters: parameters.map(param => ({name: param.name, value: param.value}))
+      parameters: parameters.map(param => ({name: param.name, value: (param.value).toString()})) // convert to string when send to backend
     }))
   }
 
