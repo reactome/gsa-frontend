@@ -11,9 +11,9 @@
     "build-table": "ng build reactome-table",
     "build-table-wc": "npm run build-table && ng build reactome-table-wc --output-hashing none && node projects/reactome-table-wc/build-wc.js",
     "deploy-gh": "ng deploy --base-href=/gsa/",
-    "deploy-dev": "ng build --base-href=/gsa/ && rsync --chown=www-data:reactome --chmod=775 -rpIgoDvhP dist/gsa dev:site --delete",
-    "deploy-release": "ng build --base-href=/gsa/ && rsync --chown=www-data:reactome --chmod=775 -rpIgoDvhP dist/gsa release:site --delete",
-    "deploy-prod": "ng build --base-href=/gsa/ && rsync --chown=www-data:reactome --chmod=775 -rpIgoDvhP dist/gsa prod:site --delete"
+    "deploy-dev": "ng build --configuration=dev --base-href=/gsa/ && rsync --chown=www-data:reactome --chmod=775 -rpIgoDvhP dist/gsa dev:site --delete",
+    "deploy-release": "ng build --configuration=release --base-href=/gsa/ && rsync --chown=www-data:reactome --chmod=775 -rpIgoDvhP dist/gsa release:site --delete",
+    "deploy-prod": "ng build --configuration=production --base-href=/gsa/ && rsync --chown=www-data:reactome --chmod=775 -rpIgoDvhP dist/gsa prod:site --delete"
   },
   "private": true,
   "dependencies": {
