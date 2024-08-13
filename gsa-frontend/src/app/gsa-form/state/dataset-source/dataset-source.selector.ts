@@ -14,8 +14,14 @@ export const datasetSourceFeature = createFeature({
         .filter(entity => entity?.source === source)
         .filter(isDefined)
       // filter examples based on the selected analysis method, B_CELLS is only compatible with ssGSEA analysis method
-      if (method?.name === 'ssGSEA')  return filteredEntities;
-      return filteredEntities.filter(entity => entity.id != 'EXAMPLE_SC_B_CELLS');
+      if (method?.name === 'ssGSEA') {
+        return filteredEntities.filter(entity => entity.id !== 'EXAMPLE_RIBO_SEQ');
+      } else if (method?.name === 'PADOG') {
+        return filteredEntities.filter(entity => entity.id !== 'EXAMPLE_SC_B_CELLS');
+      } else if (method?.name === 'Camera'){
+        return filteredEntities.filter(entity => entity.id !== 'EXAMPLE_SC_B_CELLS' && entity.id !== 'EXAMPLE_RIBO_SEQ');
+      }
+      return filteredEntities;
     }),
     selectDatasetSource: (id: string) => createSelector(selectEntities, entities => entities[id]),
     selectSelectedSource: createSelector(selectEntities, selectSelectedSourceId, (entities, selectedSourceId) => selectedSourceId != null ? entities[selectedSourceId] : null),
