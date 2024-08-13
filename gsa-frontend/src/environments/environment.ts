@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   ApiRoot: "/GSAServer/0.1",
-  ApiSecretRoot: "/GSAServer"
+  ApiSecretRoot: "/GSAServer",
+  server: "dev"
 };
 
 /*

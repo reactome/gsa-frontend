@@ -4,6 +4,7 @@ import {AnalysisMethodsService, typeToParse} from "../../services/analysis-metho
 import {methodActions} from "./method.action";
 import {catchError, exhaustMap, map, of} from "rxjs";
 import {ParameterType} from "../../model/methods.model";
+import {environment} from "../../../../environments/environment";
 
 @Injectable()
 export class MethodEffects {
@@ -11,11 +12,15 @@ export class MethodEffects {
       ofType(methodActions.load),
       exhaustMap(() => this.methodService.getAll().pipe(
           map(methods => {
-            methods.forEach(method => method.parameters.forEach(param => {
-              param.type = param.name === 'email' ? ParameterType.email : param.type;
-              param.value = typeToParse[param.type](param.default);
-              param.default = typeToParse[param.type](param.default);
-            }));
+            methods.forEach(method => {
+              method.parameters.forEach(param => {
+                param.type = param.name === 'email' ? ParameterType.email : param.type;
+                param.value = typeToParse[param.type](param.default);
+                param.default = typeToParse[param.type](param.default);
+              })
+              const server = method.parameters.find(param => param.name === "reactome_server");
+              if (server) server.value = environment.server
+            });
             return methodActions.loadSuccess({methods})
           }),
           catchError((err) => of(methodActions.loadFailure({error: err})))

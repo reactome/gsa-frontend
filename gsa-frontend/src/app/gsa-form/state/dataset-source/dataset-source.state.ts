@@ -13,6 +13,7 @@ export interface DatasetSource {
   type: string;
   parameters: Parameter[];
   source: Source;
+  url: string;
 }
 
 export type PDatasetSource = PartialRequired<DatasetSource, 'description' | 'name' | 'id' | 'source'>;

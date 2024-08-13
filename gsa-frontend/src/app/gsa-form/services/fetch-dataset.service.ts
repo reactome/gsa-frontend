@@ -27,7 +27,7 @@ export class FetchDatasetService {
           panelClass: ['warning-snackbar'],
           duration: 10000
         });
-        return throwError(err);    //Rethrow it back to component
+        return throwError(() => err);    //Rethrow it back to component
       }));
   }
 
