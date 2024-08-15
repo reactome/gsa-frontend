@@ -26,7 +26,7 @@ export class DownloadTableComponent implements OnInit {
     dlink.download = `${this.name}.csv`; // the file name
     this.tableStore.rawData$.pipe(first()).subscribe(
       table => {
-        dlink.href = 'data:text/plain;charset=utf-16,' + table.map(row => row.join(", ")).join("\n");
+        dlink.href = encodeURI('data:text/csv;charset=utf-8,' + table.map(row => row.join(", ")).join("\n"));
         dlink.click(); // this will trigger the dialog window
         dlink.remove();
       }
