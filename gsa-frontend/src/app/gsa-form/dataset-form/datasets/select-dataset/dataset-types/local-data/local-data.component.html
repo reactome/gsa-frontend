@@ -1,5 +1,10 @@
-<div (click)="select()" class="dataset-card-content">
-  <input #fileUpload (change)="onFileSelected($event)" class="file-input" type="file">
+<div (click)="source.name === 'Ribo-seq' ? showPopup = true : onFileSelected($event)" class="dataset-card-content">
+  <input
+    #fileUpload
+    (change)="onFileSelected($event)"
+    class="file-input"
+    type="file"
+  >
   <div (click)="fileUpload.click()">
     <div>
       <p class="bold no-wrap">{{source.name}}</p>
@@ -7,3 +12,26 @@
     </div>
   </div>
 </div>
+
+<!-- Popup for multiple files within ribo and RNA seq -->
+<div *ngIf="showPopup" class="custom-popup">
+  <div class="popup-content">
+    <h2>Upload RNA and Ribo seq file</h2>
+
+    <div class="file-input-container">
+      <label>RNA seq file</label>
+      <input type="file" (change)="uploadRNAFile($event)" class="popup-file-input">
+    </div>
+    <div class="file-input-container">
+      <label>Consecutive Ribo data</label>
+      <input type="file" (change)="uploadRiboFile($event)" class="popup-file-input">
+    </div>
+    <div class="popup-buttons">
+      <button [disabled]="!filesLoaded" (click)="uploadRiboData()">Submit</button>
+      <button (click)="closePopUp()">Close</button>
+    </div>
+  </div>
+</div>
+
+
+
