@@ -19,12 +19,17 @@
     <h2>Upload RNA and Ribo seq file</h2>
 
     <div class="file-input-container">
-      <label>RNA seq file</label>
+      <label>RNA-Seq File</label>
       <input type="file" (change)="uploadRNAFile($event)" class="popup-file-input">
     </div>
     <div class="file-input-container">
-      <label>Consecutive Ribo data</label>
+      <label>Associated Ribo-Seq File</label>
       <input type="file" (change)="uploadRiboFile($event)" class="popup-file-input">
+    </div>
+    <div>
+      <body>
+      <label>Note:</label> The files must have matching column names to perform Ribo-Seq pathway analysis.
+      </body>
     </div>
     <div class="popup-buttons">
       <button [disabled]="!filesLoaded" (click)="uploadRiboData()">Submit</button>

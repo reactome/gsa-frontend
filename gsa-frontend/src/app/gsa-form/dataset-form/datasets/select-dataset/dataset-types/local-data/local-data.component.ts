@@ -78,7 +78,7 @@ export class LocalDataComponent {
     });
   }
 
-  mergeFiles(file1Content: string, file2Content: string): File {    /// merge files
+  mergeFiles(file1Content: string, file2Content: string): File {    /// merge files for Ribo seq data
     const file1Rows = file1Content.trim().split('\n');
     const file2Rows = file2Content.trim().split('\n');
 
@@ -108,7 +108,8 @@ export class LocalDataComponent {
 
     // Create a File from the Blob
     const mergedFile = new File([blob], 'mergedFile.tsv', { type: 'text/tab-separated-values' });
-
+    console.log("File Header: ", mergedHeaders);
+    console.log("Merged File: ", mergedFile);
     return mergedFile;
   }
 
