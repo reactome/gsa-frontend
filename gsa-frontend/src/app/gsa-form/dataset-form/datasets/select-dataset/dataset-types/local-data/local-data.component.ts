@@ -69,7 +69,6 @@ export class LocalDataComponent {
         .then((contents) => {
           const mergedData = this.mergeFiles(contents[0], contents[1]);
           this.store.dispatch(datasetActions.upload({file: mergedData, id: this.datasetId, typeId: this.source.id}))
-          // Further processing with mergedData
         })
         .catch((error) => {
         });
