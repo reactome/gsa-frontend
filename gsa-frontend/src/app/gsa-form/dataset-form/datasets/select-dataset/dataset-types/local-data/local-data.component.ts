@@ -15,10 +15,13 @@ export class LocalDataComponent {
   @Input() datasetId: number;
 
   showPopup: boolean = false;
+  canTriggerFileUpload = true;
+
   filesLoaded: boolean = false;
 
   fileRibo: File | null = null;
   fileRNA: File | null = null;
+
 
   constructor(public store: Store) {
   }
@@ -27,6 +30,7 @@ export class LocalDataComponent {
       console.log("normal select")
       this.store.dispatch(datasetSourceActions.select({toBeSelected: this.source}));
   }
+
 
   uploadRNAFile(event: any){
     this.fileRNA = event.target.files[0];
@@ -122,9 +126,9 @@ export class LocalDataComponent {
 
   onFileSelected(event: any) {
     if (!this.showPopup) {
-      const file: File = event.target.files[0];
-      if (file) {
-        this.store.dispatch(datasetActions.upload({id: this.datasetId, file, typeId: this.source.id}))
+        const file: File = event.target.files[0];
+        if (file) {
+          this.store.dispatch(datasetActions.upload({id: this.datasetId, file, typeId: this.source.id}))
       }
     }
   }

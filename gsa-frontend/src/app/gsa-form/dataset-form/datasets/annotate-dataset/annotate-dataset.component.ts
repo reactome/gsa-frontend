@@ -25,7 +25,6 @@ export class AnnotateDatasetComponent implements OnInit {
   annotateDataStep: FormGroup;
   tableSettings: Subset<Settings>;
   screenIsSmall: boolean = false;
-
   isRibo: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private responsive: BreakpointObserver, private store: Store, private cdr: ChangeDetectorRef) {
@@ -47,27 +46,25 @@ export class AnnotateDatasetComponent implements OnInit {
     );
 
 
+    // check for Ribo dataset for automatic Seqeuencing Type annotation
     this.dataset$.subscribe((dataset: PDataset | undefined) => {
       if(dataset){
         const summary = dataset.summary;
         const type = summary?.type;
         if (type === "ribo_seq") {
-          this.isRibo== true;
+          this.isRibo = true;
         }
       }
     })
 
-    if(this.isRibo){
-      this.annotateSeqType();
+    if(this.isRibo){    // automatic Seq Type annotation for RiboSeq data
+        this.annotateSeqType();
     }
-    this.responsive.observe(Breakpoints.Small).subscribe(result => this.screenIsSmall = result.matches);
 
+    this.responsive.observe(Breakpoints.Small).subscribe(result => this.screenIsSmall = result.matches);
   }
 
   onTableUpdate(table: string[][]) {
-    console.log("Table", table)
-    console.log("onRiboDataAnnotation", table);
-    console.log(table.entries())
     this.store.dispatch(datasetActions.setAnnotations({annotations: table, id: this.datasetId}))
   }
 
@@ -83,12 +80,10 @@ export class AnnotateDatasetComponent implements OnInit {
   }
 
   annotateSeqType(){
-    // add Ribo seq annotation if relevant
-    let riboDataIdentfiers: string[][] = [];     /// get the identifyer  to perform Seq Type annoation
+    let riboDataIdentfiers: string[][] = [];
     this.annotations$.subscribe(data => {
       riboDataIdentfiers = data;
     });
-    console.log("Result:", riboDataIdentfiers)
     const modifiedData = riboDataIdentfiers.map((row) => {
       if (row[0] === "") {
         return ["", "SeqType"];
@@ -98,10 +93,8 @@ export class AnnotateDatasetComponent implements OnInit {
         return [row[0], seqType];
       }
     });
-
     this.onTableUpdate(modifiedData);
   }
-
 
   protected readonly datasetActions = datasetActions;
 }
