@@ -15,7 +15,7 @@ export class LocalDataComponent {
   @Input() datasetId: number;
 
   showPopup: boolean = false;
-  canTriggerFileUpload = true;
+  loadLocalFiles: boolean = true;
 
   filesLoaded: boolean = false;
 
@@ -24,6 +24,8 @@ export class LocalDataComponent {
 
 
   constructor(public store: Store) {
+    console.log(this.showPopup)
+    console.log(this.loadLocalFiles)
   }
 
   select() {
@@ -31,7 +33,10 @@ export class LocalDataComponent {
   }
 
   onFileSelected(event: any) {
-    if (!this.showPopup) {
+    if (this.source.name === 'Ribo-seq') {
+      this.showPopup = true;
+      this.loadLocalFiles = false;
+    } else {
       const file: File = event.target.files[0];
       if (file) {
         this.store.dispatch(datasetActions.upload({id: this.datasetId, file, typeId: this.source.id}))
@@ -39,6 +44,8 @@ export class LocalDataComponent {
     }
   }
 
+
+  // logic for ribo seq data
   closePopUp(){
     this.showPopup = false;
     this.filesLoaded = false;
