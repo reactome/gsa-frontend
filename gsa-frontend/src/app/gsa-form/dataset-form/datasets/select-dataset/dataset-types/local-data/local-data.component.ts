@@ -15,70 +15,69 @@ export class LocalDataComponent {
   @Input() datasetId: number;
 
   showPopup: boolean = false;
+  canTriggerFileUpload = true;
+
   filesLoaded: boolean = false;
 
   fileRibo: File | null = null;
   fileRNA: File | null = null;
 
+
   constructor(public store: Store) {
   }
 
   select() {
-      console.log("normal select")
       this.store.dispatch(datasetSourceActions.select({toBeSelected: this.source}));
+  }
+
+  onFileSelected(event: any) {
+    if (!this.showPopup) {
+      const file: File = event.target.files[0];
+      if (file) {
+        this.store.dispatch(datasetActions.upload({id: this.datasetId, file, typeId: this.source.id}))
+      }
+    }
+  }
+
+  closePopUp(){
+    this.showPopup = false;
+    this.filesLoaded = false;
+    this.fileRibo = null;
+    this.fileRNA = null;
   }
 
   uploadRNAFile(event: any){
     this.fileRNA = event.target.files[0];
-    console.log("RNA File")
-    console.log(this.fileRNA);
     if(this.fileRibo && this.fileRNA){
       this.filesLoaded = true;
     }
   }
-
 
   uploadRiboFile(event: any){
     this.fileRibo = event.target.files[0];
-    console.log("Ribo File")
     if(this.fileRibo && this.fileRNA){
       this.filesLoaded = true;
     }
   }
 
-  uploadRiboData(){    // called from html to upload data
-    console.log("Ribo data")
-    // here the data is uploaded
-    console.log(this.fileRibo);
+  uploadRiboData(){
     if (this.fileRibo && this.fileRNA) {
-      console.log("Both files uploaded")
       const file1Content = this.readFile(this.fileRNA); // read rna file
       const file2Content = this.readFile(this.fileRibo); // read ribo data
 
       Promise.all([file1Content, file2Content])
         .then((contents) => {
           const mergedData = this.mergeFiles(contents[0], contents[1]);
-          console.log('Merged Data:', mergedData);
           this.store.dispatch(datasetActions.upload({file: mergedData, id: this.datasetId, typeId: this.source.id}))
           // Further processing with mergedData
         })
         .catch((error) => {
-          console.error('Error reading files:', error);
         });
     }
     this.closePopUp();
   }
 
-  readFile(file: File): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = (error) => reject(error);
-      reader.readAsText(file);
-    });
-  }
-
-  mergeFiles(file1Content: string, file2Content: string): File {    /// merge files for Ribo seq data
+  mergeFiles(file1Content: string, file2Content: string): File {
     const file1Rows = file1Content.trim().split('\n');
     const file2Rows = file2Content.trim().split('\n');
 
@@ -105,29 +104,16 @@ export class LocalDataComponent {
     }
     const mergedDataString = mergedRows.join('\n');
     const blob = new Blob([mergedDataString], { type: 'text/tab-separated-values' });
-
-    // Create a File from the Blob
     const mergedFile = new File([blob], 'mergedFile.tsv', { type: 'text/tab-separated-values' });
-    console.log("File Header: ", mergedHeaders);
-    console.log("Merged File: ", mergedFile);
     return mergedFile;
   }
 
-  closePopUp(){
-    this.showPopup = false;
-    this.filesLoaded = false;
-    this.fileRibo = null;
-    this.fileRNA = null;
+  readFile(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+      reader.readAsText(file);
+    });
   }
-
-  onFileSelected(event: any) {
-    if (!this.showPopup) {
-      const file: File = event.target.files[0];
-      if (file) {
-        this.store.dispatch(datasetActions.upload({id: this.datasetId, file, typeId: this.source.id}))
-      }
-    }
-  }
-
-
 }
