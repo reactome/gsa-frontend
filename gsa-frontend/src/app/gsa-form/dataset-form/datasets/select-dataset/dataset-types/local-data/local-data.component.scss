@@ -47,22 +47,36 @@ label {
   color: #006782;
 }
 
-button {
-  align-self: flex-end;
-  padding: 10px 20px;
-  background-color: #006782;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+label-error {
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #FF0000;
 }
 
-button:hover {
-  background-color: black;
-}
-
-.popup-buttons {
+.button-container {
   display: flex;
-  justify-content: right; /* Center the buttons horizontally */
-  gap: 10px; /* Add some space between the buttons */
+  justify-content: flex-end;
+  gap: 10px;
 }
+
+
+//
+//button {
+//  align-self: flex-end;
+//  padding: 10px 20px;
+//  background-color: #006782;
+//  color: white;
+//  border: none;
+//  border-radius: 5px;
+//  cursor: pointer;
+//}
+//
+//button:hover {
+//  background-color: black;
+//}
+//
+//.popup-buttons {
+//  display: flex;
+//  justify-content: right;
+//  gap: 10px;
+//}

@@ -16,16 +16,15 @@ export class LocalDataComponent {
 
   showPopup: boolean = false;
   loadLocalFiles: boolean = true;
-
   filesLoaded: boolean = false;
-
   fileRibo: File | null = null;
   fileRNA: File | null = null;
 
+  fileMatching: boolean = true;
+  fileValid: boolean = true;
 
   constructor(public store: Store) {
-    console.log(this.showPopup)
-    console.log(this.loadLocalFiles)
+
   }
 
   select() {
@@ -33,7 +32,7 @@ export class LocalDataComponent {
   }
 
   onFileSelected(event: any) {
-    if (this.source.name === 'Ribo-seq') {
+    if (this.isRiboSeq()) {
       this.showPopup = true;
       this.loadLocalFiles = false;
     } else {
@@ -44,6 +43,9 @@ export class LocalDataComponent {
     }
   }
 
+  isRiboSeq(): boolean {
+    return this.source.name === 'Ribo-seq';
+  }
 
   // logic for ribo seq data
   closePopUp(){
@@ -53,36 +55,71 @@ export class LocalDataComponent {
     this.fileRNA = null;
   }
 
-  uploadRNAFile(event: any){
+  async uploadRNAFile(event: any){
     this.fileRNA = event.target.files[0];
     if(this.fileRibo && this.fileRNA){
       this.filesLoaded = true;
+      this.fileMatching = await this.checkFirstLinesMatch(this.fileRNA, this.fileRibo);
     }
   }
-
-  uploadRiboFile(event: any){
+  async uploadRiboFile(event: any){
     this.fileRibo = event.target.files[0];
     if(this.fileRibo && this.fileRNA){
       this.filesLoaded = true;
+      this.fileMatching = await this.checkFirstLinesMatch(this.fileRNA, this.fileRibo);
     }
   }
 
-  uploadRiboData(){
+  async uploadRiboData(){
     if (this.fileRibo && this.fileRNA) {
-      const file1Content = this.readFile(this.fileRNA); // read rna file
-      const file2Content = this.readFile(this.fileRibo); // read ribo data
 
-      Promise.all([file1Content, file2Content])
-        .then((contents) => {
-          const mergedData = this.mergeFiles(contents[0], contents[1]);
-          this.store.dispatch(datasetActions.upload({file: mergedData, id: this.datasetId, typeId: this.source.id}))
-        })
-        .catch((error) => {
-        });
+      const firstLineMatch = await this.checkFirstLinesMatch(this.fileRNA,this.fileRibo);
+      this.fileMatching = firstLineMatch;
+      if (firstLineMatch) {
+
+        const file1Content = await this.readFile(this.fileRNA); // read rna file
+        const file2Content = await this.readFile(this.fileRibo); // read ribo data
+
+        console.log(file1Content)
+
+        // merging files
+        Promise.all([file1Content, file2Content])
+          .then((contents) => {
+            const mergedData = this.mergeFiles(contents[0], contents[1]);
+            this.store.dispatch(datasetActions.upload({file: mergedData, id: this.datasetId, typeId: this.source.id}))
+          })
+          .catch((error) => {
+          });
+        this.closePopUp();
+      }
+      else {
+        this.fileMatching = false;
+      }
     }
-    this.closePopUp();
   }
 
+  async checkForValidFormat(file: File){    // only integers are supported
+
+  }
+
+  async checkFirstLinesMatch(fileRNA: File, fileRibo: File): Promise<boolean> {
+    try {
+      const [file1Content, file2Content] = await Promise.all([
+        this.readFile(fileRNA),
+        this.readFile(fileRibo)
+      ]);
+
+      const file1FirstLine = file1Content.split('\n')[0].trim();
+      const file2FirstLine = file2Content.split('\n')[0].trim();
+
+      return file1FirstLine === file2FirstLine;
+    } catch (error) {
+      return false;
+    }
+  }
+
+
+  // merge files after annotation
   mergeFiles(file1Content: string, file2Content: string): File {
     const file1Rows = file1Content.trim().split('\n');
     const file2Rows = file2Content.trim().split('\n');

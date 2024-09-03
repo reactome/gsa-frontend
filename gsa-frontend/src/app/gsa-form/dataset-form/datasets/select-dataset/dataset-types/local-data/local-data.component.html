@@ -5,7 +5,7 @@
     class="file-input"
     type="file"
   >
-  <div *ngIf="!showPopup && loadLocalFiles" (click)="fileUpload.click()">
+  <div (click)="isRiboSeq() || fileUpload.click()">
     <div>
       <p class="bold no-wrap">{{source.name}}</p>
       <p>{{source.description}}</p>
@@ -19,8 +19,8 @@
   <div class="popup-content">
     <h2>Upload RNA and Ribo seq file</h2>
     <div class="file-input-container">
-      <label>RNA-Seq File</label>
-      <input type="file" (change)="uploadRNAFile($event)" class="popup-file-input">
+        <label>RNA-Seq File</label>
+        <input type="file" (change)="uploadRNAFile($event)" class="popup-file-input" >
     </div>
     <div class="file-input-container">
       <label>Associated Ribo-Seq File</label>
@@ -31,9 +31,14 @@
       <label>Note:</label> The files must have matching column names to perform Ribo-Seq pathway analysis.
       </body>
     </div>
-    <div class="popup-buttons">
-      <button [disabled]="!filesLoaded" (click)="uploadRiboData()">Submit</button>
-      <button (click)="closePopUp()">Close</button>
+    <div *ngIf="!fileMatching">
+      <body>
+      <label>ERROR</label> Files do not have matching column names
+      </body>
+    </div>
+    <div class="button-container">
+      <button [disabled]="!filesLoaded || !fileMatching" (click)="uploadRiboData()" mat-flat-button [color]="'primary'">Submit</button>
+      <button (click)="closePopUp()" mat-stroked-button>Close</button>
     </div>
   </div>
 </div>
