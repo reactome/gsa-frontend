@@ -57,6 +57,11 @@ export class LocalDataComponent {
 
   async uploadRNAFile(event: any){
     this.fileRNA = event.target.files[0];
+
+    if(this.fileRNA) {
+      this.fileValid = await this.checkValidFile(this.fileRNA)
+    }
+
     if(this.fileRibo && this.fileRNA){
       this.filesLoaded = true;
       this.fileMatching = await this.checkFirstLinesMatch(this.fileRNA, this.fileRibo);
@@ -64,6 +69,13 @@ export class LocalDataComponent {
   }
   async uploadRiboFile(event: any){
     this.fileRibo = event.target.files[0];
+    if(this.fileRibo) {
+      this.fileValid = await this.checkValidFile(this.fileRibo)
+    }
+    console.log(this.fileValid)
+    if(!this.fileValid){
+      console.log("Not all integers")
+    }
     if(this.fileRibo && this.fileRNA){
       this.filesLoaded = true;
       this.fileMatching = await this.checkFirstLinesMatch(this.fileRNA, this.fileRibo);
@@ -80,7 +92,6 @@ export class LocalDataComponent {
         const file1Content = await this.readFile(this.fileRNA); // read rna file
         const file2Content = await this.readFile(this.fileRibo); // read ribo data
 
-        console.log(file1Content)
 
         // merging files
         Promise.all([file1Content, file2Content])
@@ -98,8 +109,43 @@ export class LocalDataComponent {
     }
   }
 
-  async checkForValidFormat(file: File){    // only integers are supported
+  async checkValidFile(file: File): Promise<boolean> {  // only integers are allowed
+    console.log("check valid")
+    console.log(file)
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
 
+      reader.onload = function(event) {
+        const text = event.target?.result as string;
+        if (!text) {
+          return resolve(false);
+        }
+
+        // Split the text into lines
+        const lines = text.trim().split('\n');
+
+        // Iterate through each line starting from the second line (skip the header)
+        for (let i = 1; i < lines.length; i++) {
+          const columns = lines[i].split('\t');
+
+          // Iterate through each column starting from the second column (skip the identifier)
+          for (let j = 1; j < columns.length; j++) {
+            const value = columns[j].trim();
+
+            // Check if the value is not an integer
+            if (!Number.isInteger(Number(value))) {
+              return resolve(false);
+            }
+          }
+        }
+        // All values are integers
+        resolve(true);
+      };
+      reader.onerror = function() {
+        reject(new Error("Failed to read the file"));
+      };
+      reader.readAsText(file);
+    });
   }
 
   async checkFirstLinesMatch(fileRNA: File, fileRibo: File): Promise<boolean> {
@@ -129,11 +175,8 @@ export class LocalDataComponent {
     let headers2 = file2Rows[0].split('\t');
     headers2 = headers2.slice(1);  // remove first column
 
-    const updatedHeaders1 = headers1.map(header => header + '_RNA');
-    const updatedHeaders2 = headers2.map(header => header + '_RIBO');
-
     // Merging headers
-    const mergedHeaders = updatedHeaders1.concat(updatedHeaders2).join('\t');
+    const mergedHeaders = headers1.concat(headers2).join('\t');
 
     // Merging data rows
     const mergedRows = [mergedHeaders];

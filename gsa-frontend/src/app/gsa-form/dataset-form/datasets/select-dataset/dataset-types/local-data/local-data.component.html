@@ -36,8 +36,13 @@
       <label>ERROR</label> Files do not have matching column names
       </body>
     </div>
+    <div *ngIf="!fileValid">
+      <body>
+      <label>ERROR</label> File must only contain integer values
+      </body>
+    </div>
     <div class="button-container">
-      <button [disabled]="!filesLoaded || !fileMatching" (click)="uploadRiboData()" mat-flat-button [color]="'primary'">Submit</button>
+      <button [disabled]="!filesLoaded || !fileMatching || !fileValid" (click)="uploadRiboData()" mat-flat-button [color]="'primary'">Submit</button>
       <button (click)="closePopUp()" mat-stroked-button>Close</button>
     </div>
   </div>

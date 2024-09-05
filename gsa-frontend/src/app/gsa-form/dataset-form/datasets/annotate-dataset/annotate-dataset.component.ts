@@ -39,16 +39,10 @@ export class AnnotateDatasetComponent implements OnInit {
       addRow: false
     };
     this.dataset$ = this.store.select(datasetFeature.selectDataset(this.datasetId));  // Data is mocked from the request TODO do NOT merge moch data !!!
-    this.annotations$ = this.dataset$.pipe(
-      filter(isDefined),
-      map(d => d.annotations),
-      filter(isDefined),
-    );
-
 
     // check for Ribo dataset for automatic Seqeuencing Type annotation
     this.dataset$.subscribe((dataset: PDataset | undefined) => {
-      if(dataset){
+      if(dataset) {
         const summary = dataset.summary;
         const type = summary?.type;
         if (type === "ribo_seq") {
@@ -57,9 +51,18 @@ export class AnnotateDatasetComponent implements OnInit {
       }
     })
 
-    if(this.isRibo){    // automatic Seq Type annotation for RiboSeq data
-        this.annotateSeqType();
-    }
+    this.annotations$ = this.dataset$.pipe(
+      filter(isDefined),
+      map(d => {
+        let annotations = d.annotations;
+        if (this.isRibo && annotations) {   // Ribo seq is processed diffrently
+          const halfLength = Math.ceil(annotations.length / 2);
+          annotations = annotations.slice(0, halfLength);
+        }
+        return annotations;
+      }),
+      filter(isDefined),
+    );
 
     this.responsive.observe(Breakpoints.Small).subscribe(result => this.screenIsSmall = result.matches);
   }
@@ -77,23 +80,6 @@ export class AnnotateDatasetComponent implements OnInit {
         }
       }
     }))
-  }
-
-  annotateSeqType(){
-    let riboDataIdentfiers: string[][] = [];
-    this.annotations$.subscribe(data => {
-      riboDataIdentfiers = data;
-    });
-    const modifiedData = riboDataIdentfiers.map((row) => {
-      if (row[0] === "") {
-        return ["", "SeqType"];
-      } else {
-        const type = row[0].split("_");
-        const seqType = type.length > 1 ? type[1] : "";
-        return [row[0], seqType];
-      }
-    });
-    this.onTableUpdate(modifiedData);
   }
 
   protected readonly datasetActions = datasetActions;
