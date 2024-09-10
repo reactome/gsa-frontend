@@ -59,24 +59,62 @@ label-error {
   gap: 10px;
 }
 
+.error-label {
+  color: #ff4d4d;
+  font-weight: bold;
+  margin-right: 10px;
+}
 
-//
-//button {
-//  align-self: flex-end;
-//  padding: 10px 20px;
-//  background-color: #006782;
-//  color: white;
-//  border: none;
-//  border-radius: 5px;
-//  cursor: pointer;
-//}
-//
-//button:hover {
-//  background-color: black;
-//}
-//
-//.popup-buttons {
-//  display: flex;
-//  justify-content: right;
-//  gap: 10px;
-//}
+.error-message {
+  background-color: #ffebeb;
+  border-left: 4px solid #ff4d4d;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.error-message label {
+  margin-right: 10px;
+}
+
+
+.error-text {
+  color: #ff4d4d;
+  font-weight: bold;
+}
+
+
+.popup-file-input {
+  display: none;
+}
+
+/* Custom file upload button */
+.popup-file-input + label {
+  display: inline-block;
+  padding: 10px 20px;
+  color: white;
+  background-color: #006782; /* Tomato color */
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.popup-file-input + label:hover {
+  background-color: #FF4500; /* Darker Tomato on hover */
+}
+
+/* Label for file input to look like a button */
+.popup-file-input:focus + label {
+  outline: 2px solid #FF4500;
+}
+
+.file-name {
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #333;
+}

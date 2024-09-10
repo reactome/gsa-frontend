@@ -55,10 +55,6 @@ export class AnnotateDatasetComponent implements OnInit {
       filter(isDefined),
       map(d => {
         let annotations = d.annotations;
-        if (this.isRibo && annotations) {   // Ribo seq is processed diffrently
-          const halfLength = Math.ceil(annotations.length / 2);
-          annotations = annotations.slice(0, halfLength);
-        }
         return annotations;
       }),
       filter(isDefined),
@@ -84,7 +80,6 @@ export class AnnotateDatasetComponent implements OnInit {
 
   protected readonly datasetActions = datasetActions;
 }
-
 
 
 

@@ -43,6 +43,17 @@ export class LocalDataComponent {
     }
   }
 
+  async uploadRiboData(){
+    console.log("Upload funciton")
+
+    if (this.fileRibo && this.fileRNA) {
+      let fileRNA_ = this.fileRNA
+      let fileRibo_ = this.fileRibo
+      console.log("Upload")
+      this.store.dispatch(datasetActions.uploadRibo({id: this.datasetId, fileRibo: fileRibo_, fileRNA: fileRNA_,typeId: this.source.id}))
+    }
+  }
+
   isRiboSeq(): boolean {
     return this.source.name === 'Ribo-seq';
   }
@@ -57,6 +68,12 @@ export class LocalDataComponent {
 
   async uploadRNAFile(event: any){
     this.fileRNA = event.target.files[0];
+    if (this.fileRNA) {
+      const fileNameElement = document.getElementById('rna-file-name');
+      if (fileNameElement) {
+        fileNameElement.textContent = this.fileRNA.name;  // Display the selected file name
+      }
+    }
 
     if(this.fileRNA) {
       this.fileValid = await this.checkValidFile(this.fileRNA)
@@ -67,10 +84,15 @@ export class LocalDataComponent {
       this.fileMatching = await this.checkFirstLinesMatch(this.fileRNA, this.fileRibo);
     }
   }
+
   async uploadRiboFile(event: any){
     this.fileRibo = event.target.files[0];
     if(this.fileRibo) {
       this.fileValid = await this.checkValidFile(this.fileRibo)
+      const fileNameElement = document.getElementById('ribo-file-name');
+      if (fileNameElement) {
+        fileNameElement.textContent = this.fileRibo.name;  // Display the selected file name
+      }
     }
     console.log(this.fileValid)
     if(!this.fileValid){
@@ -82,34 +104,8 @@ export class LocalDataComponent {
     }
   }
 
-  async uploadRiboData(){
-    if (this.fileRibo && this.fileRNA) {
 
-      const firstLineMatch = await this.checkFirstLinesMatch(this.fileRNA,this.fileRibo);
-      this.fileMatching = firstLineMatch;
-      if (firstLineMatch) {
-
-        const file1Content = await this.readFile(this.fileRNA); // read rna file
-        const file2Content = await this.readFile(this.fileRibo); // read ribo data
-
-
-        // merging files
-        Promise.all([file1Content, file2Content])
-          .then((contents) => {
-            const mergedData = this.mergeFiles(contents[0], contents[1]);
-            this.store.dispatch(datasetActions.upload({file: mergedData, id: this.datasetId, typeId: this.source.id}))
-          })
-          .catch((error) => {
-          });
-        this.closePopUp();
-      }
-      else {
-        this.fileMatching = false;
-      }
-    }
-  }
-
-  async checkValidFile(file: File): Promise<boolean> {  // only integers are allowed
+  async checkValidFile(file: File): Promise<boolean> {
     console.log("check valid")
     console.log(file)
     return new Promise((resolve, reject) => {
@@ -120,25 +116,17 @@ export class LocalDataComponent {
         if (!text) {
           return resolve(false);
         }
-
-        // Split the text into lines
         const lines = text.trim().split('\n');
 
-        // Iterate through each line starting from the second line (skip the header)
         for (let i = 1; i < lines.length; i++) {
           const columns = lines[i].split('\t');
-
-          // Iterate through each column starting from the second column (skip the identifier)
           for (let j = 1; j < columns.length; j++) {
             const value = columns[j].trim();
-
-            // Check if the value is not an integer
             if (!Number.isInteger(Number(value))) {
               return resolve(false);
             }
           }
         }
-        // All values are integers
         resolve(true);
       };
       reader.onerror = function() {
@@ -162,36 +150,6 @@ export class LocalDataComponent {
     } catch (error) {
       return false;
     }
-  }
-
-
-  // merge files after annotation
-  mergeFiles(file1Content: string, file2Content: string): File {
-    const file1Rows = file1Content.trim().split('\n');
-    const file2Rows = file2Content.trim().split('\n');
-
-    // Assuming the first row is headers
-    const headers1 = file1Rows[0].split('\t');
-    let headers2 = file2Rows[0].split('\t');
-    headers2 = headers2.slice(1);  // remove first column
-
-    // Merging headers
-    const mergedHeaders = headers1.concat(headers2).join('\t');
-
-    // Merging data rows
-    const mergedRows = [mergedHeaders];
-    const maxRows = Math.max(file1Rows.length, file2Rows.length);
-
-    for (let i = 1; i < maxRows; i++) {
-      const row1 = file1Rows[i] ? file1Rows[i].split('\t') : [];
-      const row2 = file2Rows[i] ? file2Rows[i].split('\t') : [];
-      const mergedRow = row1.concat(row2).join('\t');
-      mergedRows.push(mergedRow);
-    }
-    const mergedDataString = mergedRows.join('\n');
-    const blob = new Blob([mergedDataString], { type: 'text/tab-separated-values' });
-    const mergedFile = new File([blob], 'mergedFile.tsv', { type: 'text/tab-separated-values' });
-    return mergedFile;
   }
 
   readFile(file: File): Promise<string> {
