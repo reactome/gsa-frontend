@@ -3,12 +3,11 @@ import {PDatasetSource} from "../../../../../state/dataset-source/dataset-source
 import {datasetSourceActions} from "../../../../../state/dataset-source/dataset-source.action";
 import {Store} from "@ngrx/store";
 import {datasetActions} from "../../../../../state/dataset/dataset.actions";
-import {getMatIconFailedToSanitizeUrlError} from "@angular/material/icon";
 
 @Component({
-  selector: 'gsa-local-data',                     // typescript class
-  templateUrl: './local-data.component.html',     // html template
-  styleUrls: ['./local-data.component.scss']     // styles
+  selector: 'gsa-local-data',
+  templateUrl: './local-data.component.html',
+  styleUrls: ['./local-data.component.scss']
 })
 export class LocalDataComponent {
   @Input() source: PDatasetSource;
@@ -20,98 +19,123 @@ export class LocalDataComponent {
   fileRibo: File | null = null;
   fileRNA: File | null = null;
 
+
+  rnaFileName: string | null = null;
+  riboFileName: string | null = null;
+
+
   fileMatching: boolean = true;
   fileValid: boolean = true;
 
   constructor(public store: Store) {
-
   }
 
+
+
   select() {
-      this.store.dispatch(datasetSourceActions.select({toBeSelected: this.source}));
+    this.store.dispatch(datasetSourceActions.select({toBeSelected: this.source}));
   }
 
   onFileSelected(event: any) {
+    console.log("File Select")
     if (this.isRiboSeq()) {
+      console.log("show popup")
       this.showPopup = true;
       this.loadLocalFiles = false;
     } else {
       const file: File = event.target.files[0];
       if (file) {
-        this.store.dispatch(datasetActions.upload({id: this.datasetId, file, typeId: this.source.id}))
+        this.store.dispatch(datasetActions.upload({id: this.datasetId, file, typeId: this.source.id}));
       }
     }
   }
 
-  async uploadRiboData(){
-    console.log("Upload funciton")
-
+  async uploadRiboData() {
     if (this.fileRibo && this.fileRNA) {
       let fileRNA_ = this.fileRNA
       let fileRibo_ = this.fileRibo
-      console.log("Upload")
       this.store.dispatch(datasetActions.uploadRibo({id: this.datasetId, fileRibo: fileRibo_, fileRNA: fileRNA_,typeId: this.source.id}))
     }
   }
 
   isRiboSeq(): boolean {
+    console.log("isRiboSeq");
+    console.log(this.source.name === 'Ribo-seq')
     return this.source.name === 'Ribo-seq';
   }
 
-  // logic for ribo seq data
-  closePopUp(){
+  closePopUp() {
     this.showPopup = false;
     this.filesLoaded = false;
-    this.fileRibo = null;
-    this.fileRNA = null;
+    //this.form.reset()
   }
 
-  async uploadRNAFile(event: any){
+  async uploadRNAFile(event: any) {
     this.fileRNA = event.target.files[0];
     if (this.fileRNA) {
-      const fileNameElement = document.getElementById('rna-file-name');
-      if (fileNameElement) {
-        fileNameElement.textContent = this.fileRNA.name;  // Display the selected file name
-      }
+      this.fileValid = await this.checkValidFile(this.fileRNA);
+      this.rnaFileName = this.fileRNA.name
     }
 
-    if(this.fileRNA) {
-      this.fileValid = await this.checkValidFile(this.fileRNA)
-    }
-
-    if(this.fileRibo && this.fileRNA){
-      this.filesLoaded = true;
-      this.fileMatching = await this.checkFirstLinesMatch(this.fileRNA, this.fileRibo);
+    if (this.fileRibo && this.fileRNA) {
+       this.filesLoaded = true;
+       this.fileMatching = await this.checkFirstLinesMatch(this.fileRNA, this.fileRibo);
     }
   }
 
-  async uploadRiboFile(event: any){
+  async uploadRiboFile(event: any) {
     this.fileRibo = event.target.files[0];
-    if(this.fileRibo) {
-      this.fileValid = await this.checkValidFile(this.fileRibo)
-      const fileNameElement = document.getElementById('ribo-file-name');
-      if (fileNameElement) {
-        fileNameElement.textContent = this.fileRibo.name;  // Display the selected file name
-      }
+    if (this.fileRibo) {
+       this.fileValid = await this.checkValidFile(this.fileRibo);
+       this.riboFileName = this.fileRibo.name
     }
-    console.log(this.fileValid)
-    if(!this.fileValid){
-      console.log("Not all integers")
-    }
-    if(this.fileRibo && this.fileRNA){
-      this.filesLoaded = true;
-      this.fileMatching = await this.checkFirstLinesMatch(this.fileRNA, this.fileRibo);
+    if (this.fileRibo && this.fileRNA) {
+       this.filesLoaded = true;
+       this.fileMatching = await this.checkFirstLinesMatch(this.fileRNA, this.fileRibo);
     }
   }
 
+  // Drag-and-Drop Handlers
+
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+    const dropZone = (event.target as HTMLElement).closest('.drop-zone');
+    if (dropZone) {
+      dropZone.classList.add('drag-over');
+    }
+  }
+
+  onDragLeave(event: DragEvent) {
+    const dropZone = (event.target as HTMLElement).closest('.drop-zone');
+    if (dropZone) {
+      dropZone.classList.remove('drag-over');
+    }
+  }
+
+  async onRNADrop(event: DragEvent) {
+    event.preventDefault();
+    this.onDragLeave(event); // Remove the drag-over style
+    const files = event.dataTransfer?.files;
+    if (files && files.length > 0) {
+      this.uploadRNAFile({target: {files}});
+    }
+  }
+
+  async onRiboDrop(event: DragEvent) {
+    event.preventDefault();
+    this.onDragLeave(event); // Remove the drag-over style
+    const files = event.dataTransfer?.files;
+    if (files && files.length > 0) {
+      this.uploadRiboFile({target: {files}});
+    }
+  }
 
   async checkValidFile(file: File): Promise<boolean> {
-    console.log("check valid")
-    console.log(file)
+    if (file === null) return false
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
 
-      reader.onload = function(event) {
+      reader.onload = function (event) {
         const text = event.target?.result as string;
         if (!text) {
           return resolve(false);
@@ -129,7 +153,7 @@ export class LocalDataComponent {
         }
         resolve(true);
       };
-      reader.onerror = function() {
+      reader.onerror = function () {
         reject(new Error("Failed to read the file"));
       };
       reader.readAsText(file);

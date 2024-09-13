@@ -1,7 +1,3 @@
-.file-input {
-  display: none;
-}
-
 .custom-popup {
   position: fixed;
   top: 0;
@@ -79,12 +75,10 @@ label-error {
   margin-right: 10px;
 }
 
-
 .error-text {
   color: #ff4d4d;
   font-weight: bold;
 }
-
 
 .popup-file-input {
   display: none;
@@ -95,7 +89,7 @@ label-error {
   display: inline-block;
   padding: 10px 20px;
   color: white;
-  background-color: #006782; /* Tomato color */
+  background-color: #006782;
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
@@ -104,12 +98,7 @@ label-error {
 }
 
 .popup-file-input + label:hover {
-  background-color: #FF4500; /* Darker Tomato on hover */
-}
-
-/* Label for file input to look like a button */
-.popup-file-input:focus + label {
-  outline: 2px solid #FF4500;
+  background-color: #004959;
 }
 
 .file-name {
@@ -117,4 +106,58 @@ label-error {
   margin-top: 10px;
   font-size: 14px;
   color: #333;
+}
+
+/* Style for Drag-and-Drop Zone */
+.drop-zone {
+  width: 100%;
+  max-width: 100%;
+  height: 80px;
+  border: 2px dashed #006782;
+  border-radius: 5px;
+  background-color: #f7f7f7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #006782;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.drop-zone.drag-over {
+  background-color: #e0f7fa;
+  border-color: #004959;
+}
+
+.file-name {
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+.files-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+
+  .file-container {
+    width: 100%;
+
+    label {
+      font-size: 14pt;
+    }
+
+    .drop-zone {
+      height: 400px;
+    }
+  }
+}
+
+.bold-text {
+  font-weight: bold;
 }
