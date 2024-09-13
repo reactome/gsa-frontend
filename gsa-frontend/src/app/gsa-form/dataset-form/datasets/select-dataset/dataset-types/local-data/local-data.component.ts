@@ -37,9 +37,7 @@ export class LocalDataComponent {
   }
 
   onFileSelected(event: any) {
-    console.log("File Select")
     if (this.isRiboSeq()) {
-      console.log("show popup")
       this.showPopup = true;
       this.loadLocalFiles = false;
     } else {
@@ -59,8 +57,6 @@ export class LocalDataComponent {
   }
 
   isRiboSeq(): boolean {
-    console.log("isRiboSeq");
-    console.log(this.source.name === 'Ribo-seq')
     return this.source.name === 'Ribo-seq';
   }
 

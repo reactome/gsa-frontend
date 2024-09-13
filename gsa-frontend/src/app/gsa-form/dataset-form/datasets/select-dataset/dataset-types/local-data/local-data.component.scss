@@ -59,6 +59,7 @@ label-error {
   color: #ff4d4d;
   font-weight: bold;
   margin-right: 10px;
+  font-size: 12px;
 }
 
 .error-message {
@@ -78,7 +79,9 @@ label-error {
 .error-text {
   color: #ff4d4d;
   font-weight: bold;
+  font-size: 12px; /* Smaller font size for error message text */
 }
+
 
 .popup-file-input {
   display: none;
