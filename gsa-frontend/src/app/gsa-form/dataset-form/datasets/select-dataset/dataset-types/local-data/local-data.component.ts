@@ -30,8 +30,6 @@ export class LocalDataComponent {
   constructor(public store: Store) {
   }
 
-
-
   select() {
     this.store.dispatch(datasetSourceActions.select({toBeSelected: this.source}));
   }
@@ -63,7 +61,6 @@ export class LocalDataComponent {
   closePopUp() {
     this.showPopup = false;
     this.filesLoaded = false;
-    //this.form.reset()
   }
 
   async uploadRNAFile(event: any) {
@@ -113,7 +110,7 @@ export class LocalDataComponent {
     this.onDragLeave(event); // Remove the drag-over style
     const files = event.dataTransfer?.files;
     if (files && files.length > 0) {
-      this.uploadRNAFile({target: {files}});
+      await this.uploadRNAFile({target: {files}});
     }
   }
 
