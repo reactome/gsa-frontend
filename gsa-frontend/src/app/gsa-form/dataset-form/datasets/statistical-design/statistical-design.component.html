@@ -17,7 +17,7 @@
     <div class="flex-one flex-container align-center vertical card-design" tourAnchor="stat.groups">
         <div *ngIf="vm.dataset?.statisticalDesign?.analysisGroup !== undefined else disableGroupSelection"
              class="flex-one flex-container align-center vertical">
-            <h2 class="flex-container justify-center">Set 1st group</h2>
+            <h2 class="flex-container justify-center">Set Reference Group</h2>  <!-- comparisonGroup1 -->
             <mat-form-field appearance="outline" class="flex-one margin-bottom-15">
                 <mat-select #group1 [value]="vm.dataset?.statisticalDesign!.comparisonGroup1"
                             (selectionChange)="changeGroup1($event.value)">
@@ -26,8 +26,8 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <h2 class="flex-container justify-center">Set 2nd group</h2>
-            <mat-form-field appearance="outline" class="flex-one">
+            <h2 class="flex-container justify-center">Set Comparison Group</h2>  <!-- comparisonGroup2 -->
+          <mat-form-field appearance="outline" class="flex-one">
                 <mat-select [value]="vm.dataset?.statisticalDesign!.comparisonGroup2"
                             (selectionChange)="changeGroup2($event.value)">
                     <mat-option
