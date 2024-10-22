@@ -8,7 +8,8 @@ export function isDefined<T>(o: T | undefined | null): o is T {
 }
 
 export function extractErrorMessage(err: HttpErrorResponse) {
-  return err.error?.detail || JSON.parse(err.error)?.detail || err.message;
+  if (err.status === 502) return 'An unknown error occurred. The submitted dataset might be too large.';
+  return err.error?.detail || (err.error as string).charAt(0) === '{' && JSON.parse(err.error)?.detail || err.message;
 }
 
 export class EntityHelper<T, S extends EntityState<T> = EntityState<T>> {

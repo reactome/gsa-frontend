@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "watch": "npm-run-all --parallel watch-lib:* serve",
+    "serve": "wait-on dist/reactome-table/public-api.d.ts && ng serve --proxy-config src/proxy.conf.json",
     "start-verbose": "ng serve --verbose",
     "build": "ng build",
-    "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "build-table": "ng build reactome-table",
+    "watch-lib:table": "ng build reactome-table --watch",
     "build-table-wc": "npm run build-table && ng build reactome-table-wc --output-hashing none && node projects/reactome-table-wc/build-wc.js",
     "deploy-gh": "ng deploy --base-href=/gsa/",
     "deploy-dev": "ng build --configuration=dev --base-href=/gsa/ && rsync --chown=www-data:reactome --chmod=775 -rpIgoDvhP dist/gsa dev:site --delete",
@@ -63,6 +64,8 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
     "ng-packagr": "^16.2.3",
-    "typescript": "~4.9.5"
+    "typescript": "~4.9.5",
+    "npm-run-all": "^4.1.5",
+    "wait-on": "^7.2.0"
   }
 }
