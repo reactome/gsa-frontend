@@ -5,7 +5,7 @@
   <div class="flex-one flex-container align-center vertical card-design" tourAnchor="stat.factor">
     <h2 class="flex-container justify-center" class="flex-container justify-center">
       Select comparison factor
-      <mat-icon matTooltip="Comparison factor is the column from your previous annotation distinguishing the 2 groups you want to compare, the reference and the comparison group">info</mat-icon>
+      <mat-icon matTooltipPosition="above" matTooltip="Comparison factor is the column from your previous annotation distinguishing the 2 groups you want to compare, the reference and the comparison group">info</mat-icon>
     </h2>
     <mat-form-field appearance="outline">
       <mat-select #groups [value]="vm.dataset?.statisticalDesign?.analysisGroup"
@@ -22,7 +22,7 @@
          class="flex-one flex-container align-center vertical">
       <h2 class="flex-container justify-center">
         Set reference group
-        <mat-icon matTooltip="Reference group is the control group, the one representing normal conditions">info</mat-icon>
+        <mat-icon matTooltipPosition="above" matTooltip="The baseline group against which other groups are compared. It usually represents the standard or default condition.">info</mat-icon>
       </h2>  <!-- comparisonGroup1 -->
       <mat-form-field appearance="outline" class="flex-one margin-bottom-15">
         <mat-select #group1 [value]="vm.dataset?.statisticalDesign!.comparisonGroup1"
@@ -34,7 +34,7 @@
       </mat-form-field>
       <h2 class="flex-container justify-center">
         Set comparison group
-        <mat-icon matTooltip="Comparison group is the test group, the one representing abnormal conditions you want to test">info</mat-icon>
+        <mat-icon matTooltipPosition="above" matTooltip="The group being compared to the reference group to assess differences or effects">info</mat-icon>
       </h2>  <!-- comparisonGroup2 -->
       <mat-form-field appearance="outline" class="flex-one">
         <mat-select [value]="vm.dataset?.statisticalDesign!.comparisonGroup2"
@@ -51,7 +51,7 @@
     <ng-template #disableGroupSelection>
       <h2 class="flex-container justify-center disabled ">
         Set reference group
-        <mat-icon matTooltip="Reference group is the control group, the one representing normal conditions">info</mat-icon>
+        <mat-icon matTooltipPosition="above" matTooltip="The baseline group against which other groups are compared. It usually represents the standard or default condition">info</mat-icon>
       </h2>
       <mat-form-field appearance="outline" class="flex-one margin-bottom-15">
         <mat-select [disabled]="true">
@@ -59,7 +59,7 @@
       </mat-form-field>
       <h2 class="flex-container justify-center disabled ">
         Set comparison group
-        <mat-icon matTooltip="Comparison group is the test group, the one representing abnormal conditions you want to test">info</mat-icon>
+        <mat-icon matTooltipPosition="above" matTooltip="The group being compared to the reference group to assess differences or effects">info</mat-icon>
       </h2>
       <mat-form-field appearance="outline" class="flex-one">
         <mat-select [disabled]="true">
@@ -74,7 +74,7 @@
          class="flex-one flex-container align-center vertical">
       <h2 class="flex-container justify-center">
         Select covariates
-        <mat-icon matTooltip="A covariate is a variable that may influence the outcome of a study but is not the main variable of interest. It is included in statistical models to adjust for its effects and improve accuracy">info</mat-icon>
+        <mat-icon matTooltipPosition="above" matTooltip="A covariate is a variable that may influence the outcome of a study but is not the main variable of interest. It is included in statistical models to adjust for its effects and improve accuracy">info</mat-icon>
       </h2>
       <div class="flex-container vertical width-hundred">
         <mat-checkbox (change)="changeAllCovariates($event.checked)" [checked]="vm.all"
@@ -94,7 +94,7 @@
     <ng-template #disableCovariateSelection>
       <h2 class="flex-container justify-center disabled ">
         Select covariates
-        <mat-icon matTooltip="A covariate is a variable that may influence the outcome of a study but is not the main variable of interest. It is included in statistical models to adjust for its effects and improve accuracy">info</mat-icon>
+        <mat-icon matTooltipPosition="above" matTooltip="A covariate is a variable that may influence the outcome of a study but is not the main variable of interest. It is included in statistical models to adjust for its effects and improve accuracy">info</mat-icon>
       </h2>
       <div class="flex-container vertical">
         <section *ngFor="let col of vm.dataset?.statisticalDesign?.covariances" class="example-section">
