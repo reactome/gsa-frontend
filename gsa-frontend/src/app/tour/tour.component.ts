@@ -18,7 +18,7 @@ export class TourComponent {
       smoothScroll: true,
       centerAnchorOnScroll: true,
       disablePageScrolling: true,
-      closeOnOutsideClick: true,
+      closeOnOutsideClick: false,
       duplicateAnchorHandling: 'registerFirst',
       popoverClass: 'no-radius'
     });
