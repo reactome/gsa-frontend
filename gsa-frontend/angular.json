@@ -93,10 +93,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "gsa-frontend:build:production"
+              "buildTarget": "gsa-frontend:build:production"
             },
             "development": {
-              "browserTarget": "gsa-frontend:build:development"
+              "buildTarget": "gsa-frontend:build:development"
             }
           },
           "defaultConfiguration": "development",
@@ -107,7 +107,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "gsa-frontend:build"
+            "buildTarget": "gsa-frontend:build"
           }
         },
         "test": {
@@ -227,10 +227,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "reactome-table-wc:build:production"
+              "buildTarget": "reactome-table-wc:build:production"
             },
             "development": {
-              "browserTarget": "reactome-table-wc:build:development"
+              "buildTarget": "reactome-table-wc:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -238,7 +238,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "reactome-table-wc:build"
+            "buildTarget": "reactome-table-wc:build"
           }
         },
         "test": {

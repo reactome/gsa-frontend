@@ -35,7 +35,7 @@
           <div class="material-symbols-outlined mat-error big-error">error</div>
           <span class="big-text failed">Oops! An error has occurred</span>
           <span class="text failed">Analysis failed, please contact
-            <a [href]="mail(statusString$ | async)">help@reactome.org</a>
+            <a [href]="mail(statusString$ | async)">help&#64;reactome.org</a>
             if the problem persist
           </span>
           <div class="text-margin error-message">{{vm.analysisLoadingStatus!.description}}</div>
@@ -98,7 +98,7 @@
 
         <div *ngSwitchCase="'failed'" class="flex-container vertical align-center">
           <div class="material-symbols-outlined mat-error big-error">error</div>
-          <span class="big-text">Report generation failed, please contact help@reactome.org</span>
+          <span class="big-text">Report generation failed, please contact help&#64;reactome.org</span>
           <div class="text-margin">{{vm.reportLoadingStatus!.description}}</div>
         </div>
 
