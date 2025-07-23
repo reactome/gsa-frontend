@@ -4,7 +4,7 @@ import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {catchError, delay, delayWhen, filter, map, mergeMap, of, switchMap, tap, timer} from "rxjs";
 import {AnalysisService} from "../../services/analysis.service";
 import {analysisActions} from "./analysis.actions";
-import {TypedAction} from "@ngrx/store/src/models";
+import { Action } from '@ngrx/store';
 import {Injectable} from "@angular/core";
 
 @Injectable()
@@ -45,7 +45,7 @@ export class AnalysisEffects {
         ? this.analysisService.cancelAnalysis(analysisId)
         : this.analysisService.getAnalysisLoadingStatus(analysisId).pipe(
           mergeMap((status) => {
-            const actions: TypedAction<any>[] = [analysisActions.setLoadingStatus({status})];
+            const actions: Action<any>[] = [analysisActions.setLoadingStatus({status})];
             if (status.status === 'failed') actions.push(analysisActions.getLoadingStatusError({error: status.description}));
             else if (status.status !== 'complete') actions.push(analysisActions.getLoadingStatus({analysisId}));
             return actions;
@@ -64,7 +64,7 @@ export class AnalysisEffects {
     filter(({status}) => status.status === 'complete'),
     switchMap(({status}) => this.analysisService.getAnalysisResults(status.id).pipe(
       mergeMap((result) => {
-        const actions: TypedAction<any>[] = [analysisActions.setAnalysisResults({result})];
+        const actions: Action<any>[] = [analysisActions.setAnalysisResults({result})];
         if (this.reportsRequired) actions.push(analysisActions.getReportLoadingStatus({analysisId: status.id}))
         return actions;
       }),
@@ -79,7 +79,7 @@ export class AnalysisEffects {
         ? this.analysisService.cancelAnalysis(analysisId)
         : this.analysisService.getReportLoadingStatus(analysisId).pipe(
           mergeMap((status) => {
-            const actions: TypedAction<any>[] = [analysisActions.setReportLoadingStatus({status})];
+            const actions: Action<any>[] = [analysisActions.setReportLoadingStatus({status})];
             if (status.status === 'failed') actions.push(analysisActions.getLoadingStatusError({error: status.description}));
             else if (status.status !== 'complete') actions.push(analysisActions.getReportLoadingStatus({analysisId}));
             return actions;

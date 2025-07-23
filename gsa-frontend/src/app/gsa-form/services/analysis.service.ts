@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {LoadingStatus} from "../model/load-dataset.model";
 import {environment} from "../../../environments/environment";
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import {AnalysisResult} from "../model/analysis-result.model";
 import {Request} from "../model/analysis.model";
 import {catchError, EMPTY, Observable, throwError} from "rxjs";

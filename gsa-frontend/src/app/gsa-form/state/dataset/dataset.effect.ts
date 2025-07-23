@@ -16,9 +16,8 @@ import {
 } from "rxjs";
 import {datasetActions} from "./dataset.actions";
 import {LoadDatasetService} from "../../services/load-dataset.service";
-import {TypedAction} from "@ngrx/store/src/models";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {Store} from "@ngrx/store";
+import { Store, Action } from '@ngrx/store';
 import {methodFeature} from "../method/method.selector";
 import {
   LoadingProgressComponent
@@ -112,7 +111,7 @@ export class DatasetEffects {
       switchMap(({loadingId, id}) =>
         this.loadDatasetService.getLoadingStatus(loadingId).pipe(
           mergeMap((loadingStatus) => {
-            const actions: TypedAction<any>[] = [datasetActions.setLoadStatus({loadingStatus, id})];
+            const actions: Action<any>[] = [datasetActions.setLoadStatus({loadingStatus, id})];
             if (loadingStatus.status === 'running')
               actions.push(datasetActions.getLoadStatus({loadingId, id}));
             else if (loadingStatus.status === 'failed') {

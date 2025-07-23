@@ -1,7 +1,7 @@
 import {EntityState, Update} from "@ngrx/entity";
 import {EntityStateAdapter} from "@ngrx/entity/src/models";
 import {EntityFetcher, EntityUpdater} from "../model/utils.model";
-import {HttpErrorResponse} from "@angular/common/http";
+import { HttpErrorResponse } from "@angular/common/http";
 
 export function isDefined<T>(o: T | undefined | null): o is T {
   return o !== undefined && o !== null

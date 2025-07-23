@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Method} from "../model/methods.model";
 import {environment} from "../../../environments/environment";
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import {catchError, Observable, throwError} from "rxjs";
 import {extractErrorMessage} from "../utilities/utils";
 import {MatSnackBar} from "@angular/material/snack-bar";

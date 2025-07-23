@@ -3,7 +3,7 @@ import {isDevMode, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
-import {HttpClientModule} from "@angular/common/http";
+import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {StoreModule} from '@ngrx/store';
 import {StoreDevtoolsModule} from "@ngrx/store-devtools";
@@ -24,44 +24,37 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {FormsModule} from "@angular/forms";
 
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    BackgroundComponent,
-    TourComponent
-  ],
-  imports: [
-    AppRoutingModule,
-    CommonModule,
-    BrowserModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    MatSnackBarModule,
-    StoreModule.forRoot({
-      router: routerReducer
-    }, {}),
-    StoreDevtoolsModule.instrument({
-      maxAge: 25, // Retains last 25 states
-      logOnly: !isDevMode(), // Restrict extension to log-only mode
-      autoPause: true, // Pauses recording actions and state changes when the extension window is not open
-      trace: true, //  If set to true, will include stack trace for every dispatched action, so you can see it in trace tab jumping directly to that part of code
-      traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
-      connectInZone: true
-    }),
-    EffectsModule.forRoot([]),
-    StoreRouterConnectingModule.forRoot(),
-    TourMatMenuModule,
-    MatButtonModule,
-    MatCardModule,
-    MatIconModule,
-    MatTooltipModule,
-    LetDirective,
-    MatSlideToggleModule,
-    FormsModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        BackgroundComponent,
+        TourComponent
+    ],
+    bootstrap: [AppComponent], imports: [AppRoutingModule,
+        CommonModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        MatSnackBarModule,
+        StoreModule.forRoot({
+            router: routerReducer
+        }, {}),
+        StoreDevtoolsModule.instrument({
+            maxAge: 25, // Retains last 25 states
+            logOnly: !isDevMode(), // Restrict extension to log-only mode
+            autoPause: true, // Pauses recording actions and state changes when the extension window is not open
+            trace: true, //  If set to true, will include stack trace for every dispatched action, so you can see it in trace tab jumping directly to that part of code
+            traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
+            connectInZone: true
+        }),
+        EffectsModule.forRoot([]),
+        StoreRouterConnectingModule.forRoot(),
+        TourMatMenuModule,
+        MatButtonModule,
+        MatCardModule,
+        MatIconModule,
+        MatTooltipModule,
+        LetDirective,
+        MatSlideToggleModule,
+        FormsModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule {
   constructor(icons: MatIconRegistry) {
     icons.setDefaultFontSetClass('material-symbols-outlined')
