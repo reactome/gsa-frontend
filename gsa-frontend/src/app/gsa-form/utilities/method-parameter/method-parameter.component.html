@@ -2,10 +2,10 @@
      [ngClass]="{'no-information': screenIsSmall || !infoTooltip()}">
   <!--  'background-grey': index % 2 === 1-->
   <ng-container *ngIf="screenIsSmall || !infoTooltip(); else largeScreen">
-    <div [class.no-wrap]="!infoTooltip()" matTooltip="{{parameter().description}}">{{parameter().display_name}}</div>
+    <div [class.no-wrap]="!infoTooltip()" [matTooltip]="parameter().description">{{parameter().display_name}}</div>
   </ng-container>
   <ng-template #largeScreen>
-    <i class="material-symbols-outlined outlined outline" matTooltip="{{parameter().description}}">info</i>
+    <i class="material-symbols-outlined outlined outline" [matTooltip]="parameter().description">info</i>
     <div>{{parameter().display_name}}</div>
   </ng-template>
 

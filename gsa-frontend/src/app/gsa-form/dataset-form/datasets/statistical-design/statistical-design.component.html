@@ -10,7 +10,7 @@
     <mat-form-field appearance="outline">
       <mat-select #groups [value]="vm.dataset?.statisticalDesign?.analysisGroup"
                   (selectionChange)="changeComparisonFactor($event.value)">
-        <mat-option *ngFor="let value of vm.analysisGroups | keyvalue" value="{{value.key}}">
+        <mat-option *ngFor="let value of vm.analysisGroups | keyvalue" [value]=value.key>
           {{ value.key }}
         </mat-option>
       </mat-select>
@@ -27,7 +27,7 @@
       <mat-form-field appearance="outline" class="flex-one margin-bottom-15">
         <mat-select #group1 [value]="vm.dataset?.statisticalDesign!.comparisonGroup1"
                     (selectionChange)="changeGroup1($event.value)">
-          <mat-option *ngFor="let value of vm.analysisGroups[groups.value]" value="{{value}}">
+          <mat-option *ngFor="let value of vm.analysisGroups[groups.value]" [value]=value>
             {{ value }}
           </mat-option>
         </mat-select>
@@ -41,7 +41,7 @@
                     (selectionChange)="changeGroup2($event.value)">
           <mat-option
             *ngFor="let value of comparisonGroup2Values(vm.analysisGroups[groups.value], group1?.value)"
-            value="{{value}}">
+            [value]=value>
             {{ value }}
           </mat-option>
         </mat-select>

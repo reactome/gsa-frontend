@@ -1,5 +1,5 @@
 <mat-form-field>
-  <mat-select [(value)]="value" [disabled]="disabled()" placeholder="{{placeholder()}}">
+  <mat-select [(value)]="value" [disabled]="disabled()" [placeholder]="placeholder()">
     <mat-option *ngFor="let pos of options()" [value]="pos">{{pos}}</mat-option>
   </mat-select>
 </mat-form-field>

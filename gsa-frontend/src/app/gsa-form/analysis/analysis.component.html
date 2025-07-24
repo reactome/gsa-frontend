@@ -45,7 +45,7 @@
           <div class="flex-container vertical align-center gap-one">
             <div class="big-text text-align">Congratulations, your analysis has finished!</div>
             <div class="flex-container horizontal gap-one justify-center">
-              <a class="primary" href="{{vm.result?.reactome_links?.[0]?.url}}" mat-raised-button target="_blank">
+              <a class="primary" [href]="vm.result?.reactome_links?.[0]?.url" mat-raised-button target="_blank">
                 <div class="flex-container horizontal align-center">
                   <mat-icon class="padding-right-ten">
                     <span class="material-symbols-outlined-outlined">visibility</span>
@@ -70,8 +70,7 @@
       </div>
       <!--      </div>-->
       <mat-card-footer>
-        <mat-progress-bar class="progress-bar" mode="determinate"
-                          value="{{vm.analysisLoadingStatus?.completed! * 100}}">
+        <mat-progress-bar class="progress-bar" mode="determinate" [value]="vm.analysisLoadingStatus?.completed! * 100">
         </mat-progress-bar>
       </mat-card-footer>
     </mat-card>
@@ -107,7 +106,7 @@
             <div class="big-text text-align">Here are some nice reports</div>
             <div class="flex-container horizontal gap-one justify-center">
               <div *ngFor="let report of vm.reportLoadingStatus?.reports">
-                <a class="primary" href="{{report.url}}" mat-raised-button target="_blank">
+                <a class="primary" [href]=report.url mat-raised-button target="_blank">
                   <span [ngSwitch]="report.name" class="float-right">
                     <ng-template [ngSwitchCase]="'MS Excel Report (xlsx)'">
                       <div class="flex-container horizontal align-center">
@@ -139,7 +138,7 @@
       </div>
 
       <mat-card-footer>
-        <mat-progress-bar class="progress-bar" mode="determinate" value="{{vm.reportLoadingStatus?.completed! * 100}}">
+        <mat-progress-bar class="progress-bar" mode="determinate" [value]=vm.reportLoadingStatus?.completed! * 100>
         </mat-progress-bar>
       </mat-card-footer>
     </mat-card>

@@ -7,12 +7,11 @@ import {Component, input, model} from '@angular/core';
   standalone: false
 })
 export class DropdownComponent {
-  readonly options = input<any[]>();
-  readonly placeholder = input<string>();
+  readonly options = input.required<any[]>();
+  readonly placeholder = input<string>('');
 
   readonly value = model.required<string>();
   readonly disabled = input<boolean>(false);
-  default?: string;
 
   constructor() {
   }
