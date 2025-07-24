@@ -7,9 +7,10 @@ import {TourUtilsService} from "../../../../../../services/tour-utils.service";
 import {DownloadDatasetService} from "../../../../../services/download-dataset.service";
 
 @Component({
-  selector: 'gsa-example-data',
-  templateUrl: './example-data.component.html',
-  styleUrls: ['./example-data.component.scss']
+    selector: 'gsa-example-data',
+    templateUrl: './example-data.component.html',
+    styleUrls: ['./example-data.component.scss'],
+    standalone: false
 })
 export class ExampleDataComponent {
   @Input() source: PDatasetSource;

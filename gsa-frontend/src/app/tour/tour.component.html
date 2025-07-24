@@ -38,13 +38,13 @@
 <div id="tour-controls-wrapper" class="flex-container justify-center" *ngIf="tour.on && (height.medium$ | async)">
 
   <div id="tour-controls" class="flex-container gap-one">
-    <button mat-icon-button color="primary" (click)="tour.resume()" *ngIf="tour.paused" matTooltip="Resume guided tour">
+    <button mat-icon-button class="primary" (click)="tour.resume()" *ngIf="tour.paused" matTooltip="Resume guided tour">
       <mat-icon>play_arrow</mat-icon>
     </button>
-    <button mat-icon-button color="primary" (click)="tour.pause()" *ngIf="!tour.paused" matTooltip="Pause guided tour">
+    <button mat-icon-button class="primary" (click)="tour.pause()" *ngIf="!tour.paused" matTooltip="Pause guided tour">
       <mat-icon>pause</mat-icon>
     </button>
-    <button mat-icon-button color="primary" (click)="tour.end()" matTooltip="End guided tour">
+    <button mat-icon-button class="primary" (click)="tour.end()" matTooltip="End guided tour">
       <mat-icon>stop</mat-icon>
     </button>
   </div>

@@ -13,9 +13,10 @@ import {Settings} from "reactome-table";
 
 
 @Component({
-  selector: 'gsa-annotate-dataset',
-  templateUrl: './annotate-dataset.component.html',
-  styleUrls: ['./annotate-dataset.component.scss']
+    selector: 'gsa-annotate-dataset',
+    templateUrl: './annotate-dataset.component.html',
+    styleUrls: ['./annotate-dataset.component.scss'],
+    standalone: false
 })
 export class AnnotateDatasetComponent implements OnInit {
 

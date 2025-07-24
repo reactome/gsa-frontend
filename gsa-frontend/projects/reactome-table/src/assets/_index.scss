@@ -1,47 +1,49 @@
 /* You can add global styles to this file, and also import other style files */
-@font-face {
-  font-family: "Roboto Mono";
-  src: url("./fonts/RobotoMono.ttf") format("truetype");
-}
-.relative {
-  position: relative;
-}
-
-/*Flexbox*/
-.flex {
-  display: flex;
-}
-
-.flex-container {
-  display: flex;
-  flex-wrap: wrap;
-
-  &.no-wrap {
-    flex-wrap: nowrap;
-    white-space: inherit;
+@mixin configure-table {
+  @font-face {
+    font-family: "Roboto Mono";
+    src: url("./fonts/RobotoMono.ttf") format("truetype");
   }
-}
+  .relative {
+    position: relative;
+  }
 
-.gap-one {
-  gap: 1em;
-}
+  /*Flexbox*/
+  .flex {
+    display: flex;
+  }
 
-.align-center {
-  align-items: center;
-}
+  .flex-container {
+    display: flex;
+    flex-wrap: wrap;
 
-.align-start {
-  align-items: start;
-}
+    &.no-wrap {
+      flex-wrap: nowrap;
+      white-space: inherit;
+    }
+  }
 
-.justify-center {
-  justify-content: center;
-}
+  .gap-one {
+    gap: 1em;
+  }
 
-.justify-between {
-  justify-content: space-between;
-}
+  .align-center {
+    align-items: center;
+  }
 
-.horizontal {
-  flex-direction: row;
+  .align-start {
+    align-items: start;
+  }
+
+  .justify-center {
+    justify-content: center;
+  }
+
+  .justify-between {
+    justify-content: space-between;
+  }
+
+  .horizontal {
+    flex-direction: row;
+  }
 }

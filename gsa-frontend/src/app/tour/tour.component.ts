@@ -5,9 +5,10 @@ import {HeightService} from "../services/height.service";
 import {TourUtilsService} from "../services/tour-utils.service";
 
 @Component({
-  selector: 'gsa-tour',
-  templateUrl: './tour.component.html',
-  styleUrls: ['./tour.component.scss']
+    selector: 'gsa-tour',
+    templateUrl: './tour.component.html',
+    styleUrls: ['./tour.component.scss'],
+    standalone: false
 })
 export class TourComponent {
 
@@ -20,6 +21,7 @@ export class TourComponent {
       disablePageScrolling: true,
       closeOnOutsideClick: false,
       duplicateAnchorHandling: 'registerFirst',
+      showArrow: false,
       popoverClass: 'no-radius'
     });
 

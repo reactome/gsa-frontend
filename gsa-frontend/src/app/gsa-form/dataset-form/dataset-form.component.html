@@ -38,16 +38,16 @@
            style="flex-shrink: 0">
         <a [disabled]="!(summaryComplete$ | async)" (click)="$event.stopPropagation()"
            matTooltip="Download input dataset"
-           color="primary" mat-icon-button download [href]="download.url(dataset.summary?.id || '' )">
+           class="primary" mat-icon-button download [href]="download.url(dataset.summary?.id || '' )">
           <mat-icon>download</mat-icon>
         </a>
         <button (click)="changeParameters($event)" [disabled]="parameters.length === 0"
-                color="primary"
+                class="primary"
                 mat-icon-button
                 matTooltip="Edit analysis parameters of specific dataset"><span
           class="material-symbols-outlined">bar_chart</span>
         </button>
-        <button (click)="deleteDataset($event)" color="primary"
+        <button (click)="deleteDataset($event)" class="primary"
                 mat-icon-button
                 matTooltip="Delete dataset"><span
           class="material-symbols-outlined">delete</span>
@@ -95,7 +95,7 @@
                                 class="width-hundred"/>
         <button (click)="saveData(); mep.expanded = false;"
                 [disabled]="!statisticalDesignStep.completed" class="nav-button-margin"
-                color="primary" tourAnchor="dataset.save" clickable
+                class="primary" tourAnchor="dataset.save" clickable
                 mat-raised-button>
           Save Dataset
         </button>

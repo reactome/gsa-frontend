@@ -24,7 +24,7 @@
     <span [ngSwitch]="parameter.type">
       <ng-template [ngSwitchCase]="types.bool">
         <mat-slide-toggle [formControl]="control"
-                          color="primary"></mat-slide-toggle>
+                          class="primary"></mat-slide-toggle>
       </ng-template>
       <ng-template [ngSwitchCase]="types.string">
         <mat-form-field appearance="outline" subscriptSizing="dynamic" class="width-hundred">

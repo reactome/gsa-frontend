@@ -10,9 +10,10 @@ import {paramTracker} from "../../../../../utilities/method-parameter/method-par
 
 
 @Component({
-  selector: 'gsa-external-data',
-  templateUrl: './external-data.component.html',
-  styleUrls: ['./external-data.component.scss']
+    selector: 'gsa-external-data',
+    templateUrl: './external-data.component.html',
+    styleUrls: ['./external-data.component.scss'],
+    standalone: false
 })
 export class ExternalDataComponent implements OnInit {
 

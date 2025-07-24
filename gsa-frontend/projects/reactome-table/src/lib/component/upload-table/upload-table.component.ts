@@ -5,8 +5,9 @@ import {map, Observable} from "rxjs";
 
 @Component({
     selector: 'reactome-table-upload',
-    templateUrl:'./upload-table.component.html',
-    styleUrls: ['./upload-table.component.scss']
+    templateUrl: './upload-table.component.html',
+    styleUrls: ['./upload-table.component.scss'],
+    standalone: false
 })
 export class UploadTableComponent implements OnInit {
     @Input() tableStore: TableStore;

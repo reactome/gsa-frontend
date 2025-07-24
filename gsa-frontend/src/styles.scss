@@ -1,9 +1,60 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import "reactome-table";
+@use "@angular/material" as mat;
+@use "ngx-reactome-style";
+@use "reactome-table";
+
+@include ngx-reactome-style.theme();
+@include reactome-table.configure-table();
 
 html, body {
   max-height: 100vh;
+  font: var(--mat-sys-body-medium);
+  &.dark {
+    --hover: rgb(255 255 255 / 7%);
+    --shadow-color: rgb(5, 3, 3);
+    --mat-sys-level5: 0px 7px 8px -4px color-mix(in srgb, var(--shadow-color), transparent 20%), 0px 12px 17px 2px color-mix(in srgb, var(--shadow-color), transparent 14%), 0px 5px 22px 4px color-mix(in srgb, var(--shadow-color), transparent 12%);
+    --mat-sys-level4: 0px 5px 5px -3px color-mix(in srgb, var(--shadow-color), transparent 20%), 0px 8px 10px 1px color-mix(in srgb, var(--shadow-color), transparent 14%), 0px 3px 14px 2px color-mix(in srgb, var(--shadow-color), transparent 12%);
+    --mat-sys-level3: 0px 3px 5px -1px color-mix(in srgb, var(--shadow-color), transparent 20%), 0px 6px 10px 0px color-mix(in srgb, var(--shadow-color), transparent 14%), 0px 1px 18px 0px color-mix(in srgb, var(--shadow-color), transparent 12%);
+    --mat-sys-level2: 0px 3px 3px -2px color-mix(in srgb, var(--shadow-color), transparent 20%), 0px 3px 4px 0px color-mix(in srgb, var(--shadow-color), transparent 14%), 0px 1px 8px 0px color-mix(in srgb, var(--shadow-color), transparent 12%);
+    --mat-sys-level1: 0px 2px 1px -1px color-mix(in srgb, var(--shadow-color), transparent 20%), 0px 1px 1px 0px color-mix(in srgb, var(--shadow-color), transparent 14%), 0px 1px 3px 0px color-mix(in srgb, var(--shadow-color), transparent 12%);
+    --mat-sys-level0: 0px 0px 0px 0px color-mix(in srgb, var(--shadow-color), transparent 20%), 0px 0px 0px 0px color-mix(in srgb, var(--shadow-color), transparent 14%), 0px 0px 0px 0px color-mix(in srgb, var(--shadow-color), transparent 12%);
+  }
+}
+
+.primary:not([disabled]) {
+  color: var(--primary);
+  @include mat.icon-overrides((
+    color: var(--primary),
+  ));
+
+  @include mat.icon-button-overrides((
+    icon-color: var(--primary),
+  ));
+}
+
+.warn:not([disabled]) {
+  color: var(--error);
+  @include mat.icon-overrides((
+    color: var(--error),
+  ));
+  @include mat.icon-button-overrides((
+    icon-color: var(--error),
+  ));
+  @include mat.button-overrides((
+    protected-label-text-color: var(--error),
+    filled-label-text-color: var(--error),
+    outlined-label-text-color: var(--error),
+    text-label-text-color: var(--error),
+  ))
+}
+
+p {
+  margin: 0 0 12px;
+}
+
+.mat-expansion-panel-header {
+  border-radius: 0!important;
 }
 
 a {
@@ -16,6 +67,12 @@ body {
   color: black;
   max-height: calc(100vh - 8px);
   margin: 0 8px 8px;
+
+  @include mat.expansion-overrides((
+    header-text-size: var(--mat-sys-body-medium-size),
+    container-text-size: var(--mat-sys-body-medium-size),
+    container-text-weight: var(--mat-sys-body-medium-weight),
+  ));
 }
 
 .dark {
@@ -239,6 +296,10 @@ mat-icon {
   border-radius: 10px;
   border: 1px solid var(--primary);
   background: var(--surface);
+
+  *:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .dataset-card-content:hover {
@@ -340,7 +401,7 @@ mat-vertical-stepper, mat-horizontal-stepper {
 
 .nav-button-area {
   padding: 8px;
-  border-radius: 0 0 200px 200px;
+  border-radius: 0 0 24px 24px;
 
   &.touranchor--is-active {
     background: var(--card);

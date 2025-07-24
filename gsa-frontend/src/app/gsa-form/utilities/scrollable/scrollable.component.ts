@@ -7,9 +7,10 @@ import {TourUtilsService} from "../../../services/tour-utils.service";
 
 @UntilDestroy()
 @Component({
-  selector: 'gsa-scrollable',
-  templateUrl: './scrollable.component.html',
-  styleUrls: ['./scrollable.component.scss']
+    selector: 'gsa-scrollable',
+    templateUrl: './scrollable.component.html',
+    styleUrls: ['./scrollable.component.scss'],
+    standalone: false
 })
 export class ScrollableComponent implements AfterViewInit {
   @Input() topMargin: number = 0;

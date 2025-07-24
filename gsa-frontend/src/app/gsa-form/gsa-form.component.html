@@ -21,7 +21,7 @@ datasetIds: datasetIds$
 
       <div class="nav-button-container align-center flex-container justify-center vertical">
         <div class="flex-container align-center vertical nav-button-area margin-top-30" tourAnchor="method.done" clickable>
-          <button [disabled]="!setMethodStep.completed" color="primary"
+          <button [disabled]="!setMethodStep.completed" class="primary"
                   mat-fab matStepperNext>
             <mat-icon>keyboard_arrow_right</mat-icon>
           </button>
@@ -38,7 +38,7 @@ datasetIds: datasetIds$
     <div class="flex-container horizontal gap-one justify-evenly" *ngIf="vm.method">
       <div class="nav-button-container align-center flex-container justify-center vertical">
         <div class="flex-container align-center vertical width-hundred">
-          <button class="margin-top-30" color="primary" mat-fab matStepperPrevious>
+          <button class="margin-top-30 primary" mat-fab matStepperPrevious>
             <mat-icon>keyboard_arrow_left</mat-icon>
           </button>
           <div class="outline margin-top-10">Back</div>
@@ -54,7 +54,7 @@ datasetIds: datasetIds$
           </div>
         </mat-accordion>
         <div class="margin-top-30">
-          <button (click)="addDataset()" class="primary-border" color="primary" tourAnchor="dataset.add"
+          <button (click)="addDataset()" class="primary-border" class="primary" tourAnchor="dataset.add"
                   mat-stroked-button style="background: var(--surface)">
             Add Dataset
           </button>
@@ -63,7 +63,7 @@ datasetIds: datasetIds$
 
       <div class="nav-button-container align-center flex-container justify-center vertical">
         <div class="flex-container align-center vertical margin-top-30 nav-button-area" tourAnchor="dataset.done" clickable>
-          <button [disabled]="!addDataStep.completed" color="primary" mat-fab matStepperNext>
+          <button [disabled]="!addDataStep.completed" class="primary" mat-fab matStepperNext>
             <mat-icon>keyboard_arrow_right</mat-icon>
           </button>
         </div>
@@ -79,7 +79,7 @@ datasetIds: datasetIds$
     <div class="flex-container horizontal gap-one justify-evenly" *ngIf="vm.method">
       <div class="nav-button-container align-center justify-center flex-container vertical">
         <div class="flex-container align-center vertical width-hundred">
-          <button class="margin-top-30" color="primary" mat-fab matStepperPrevious>
+          <button class="margin-top-30" class="primary" mat-fab matStepperPrevious>
             <mat-icon>keyboard_arrow_left</mat-icon>
           </button>
           <div class="outline margin-top-10">Back</div>
@@ -90,7 +90,7 @@ datasetIds: datasetIds$
       </gsa-scrollable>
       <div class="nav-button-container align-center justify-center flex-container vertical">
         <div class="flex-container align-center vertical margin-top-30 nav-button-area" tourAnchor="options.done" clickable>
-          <button color="primary" mat-fab matStepperNext>
+          <button class="primary" mat-fab matStepperNext>
             <mat-icon>keyboard_arrow_right</mat-icon>
           </button>
         </div>
@@ -106,7 +106,7 @@ datasetIds: datasetIds$
     <div class="flex-container horizontal gap-one justify-evenly">
       <div class="nav-button-container align-center justify-center flex-container vertical">
         <div class="flex-container align-center vertical width-hundred">
-          <button class="margin-top-30" color="primary" mat-fab matStepperPrevious (click)="cancel()">
+          <button class="margin-top-30" class="primary" mat-fab matStepperPrevious (click)="cancel()">
             <mat-icon>keyboard_arrow_left</mat-icon>
           </button>
           <div class="outline margin-top-10">Back</div>

@@ -8,9 +8,10 @@ import {searchResultActions} from "../../../../../../state/search-result/search-
 import {datasetActions} from "../../../../../../state/dataset/dataset.actions";
 
 @Component({
-  selector: 'gsa-search',
-  templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss']
+    selector: 'gsa-search',
+    templateUrl: './search.component.html',
+    styleUrls: ['./search.component.scss'],
+    standalone: false
 })
 export class SearchComponent implements OnInit {
 

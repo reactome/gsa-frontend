@@ -7,9 +7,10 @@ import {isDefined} from "../../../../utilities/utils";
 import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 
 @Component({
-  selector: 'gsa-loading-progress',
-  templateUrl: './loading-progress.component.html',
-  styleUrls: ['./loading-progress.component.scss']
+    selector: 'gsa-loading-progress',
+    templateUrl: './loading-progress.component.html',
+    styleUrls: ['./loading-progress.component.scss'],
+    standalone: false
 })
 export class LoadingProgressComponent implements OnInit {
 

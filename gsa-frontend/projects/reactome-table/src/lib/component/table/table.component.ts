@@ -34,10 +34,11 @@ type Range = { start: Coord, stop?: Coord };
 
 @UntilDestroy()
 @Component({
-  selector: 'reactome-table',
-  templateUrl: './table.component.html',
-  styleUrls: ['./table.component.scss'],
-  providers: [TableStore]
+    selector: 'reactome-table',
+    templateUrl: './table.component.html',
+    styleUrls: ['./table.component.scss'],
+    providers: [TableStore],
+    standalone: false
 })
 export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild('flyingRename') input: ElementRef<HTMLInputElement>;

@@ -8,9 +8,10 @@ import {Observable} from "rxjs";
 import {methodFeature} from "../state/method/method.selector";
 
 @Component({
-  selector: 'gsa-options',
-  templateUrl: './options.component.html',
-  styleUrls: ['./options.component.scss']
+    selector: 'gsa-options',
+    templateUrl: './options.component.html',
+    styleUrls: ['./options.component.scss'],
+    standalone: false
 })
 export class OptionsComponent {
   analysisOptionsStep: FormGroup;

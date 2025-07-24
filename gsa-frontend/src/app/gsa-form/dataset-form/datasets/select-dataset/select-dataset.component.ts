@@ -11,9 +11,10 @@ import {Method} from "../../../state/method/method.state";
 
 
 @Component({
-  selector: 'gsa-select-dataset',
-  templateUrl: './select-dataset.component.html',
-  styleUrls: ['./select-dataset.component.scss']
+    selector: 'gsa-select-dataset',
+    templateUrl: './select-dataset.component.html',
+    styleUrls: ['./select-dataset.component.scss'],
+    standalone: false
 })
 export class SelectDatasetComponent implements OnInit, OnChanges {
   @Input() datasetId: number;

@@ -15,9 +15,10 @@ import {TourUtilsService} from "../../services/tour-utils.service";
 import {DownloadDatasetService} from "../services/download-dataset.service";
 
 @Component({
-  selector: 'gsa-dataset-form',
-  templateUrl: './dataset-form.component.html',
-  styleUrls: ['./dataset-form.component.scss']
+    selector: 'gsa-dataset-form',
+    templateUrl: './dataset-form.component.html',
+    styleUrls: ['./dataset-form.component.scss'],
+    standalone: false
 })
 @UntilDestroy()
 export class DatasetFormComponent implements OnInit, OnDestroy {

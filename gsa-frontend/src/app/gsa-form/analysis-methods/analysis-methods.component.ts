@@ -8,9 +8,10 @@ import {methodActions} from "../state/method/method.action";
 
 @UntilDestroy()
 @Component({
-  selector: 'gsa-analysis-methods',
-  templateUrl: './analysis-methods.component.html',
-  styleUrls: ['./analysis-methods.component.scss']
+    selector: 'gsa-analysis-methods',
+    templateUrl: './analysis-methods.component.html',
+    styleUrls: ['./analysis-methods.component.scss'],
+    standalone: false
 })
 export class AnalysisMethodsComponent implements OnInit {
 

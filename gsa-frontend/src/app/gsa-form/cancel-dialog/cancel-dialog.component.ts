@@ -7,11 +7,10 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 
 @Component({
-  selector: 'gsa-cancel-dialog',
-  templateUrl: './cancel-dialog.component.html',
-  styleUrls: ['./cancel-dialog.component.scss'],
-  standalone: true,
-  imports: [MatDialogModule, MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatIconModule]
+    selector: 'gsa-cancel-dialog',
+    templateUrl: './cancel-dialog.component.html',
+    styleUrls: ['./cancel-dialog.component.scss'],
+    imports: [MatDialogModule, MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatIconModule]
 })
 export class CancelDialogComponent {
 

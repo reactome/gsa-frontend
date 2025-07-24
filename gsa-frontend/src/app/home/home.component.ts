@@ -6,9 +6,10 @@ import {TourUtilsService} from "../services/tour-utils.service";
 import {HeightService} from "../services/height.service";
 
 @Component({
-  selector: 'gsa-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+    selector: 'gsa-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.scss'],
+    standalone: false
 })
 export class HomeComponent {
 

@@ -3,9 +3,10 @@ import {first, map, Observable} from "rxjs";
 import {TableStore} from "../../state/table.store";
 
 @Component({
-  selector: 'reactome-table-download',
-  templateUrl:'./download-table.component.html',
-  styleUrls: ['./download-table.component.scss']
+    selector: 'reactome-table-download',
+    templateUrl: './download-table.component.html',
+    styleUrls: ['./download-table.component.scss'],
+    standalone: false
 })
 export class DownloadTableComponent implements OnInit {
   @Input() name: string;

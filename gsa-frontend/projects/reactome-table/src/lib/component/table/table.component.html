@@ -34,7 +34,7 @@
                 <div [attr.x]="x" [attr.y]="y"
                      class="flex horizontal align-center justify-between">
                   {{cell.value}}
-                  <button (click)="deleteColumn(x)" *ngIf="x !== 0" class="bin-button" color="primary"
+                  <button (click)="deleteColumn(x)" *ngIf="x !== 0" class="bin-button" class="primary"
                           mat-icon-button>
                     <span class="material-symbols-outlined">delete</span>
                   </button>
@@ -46,7 +46,7 @@
           <td *ngIf="settings.addColumn" class="no-padding add-column-button-container"
               rowspan="0">
             <button #addCol (click)="addColumn()" (keydown.shift.tab)="focusLastCell($event)"
-                    class="add-column-button flex-container align-start" color="primary"
+                    class="add-column-button flex-container align-start" class="primary"
                     mat-stroked-button>
               <span class="sticky">Add column</span>
             </button>
@@ -67,7 +67,7 @@
       <tr *ngIf="settings.addRow">
         <td class="no-padding add-row-button-container" [colSpan]="data[0].length">
           <button (click)="addRow()" (keydown.shift.tab)="focusLastCell($event)"
-                  class="add-column-button flex-container align-start" color="primary"
+                  class="add-column-button flex-container align-start" class="primary"
                   mat-stroked-button>
             <span class="sticky">Add row</span>
           </button>

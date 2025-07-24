@@ -10,9 +10,10 @@ import {paramTracker} from "../../utilities/method-parameter/method-parameter.co
 import {Parameter} from "../../model/parameter.model";
 
 @Component({
-  selector: 'gsa-method',
-  templateUrl: './method.component.html',
-  styleUrls: ['./method.component.scss']
+    selector: 'gsa-method',
+    templateUrl: './method.component.html',
+    styleUrls: ['./method.component.scss'],
+    standalone: false
 })
 export class MethodComponent implements OnInit {
   @Input() methodName: string;

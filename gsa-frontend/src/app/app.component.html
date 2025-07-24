@@ -2,7 +2,7 @@
   <header class="header flex-container justify-between align-center" [class.padding-top-24]="height.medium$ | async">
 
     <a href="/" mat-button class="reactome" #reactome>
-      <mat-icon color="primary">home</mat-icon>
+      <mat-icon class="primary">home</mat-icon>
       Reactome
     </a>
 
@@ -18,7 +18,7 @@
     </ng-template>
 
     <span [style.width]="reactome._elementRef.nativeElement.offsetWidth + 'px'" style="text-align: end">
-            <mat-slide-toggle #darkToggle [(ngModel)]="dark.isDark" color="primary"></mat-slide-toggle>
+            <mat-slide-toggle #darkToggle [(ngModel)]="dark.isDark" class="primary"></mat-slide-toggle>
     </span>
 
   </header>

@@ -5,9 +5,10 @@ import {Store} from "@ngrx/store";
 import {datasetActions} from "../../../../../state/dataset/dataset.actions";
 
 @Component({
-  selector: 'gsa-local-data',
-  templateUrl: './local-data.component.html',
-  styleUrls: ['./local-data.component.scss']
+    selector: 'gsa-local-data',
+    templateUrl: './local-data.component.html',
+    styleUrls: ['./local-data.component.scss'],
+    standalone: false
 })
 export class LocalDataComponent {
   @Input() source: PDatasetSource;

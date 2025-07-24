@@ -11,9 +11,10 @@ export const paramTracker: TrackByFunction<Parameter> = (i, param) => param.valu
 
 @UntilDestroy()
 @Component({
-  selector: 'gsa-method-parameter',
-  templateUrl: './method-parameter.component.html',
-  styleUrls: ['./method-parameter.component.scss']
+    selector: 'gsa-method-parameter',
+    templateUrl: './method-parameter.component.html',
+    styleUrls: ['./method-parameter.component.scss'],
+    standalone: false
 })
 export class MethodParameterComponent implements OnInit, OnChanges {
   @Input() parameter: Parameter;

@@ -12,6 +12,7 @@ import {Parameter} from "../../../model/parameter.model";
     selector: 'gsa-change-analysis-params',
     templateUrl: './change-analysis-params.component.html',
     styleUrls: ['./change-analysis-params.component.scss'],
+    standalone: false
 })
 export class ChangeAnalysisParamsComponent implements OnInit {
 

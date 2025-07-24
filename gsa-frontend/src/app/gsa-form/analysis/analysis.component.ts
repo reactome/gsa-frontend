@@ -10,9 +10,10 @@ import {isDefined} from "../utilities/utils";
 
 
 @Component({
-  selector: 'gsa-analysis',
-  templateUrl: './analysis.component.html',
-  styleUrls: ['./analysis.component.scss']
+    selector: 'gsa-analysis',
+    templateUrl: './analysis.component.html',
+    styleUrls: ['./analysis.component.scss'],
+    standalone: false
 })
 export class AnalysisComponent implements OnInit {
   analysisStep: FormGroup;

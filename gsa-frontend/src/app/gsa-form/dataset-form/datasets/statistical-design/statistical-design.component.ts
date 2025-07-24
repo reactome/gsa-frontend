@@ -12,6 +12,7 @@ import {MatCheckboxChange} from "@angular/material/checkbox";
     selector: 'gsa-statistical-design',
     templateUrl: './statistical-design.component.html',
     styleUrls: ['./statistical-design.component.scss'],
+    standalone: false
 })
 export class StatisticalDesignComponent implements OnInit, AfterViewInit {
     @Input() datasetId: number;

@@ -20,9 +20,9 @@
         </div>
       </div>
       <div *ngSwitchCase="'failed'" class="flex-container vertical justify-center align-center">
-        <mat-icon color="warn" class="big-size">error</mat-icon>
+        <mat-icon class="warn big-size">error</mat-icon>
         <h2 class="text-margin text-center">{{status.description}}</h2>
-        <button color="primary" mat-dialog-close mat-raised-button>Cancel</button>
+        <button class="primary" mat-dialog-close mat-raised-button>Cancel</button>
       </div>
       <div *ngSwitchCase="'complete'" class="flex-container vertical justify-center align-center">
         <div class="material-symbols-outlined big-size green">check_circle</div>

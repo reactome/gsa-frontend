@@ -16,9 +16,10 @@ import {MatDialog} from "@angular/material/dialog";
 import {CancelDialogComponent} from "./cancel-dialog/cancel-dialog.component";
 
 @Component({
-  selector: 'gsa-form',
-  templateUrl: './gsa-form.component.html',
-  styleUrls: ['./gsa-form.component.scss']
+    selector: 'gsa-form',
+    templateUrl: './gsa-form.component.html',
+    styleUrls: ['./gsa-form.component.scss'],
+    standalone: false
 })
 export class GsaFormComponent implements AfterViewInit, OnInit, OnDestroy {
   @ViewChild('stepper') stepper: MatStepper;
