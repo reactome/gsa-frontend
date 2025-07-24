@@ -16,10 +16,9 @@
         </div>
       </mat-card-header>
 
-      <mat-card-content
-        class="mat-body"
+      <mat-card-content class="mat-body"
         [innerHTML]="step.content"
-      ></mat-card-content>
+       />
 
       <mat-card-actions align="end" *ngIf="!step.nextOnAnchorClick">
         <button class="next" *ngIf="tour.hasNext(step) && !step.nextOnAnchorClick"

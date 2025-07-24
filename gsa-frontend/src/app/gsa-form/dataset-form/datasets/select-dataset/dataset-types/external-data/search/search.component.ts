@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit, input} from '@angular/core';
 import {FormBuilder} from "@angular/forms";
 import {Store} from "@ngrx/store";
 import {Observable} from "rxjs";
@@ -15,7 +15,7 @@ import {datasetActions} from "../../../../../../state/dataset/dataset.actions";
 })
 export class SearchComponent implements OnInit {
 
-  @Input() datasetId: number;
+  readonly datasetId = input.required<number>();
 
   searchForm = this.builder.group({
     species: ['Homo sapiens'],
@@ -47,7 +47,7 @@ export class SearchComponent implements OnInit {
 
   select(result: SearchResult): void {
     this.store.dispatch(datasetActions.load({
-      id: this.datasetId, resourceId: result.resource_loading_id, parameters: result.loading_parameters
+      id: this.datasetId(), resourceId: result.resource_loading_id, parameters: result.loading_parameters
     }))
   }
 

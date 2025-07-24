@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit, input} from '@angular/core';
 import {PDatasetSource} from "../../../../../state/dataset-source/dataset-source.state";
 import {Store} from "@ngrx/store";
 import {Observable} from "rxjs";
@@ -17,32 +17,32 @@ import {paramTracker} from "../../../../../utilities/method-parameter/method-par
 })
 export class ExternalDataComponent implements OnInit {
 
-  @Input() source: PDatasetSource;
-  @Input() datasetId: number;
+  readonly source = input.required<PDatasetSource>();
+  readonly datasetId = input.required<number>();
   isSelected$: Observable<boolean>;
 
   constructor(private store: Store) {
   }
 
   ngOnInit(): void {
-    this.isSelected$ = this.store.select(datasetSourceFeature.selectIsSelected(this.source));
+    this.isSelected$ = this.store.select(datasetSourceFeature.selectIsSelected(this.source()));
   }
 
   select(): void {
-    this.store.dispatch(datasetSourceActions.select({toBeSelected: this.source}));
+    this.store.dispatch(datasetSourceActions.select({toBeSelected: this.source()}));
   }
 
 
   loadData(parameters: Parameter[]): void {
     this.store.dispatch(datasetActions.load({
-      id: this.datasetId,
-      resourceId: this.source.id,
+      id: this.datasetId(),
+      resourceId: this.source().id,
       parameters: parameters.map(param => ({name: param.name, value: (param.value).toString()})) // convert to string when send to backend
     }))
   }
 
   updateParam(param: Parameter) {
-    this.store.dispatch(datasetSourceActions.setParameter({id: this.source.id, param}))
+    this.store.dispatch(datasetSourceActions.setParameter({id: this.source().id, param}))
   }
 
   protected readonly paramTracker = paramTracker;

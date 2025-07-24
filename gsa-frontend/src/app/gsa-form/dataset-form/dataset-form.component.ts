@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, input, viewChild} from '@angular/core';
 import {MatStepper} from "@angular/material/stepper";
 import {MatDialog} from "@angular/material/dialog";
 import {ScrollService} from "../services/scroll.service";
@@ -22,13 +22,14 @@ import {DownloadDatasetService} from "../services/download-dataset.service";
 })
 @UntilDestroy()
 export class DatasetFormComponent implements OnInit, OnDestroy {
+  readonly datasetId = input.required<number>();
+  readonly method = input.required<Method>();
 
-  @ViewChild('nestedStepper') public stepper: MatStepper;
-  @ViewChild('selectStep') selectStep: CdkStep
-  @ViewChild('annotateStep') annotateStep: CdkStep
-  @ViewChild('statisticalDesignStep') statisticalDesignStep: CdkStep
-  @Input() datasetId: number;
-  @Input() method: Method
+  public readonly stepper = viewChild.required<MatStepper>('nestedStepper');
+  readonly selectStep = viewChild.required<CdkStep>('selectStep');
+  readonly annotateStep = viewChild.required<CdkStep>('annotateStep');
+  readonly statisticalDesignStep = viewChild.required<CdkStep>('statisticalDesignStep');
+
 
   dataset$: Observable<PDataset | undefined>;
   parameters$: Observable<Parameter[]>;
@@ -41,30 +42,30 @@ export class DatasetFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.dataset$ = this.store.select(datasetFeature.selectDataset(this.datasetId));
-    this.parameters$ = this.store.select(datasetFeature.selectSummaryParameters(this.datasetId));
-    this.summaryComplete$ = this.store.select(datasetFeature.selectSummaryComplete(this.datasetId)).pipe(distinctUntilChanged(), share());
-    this.summaryComplete$.pipe(delay(0), untilDestroyed(this)).subscribe(() => this.stepper.next());
-    this.annotationComplete$ = this.store.select(datasetFeature.selectAnnotationComplete(this.datasetId)).pipe(distinctUntilChanged(), share());
-    this.statisticalDesignComplete$ = this.store.select(datasetFeature.selectStatisticalDesignComplete(this.datasetId)).pipe(distinctUntilChanged(), share());
+    this.dataset$ = this.store.select(datasetFeature.selectDataset(this.datasetId()));
+    this.parameters$ = this.store.select(datasetFeature.selectSummaryParameters(this.datasetId()));
+    this.summaryComplete$ = this.store.select(datasetFeature.selectSummaryComplete(this.datasetId())).pipe(distinctUntilChanged(), share());
+    this.summaryComplete$.pipe(delay(0), untilDestroyed(this)).subscribe(() => this.stepper().next());
+    this.annotationComplete$ = this.store.select(datasetFeature.selectAnnotationComplete(this.datasetId())).pipe(distinctUntilChanged(), share());
+    this.statisticalDesignComplete$ = this.store.select(datasetFeature.selectStatisticalDesignComplete(this.datasetId())).pipe(distinctUntilChanged(), share());
   }
 
   ngOnDestroy(): void {
-    this.store.dispatch(datasetActions.delete({id: this.datasetId}))
+    this.store.dispatch(datasetActions.delete({id: this.datasetId()}))
   }
 
   deleteDataset($event: MouseEvent) {
     $event.stopPropagation();
-    this.store.dispatch(datasetActions.delete({id: this.datasetId}))
+    this.store.dispatch(datasetActions.delete({id: this.datasetId()}))
   }
 
   saveData() {
-    this.store.dispatch(datasetActions.save({id: this.datasetId}))
+    this.store.dispatch(datasetActions.save({id: this.datasetId()}))
   }
 
   changeParameters($event: Event) {
     $event.stopPropagation();
-    this.store.dispatch(datasetActions.openSummaryParameters({id: this.datasetId}))
+    this.store.dispatch(datasetActions.openSummaryParameters({id: this.datasetId()}))
   }
 
   updateScroll() {
@@ -73,12 +74,12 @@ export class DatasetFormComponent implements OnInit, OnDestroy {
 
   stepChange($event: StepperSelectionEvent) {
     switch ($event.selectedStep) {
-      case this.selectStep:
-        this.store.dispatch(datasetActions.clear({id: this.datasetId}))
+      case this.selectStep():
+        this.store.dispatch(datasetActions.clear({id: this.datasetId()}))
         break;
-      case this.annotateStep:
+      case this.annotateStep():
         break;
-      case this.statisticalDesignStep:
+      case this.statisticalDesignStep():
         break;
     }
   }

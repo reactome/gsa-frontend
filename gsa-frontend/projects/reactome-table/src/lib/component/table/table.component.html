@@ -78,7 +78,7 @@
 
   <div class="flex-container horizontal gap-one justify-center margin-top-20" *ngIf="settings.uploadButton || settings.downloadButton">
     <reactome-table-upload [tableStore]="tableStore"></reactome-table-upload>
-    <reactome-table-download [name]="name" [tableStore]="tableStore"></reactome-table-download>
+    <reactome-table-download [name]="name()" [tableStore]="tableStore"></reactome-table-download>
   </div>
 </ng-container>
 

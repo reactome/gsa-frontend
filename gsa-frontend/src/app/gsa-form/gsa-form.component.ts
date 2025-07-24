@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, viewChild} from '@angular/core';
 import {MatStepper} from "@angular/material/stepper";
 import {Store} from "@ngrx/store";
 import {methodFeature} from "./state/method/method.selector";
@@ -22,12 +22,12 @@ import {CancelDialogComponent} from "./cancel-dialog/cancel-dialog.component";
     standalone: false
 })
 export class GsaFormComponent implements AfterViewInit, OnInit, OnDestroy {
-  @ViewChild('stepper') stepper: MatStepper;
+  readonly stepper = viewChild.required<MatStepper>('stepper');
 
-  @ViewChild('setMethodStep') setMethodStep: CdkStep;
-  @ViewChild('addDataStep') addDataStep: CdkStep;
-  @ViewChild('optionStep') optionStep: CdkStep;
-  @ViewChild('analysisStep') analysisStep: CdkStep;
+  readonly setMethodStep = viewChild.required<CdkStep>('setMethodStep');
+  readonly addDataStep = viewChild.required<CdkStep>('addDataStep');
+  readonly optionStep = viewChild.required<CdkStep>('optionStep');
+  readonly analysisStep = viewChild.required<CdkStep>('analysisStep');
 
   selectedMethod$ = this.store.select(methodFeature.selectSelectedMethod);
   methodSelected$ = this.selectedMethod$.pipe(map(method => method !== null))
@@ -67,14 +67,14 @@ export class GsaFormComponent implements AfterViewInit, OnInit, OnDestroy {
 
   async stepChange($event: StepperSelectionEvent, vm: any) {
     switch ($event.selectedStep) {
-      case this.setMethodStep:
+      case this.setMethodStep():
         break;
-      case this.addDataStep:
+      case this.addDataStep():
         break;
-      case this.optionStep:
+      case this.optionStep():
         this.store.dispatch(datasetActions.initAnnotationColumns())
         break;
-      case this.analysisStep:
+      case this.analysisStep():
         this.store.dispatch(analysisActions.load(vm));
         this.editable = false;
         break;
@@ -82,12 +82,12 @@ export class GsaFormComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   async cancel() {
-    if (this.stepper.selected === this.analysisStep) {
+    if (this.stepper().selected === this.analysisStep()) {
       const dialogRef = this.dialog.open(CancelDialogComponent, {autoFocus: '#cancel', role: "alertdialog"});
       const cancel = await firstValueFrom(dialogRef.afterClosed());
       if (cancel) {
         this.editable = true;
-        setTimeout(() => this.stepper.previous());
+        setTimeout(() => this.stepper().previous());
         this.analysisId$.pipe(take(1)).subscribe(analysisId => this.store.dispatch(analysisActions.cancel({analysisId})))
       }
     }
@@ -95,7 +95,7 @@ export class GsaFormComponent implements AfterViewInit, OnInit, OnDestroy {
 
   restartAnalysis() {
     this.editable = true;
-    setTimeout(() => this.stepper.selected = this.setMethodStep);
+    setTimeout(() => this.stepper().selected = this.setMethodStep());
     this.analysisId$.pipe(take(1)).subscribe(analysisId => this.store.dispatch(analysisActions.cancel({analysisId})))
   }
 }

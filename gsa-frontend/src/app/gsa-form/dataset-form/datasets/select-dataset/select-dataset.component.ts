@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import {Component, OnChanges, OnInit, input} from '@angular/core';
 import {Observable} from "rxjs";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {BreakpointObserver} from "@angular/cdk/layout";
@@ -17,8 +17,8 @@ import {Method} from "../../../state/method/method.state";
     standalone: false
 })
 export class SelectDatasetComponent implements OnInit, OnChanges {
-  @Input() datasetId: number;
-  @Input() method: Method;
+  readonly datasetId = input.required<number>();
+  readonly method = input.required<Method>();
 
   exampleSources$: Observable<PDatasetSource[]>
   externalSources$: Observable<PDatasetSource[]>
@@ -38,8 +38,8 @@ export class SelectDatasetComponent implements OnInit, OnChanges {
     this.store.dispatch(datasetSourceActions.loadExamples());
     this.store.dispatch(datasetSourceActions.loadExternal());
 
-    this.localSources$ = this.store.select(datasetSourceFeature.selectBySource('Local', this.method));
-    this.externalSources$ = this.store.select(datasetSourceFeature.selectBySource('External', this.method));
+    this.localSources$ = this.store.select(datasetSourceFeature.selectBySource('Local', this.method()));
+    this.externalSources$ = this.store.select(datasetSourceFeature.selectBySource('External', this.method()));
 
 
     this.librarySearchData = {
@@ -50,7 +50,7 @@ export class SelectDatasetComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(){
-    this.exampleSources$ = this.store.select(datasetSourceFeature.selectBySource('Example',this.method))
+    this.exampleSources$ = this.store.select(datasetSourceFeature.selectBySource('Example',this.method()))
   }
 }
 

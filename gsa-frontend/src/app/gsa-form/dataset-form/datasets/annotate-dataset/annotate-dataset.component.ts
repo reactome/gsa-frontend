@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit, input} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
@@ -20,7 +20,7 @@ import {Settings} from "reactome-table";
 })
 export class AnnotateDatasetComponent implements OnInit {
 
-  @Input() datasetId: number;
+  readonly datasetId = input.required<number>();
   dataset$: Observable<PDataset | undefined>
   annotations$ : Observable<string[][]>
   annotateDataStep: FormGroup;
@@ -39,7 +39,7 @@ export class AnnotateDatasetComponent implements OnInit {
       renameRows: false,
       addRow: false
     };
-    this.dataset$ = this.store.select(datasetFeature.selectDataset(this.datasetId));
+    this.dataset$ = this.store.select(datasetFeature.selectDataset(this.datasetId()));
     this.annotations$ = this.dataset$.pipe(
       filter(isDefined),
       map(d => d.annotations),
@@ -49,13 +49,13 @@ export class AnnotateDatasetComponent implements OnInit {
   }
 
   onTableUpdate(table: string[][]) {
-    this.store.dispatch(datasetActions.setAnnotations({annotations: table, id: this.datasetId}))
+    this.store.dispatch(datasetActions.setAnnotations({annotations: table, id: this.datasetId()}))
   }
 
   updateTitle(value: string) {
     this.store.dispatch(datasetActions.updateSummary({
       update: {
-        id: this.datasetId,
+        id: this.datasetId(),
         changes: {
           title: value
         }

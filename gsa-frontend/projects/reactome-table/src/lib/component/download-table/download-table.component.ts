@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit, input} from '@angular/core';
 import {first, map, Observable} from "rxjs";
 import {TableStore} from "../../state/table.store";
 
@@ -9,8 +9,8 @@ import {TableStore} from "../../state/table.store";
     standalone: false
 })
 export class DownloadTableComponent implements OnInit {
-  @Input() name: string;
-  @Input() tableStore: TableStore;
+  readonly name = input<string>();
+  readonly tableStore = input<TableStore>();
 
   type$: Observable<false | 'icon' | 'text'>
 
@@ -18,14 +18,14 @@ export class DownloadTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.type$ = this.tableStore.settings$.pipe(map(s => s.downloadButton))
+    this.type$ = this.tableStore().settings$.pipe(map(s => s.downloadButton))
   }
 
 
   saveAFile(): void {
     const dlink: HTMLAnchorElement = document.createElement('a');
-    dlink.download = `${this.name}.csv`; // the file name
-    this.tableStore.rawData$.pipe(first()).subscribe(
+    dlink.download = `${this.name()}.csv`; // the file name
+    this.tableStore().rawData$.pipe(first()).subscribe(
       table => {
         dlink.href = encodeURI('data:text/csv;charset=utf-8,' + table.map(row => row.join(", ")).join("\n"));
         dlink.click(); // this will trigger the dialog window

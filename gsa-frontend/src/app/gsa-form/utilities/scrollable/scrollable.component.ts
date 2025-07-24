@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, Input, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, input, viewChild} from '@angular/core';
 import {ScrollService} from "../../services/scroll.service";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 import {map} from "rxjs";
@@ -13,11 +13,11 @@ import {TourUtilsService} from "../../../services/tour-utils.service";
     standalone: false
 })
 export class ScrollableComponent implements AfterViewInit {
-  @Input() topMargin: number = 0;
-  @Input() bottomMargin: number = 0;
-  @Input() name: string = '';
-  @Input() innerClasses: string = '';
-  @ViewChild('scrollable') scrollable: ElementRef<HTMLDivElement>;
+  readonly topMargin = input<number>(0);
+  readonly bottomMargin = input<number>(0);
+  readonly name = input<string>('');
+  readonly innerClasses = input<string>('');
+  readonly scrollable = viewChild.required<ElementRef<HTMLDivElement>>('scrollable');
 
 
   tourVisible = this.tour.state$.pipe(map(state => state === 'on'))
@@ -38,9 +38,9 @@ export class ScrollableComponent implements AfterViewInit {
 
   public updateShadows() {
     setTimeout(() => {
-      const scrollable = this.scrollable.nativeElement;
-      this.shadows.top = scrollable.scrollTop > this.topMargin;
-      this.shadows.bottom = scrollable.clientHeight + scrollable.scrollTop + this.bottomMargin < scrollable.scrollHeight;
+      const scrollable = this.scrollable().nativeElement;
+      this.shadows.top = scrollable.scrollTop > this.topMargin();
+      this.shadows.bottom = scrollable.clientHeight + scrollable.scrollTop + this.bottomMargin() < scrollable.scrollHeight;
     })
   }
 }

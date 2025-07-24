@@ -2,12 +2,12 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  Input,
   OnChanges,
   OnInit,
   Output,
   SimpleChanges,
-  ViewChild
+  input,
+  viewChild, model
 } from '@angular/core';
 import {Settings} from "../../model/table.model";
 import {Clipboard} from '@angular/cdk/clipboard';
@@ -41,16 +41,16 @@ type Range = { start: Coord, stop?: Coord };
     standalone: false
 })
 export class TableComponent implements OnInit, OnChanges, AfterViewInit {
-  @ViewChild('flyingRename') input: ElementRef<HTMLInputElement>;
-  @ViewChild('root') rootRef: ElementRef<HTMLDivElement>;
-  @ViewChild('corner') cornerRef: ElementRef<HTMLTableCellElement>;
+  readonly input = viewChild.required<ElementRef<HTMLInputElement>>('flyingRename');
+  readonly rootRef = viewChild.required<ElementRef<HTMLDivElement>>('root');
+  readonly cornerRef = viewChild.required<ElementRef<HTMLTableCellElement>>('corner');
   cornerRect?: DOMRect;
-  @ViewChild('addCol') columnButton: MatButton;
+  readonly columnButton = viewChild.required<MatButton>('addCol');
   isDragging: boolean = false;
 
-  @Input() userSettings: Subset<Settings>;
-  @Input() table: string[][];
-  @Input() name: string;
+  readonly userSettings = input<Subset<Settings>>({});
+  readonly table = model.required<string[][]>();
+  readonly name = input<string>();
 
 
   data$: Observable<Cell[][]> = this.tableStore.data$;
@@ -65,7 +65,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     map(cell => ({cell, cellRect: cell.getBoundingClientRect()})),
     map(({cell, cellRect}) => {
       if (!cellRect) return cellRect;
-      const tablePosition = this.rootRef?.nativeElement;
+      const tablePosition = this.rootRef()?.nativeElement;
       const tableCoords = tablePosition?.getBoundingClientRect();
       cellRect.x += tablePosition?.scrollLeft - tableCoords?.x;
       cellRect.y += tablePosition?.scrollTop - tableCoords?.y;
@@ -84,11 +84,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   settings$: Observable<Settings> = this.tableStore.settings$;
   value: string;
 
-  @Output() tableChange: Observable<string[][]> = this.data$.pipe(
-    skip(1),
-    map((data) => data.map(row => row.map(cell => cell.value)))
-  );
-
 
   constructor(private clipboard: Clipboard, public readonly tableStore: TableStore) {
   }
@@ -98,7 +93,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     safeInput(this,'userSettings');
 
     //Initialize settings
-    this.tableStore.settings({settings: this.userSettings});
+    this.tableStore.settings({settings: this.userSettings()});
 
     // Focus input after position and size updated
     this.startCoords$.pipe(
@@ -111,7 +106,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     ).subscribe(value => this.value = value);
 
     this.tableStore.import({
-      table: this.table,
+      table: this.table(),
       hasColNames: true,
       hasRowNames: true,
       fullImport: true
@@ -119,12 +114,12 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.cornerRect = this.cornerRef?.nativeElement.getBoundingClientRect();
+    this.cornerRect = this.cornerRef()?.nativeElement.getBoundingClientRect();
   }
 
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['userSettings'] && !changes['userSettings'].firstChange) this.tableStore.settings({settings: this.userSettings});
+    if (changes['userSettings'] && !changes['userSettings'].firstChange) this.tableStore.settings({settings: this.userSettings()});
   }
 
 
@@ -137,7 +132,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   focusInput() {
-    const input = this.input?.nativeElement;
+    const input = this.input()?.nativeElement;
     input?.focus();
     input?.setSelectionRange(input?.value.length, input?.value.length)
     input?.scrollIntoView({block: "nearest", inline: "nearest", behavior: 'smooth'});
@@ -226,7 +221,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   getHTMLCellElement(x: number, y: number): HTMLTableCellElement {
-    return this.rootRef?.nativeElement.querySelector(`[x = '${x}'][y = '${y}']`) as HTMLTableCellElement;
+    return this.rootRef()?.nativeElement.querySelector(`[x = '${x}'][y = '${y}']`) as HTMLTableCellElement;
   }
 
   getCell($event: MouseEvent): Coords {

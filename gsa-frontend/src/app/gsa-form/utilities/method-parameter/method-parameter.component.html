@@ -1,27 +1,27 @@
 <div *ngrxLet="screenIsSmall$ as screenIsSmall" class="grid-container"
-     [ngClass]="{'no-information': screenIsSmall || !infoTooltip}">
+     [ngClass]="{'no-information': screenIsSmall || !infoTooltip()}">
   <!--  'background-grey': index % 2 === 1-->
-  <ng-container *ngIf="screenIsSmall || !infoTooltip; else largeScreen">
-    <div [class.no-wrap]="!infoTooltip" matTooltip="{{parameter.description}}">{{parameter.display_name}}</div>
+  <ng-container *ngIf="screenIsSmall || !infoTooltip(); else largeScreen">
+    <div [class.no-wrap]="!infoTooltip()" matTooltip="{{parameter().description}}">{{parameter().display_name}}</div>
   </ng-container>
   <ng-template #largeScreen>
-    <i class="material-symbols-outlined outlined outline" matTooltip="{{parameter.description}}">info</i>
-    <div>{{parameter.display_name}}</div>
+    <i class="material-symbols-outlined outlined outline" matTooltip="{{parameter().description}}">info</i>
+    <div>{{parameter().display_name}}</div>
   </ng-template>
 
 
   <div class="align-center justify-end width-hundred" style="min-width: 100%">
-    <div *ngIf="parameter.values !== undefined; else inputField">
+    <div *ngIf="parameter().values !== undefined; else inputField">
       <mat-form-field appearance="outline" subscriptSizing="dynamic" class="width-hundred">
         <mat-select [formControl]="control" class="width-hundred">
-          <mat-option *ngFor="let value of parameter.values" [value]="value">
+          <mat-option *ngFor="let value of parameter().values" [value]="value">
             {{value}}
           </mat-option>
         </mat-select>
       </mat-form-field>
     </div>
     <ng-template #inputField>
-    <span [ngSwitch]="parameter.type">
+    <span [ngSwitch]="parameter().type">
       <ng-template [ngSwitchCase]="types.bool">
         <mat-slide-toggle [formControl]="control"
                           class="primary"></mat-slide-toggle>

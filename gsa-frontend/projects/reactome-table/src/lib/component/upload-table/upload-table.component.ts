@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit, input} from '@angular/core';
 import {TableStore} from "../../state/table.store";
 import {map, Observable} from "rxjs";
 
@@ -10,7 +10,7 @@ import {map, Observable} from "rxjs";
     standalone: false
 })
 export class UploadTableComponent implements OnInit {
-    @Input() tableStore: TableStore;
+    readonly tableStore = input<TableStore>();
 
     type$: Observable<false | 'icon' | 'text'>
 
@@ -18,10 +18,10 @@ export class UploadTableComponent implements OnInit {
     }
 
     ngOnInit(): void {
-      this.type$ = this.tableStore.settings$.pipe(map(s => s.uploadButton))
+      this.type$ = this.tableStore().settings$.pipe(map(s => s.uploadButton))
     }
 
     uploadFile(input: HTMLInputElement) {
-        if (input?.files?.[0]) this.tableStore.importFile(input.files[0])
+        if (input?.files?.[0]) this.tableStore().importFile(input.files[0])
     }
 }

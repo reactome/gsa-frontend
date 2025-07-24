@@ -1,34 +1,20 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, input, model} from '@angular/core';
 
 @Component({
-    selector: 'gsa-dropdown',
-    templateUrl: './dropdown.component.html',
-    styleUrls: ['./dropdown.component.scss'],
-    standalone: false
+  selector: 'gsa-dropdown',
+  templateUrl: './dropdown.component.html',
+  styleUrls: ['./dropdown.component.scss'],
+  standalone: false
 })
-export class DropdownComponent implements OnInit, OnChanges {
-  @Input() options: any[];
-  @Input() placeholder: string;
+export class DropdownComponent {
+  readonly options = input<any[]>();
+  readonly placeholder = input<string>();
 
-  @Output() valueChange: EventEmitter<string> = new EventEmitter<string>();
-  @Input() value?: string;
-  @Input() disabled: boolean = false;
+  readonly value = model.required<string>();
+  readonly disabled = input<boolean>(false);
   default?: string;
-
 
   constructor() {
   }
-
-  ngOnInit(): void {
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    this.saveValue();
-  }
-
-  saveValue() {
-    this.valueChange.emit(this.value);
-  }
-
 
 }

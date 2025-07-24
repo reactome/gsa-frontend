@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, OnInit, output, input} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Store} from "@ngrx/store";
 import {analysisFeature} from "../state/analysis/analysis.selector";
@@ -36,8 +36,8 @@ export class AnalysisComponent implements OnInit {
       })
   )
 
-  @Input() datasetId: number;
-  @Output() restart = new EventEmitter<void>()
+  readonly datasetId = input<number>();
+  readonly restart = output<void>();
 
   constructor(private formBuilder: FormBuilder, public store: Store) {
     this.analysisStep = this.formBuilder.group({
@@ -51,6 +51,7 @@ export class AnalysisComponent implements OnInit {
   }
 
   goToSelectMethod() {
+    // TODO: The 'emit' function requires a mandatory void argument
     this.restart.emit()
   }
 

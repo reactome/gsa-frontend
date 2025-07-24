@@ -62,7 +62,7 @@
     <mat-step #selectStep [completed]="(summaryComplete$ | async) || false">
       <ng-template matStepLabel>Select a dataset</ng-template>
       <div class="flex-container align-center vertical">
-        <gsa-select-dataset [datasetId]="datasetId" [method]="method" class="width-hundred"/>
+        <gsa-select-dataset [datasetId]="datasetId()" [method]="method()" class="width-hundred"/>
         <button [disabled]="!selectStep.completed" class="nav-button-margin" color="accent" mat-fab matStepperNext>
           <mat-icon>keyboard_arrow_down</mat-icon>
         </button>
@@ -75,7 +75,7 @@
         <button [disabled]="dataset.saved" class="nav-button-margin" color="accent" mat-fab matStepperPrevious>
           <mat-icon>keyboard_arrow_up</mat-icon>
         </button>
-        <gsa-annotate-dataset [datasetId]="datasetId" *ngIf="nestedStepper.selected === annotateStep"
+        <gsa-annotate-dataset [datasetId]="datasetId()" *ngIf="nestedStepper.selected === annotateStep"
                               class="width-hundred"/>
         <div class="nav-button-area nav-button-margin" tourAnchor="annotate.done" clickable>
           <button [disabled]="!annotateStep.completed" color="accent" mat-fab matStepperNext>
@@ -91,7 +91,7 @@
         <button class="nav-button-margin" color="accent" mat-fab matStepperPrevious>
           <mat-icon>keyboard_arrow_up</mat-icon>
         </button>
-        <gsa-statistical-design [datasetId]="datasetId" *ngIf="nestedStepper.selected == statisticalDesignStep"
+        <gsa-statistical-design [datasetId]="datasetId()" *ngIf="nestedStepper.selected == statisticalDesignStep"
                                 class="width-hundred"/>
         <button (click)="saveData(); mep.expanded = false;"
                 [disabled]="!statisticalDesignStep.completed" class="nav-button-margin"

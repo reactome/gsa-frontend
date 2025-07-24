@@ -2,8 +2,8 @@
   <input #fileUpload (change)="onFileSelected($event)" class="file-input" type="file">
   <div (click)="fileUpload.click()">
     <div>
-      <p class="bold no-wrap">{{source.name}}</p>
-      <p>{{source.description}}</p>
+      <p class="bold no-wrap">{{source().name}}</p>
+      <p>{{source().description}}</p>
     </div>
   </div>
 </div>

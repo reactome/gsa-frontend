@@ -1,33 +1,33 @@
 <div (click)="select()">
-  <div *ngIf="source.id === 'search'; else other" tourAnchor="search" class="dataset-card-content no-hover contrast"
+  <div *ngIf="source().id === 'search'; else other" tourAnchor="search" class="dataset-card-content no-hover contrast"
        [ngClass]="{'hover-opponent': (isSelected$ | async)}">
     <p class="bold no-wrap">
-      <mat-icon *ngIf="source.id === 'search'" style="vertical-align: middle">search</mat-icon>
-      {{ source.name }}
+      <mat-icon *ngIf="source().id === 'search'" style="vertical-align: middle">search</mat-icon>
+      {{ source().name }}
     </p>
-    <p>{{ source.description }}</p>
+    <p>{{ source().description }}</p>
 
-    <gsa-search [datasetId]="datasetId"></gsa-search>
+    <gsa-search [datasetId]="datasetId()"></gsa-search>
 
   </div>
 
   <ng-template #other>
     <div class="dataset-card-content" [ngClass]="{'hover-opponent': (isSelected$ | async)}">
       <p class="bold no-wrap">
-        {{ source.name }}
-        <a *ngIf="source.url" [href]="source.url" target="_blank">
+        {{ source().name }}
+        <a *ngIf="source().url" [href]="source().url" target="_blank">
           <mat-icon [inline]="true">open_in_new</mat-icon>
         </a>
       </p>
-      <p>{{ source.description }}</p>
+      <p>{{ source().description }}</p>
       <div [ngClass]="{'visible': isSelected$ | async}" class="invisible">
         <form>
           <div class="flex-container vertical gap-one align-center">
-            <gsa-method-parameter *ngFor="let param of source.parameters; trackBy: paramTracker" class="width-hundred"
+            <gsa-method-parameter *ngFor="let param of source().parameters; trackBy: paramTracker" class="width-hundred"
                                   [parameter]="param" [infoTooltip]="false"
                                   (parameterChange)="updateParam($event)"/>
 
-            <button (mouseup)="loadData(source.parameters || [])"
+            <button (mouseup)="loadData(source().parameters || [])"
                     class="primary-border" class="primary" mat-stroked-button type="submit">
               Import
             </button>
