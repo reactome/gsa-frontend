@@ -252,8 +252,10 @@ export class TableStore extends ComponentStore<TableState> {
       for (let xFrom = 0; xFrom < table[yFrom].length; xFrom++) {
         const xTo = range.x.min + xFrom;
         if (state.dataset[yTo] && state.dataset[yTo][xTo]){
-          state.dataset[yTo][xTo].value = table[yFrom][xFrom];
-          if (Ranges.equals(state.maxCols[xTo].coords, {x: xTo, y: yTo})) colsToGetMax.add(xTo);
+          const value = table[yFrom][xFrom].trim();
+          const maxCol = state.maxCols[xTo];
+          state.dataset[yTo][xTo].value = value;
+          if (value.length > maxCol.value.length || Ranges.equals(maxCol.coords, {x: xTo, y: yTo})) colsToGetMax.add(xTo);
         }
       }
     }
@@ -297,13 +299,13 @@ export class TableStore extends ComponentStore<TableState> {
           state.maxCols.push({value: colName, coords: {x: xTo, y: yTo}});
         } else continue; // skip column since not present and cannot be added
 
-        const value = table[yFrom][xFrom];
+        const value = table[yFrom][xFrom].trim();
         state.dataset[yTo][xTo].value = value;
         if (value.length > state.maxCols[xTo].value.length) state.maxCols[xTo] = {value, coords: {x: xTo, y: yTo}};
       }
     }
 
-    return Cells.select({...state, dataset: [...state.dataset]});
+    return Cells.select({...state, dataset: [...state.dataset], maxCols: [...state.maxCols]});
   });
 
   readonly addColumn = this.updater((state) => {
@@ -453,12 +455,16 @@ export namespace Ranges {
   }
 
   export function findMaximumOfColumn(state: TableState, x: number): LocatedValue {
-    return Ranges.column(state.dataset, x).reduce((max, e, y) => e.value.length > max.value.length ? {
+    const column = Ranges.column(state.dataset, x);
+    const max = column.reduce((max, e, y) => e.value?.length > max.value.length ? {
         value: e.value,
         coords: {x, y}
       } : max,
       {value: state.dataset[state.start.y][x].value, coords: state.start}
     );
+    console.log(column, max)
+
+    return max;
   }
 }
 
