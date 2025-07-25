@@ -9,11 +9,11 @@ import {
   signal,
   Signal,
   SimpleChanges,
+  TrackByFunction,
   viewChild
 } from '@angular/core';
 import {Settings} from "../../model/table.model";
 import {Clipboard} from '@angular/cdk/clipboard';
-import {MatButton} from "@angular/material/button";
 import {Cell, Coords, Ranges, TableStore} from "../../state/table.store";
 import {
   combineLatest,
@@ -118,12 +118,11 @@ export class TableComponent implements OnInit, OnChanges {
 
   startCoords$: Observable<DOMRect> = this.startCell$.pipe(
     filter(isDefined),
-    combineLatestWith(this.inputValue$),
+    combineLatestWith(this.inputValue$), // Resize input upon value change
     distinctUntilChanged(),
     delay(0),
-    map(([cell, value]) => {
+    map(([cell,]) => {
       const cellRect = cell.getBoundingClientRect();
-      console.log(cell, value)
       if (!cellRect) return cellRect;
       const tableCoords = this.viewport().elementRef.nativeElement.getBoundingClientRect()
       cellRect.x += this.viewport().measureScrollOffset('left') - tableCoords?.x;
@@ -321,6 +320,10 @@ export class TableComponent implements OnInit, OnChanges {
 
   adjustPlaceholder() {
     this.scrollOffset.set(this.viewport().getRenderedRange().start * this.rowHeight())
+  }
+
+  trackByIndex: TrackByFunction<any> = <T>(index: number, element: T)=> {
+    return index
   }
 }
 

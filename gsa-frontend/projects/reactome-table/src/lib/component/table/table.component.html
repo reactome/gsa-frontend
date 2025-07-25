@@ -1,111 +1,118 @@
 <ng-container *ngrxLet="settings$ as settings">
   <div #root class="table-container flex horizontal relative" (blur)="deselect()">
-    <cdk-virtual-scroll-viewport #scrollViewport  (scrolledIndexChange)="adjustPlaceholder()"
+    <cdk-virtual-scroll-viewport #scrollViewport (scrolledIndexChange)="adjustPlaceholder()"
                                  [itemSize]="rowHeight()" [minBufferPx]="minBufferPx()" [maxBufferPx]="maxBufferPx()"
                                  [style.height.px]="height()" [style.--row-height.px]="rowHeight()" class="viewport">
-      <input #flyingRename (blur)="tableStore.blur()" (focus)="tableStore.focus()"
-             (copy)="copyValues()" (paste)="pasteValues($event)"
-             (mouseup)="mouseup()"
-             [(ngModel)]="value"
-             *ngIf="startCoords$ | async as start"
-             (keydown)="keydown($event, flyingRename)"
-             [style.left.px]="start.x"
-             [style.top.px]="start.y"
-             [style.height.px]="start.height"
-             [style.width.px]="start.width"
-             [style.z-index]="inputLevel$ | async"
-             [ngClass]="startClasses$ | async"
-             class="flying-rename"/>
+      @if (startCoords$ | async; as start) {
+        <input #flyingRename (blur)="tableStore.blur()" (focus)="tableStore.focus()"
+               (copy)="copyValues()" (paste)="pasteValues($event)"
+               (mouseup)="mouseup()"
+               [(ngModel)]="value"
+               (keydown)="keydown($event, flyingRename)"
+               [style.left.px]="start.x"
+               [style.top.px]="start.y"
+               [style.height.px]="start.height"
+               [style.width.px]="start.width"
+               [style.z-index]="inputLevel$ | async"
+               [ngClass]="startClasses$ | async"
+               class="flying-rename"/>
+      }
 
-      <table (mousedown)="mousedown($event)" (mouseover)="mousemove($event)" (mouseup)="mouseup()"
-             (keydown)="keydown($event, undefined)"
-             class="relative align-center width-hundred spreadsheet"
-             *ngIf="data$ | async as data">
-        <tr>
-          <!-- HEADER -->
-          <th x="0" y="0" class="rows" #corner></th>
-
-          <ng-container *ngIf="settings.showCols">
-            @let y = 0;
-            <ng-container *ngFor="let cell of data[0]; let x = index">
-              <ng-container *ngIf="x !== 0">
-                <th [attr.x]="x" [attr.y]="y" [class.selected]="cell.selected" class="columns" [style.min-width.px]="minColWidth()">
-                  <div [attr.x]="x" [attr.y]="y" class="flex horizontal align-center justify-center">
-                    <span [style.width.px]="rowHeight()"></span>
-                    <span class="flex-one text-align-center">{{ cell.value }}</span>
-                    <span [style.width.px]="rowHeight()">
-                      @if (settings.deleteCol && x !== 0) {
-                      <button (click)="deleteColumn(x)" class="bin-button" mat-icon-button>
-                        <mat-icon>delete</mat-icon>
-                      </button>
-                    }
-                    </span>
-                  </div>
-                </th>
-              </ng-container>
-
-            </ng-container>
-            <td *ngIf="settings.addColumn" class="no-padding add-column-button-container"
-                rowspan="0">
-              <button #addCol (click)="addColumn()" (keydown.shift.tab)="focusLastCell($event)"
-                      class="add-column-button flex-container align-start primary"
-                      mat-stroked-button>
-                <span class="sticky">Add {{ settings.colToBeAdded > 1 ? settings.colToBeAdded : '' }} column</span>
-              </button>
-            </td>
-          </ng-container>
-        </tr>
-
-        <tr class="virtual-placeholder" [style.height.px]="scrollOffset()">
-          @for (max of maxColumns$ | async; track max) {
-            <td class="cell">{{max.value}}</td>
-          }
-        </tr>
-
-        <tr *cdkVirtualFor="let row of data; let y = index"
-            [style.--scroll-margin-top.px]="corner.clientHeight"
-            [style.--scroll-margin-left.px]="corner.clientWidth"
+      @if (data$ | async; as data) {
+        <table (mousedown)="mousedown($event)" (mouseover)="mousemove($event)" (mouseup)="mouseup()"
+               (keydown)="keydown($event, undefined)"
+               class="relative align-center width-hundred spreadsheet"
         >
+          <tr>
+            <!-- HEADER -->
+            <th x="0" y="0" class="rows" #corner></th>
+            @if (settings.showCols) {
+              @let y = 0;
+              @for (cell of data[0]; track $index; let x = $index) {
+                @if (x !== 0) {
+                  <th [attr.x]="x" [attr.y]="y" [class.selected]="cell.selected" class="columns"
+                      [style.min-width.px]="minColWidth()">
+                    <div [attr.x]="x" [attr.y]="y" class="flex horizontal align-center justify-center">
+                      <span [style.width.px]="rowHeight()"></span>
+                      <span class="flex-one text-align-center">{{ cell.value }}</span>
+                      <span [style.width.px]="rowHeight()">
+                        @if (settings.deleteCol && x !== 0) {
+                          <button (click)="deleteColumn(x)" class="bin-button" mat-icon-button>
+                            <mat-icon>delete</mat-icon>
+                          </button>
+                        }
+                      </span>
+                    </div>
+                  </th>
+                }
+              }
+              @if (settings.addColumn) {
+                <td class="no-padding add-column-button-container"
+                    rowspan="0">
+                  <button #addCol (click)="addColumn()" (keydown.shift.tab)="focusLastCell($event)"
+                          class="add-column-button flex-container align-start primary"
+                          mat-stroked-button>
+                    <span class="sticky">Add {{ settings.colToBeAdded > 1 ? settings.colToBeAdded : '' }} column</span>
+                  </button>
+                </td>
+              }
+            }
+          </tr>
+          <!-- Placeholder to push concrete rows to the right place and set columns width -->
+          <tr class="virtual-placeholder" [style.height.px]="scrollOffset()">
+            @for (max of maxColumns$ | async; track max) {
+              <td class="cell">{{ max.value }}</td>
+            }
+          </tr>
 
-          <!-- BODY -->
-          <ng-container *ngIf="y !==0">
-            <ng-container *ngFor="let cell of row; let x = index">
-              <th *ngIf="x === 0 && settings.showRows" [attr.x]="x" [attr.y]="y"
-                  [ngClass]="{'selected': cell.selected}"
-                  class="border-right rows">
-                <div class="flex horizontal align-center justify-between">
-                  @if (settings.deleteRow) {
-                    <button (click)="deleteRow(y)" class="bin-button" mat-icon-button>
-                      <mat-icon>delete</mat-icon>
-                    </button>
-                  }
-                  <span class="flex-one">{{ cell.value }}</span>
-                </div>
-              </th>
-              <td *ngIf="x !== 0" [attr.x]="x" [attr.y]="y" class="cell"
-                  [ngClass]="{'selected': cell.selected}"
-              >{{ cell.value }}
+          <tr *cdkVirtualFor="let row of data; let y = index; trackBy trackByIndex"
+              [style.--scroll-margin-top.px]="corner.clientHeight"
+              [style.--scroll-margin-left.px]="corner.clientWidth">
+            <!-- BODY -->
+            @if (y !== 0) {
+              @for (cell of row; track $index; let x = $index) {
+                @if (x === 0 && settings.showRows) {
+                  <th [attr.x]="x" [attr.y]="y" [ngClass]="{'selected': cell.selected}" class="border-right rows">
+                    <div class="flex horizontal align-center justify-between">
+                      @if (settings.deleteRow) {
+                        <button (click)="deleteRow(y)" class="bin-button" mat-icon-button>
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                      }
+                      <span class="flex-one">{{ cell.value }}</span>
+                    </div>
+                  </th>
+                }
+                @if (x !== 0) {
+                  <td [attr.x]="x" [attr.y]="y" class="cell"
+                      [ngClass]="{'selected': cell.selected}">
+                    {{ cell.value }}
+                  </td>
+                }
+              }
+            }
+          </tr>
+          @if (settings.addRow) {
+            <tr>
+              <td class="no-padding add-row-button-container" [colSpan]="data[0].length">
+                <button (click)="addRow()" (keydown.shift.tab)="focusLastCell($event)"
+                        class="add-column-button flex-container align-start primary"
+                        mat-stroked-button>
+                  <span class="sticky">Add {{ settings.rowToBeAdded > 1 ? settings.rowToBeAdded : '' }} row</span>
+                </button>
               </td>
-            </ng-container>
-          </ng-container>
-        </tr>
-        <tr *ngIf="settings.addRow">
-          <td class="no-padding add-row-button-container" [colSpan]="data[0].length">
-            <button (click)="addRow()" (keydown.shift.tab)="focusLastCell($event)"
-                    class="add-column-button flex-container align-start primary"
-                    mat-stroked-button>
-              <span class="sticky">Add {{ settings.rowToBeAdded > 1 ? settings.rowToBeAdded : '' }} row</span>
-            </button>
-          </td>
-        </tr>
-      </table>
+            </tr>
+          }
+        </table>
+      }
     </cdk-virtual-scroll-viewport>
   </div>
 
-  <div class="flex-container horizontal gap-one justify-center margin-top-20"
-       *ngIf="settings.uploadButton || settings.downloadButton">
-    <reactome-table-upload [tableStore]="tableStore"></reactome-table-upload>
-    <reactome-table-download [name]="name()" [tableStore]="tableStore"></reactome-table-download>
-  </div>
+  @if (settings.uploadButton || settings.downloadButton) {
+    <div class="flex-container horizontal gap-one justify-center margin-top-20">
+      <reactome-table-upload [tableStore]="tableStore"></reactome-table-upload>
+      <reactome-table-download [name]="name()" [tableStore]="tableStore"></reactome-table-download>
+    </div>
+  }
 </ng-container>
 
