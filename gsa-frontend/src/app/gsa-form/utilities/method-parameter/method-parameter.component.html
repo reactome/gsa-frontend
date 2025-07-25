@@ -1,53 +1,59 @@
 <div *ngrxLet="screenIsSmall$ as screenIsSmall" class="grid-container"
-     [ngClass]="{'no-information': screenIsSmall || !infoTooltip()}">
+  [ngClass]="{'no-information': screenIsSmall || !infoTooltip()}">
   <!--  'background-grey': index % 2 === 1-->
-  <ng-container *ngIf="screenIsSmall || !infoTooltip(); else largeScreen">
+  @if (screenIsSmall || !infoTooltip()) {
     <div [class.no-wrap]="!infoTooltip()" [matTooltip]="parameter().description">{{parameter().display_name}}</div>
-  </ng-container>
-  <ng-template #largeScreen>
+  } @else {
     <i class="material-symbols-outlined outlined outline" [matTooltip]="parameter().description">info</i>
     <div>{{parameter().display_name}}</div>
-  </ng-template>
+  }
 
 
   <div class="align-center justify-end width-hundred" style="min-width: 100%">
-    <div *ngIf="parameter().values !== undefined; else inputField">
-      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="width-hundred">
-        <mat-select [formControl]="control" class="width-hundred">
-          <mat-option *ngFor="let value of parameter().values" [value]="value">
-            {{value}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-    <ng-template #inputField>
-    <span [ngSwitch]="parameter().type">
-      <ng-template [ngSwitchCase]="types.bool">
-        <mat-slide-toggle [formControl]="control"
-                          class="primary"></mat-slide-toggle>
-      </ng-template>
-      <ng-template [ngSwitchCase]="types.string">
+    @if (parameter().values !== undefined) {
+      <div>
         <mat-form-field appearance="outline" subscriptSizing="dynamic" class="width-hundred">
-          <input [formControl]="control" matInput type="text" class="width-hundred">
+          <mat-select [formControl]="control" class="width-hundred">
+            @for (value of parameter().values; track value) {
+              <mat-option [value]="value">
+                {{value}}
+              </mat-option>
+            }
+          </mat-select>
         </mat-form-field>
-      </ng-template>
-      <ng-template [ngSwitchCase]="types.email">
-        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="width-hundred">
-          <input [formControl]="control" matInput type="email">
-            <mat-error *ngIf="control.invalid">Please enter a valid email address</mat-error>
-        </mat-form-field>
-      </ng-template>
-      <ng-template [ngSwitchCase]="types.float">
-        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="width-hundred">
-            <input [formControl]="control" matInput step="0.1" type="number">
-        </mat-form-field>
-      </ng-template>
-      <ng-template [ngSwitchCase]="types.int">
-        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="width-hundred">
-          <input [formControl]="control" matInput type="number">
-        </mat-form-field>
-      </ng-template>
-    </span>
-    </ng-template>
+      </div>
+    } @else {
+      <span>
+        @switch (parameter().type) {
+          @case (types.bool) {
+            <mat-slide-toggle [formControl]="control"
+            class="primary"></mat-slide-toggle>
+          }
+          @case (types.string) {
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="width-hundred">
+              <input [formControl]="control" matInput type="text" class="width-hundred">
+            </mat-form-field>
+          }
+          @case (types.email) {
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="width-hundred">
+              <input [formControl]="control" matInput type="email">
+              @if (control.invalid) {
+                <mat-error>Please enter a valid email address</mat-error>
+              }
+            </mat-form-field>
+          }
+          @case (types.float) {
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="width-hundred">
+              <input [formControl]="control" matInput step="0.1" type="number">
+            </mat-form-field>
+          }
+          @case (types.int) {
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="width-hundred">
+              <input [formControl]="control" matInput type="number">
+            </mat-form-field>
+          }
+        }
+      </span>
+    }
   </div>
 </div>

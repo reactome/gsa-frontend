@@ -6,19 +6,18 @@
       Reactome
     </a>
 
-    <ng-container *ngIf="height.medium$ | async; else small">
+    @if (height.medium$ | async) {
       <a [routerLink]="'home'">
         <img [src]="dark.isDark ?'assets/img/Reactome_GSA_dark.svg' :'assets/img/Reactome_GSA_light.svg'">
       </a>
-    </ng-container>
-    <ng-template #small>
+    } @else {
       <a [routerLink]="'home'" style="color: var(--on-surface); text-decoration: none; margin-top: 5px">
         <h1 class="no-margin">Reactome GSA</h1>
       </a>
-    </ng-template>
+    }
 
     <span [style.width]="reactome._elementRef.nativeElement.offsetWidth + 'px'" style="text-align: end">
-            <mat-slide-toggle #darkToggle [(ngModel)]="dark.isDark" class="primary"></mat-slide-toggle>
+      <mat-slide-toggle #darkToggle [(ngModel)]="dark.isDark" class="primary"></mat-slide-toggle>
     </span>
 
   </header>

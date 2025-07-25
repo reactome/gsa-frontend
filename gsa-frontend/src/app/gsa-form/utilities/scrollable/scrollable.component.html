@@ -1,8 +1,12 @@
 <div #scrollable (scroll)="scrolling()" [ngClass]="{'overflow-hide': tourVisible | async, 'tour-active': tour.on, 'small-screen': !(height.medium$ | async)}" id="scroll-container-{{name()}}"
-     class="center-vertical width-hundred relative flex-container align-center justify-center scrollbar">
+  class="center-vertical width-hundred relative flex-container align-center justify-center scrollbar">
   <div class="flex-container vertical justify-center align-center width-98" [ngClass]="innerClasses()">
-    <div *ngIf="shadows.top" class="shadow shadow-top width-hundred"></div>
+    @if (shadows.top) {
+      <div class="shadow shadow-top width-hundred"></div>
+    }
     <ng-content></ng-content>
-    <div *ngIf="shadows.bottom" class="shadow shadow-bottom width-hundred"></div>
+    @if (shadows.bottom) {
+      <div class="shadow shadow-bottom width-hundred"></div>
+    }
   </div>
 </div>

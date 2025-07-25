@@ -7,11 +7,13 @@ parameters: parameters$,
 datasets: datasets$,
 datasetIds: datasetIds$
 } as vm" (selectionChange)="stepChange($event, vm)" class="flex-container" [ngClass]="{'no-tour': !tour.on}"
-                        [animationDuration]="tour.on ? '0' : '500'">
+  [animationDuration]="tour.on ? '0' : '500'">
   <mat-step #setMethodStep [completed]="vm.methodSelected" class="flex-one" [editable]="editable">
 
     <ng-template matStepLabel>Select method</ng-template>
-    <h1 *ngIf="height.medium$ | async">Step 1: Select one of the available analysis methods</h1>
+    @if (height.medium$ | async) {
+      <h1>Step 1: Select one of the available analysis methods</h1>
+    }
 
     <div class="flex-container horizontal gap-one justify-evenly">
       <div class="nav-button-container"></div>
@@ -22,7 +24,7 @@ datasetIds: datasetIds$
       <div class="nav-button-container align-center flex-container justify-center vertical">
         <div class="flex-container align-center vertical nav-button-area margin-top-30" tourAnchor="method.done" clickable>
           <button [disabled]="!setMethodStep.completed" class="primary"
-                  mat-fab matStepperNext>
+            mat-fab matStepperNext>
             <mat-icon>keyboard_arrow_right</mat-icon>
           </button>
         </div>
@@ -34,75 +36,85 @@ datasetIds: datasetIds$
 
   <mat-step #addDataStep [completed]="vm.allSaved" [editable]="editable">
     <ng-template matStepLabel>Add datasets</ng-template>
-    <h1 *ngIf="height.medium$ | async">Step 2: Add and annotate your datasets</h1>
-    <div class="flex-container horizontal gap-one justify-evenly" *ngIf="vm.method">
-      <div class="nav-button-container align-center flex-container justify-center vertical">
-        <div class="flex-container align-center vertical width-hundred">
-          <button class="margin-top-30 primary" mat-fab matStepperPrevious>
-            <mat-icon>keyboard_arrow_left</mat-icon>
-          </button>
-          <div class="outline margin-top-10">Back</div>
-        </div>
-      </div>
-      <gsa-scrollable #scrollable [bottomMargin]="57" class="width-seventy" name="dataset">
-        <mat-accordion (change)="scrollable.updateShadows()"
-                       class="width-hundred flex-container no-wrap justify-center vertical gap-one"
-                       multi="false">
-          <div *ngFor="let id of vm.datasetIds; let i = index ">
-            <gsa-dataset-form [datasetId]="id" [method]="vm.method"
-                              [ngClass]="{'width-hundred': i === 0}"></gsa-dataset-form>
+    @if (height.medium$ | async) {
+      <h1>Step 2: Add and annotate your datasets</h1>
+    }
+    @if (vm.method) {
+      <div class="flex-container horizontal gap-one justify-evenly">
+        <div class="nav-button-container align-center flex-container justify-center vertical">
+          <div class="flex-container align-center vertical width-hundred">
+            <button class="margin-top-30 primary" mat-fab matStepperPrevious>
+              <mat-icon>keyboard_arrow_left</mat-icon>
+            </button>
+            <div class="outline margin-top-10">Back</div>
           </div>
-        </mat-accordion>
-        <div class="margin-top-30">
-          <button (click)="addDataset()" class="primary-border" class="primary" tourAnchor="dataset.add"
-                  mat-stroked-button style="background: var(--surface)">
-            Add Dataset
-          </button>
         </div>
-      </gsa-scrollable>
-
-      <div class="nav-button-container align-center flex-container justify-center vertical">
-        <div class="flex-container align-center vertical margin-top-30 nav-button-area" tourAnchor="dataset.done" clickable>
-          <button [disabled]="!addDataStep.completed" class="primary" mat-fab matStepperNext>
-            <mat-icon>keyboard_arrow_right</mat-icon>
-          </button>
+        <gsa-scrollable #scrollable [bottomMargin]="57" class="width-seventy" name="dataset">
+          <mat-accordion (change)="scrollable.updateShadows()"
+            class="width-hundred flex-container no-wrap justify-center vertical gap-one"
+            multi="false">
+            @for (id of vm.datasetIds; track id; let i = $index) {
+              <div>
+                <gsa-dataset-form [datasetId]="id" [method]="vm.method"
+                [ngClass]="{'width-hundred': i === 0}"></gsa-dataset-form>
+              </div>
+            }
+          </mat-accordion>
+          <div class="margin-top-30">
+            <button (click)="addDataset()" class="primary-border" class="primary" tourAnchor="dataset.add"
+              mat-stroked-button style="background: var(--surface)">
+              Add Dataset
+            </button>
+          </div>
+        </gsa-scrollable>
+        <div class="nav-button-container align-center flex-container justify-center vertical">
+          <div class="flex-container align-center vertical margin-top-30 nav-button-area" tourAnchor="dataset.done" clickable>
+            <button [disabled]="!addDataStep.completed" class="primary" mat-fab matStepperNext>
+              <mat-icon>keyboard_arrow_right</mat-icon>
+            </button>
+          </div>
+          <div class="outline margin-top-10">Continue</div>
         </div>
-        <div class="outline margin-top-10">Continue</div>
       </div>
-
-    </div>
+    }
 
   </mat-step>
   <mat-step #optionStep [editable]="editable">
     <ng-template matStepLabel>Options</ng-template>
-    <h1 *ngIf="height.medium$ | async">Step 3: Analysis Options</h1>
-    <div class="flex-container horizontal gap-one justify-evenly" *ngIf="vm.method">
-      <div class="nav-button-container align-center justify-center flex-container vertical">
-        <div class="flex-container align-center vertical width-hundred">
-          <button class="margin-top-30" class="primary" mat-fab matStepperPrevious>
-            <mat-icon>keyboard_arrow_left</mat-icon>
-          </button>
-          <div class="outline margin-top-10">Back</div>
+    @if (height.medium$ | async) {
+      <h1>Step 3: Analysis Options</h1>
+    }
+    @if (vm.method) {
+      <div class="flex-container horizontal gap-one justify-evenly">
+        <div class="nav-button-container align-center justify-center flex-container vertical">
+          <div class="flex-container align-center vertical width-hundred">
+            <button class="margin-top-30" class="primary" mat-fab matStepperPrevious>
+              <mat-icon>keyboard_arrow_left</mat-icon>
+            </button>
+            <div class="outline margin-top-10">Back</div>
+          </div>
+        </div>
+        <gsa-scrollable [bottomMargin]="57" class="width-seventy" name="options">
+          <gsa-options class="width-hundred"></gsa-options>
+        </gsa-scrollable>
+        <div class="nav-button-container align-center justify-center flex-container vertical">
+          <div class="flex-container align-center vertical margin-top-30 nav-button-area" tourAnchor="options.done" clickable>
+            <button class="primary" mat-fab matStepperNext>
+              <mat-icon>keyboard_arrow_right</mat-icon>
+            </button>
+          </div>
+          <div class="outline margin-top-10">Continue</div>
         </div>
       </div>
-      <gsa-scrollable [bottomMargin]="57" class="width-seventy" name="options">
-        <gsa-options class="width-hundred"></gsa-options>
-      </gsa-scrollable>
-      <div class="nav-button-container align-center justify-center flex-container vertical">
-        <div class="flex-container align-center vertical margin-top-30 nav-button-area" tourAnchor="options.done" clickable>
-          <button class="primary" mat-fab matStepperNext>
-            <mat-icon>keyboard_arrow_right</mat-icon>
-          </button>
-        </div>
-        <div class="outline margin-top-10">Continue</div>
-      </div>
-    </div>
+    }
   </mat-step>
 
 
   <mat-step #analysisStep>
     <ng-template matStepLabel>Analysis</ng-template>
-    <h1 *ngIf="height.medium$ | async">Step 4: Analysis</h1>
+    @if (height.medium$ | async) {
+      <h1>Step 4: Analysis</h1>
+    }
     <div class="flex-container horizontal gap-one justify-evenly">
       <div class="nav-button-container align-center justify-center flex-container vertical">
         <div class="flex-container align-center vertical width-hundred">
@@ -114,7 +126,7 @@ datasetIds: datasetIds$
       </div>
       <gsa-scrollable [bottomMargin]="57" innerClasses="height-hundred" class="width-seventy" name="results">
         <gsa-analysis class="width-hundred height-hundred" (restart)="restartAnalysis()"
-                      tourAnchor="results" style="border-radius: 4px"></gsa-analysis>
+        tourAnchor="results" style="border-radius: 4px"></gsa-analysis>
       </gsa-scrollable>
       <div class="nav-button-container align-center justify-center flex-container"></div>
     </div>

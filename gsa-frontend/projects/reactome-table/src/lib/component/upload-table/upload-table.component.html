@@ -1,14 +1,13 @@
 <input #fileUpload (change)="uploadFile(fileUpload)" class="file-input" type="file">
 
-<ng-container *ngIf="(type$| async) === 'icon'; else stroked">
+@if ((type$| async) === 'icon') {
   <button (click)="fileUpload.click()" color="accent" mat-icon-button
-          matTooltip="Upload your own table data as a csv or tsv">
+    matTooltip="Upload your own table data as a csv or tsv">
     <mat-icon>cloud_download</mat-icon>
   </button>
-</ng-container>
-<ng-template #stroked>
+} @else {
   <button (click)="fileUpload.click()" class="primary" mat-stroked-button>
     Upload table
   </button>
-</ng-template>
+}
 

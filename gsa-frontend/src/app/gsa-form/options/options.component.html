@@ -2,24 +2,28 @@
 
   <mat-card>
     <div class="grey-border flex-container vertical align-center justify-center">
-      <div *ngFor="let param of parameters$ | async; trackBy: paramTracker" class="param-line width-eighty">
-        <gsa-method-parameter *ngIf="param.display_name !== 'Reactome server'"
-                              (parameterChange)="updateParam($event)"
-                              [parameter]="param"></gsa-method-parameter>
-      </div>
+      @for (param of parameters$ | async; track paramTracker($index, param)) {
+        <div class="param-line width-eighty">
+          @if (param.display_name !== 'Reactome server') {
+            <gsa-method-parameter
+              (parameterChange)="updateParam($event)"
+            [parameter]="param"></gsa-method-parameter>
+          }
+        </div>
+      }
     </div>
 
     <br>
-    <div class="outline disclaimer">
-      Disclaimer:
-      We use your email address to send you a message when your Gene Set Analysis request is completed,
-      and your results are available to download.
+      <div class="outline disclaimer">
+        Disclaimer:
+        We use your email address to send you a message when your Gene Set Analysis request is completed,
+        and your results are available to download.
 
-      After this analysis is finished, we do not store your email address.
+        After this analysis is finished, we do not store your email address.
 
-      Furthermore, we do not share your email addresses with any third parties and we do not subscribe your email
-      address to any Reactome mailing list.
-    </div>
+        Furthermore, we do not share your email addresses with any third parties and we do not subscribe your email
+        address to any Reactome mailing list.
+      </div>
 
-  </mat-card>
-</div>
+    </mat-card>
+  </div>
