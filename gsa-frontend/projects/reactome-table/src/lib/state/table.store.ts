@@ -273,38 +273,51 @@ export class TableStore extends ComponentStore<TableState> {
     maxCols: [{value: '', coords: {x: 0, y: 0}}]
   }));
 
-  readonly import = this.updater((state, {table, hasRowNames, hasColNames, fullImport = false}: {
-    table: string[][], hasRowNames: boolean, hasColNames: boolean, fullImport?: boolean
+  readonly import = this.updater((state, {table, hasRowNames, hasColNames, fullImport = false, mapHeaders = true}: {
+    table: string[][], hasRowNames: boolean, hasColNames: boolean, fullImport?: boolean, mapHeaders?: boolean;
   }) => {
-    const nameToRowI = new Map(state.dataset.map((row, i) => [row[0].value, i]));
-    const nameToColI = new Map(state.dataset[0].map((cell, i) => [cell.value, i]));
+    if (mapHeaders) {
+      const nameToRowI = new Map(state.dataset.map((row, i) => [row[0].value, i]));
+      const nameToColI = new Map(state.dataset[0].map((cell, i) => [cell.value, i]));
 
-    for (let yFrom = 0; yFrom < table.length; yFrom++) {
-      let xTo, yTo: number;
-      let rowName = table[yFrom][0];
-      if (hasRowNames && nameToRowI.has(rowName)) { // Row already present
-        yTo = nameToRowI.get(rowName) as number;
-      } else if (fullImport || state.settings.addRow) { // New row to add
-        yTo = state.dataset.push(state.dataset[0].map(() => cell())) - 1;
-        nameToRowI.set(rowName, yTo);
-      } else continue; // skip row since not present and cannot be added
+      for (let yFrom = 0; yFrom < table.length; yFrom++) {
+        let xTo, yTo: number;
+        let rowName = table[yFrom][0];
+        if (hasRowNames && nameToRowI.has(rowName)) { // Row already present
+          yTo = nameToRowI.get(rowName) as number;
+        } else if (fullImport || state.settings.addRow) { // New row to add
+          yTo = state.dataset.push(state.dataset[0].map(() => cell())) - 1;
+          nameToRowI.set(rowName, yTo);
+        } else continue; // skip row since not present and cannot be added
 
-      for (let xFrom = 0; xFrom < table[0].length; xFrom++) {
-        const colName = table[0][xFrom];
-        if (hasColNames && nameToColI.has(colName)) { // Column already present
-          xTo = nameToColI.get(colName) as number;
-        } else if (fullImport || state.settings.addColumn) { // New column to add
-          xTo = pushAll(state.dataset, cell()) - 1;
-          nameToColI.set(colName, xTo);
-          state.maxCols.push({value: colName, coords: {x: xTo, y: yTo}});
-        } else continue; // skip column since not present and cannot be added
+        for (let xFrom = 0; xFrom < table[0].length; xFrom++) {
+          const colName = table[0][xFrom];
+          if (hasColNames && nameToColI.has(colName)) { // Column already present
+            xTo = nameToColI.get(colName) as number;
+          } else if (fullImport || state.settings.addColumn) { // New column to add
+            xTo = pushAll(state.dataset, cell()) - 1;
+            nameToColI.set(colName, xTo);
+            state.maxCols.push({value: colName, coords: {x: xTo, y: yTo}});
+          } else continue; // skip column since not present and cannot be added
 
-        const value = table[yFrom][xFrom].trim();
-        state.dataset[yTo][xTo].value = value;
-        if (value.length > state.maxCols[xTo].value.length) state.maxCols[xTo] = {value, coords: {x: xTo, y: yTo}};
+          const value = table[yFrom][xFrom].trim();
+          state.dataset[yTo][xTo].value = value;
+          if (value.length > state.maxCols[xTo].value.length) state.maxCols[xTo] = {value, coords: {x: xTo, y: yTo}};
+        }
+      }
+    } else { // Simple import without mapping
+      for (let yFrom = 0; yFrom < table.length; yFrom++) {
+        let yTo = state.settings.renameCols ? yFrom : yFrom + 1;
+        if (yTo >= state.dataset.length) state.dataset.push(state.dataset[0].map(() => cell())) ;
+        for (let xFrom = 0; xFrom < table[0].length; xFrom++) {
+          let xTo = state.settings.renameRows ? xFrom : xFrom + 1;
+          if (xTo >= state.dataset[0].length) pushAll(state.dataset, cell());
+          const value = table[yFrom][xFrom].trim();
+          state.dataset[yTo][xTo].value = value;
+          if (value.length > state.maxCols[xTo].value.length) state.maxCols[xTo] = {value, coords: {x: xTo, y: yTo}};
+        }
       }
     }
-
     return Cells.select({...state, dataset: [...state.dataset], maxCols: [...state.maxCols]});
   });
 
@@ -374,23 +387,24 @@ export class TableStore extends ComponentStore<TableState> {
 
 
   // Effects
-  readonly importFileContent = this.effect((file$: Observable<{ content: string, type: 'csv' | 'tsv' }>) => {
+  readonly importFileContent = this.effect((file$: Observable<{ content: string, type: 'csv' | 'tsv' , mapHeaders: boolean}>) => {
     return file$.pipe(
       tap({
-        next: ({content, type}) => this.import({
+        next: ({content, type, mapHeaders}) => this.import({
           table: content.split('\n').map(line => line.split((type == "csv") ? "," : "\t")),
           hasRowNames: true,
-          hasColNames: true
+          hasColNames: true,
+          mapHeaders
         }),
         error: (e) => console.error(e)
       }),
       catchError(() => EMPTY))
   })
 
-  readonly importFile = this.effect((file$: Observable<File>) => {
+  readonly importFile = this.effect((file$: Observable<{file: File, mapHeaders: boolean}>) => {
     return file$.pipe(
-      exhaustMap((file) => fromPromise(file.text()).pipe(
-        tap(content => this.importFileContent({content, type: file.type === 'text/csv' ? 'csv' : 'tsv'})),
+      exhaustMap(({file, mapHeaders}) => fromPromise(file.text()).pipe(
+        tap(content => this.importFileContent({content, type: file.type === 'text/csv' ? 'csv' : 'tsv', mapHeaders})),
         catchError(() => EMPTY))
       ),
     )

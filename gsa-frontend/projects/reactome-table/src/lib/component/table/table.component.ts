@@ -173,7 +173,7 @@ export class TableComponent implements OnInit, OnChanges {
       table: this.table(),
       hasColNames: true,
       hasRowNames: true,
-      fullImport: true
+      fullImport: true,
     })
   }
 
@@ -294,13 +294,14 @@ export class TableComponent implements OnInit, OnChanges {
     this.tableStore.clear();
   }
 
-  importFile(file: File | Observable<File>): void {
+  importFile(file: {file: File, mapHeaders: boolean } | Observable<{file: File, mapHeaders: boolean }>): void {
     this.tableStore.importFile(file)
   }
 
-  importFileContent(fileContent: { content: string, type: 'csv' | 'tsv' } | Observable<{
+  importFileContent(fileContent: { content: string, type: 'csv' | 'tsv' , mapHeaders: boolean} | Observable<{
     content: string,
-    type: 'csv' | 'tsv'
+    type: 'csv' | 'tsv',
+    mapHeaders: boolean
   }>): void {
     this.tableStore.importFileContent(fileContent)
   }
