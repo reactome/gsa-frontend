@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
-import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
-import {Observable, tap} from "rxjs";
-import {TourService} from "ngx-ui-tour-md-menu";
+import {BreakpointObserver, BreakpointState} from "@angular/cdk/layout";
+import {Observable} from "rxjs";
 import {TourUtilsService} from "../services/tour-utils.service";
 import {HeightService} from "../services/height.service";
+import {Settings, numberToLetter} from "reactome-table";
 
 @Component({
     selector: 'gsa-home',
@@ -18,6 +18,21 @@ export class HomeComponent {
     Small: '(min-width: 600px)',
     Medium: '(min-width: 960px)'
   };
+  table: string[][] = range(0, 20_000).map(((row, i) =>
+    range(0, 27).map(((col, j) =>
+        i === 0 ?
+          j === 0 ?
+            '' :
+            numberToLetter(j) :
+          j === 0 ?
+            `${i}` :
+            ``
+    )))
+  );
+  settings: Partial<Settings> = {
+    // deleteCol: false,
+    // deleteRow: false,
+  };
 
   constructor(breakpointObserver: BreakpointObserver, private tour: TourUtilsService, public height: HeightService) {
     this.screenSize$ = breakpointObserver.observe([
@@ -29,4 +44,8 @@ export class HomeComponent {
   startTour() {
     this.tour.start();
   }
+}
+
+function range(from: number, to: number) {
+  return new Array(to - from).fill(0).map((_, i) => from + i);
 }

@@ -7,6 +7,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {LetDirective} from "@ngrx/component";
 import {TourAnchorMatMenuDirective} from "ngx-ui-tour-md-menu";
 import {MatIconModule} from "@angular/material/icon";
+import {ReactomeTableModule} from "reactome-table";
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import {MatIconModule} from "@angular/material/icon";
     LetDirective,
     TourAnchorMatMenuDirective,
     MatIconModule,
+    ReactomeTableModule
   ]
 })
 export class HomeModule {

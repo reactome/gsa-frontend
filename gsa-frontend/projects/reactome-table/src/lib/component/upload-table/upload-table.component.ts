@@ -10,7 +10,7 @@ import {map, Observable} from "rxjs";
     standalone: false
 })
 export class UploadTableComponent implements OnInit {
-    readonly tableStore = input<TableStore>();
+    readonly tableStore = input.required<TableStore>();
 
     type$: Observable<false | 'icon' | 'text'>
 

@@ -2,7 +2,7 @@ import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, viewChil
 import {MatStepper} from "@angular/material/stepper";
 import {Store} from "@ngrx/store";
 import {methodFeature} from "./state/method/method.selector";
-import {filter, firstValueFrom, map, Observable, take, combineLatest, flatMap, tap} from "rxjs";
+import {combineLatest, filter, firstValueFrom, map, Observable, take} from "rxjs";
 import {datasetFeature} from "./state/dataset/dataset.selector";
 import {datasetActions} from "./state/dataset/dataset.actions";
 import {analysisActions} from "./state/analysis/analysis.actions";

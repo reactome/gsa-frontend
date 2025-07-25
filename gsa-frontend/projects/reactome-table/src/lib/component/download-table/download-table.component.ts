@@ -9,8 +9,8 @@ import {TableStore} from "../../state/table.store";
     standalone: false
 })
 export class DownloadTableComponent implements OnInit {
-  readonly name = input<string>();
-  readonly tableStore = input<TableStore>();
+  readonly name = input.required<string>();
+  readonly tableStore = input.required<TableStore>();
 
   type$: Observable<false | 'icon' | 'text'>
 

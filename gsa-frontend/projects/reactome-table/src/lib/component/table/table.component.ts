@@ -1,22 +1,39 @@
 import {
-  AfterViewInit,
   Component,
+  computed,
   ElementRef,
+  input,
   OnChanges,
   OnInit,
   Output,
+  signal,
+  Signal,
   SimpleChanges,
-  input,
-  viewChild, model
+  viewChild
 } from '@angular/core';
 import {Settings} from "../../model/table.model";
 import {Clipboard} from '@angular/cdk/clipboard';
 import {MatButton} from "@angular/material/button";
-import {Cell, Coords, TableStore} from "../../state/table.store";
-import {combineLatest, delay, filter, first, map, Observable, skip} from "rxjs";
-import {isDefined, Mapper, Subset} from "../../model/utils.model";
+import {Cell, Coords, Ranges, TableStore} from "../../state/table.store";
+import {
+  combineLatest,
+  combineLatestWith,
+  delay,
+  distinctUntilChanged,
+  filter,
+  first,
+  map,
+  Observable,
+  share,
+  skip,
+  tap
+} from "rxjs";
+import {isDefined} from "../../model/utils.model";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 import {safeInput} from "../../utils/web-component-utils";
+import {toSignal} from "@angular/core/rxjs-interop";
+import {CdkVirtualScrollViewport} from "@angular/cdk/scrolling";
+
 
 interface SelectedCellRange {
   minX: number
@@ -32,65 +49,113 @@ type Direction = "up" | "down" | "left" | "right";
 type Coord = [number, number];
 type Range = { start: Coord, stop?: Coord };
 
+type Rect = { x: number; y: number, width: number, height: number };
+
 @UntilDestroy()
 @Component({
-    selector: 'reactome-table',
-    templateUrl: './table.component.html',
-    styleUrls: ['./table.component.scss'],
-    providers: [TableStore],
-    standalone: false
+  selector: 'reactome-table',
+  templateUrl: './table.component.html',
+  styleUrls: ['./table.component.scss'],
+  providers: [TableStore],
+  standalone: false
 })
-export class TableComponent implements OnInit, OnChanges, AfterViewInit {
+export class TableComponent implements OnInit, OnChanges {
   readonly input = viewChild.required<ElementRef<HTMLInputElement>>('flyingRename');
   readonly rootRef = viewChild.required<ElementRef<HTMLDivElement>>('root');
-  readonly cornerRef = viewChild.required<ElementRef<HTMLTableCellElement>>('corner');
-  cornerRect?: DOMRect;
-  readonly columnButton = viewChild.required<MatButton>('addCol');
+  readonly viewport = viewChild.required<CdkVirtualScrollViewport>('scrollViewport');
   isDragging: boolean = false;
 
-  readonly userSettings = input<Subset<Settings>>({});
-  readonly table = model.required<string[][]>();
-  readonly name = input<string>();
+  readonly userSettings = input<Partial<Settings>>({});
+  readonly table = input.required<string[][]>();
+  readonly name = input<string>('default-name');
+
+  readonly minColWidth = input<number>(12);
+  readonly rowHeight = input<number>(25);
+  readonly maxHeight = input<number>(500);
+
+  readonly minBufferRows = input<number>(50);
+  readonly maxBufferRows = input<number>(100);
+
+  minBufferPx = computed(() => this.minBufferRows() * this.rowHeight());
+  maxBufferPx = computed(() => this.maxBufferRows() * this.rowHeight());
+
+  height = computed(() => {
+    const BORDER_WIDTH = 1;
+    const height = this.data().length * (this.rowHeight() + BORDER_WIDTH) + BORDER_WIDTH;
+    return height < this.maxHeight() ? height : this.maxHeight();
+  });
+  scrollOffset = signal(0)
 
 
+  data: Signal<Cell[][]>
   data$: Observable<Cell[][]> = this.tableStore.data$;
   start$: Observable<Coords> = this.tableStore.start$;
   stop$: Observable<Coords> = this.tableStore.stop$;
   startCell$: Observable<HTMLTableCellElement> = this.start$.pipe(
+    distinctUntilChanged(Ranges.equals),
     delay(0), // Allow resizing of cell before updating size of input
-    map(start => this.getHTMLCellElement(start.x, start.y))
+    tap(start => {
+      if (start.y < this.viewport().getRenderedRange().start || start.y > this.viewport().getRenderedRange().end) {
+        this.viewport().scrollToIndex(start.y, 'instant')
+      }
+    }),
+    delay(0), // Make sure cell is rendered after having been scrolled to
+    map(start => this.getHTMLCellElement(start.x, start.y)),
+    tap((cell) => {
+      cell.scrollIntoView({block: 'nearest', inline: 'nearest', behavior: 'instant'})
+      if (isHiddenBehindSticky(cell, this.viewport().elementRef.nativeElement, this.rowHeight()))
+        scrollToElementManually(cell, this.viewport().elementRef.nativeElement, this.rowHeight())
+    }),
+    share()
   );
+  startClasses$: Observable<Record<string | number, boolean>> = combineLatest([this.startCell$, this.tableStore.hasFocus$],
+    (start, hasFocus) =>
+      Array.from(start?.classList || [])
+        .reduce((o, clazz) => ({...o, [clazz]: true}), {'visible': hasFocus} as Record<string | number, boolean>));
+  inputLevel$: Observable<number> = this.start$.pipe(map(start => start.x === 0 ? 6 : start.y === 0 ? 4 : 2));
+  inputValue$: Observable<string> = this.tableStore.value$;
+  maxColumns$ = this.tableStore.maxColumns$;
+
   startCoords$: Observable<DOMRect> = this.startCell$.pipe(
     filter(isDefined),
-    map(cell => ({cell, cellRect: cell.getBoundingClientRect()})),
-    map(({cell, cellRect}) => {
+    combineLatestWith(this.inputValue$),
+    distinctUntilChanged(),
+    delay(0),
+    map(([cell, value]) => {
+      const cellRect = cell.getBoundingClientRect();
+      console.log(cell, value)
       if (!cellRect) return cellRect;
-      const tablePosition = this.rootRef()?.nativeElement;
-      const tableCoords = tablePosition?.getBoundingClientRect();
-      cellRect.x += tablePosition?.scrollLeft - tableCoords?.x;
-      cellRect.y += tablePosition?.scrollTop - tableCoords?.y;
+      const tableCoords = this.viewport().elementRef.nativeElement.getBoundingClientRect()
+      cellRect.x += this.viewport().measureScrollOffset('left') - tableCoords?.x;
+      cellRect.y += this.viewport().measureScrollOffset('top') - tableCoords?.y;
       let style = window.getComputedStyle(cell);
       cellRect.width -= (parseFloat(style.getPropertyValue('padding-left')) + parseFloat(style.getPropertyValue('padding-right')));
       cellRect.height -= (parseFloat(style.getPropertyValue('padding-top')) + parseFloat(style.getPropertyValue('padding-bottom')));
       return cellRect;
     })
   );
-  startClasses$: Observable<Mapper<boolean>> = combineLatest([this.startCell$, this.tableStore.hasFocus$],
-    (start, hasFocus) =>
-      Array.from(start?.classList || [])
-        .reduce((o, clazz) => ({...o, [clazz]: true}), {'visible': hasFocus} as Mapper<boolean>));
-  inputLevel$: Observable<number> = this.start$.pipe(map(start => start.x === 0 ? 6 : start.y === 0 ? 4 : 2));
-  inputValue$: Observable<string> = this.tableStore.value$;
+
   settings$: Observable<Settings> = this.tableStore.settings$;
   value: string;
 
+  @Output() tableChange: Observable<string[][]> = this.data$.pipe(
+    skip(1),
+    map((data) => data.map(row => row.map(cell => cell.value)))
+  );
 
   constructor(private clipboard: Clipboard, public readonly tableStore: TableStore) {
+    this.data = toSignal(this.tableStore.data$, {
+      initialValue: [[{
+        value: '',
+        selected: false,
+        visibility: 'visible'
+      }]]
+    });
   }
 
   ngOnInit(): void {
     safeInput(this, 'table');
-    safeInput(this,'userSettings');
+    safeInput(this, 'userSettings');
 
     //Initialize settings
     this.tableStore.settings({settings: this.userSettings()});
@@ -113,11 +178,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     })
   }
 
-  ngAfterViewInit() {
-    this.cornerRect = this.cornerRef()?.nativeElement.getBoundingClientRect();
-  }
-
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['userSettings'] && !changes['userSettings'].firstChange) this.tableStore.settings({settings: this.userSettings()});
   }
@@ -134,8 +194,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   focusInput() {
     const input = this.input()?.nativeElement;
     input?.focus();
-    input?.setSelectionRange(input?.value.length, input?.value.length)
-    input?.scrollIntoView({block: "nearest", inline: "nearest", behavior: 'smooth'});
   }
 
   selectCell(x: number, y: number, shift: boolean = false) {
@@ -169,11 +227,14 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
 
   addRow() {
     this.tableStore.addRow();
-
   }
 
   deleteColumn(x: number) {
     this.tableStore.deleteColumn({x});
+  }
+
+  deleteRow(y: number) {
+    this.tableStore.deleteRow({y});
   }
 
   focusLastCell($event: any) {
@@ -221,7 +282,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   getHTMLCellElement(x: number, y: number): HTMLTableCellElement {
-    return this.rootRef()?.nativeElement.querySelector(`[x = '${x}'][y = '${y}']`) as HTMLTableCellElement;
+    return this.rootRef()?.nativeElement.querySelector(`[x='${x}'][y='${y}']`) as HTMLTableCellElement;
   }
 
   getCell($event: MouseEvent): Coords {
@@ -230,4 +291,53 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     return {x, y};
   }
 
+  clear(): void {
+    this.tableStore.clear();
+  }
+
+  importFile(file: File | Observable<File>): void {
+    this.tableStore.importFile(file)
+  }
+
+  importFileContent(fileContent: { content: string, type: 'csv' | 'tsv' } | Observable<{
+    content: string,
+    type: 'csv' | 'tsv'
+  }>): void {
+    this.tableStore.importFileContent(fileContent)
+  }
+
+  exportFile(): void {
+    const dlink: HTMLAnchorElement = document.createElement('a');
+    dlink.download = `${this.name()}.csv`; // the file name
+    this.tableStore.rawData$.pipe(first()).subscribe(
+      table => {
+        dlink.href = encodeURI('data:text/tsv;charset=utf-8,' + table.map(row => row.join("\t")).join("\n"));
+        dlink.click(); // this will trigger the dialog window
+        dlink.remove();
+      }
+    )
+  }
+
+
+  adjustPlaceholder() {
+    this.scrollOffset.set(this.viewport().getRenderedRange().start * this.rowHeight())
+  }
+}
+
+
+function isHiddenBehindSticky(el: HTMLElement, container: HTMLElement, stickyHeight = 60): boolean {
+  const containerTop = container.getBoundingClientRect().top;
+  const elementTop = el.getBoundingClientRect().top;
+  const offset = elementTop - containerTop;
+  return offset <= stickyHeight;
+}
+
+function scrollToElementManually(el: HTMLElement, container: HTMLElement, stickyHeight = 60) {
+  const containerTop = container.getBoundingClientRect().top;
+  const elementTop = el.getBoundingClientRect().top;
+  const offset = elementTop - containerTop;
+  container.scrollTo({
+    top: container.scrollTop + offset - stickyHeight,
+    behavior: 'instant',
+  });
 }

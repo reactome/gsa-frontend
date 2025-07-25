@@ -2,7 +2,7 @@ import {Component, OnInit, input} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
-import {filter, map, Observable} from "rxjs";
+import {filter, map, Observable, tap} from "rxjs";
 import {Store} from "@ngrx/store";
 import {PDataset} from "../../../state/dataset/dataset.state";
 import {Subset} from "../../../model/utils.model";
@@ -24,7 +24,7 @@ export class AnnotateDatasetComponent implements OnInit {
   dataset$: Observable<PDataset | undefined>
   annotations$ : Observable<string[][]>
   annotateDataStep: FormGroup;
-  tableSettings: Subset<Settings>;
+  tableSettings: Partial<Settings>;
   screenIsSmall: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private responsive: BreakpointObserver, private store: Store) {
@@ -37,9 +37,12 @@ export class AnnotateDatasetComponent implements OnInit {
   ngOnInit() {
     this.tableSettings = {
       renameRows: false,
-      addRow: false
+      addRow: false,
+      extendOnImport: false,
+      deleteRow: false,
     };
-    this.dataset$ = this.store.select(datasetFeature.selectDataset(this.datasetId()));
+    this.dataset$ = this.store.select(datasetFeature.selectDataset(this.datasetId()))
+      .pipe(tap(dataset => {console.log(dataset)}));
     this.annotations$ = this.dataset$.pipe(
       filter(isDefined),
       map(d => d.annotations),

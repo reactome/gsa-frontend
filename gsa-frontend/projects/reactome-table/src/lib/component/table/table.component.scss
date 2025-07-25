@@ -1,10 +1,34 @@
+@use '@angular/material' as mat;
+
 .table-container {
-  overflow: auto;
+  //overflow: auto;
   //max-height: 20vh;
 
   //border: 1px solid var(--outline);
 
   //justify-content: safe center;
+
+  .viewport {
+    width: 100%;
+  }
+}
+
+:host {
+  ::ng-deep .cdk-virtual-scroll-content-wrapper {
+    transform: translateY(0px) !important;
+  }
+}
+
+.virtual-placeholder {
+  .cell {
+    height: 0 !important;
+    visibility: collapse;
+    line-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin: 0;
+    border-bottom: 0 !important;
+  }
 }
 
 table.spreadsheet {
@@ -28,12 +52,20 @@ table.spreadsheet {
   td.cell, th.rows, th.columns {
     border-color: var(--outline-variant);
     border-style: solid;
+    height: var(--row-height);
+    box-sizing: border-box;
+    scroll-margin-top: var(--scroll-margin-top);
+    scroll-margin-left: var(--scroll-margin-left);
   }
 
   th.columns, td.add-column-button-container {
     top: 0;
     border-width: 1px 1px 1px 0;
     border-color: var(--primary);
+
+    .bin-button {
+      margin-right: -7px;
+    }
 
     &:nth-child(2) {
       border-width: 1px 1px 1px 1px;
@@ -42,12 +74,18 @@ table.spreadsheet {
 
   th.rows {
     left: 0;
-    height: 23px;
+    height: var(--row-height);
     border-width: 0 1px 1px 1px;
+
+    .bin-button {
+      margin-left: -7px;
+    }
+
     &[y='0'] { // Top left corner
       z-index: 6;
       top: 0;
       border-width: 1px 1px 1px 1px;
+
       * {
         visibility: hidden;
       }
@@ -59,7 +97,6 @@ table.spreadsheet {
     position: relative;
   }
 }
-
 
 
 .no-padding {
@@ -78,17 +115,23 @@ table.spreadsheet {
 }
 
 .sticky {
-  height: 10px;
+  --height: 30px;
+  height: var(--height);
   position: sticky;
-  bottom: calc(50% - 10px);
-  top: calc(50% - 10px);
+  bottom: calc(50% - calc(var(--height) / 2));
+  top: calc(50% - calc(var(--height) / 2));
 }
 
 .add-column-button {
-  width: 100%;
-  height: 100%;
   margin: 0px;
   border-radius: 0px;
+  height: 100%;
+  width: 100%;
+  //position: absolute;
+  //inset: 0;
+  ::ng-deep .mdc-button__label {
+    height: 100%;
+  }
 }
 
 .add-column-button:focus-visible {
@@ -98,6 +141,21 @@ table.spreadsheet {
 
 .bin-button:focus-visible {
   outline: none !important;
+}
+
+.bin-button {
+  @include mat.icon-button-overrides((
+    icon-size: 18px,
+    state-layer-size: var(--row-height),
+    touch-target-display: none,
+    icon-color: currentColor,
+  ));
+
+  .mat-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+  }
 }
 
 .cell {
@@ -120,7 +178,7 @@ table.spreadsheet {
 .columns {
   z-index: 3;
   text-align: left;
-  padding: 0 10px;
+  //padding: 0 10px;
   font-weight: 700;
   color: var(--on-primary-container);
   background: var(--primary-container);

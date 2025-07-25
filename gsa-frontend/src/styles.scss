@@ -4,12 +4,14 @@
 @use "ngx-reactome-style";
 @use "reactome-table";
 
-@include ngx-reactome-style.theme();
 @include reactome-table.configure-table();
+@include ngx-reactome-style.theme();
 
 html, body {
   max-height: 100vh;
   font: var(--mat-sys-body-medium);
+  --hover: rgb(0 0 0 / 7%);
+
   &.dark {
     --hover: rgb(255 255 255 / 7%);
     --shadow-color: rgb(5, 3, 3);
@@ -223,6 +225,10 @@ h2 {
 
 .gap-one {
   gap: 1em;
+}
+
+.text-align-center {
+  text-align: center;
 }
 
 .align-center {

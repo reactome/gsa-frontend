@@ -1,5 +1,3 @@
-import {Mapper} from "./utils.model";
-
 export class CellInfo {
   value: any
   x : number
@@ -14,14 +12,24 @@ export class CellInfo {
   }
 }
 
-export interface Settings extends Mapper<boolean | string>{
+export interface Settings {
   renameCols: boolean;
   renameRows: boolean;
   changeCells: boolean;
+
+  extendOnImport: boolean;
+
+  rowToBeAdded: number;
+  colToBeAdded: number;
+
   addColumn: boolean;
   addRow: boolean;
+
   showCols: boolean;
   showRows: boolean;
+
+  deleteRow: boolean;
+  deleteCol: boolean;
 
   uploadButton: 'icon' | 'text' | false;
   downloadButton: 'icon' | 'text' | false;
