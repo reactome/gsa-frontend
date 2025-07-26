@@ -35,6 +35,10 @@ export class HomeComponent {
   startTour() {
     this.tour.start();
   }
+
+  onTableChange($event: string[][]) {
+    console.log($event);
+  }
 }
 
 function range(from: number, to: number) {

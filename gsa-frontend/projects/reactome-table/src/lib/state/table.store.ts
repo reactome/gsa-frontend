@@ -94,13 +94,25 @@ export class TableStore extends ComponentStore<TableState> {
 // Readers (Selectors)
 
   readonly data$ = this.select(state => state.dataset);
+  readonly cleanData$ = this.select(state => {
+    let table = state.dataset;
+
+    if (state.numberOfColumns && state.numberOfRows) {
+      const origin = Ranges.origin(state);
+
+      const firstEmptyRowIndex = table.findIndex((row) => row.at(origin.x + 1)?.value.length === 0);
+      const firstEmptyColIndex = table.at(origin.y + 1)?.findIndex((cell) => cell.value.length === 0) || -1;
+      table = table.slice(origin.y, firstEmptyRowIndex).map(row => row.slice(origin.x, firstEmptyColIndex));
+    }
+
+    return table.map(row => row.map(cell => cell.value));
+  });
   readonly start$ = this.select(state => state.start);
   readonly stop$ = this.select(state => state.stop);
   readonly settings$ = this.select(state => state.settings);
   readonly hasFocus$ = this.select(state => state.hasFocus);
   readonly maxColumns$ = this.select(state => state.maxCols);
 
-  readonly rawData$ = this.select(state => state.dataset.map(row => row.map(cell => cell.value)));
   readonly value$ = this.select(state => state.dataset[state.start.y][state.start.x].value);
   readonly colNames$ = this.select(state => state.dataset[0].slice(1).map(cell => cell.value));
   readonly rowNames$ = this.select(state => state.dataset.slice(1).map(cell => cell[0].value));
@@ -296,7 +308,7 @@ export class TableStore extends ComponentStore<TableState> {
       start: {x: 0, y: 0},
       stop: {x: 0, y: 0},
       dataset: dataset,
-      maxCols: dataset[0].map((cell, x) => ({value: cell.value, coords:{x, y:0}}))
+      maxCols: dataset[0].map((cell, x) => ({value: cell.value, coords: {x, y: 0}}))
     });
   });
 
@@ -309,8 +321,13 @@ export class TableStore extends ComponentStore<TableState> {
     if (numberOfRows && numberOfColumns) {
       const {renameCols, renameRows, importMapHeaders} = state.settings;
       this.settings({settings: {importMapHeaders: false, renameRows: true, renameCols: true}});
-      this.import({table: generateTable(numberOfColumns, numberOfRows), hasRowNames: true, hasColNames: true, fullImport: true});
-      this.settings({settings:{renameCols, renameRows, importMapHeaders}})
+      this.import({
+        table: generateTable(numberOfColumns, numberOfRows),
+        hasRowNames: true,
+        hasColNames: true,
+        fullImport: true
+      });
+      this.settings({settings: {renameCols, renameRows, importMapHeaders}})
     }
 
     if (table) this.import({table, hasRowNames: true, hasColNames: true, fullImport: true});
