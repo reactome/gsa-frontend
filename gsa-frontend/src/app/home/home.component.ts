@@ -19,6 +19,7 @@ export class HomeComponent {
     Medium: '(min-width: 960px)'
   };
   settings: Partial<Settings> = {
+    importMapHeaders: false,
     deleteCol: false,
     deleteRow: false,
     renameRows: false,
