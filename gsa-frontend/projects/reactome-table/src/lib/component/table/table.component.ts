@@ -63,11 +63,15 @@ export class TableComponent implements OnInit, OnChanges {
   readonly input = viewChild.required<ElementRef<HTMLInputElement>>('flyingRename');
   readonly rootRef = viewChild.required<ElementRef<HTMLDivElement>>('root');
   readonly viewport = viewChild.required<CdkVirtualScrollViewport>('scrollViewport');
-  isDragging: boolean = false;
+  isDraggingMouse: boolean = false;
+  isDraggingFile: boolean = false;
 
   readonly userSettings = input<Partial<Settings>>({});
-  readonly table = input.required<string[][]>();
+  readonly table = input<string[][]>();
   readonly name = input<string>('default-name');
+
+  readonly numberOfColumns = input<number | undefined>(undefined);
+  readonly numberOfRows = input<number | undefined>(undefined);
 
   readonly minColWidth = input<number>(12);
   readonly rowHeight = input<number>(25);
@@ -169,11 +173,10 @@ export class TableComponent implements OnInit, OnChanges {
       untilDestroyed(this)
     ).subscribe(value => this.value = value);
 
-    this.tableStore.import({
+    this.tableStore.init({
       table: this.table(),
-      hasColNames: true,
-      hasRowNames: true,
-      fullImport: true,
+      numberOfRows: this.numberOfRows(),
+      numberOfColumns: this.numberOfColumns(),
     })
   }
 
@@ -183,7 +186,7 @@ export class TableComponent implements OnInit, OnChanges {
 
 
   mousedown($event: MouseEvent) {
-    this.isDragging = true;
+    this.isDraggingMouse = true;
     let {x, y} = this.getCell($event);
     this.tableStore.write({value: this.value});
     this.selectCell(x, y, $event.shiftKey);
@@ -205,7 +208,7 @@ export class TableComponent implements OnInit, OnChanges {
   private previousStop: Coords;
 
   mousemove($event: MouseEvent) {
-    if (this.isDragging) {
+    if (this.isDraggingMouse) {
       let stop = this.getCell($event);
       if (this.previousStop?.x !== stop.x || this.previousStop?.y !== stop.y) this.tableStore.selectRange({stop});
       this.previousStop = stop;
@@ -213,7 +216,7 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   mouseup() {
-    this.isDragging = false;
+    this.isDraggingMouse = false;
   }
 
   deselect() {
@@ -294,16 +297,12 @@ export class TableComponent implements OnInit, OnChanges {
     this.tableStore.clear();
   }
 
-  importFile(file: {file: File, mapHeaders: boolean } | Observable<{file: File, mapHeaders: boolean }>): void {
-    this.tableStore.importFile(file)
+  importFile(file: File, replace = true ): void {
+    this.tableStore.importFile({file, replace});
   }
 
-  importFileContent(fileContent: { content: string, type: 'csv' | 'tsv' , mapHeaders: boolean} | Observable<{
-    content: string,
-    type: 'csv' | 'tsv',
-    mapHeaders: boolean
-  }>): void {
-    this.tableStore.importFileContent(fileContent)
+  importFileContent(fileContent: { content: string, type: 'csv' | 'tsv' }, replace = true): void {
+    this.tableStore.importFileContent({...fileContent, replace})
   }
 
   exportFile(): void {
@@ -323,8 +322,32 @@ export class TableComponent implements OnInit, OnChanges {
     this.scrollOffset.set(this.viewport().getRenderedRange().start * this.rowHeight())
   }
 
-  trackByIndex: TrackByFunction<any> = <T>(index: number, element: T)=> {
+  trackByIndex: TrackByFunction<any> = <T>(index: number, element: T) => {
     return index
+  }
+
+  onDropFile($event: DragEvent) {
+    $event.preventDefault();
+    this.isDraggingFile = false;
+    if (!$event.dataTransfer) return
+
+    const firstFile = $event.dataTransfer.items ?
+      Array.from($event.dataTransfer.items)
+        .filter((item) => item.kind === 'file') // If dropped items aren't files, reject them
+        .map((item) => item.getAsFile()!)?.[0] :
+      $event.dataTransfer.files?.[0];
+
+    if (firstFile) this.importFile(firstFile)
+  }
+
+  onDragEnter() {
+    this.isDraggingFile = true;
+  }
+
+  onDragLeave($event: DragEvent, origin: any) {
+    if ($event.target === origin) {
+      this.isDraggingFile = false
+    }
   }
 }
 

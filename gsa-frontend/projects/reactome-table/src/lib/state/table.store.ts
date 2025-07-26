@@ -1,8 +1,8 @@
 import {Settings} from "../model/table.model";
 import {Injectable} from "@angular/core";
 import {ComponentStore} from "@ngrx/component-store";
-import {height, numberToLetter, pushAll, width} from "../utils/table.util";
-import {catchError, EMPTY, exhaustMap, Observable, tap} from "rxjs";
+import {generateTable, generateTableCell, height, numberToLetter, pushAll, width} from "../utils/table.util";
+import {map} from "rxjs";
 import {fromPromise} from "rxjs/internal/observable/innerFrom";
 import {initialUndoRedoState, UndoRedoState} from "ngrx-wieder";
 
@@ -19,6 +19,8 @@ export interface TableState extends UndoRedoState {
   start: Coords,
   stop: Coords,
   selectedCoords: Coords[],
+  numberOfRows: number | undefined,
+  numberOfColumns: number | undefined,
   hasFocus: boolean,
   settings: Settings
 }
@@ -34,18 +36,19 @@ export interface Cell {
   visibility: 'hidden' | 'visible';
 }
 
-export let EMPTY_CELL: Cell = {value: '', selected: false, visibility: 'visible'};
-
 export const cell = (value = '', selected = false, visibility: 'hidden' | 'visible' = 'visible'): Cell => ({
   value,
   selected,
   visibility
 });
 
-function addColumn(state: TableState) {
+export let EMPTY_CELL: Cell = cell();
+
+function addColumn(state: TableState, columnName?: string) {
   const x = pushAll(state.dataset, cell()) - 1;
-  const value = numberToLetter(x);
+  const value = columnName || numberToLetter(x);
   state.dataset[0][x].value = value;
+  state.maxCols.push({value, coords: {x: x, y: 0}});
   return {x, value};
 }
 
@@ -64,6 +67,8 @@ export class TableStore extends ComponentStore<TableState> {
       start: {x: 0, y: 0},
       stop: {x: 0, y: 0},
       maxCols: [{value: '', coords: {x: 0, y: 0}}],
+      numberOfRows: undefined,
+      numberOfColumns: undefined,
       selectedCoords: [],
       hasFocus: false,
       settings: {
@@ -79,6 +84,7 @@ export class TableStore extends ComponentStore<TableState> {
         showCols: true,
         deleteRow: true,
         deleteCol: true,
+        importMapHeaders: true,
         uploadButton: "text",
         downloadButton: "text"
       },
@@ -249,7 +255,7 @@ export class TableStore extends ComponentStore<TableState> {
     for (let y = range.y.min; y <= range.y.max; y++) {
       for (let x = range.x.min; x <= range.x.max; x++) {
         state.dataset[y][x].value = '';
-        if (Ranges.equals(state.maxCols[x].coords, {x,y})) colsToGetMax.add(x);
+        if (Ranges.equals(state.maxCols[x].coords, {x, y})) colsToGetMax.add(x);
       }
     }
     colsToGetMax.forEach(x => state.maxCols[x] = Ranges.findMaximumOfColumn(state, x));
@@ -264,11 +270,14 @@ export class TableStore extends ComponentStore<TableState> {
       const yTo = range.y.min + yFrom;
       for (let xFrom = 0; xFrom < table[yFrom].length; xFrom++) {
         const xTo = range.x.min + xFrom;
-        if (state.dataset[yTo] && state.dataset[yTo][xTo]){
+        if (state.dataset[yTo] && state.dataset[yTo][xTo]) {
           const value = table[yFrom][xFrom].trim();
           const maxCol = state.maxCols[xTo];
           state.dataset[yTo][xTo].value = value;
-          if (value.length > maxCol.value.length || Ranges.equals(maxCol.coords, {x: xTo, y: yTo})) colsToGetMax.add(xTo);
+          if (value.length > maxCol.value.length || Ranges.equals(maxCol.coords, {
+            x: xTo,
+            y: yTo
+          })) colsToGetMax.add(xTo);
         }
       }
     }
@@ -278,18 +287,39 @@ export class TableStore extends ComponentStore<TableState> {
     return Cells.select({...state, dataset: [...state.dataset], maxCols: [...state.maxCols]});
   });
 
-  readonly clear = this.updater((state) => ({
-    ...state,
-    start: {x: 0, y: 0},
-    stop: {x: 0, y: 0},
-    dataset: [[cell()]],
-    maxCols: [{value: '', coords: {x: 0, y: 0}}]
-  }));
+  readonly clear = this.updater((state) => {
+    const dataset = state.numberOfRows && state.numberOfColumns ? generateTableCell(state.numberOfColumns, state.numberOfRows) : [[cell()]];
+    return ({
+      ...state,
+      start: {x: 0, y: 0},
+      stop: {x: 0, y: 0},
+      dataset: dataset,
+      maxCols: dataset[0].map((cell, x) => ({value: cell.value, coords:{x, y:0}}))
+    });
+  });
 
-  readonly import = this.updater((state, {table, hasRowNames, hasColNames, fullImport = false, mapHeaders = true}: {
-    table: string[][], hasRowNames: boolean, hasColNames: boolean, fullImport?: boolean, mapHeaders?: boolean;
+  readonly init = this.updater((state, {table, numberOfRows, numberOfColumns}: {
+    table?: string[][],
+    numberOfRows?: number,
+    numberOfColumns?: number
   }) => {
-    if (mapHeaders) {
+    if (!table && !(numberOfRows && numberOfColumns)) throw new Error("Needs no provide either a table, or a table template with numberOfColumns and numberOfRows");
+    if (numberOfRows && numberOfColumns) {
+      const {renameCols, renameRows, importMapHeaders} = state.settings;
+      this.settings({settings: {importMapHeaders: false, renameRows: true, renameCols: true}});
+      this.import({table: generateTable(numberOfColumns, numberOfRows), hasRowNames: true, hasColNames: true, fullImport: true});
+      this.settings({settings:{renameCols, renameRows, importMapHeaders}})
+    }
+
+    if (table) this.import({table, hasRowNames: true, hasColNames: true, fullImport: true});
+    return {...state, numberOfRows, numberOfColumns};
+  })
+
+  readonly import = this.updater((state, {table, hasRowNames, hasColNames, fullImport = false}: {
+    table: string[][], hasRowNames: boolean, hasColNames: boolean, fullImport?: boolean;
+  }) => {
+    console.log('Importing file', table)
+    if (state.settings.importMapHeaders) {
       const nameToRowI = new Map(state.dataset.map((row, i) => [row[0].value, i]));
       const nameToColI = new Map(state.dataset[0].map((cell, i) => [cell.value, i]));
 
@@ -308,24 +338,24 @@ export class TableStore extends ComponentStore<TableState> {
           if (hasColNames && nameToColI.has(colName)) { // Column already present
             xTo = nameToColI.get(colName) as number;
           } else if (fullImport || state.settings.addColumn) { // New column to add
-            xTo = pushAll(state.dataset, cell()) - 1;
+            xTo = addColumn(state, colName).x
             nameToColI.set(colName, xTo);
-            state.maxCols.push({value: colName, coords: {x: xTo, y: yTo}});
           } else continue; // skip column since not present and cannot be added
 
-          const value = table[yFrom][xFrom].trim();
+          const value = (table[yFrom][xFrom] || '').trim();
           state.dataset[yTo][xTo].value = value;
           if (value.length > state.maxCols[xTo].value.length) state.maxCols[xTo] = {value, coords: {x: xTo, y: yTo}};
         }
       }
     } else { // Simple import without mapping
+
       for (let yFrom = 0; yFrom < table.length; yFrom++) {
         let yTo = state.settings.renameCols ? yFrom : yFrom + 1;
         if (yTo >= state.dataset.length) addRow(state)
         for (let xFrom = 0; xFrom < table[0].length; xFrom++) {
           let xTo = state.settings.renameRows ? xFrom : xFrom + 1;
           if (xTo >= state.dataset[0].length) addColumn(state)
-          const value = table[yFrom][xFrom].trim();
+          const value = (table[yFrom][xFrom] || '').trim();
           state.dataset[yTo][xTo].value = value;
           if (value.length > state.maxCols[xTo].value.length) state.maxCols[xTo] = {value, coords: {x: xTo, y: yTo}};
         }
@@ -335,10 +365,8 @@ export class TableStore extends ComponentStore<TableState> {
   });
 
   readonly addColumn = this.updater((state) => {
-    const {x, value} = addColumn(state);
-    const coords = {x, y: 0};
-    state.maxCols.push({value, coords})
-    state.start = coords;
+    const {x} = addColumn(state);
+    state.start = {x, y: 0};
     state.stop = state.start;
     state.hasFocus = true;
     return Cells.select({...state, dataset: [...state.dataset]});
@@ -395,29 +423,26 @@ export class TableStore extends ComponentStore<TableState> {
     },
   }));
 
-
-  // Effects
-  readonly importFileContent = this.effect((file$: Observable<{ content: string, type: 'csv' | 'tsv' , mapHeaders: boolean}>) => {
-    return file$.pipe(
-      tap({
-        next: ({content, type, mapHeaders}) => this.import({
-          table: content.split('\n').map(line => line.split((type == "csv") ? "," : "\t")),
-          hasRowNames: true,
-          hasColNames: true,
-          mapHeaders
-        }),
-        error: (e) => console.error(e)
-      }),
-      catchError(() => EMPTY))
+  readonly importFileContent = this.updater((state, {content, type, replace}: {
+    content: string,
+    type: 'csv' | 'tsv',
+    replace?: boolean
+  }) => {
+    if (replace) this.clear()
+    this.import({
+      table: content.split('\n').map(line => line.split((type == "csv") ? "," : "\t")),
+      hasRowNames: true,
+      hasColNames: true
+    })
+    return state
   })
 
-  readonly importFile = this.effect((file$: Observable<{file: File, mapHeaders: boolean}>) => {
-    return file$.pipe(
-      exhaustMap(({file, mapHeaders}) => fromPromise(file.text()).pipe(
-        tap(content => this.importFileContent({content, type: file.type === 'text/csv' ? 'csv' : 'tsv', mapHeaders})),
-        catchError(() => EMPTY))
-      ),
-    )
+  readonly importFile = this.updater((state, {file, replace}: { file: File, replace?: boolean }) => {
+    this.importFileContent(
+      fromPromise(file.text()).pipe(
+        map(content => ({content, type: file.type === 'text/csv' ? 'csv' : 'tsv', replace}))
+      ))
+    return state;
   })
 }
 

@@ -1,5 +1,12 @@
 <ng-container *ngrxLet="settings$ as settings">
-  <div #root class="table-container flex horizontal relative" (blur)="deselect()">
+  <div #root class="table-container flex horizontal relative" (blur)="deselect()"
+       (drop)="onDropFile($event)"
+       (dragover)="$event.preventDefault()"
+       (dragenter)="onDragEnter()"
+       (dragleave)="onDragLeave($event, root)"
+       (dragend)="isDraggingFile = false"
+       [class.dragging]="isDraggingFile"
+  >
     <cdk-virtual-scroll-viewport #scrollViewport (scrolledIndexChange)="adjustPlaceholder()"
                                  [itemSize]="rowHeight()" [minBufferPx]="minBufferPx()" [maxBufferPx]="maxBufferPx()"
                                  [style.height.px]="height()" [style.--row-height.px]="rowHeight()" class="viewport">
@@ -110,7 +117,7 @@
 
   @if (settings.uploadButton || settings.downloadButton) {
     <div class="flex-container horizontal gap-one justify-center margin-top-20">
-      <reactome-table-upload [tableStore]="tableStore"></reactome-table-upload>
+      <reactome-table-upload [tableStore]="tableStore" [class.active]="isDraggingFile"></reactome-table-upload>
       <reactome-table-download [name]="name()" [tableStore]="tableStore"></reactome-table-download>
     </div>
   }

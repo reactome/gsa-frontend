@@ -31,6 +31,8 @@ export interface Settings {
   deleteRow: boolean;
   deleteCol: boolean;
 
+  importMapHeaders: boolean;
+
   uploadButton: 'icon' | 'text' | false;
   downloadButton: 'icon' | 'text' | false;
 }
