@@ -265,11 +265,14 @@ export class TableStore extends ComponentStore<TableState> {
   readonly paste = this.updater((state, {table}: { table: string[][] }) => {
     const range = Ranges.minMax(state.start, state.stop);
     const colsToGetMax = new Set<number>()
+    const isGenerated = state.numberOfColumns && state.numberOfRows;
 
     for (let yFrom = 0; yFrom < table.length; yFrom++) {
       const yTo = range.y.min + yFrom;
+      if (isGenerated && yTo >= state.dataset.length) addRow(state)
       for (let xFrom = 0; xFrom < table[yFrom].length; xFrom++) {
         const xTo = range.x.min + xFrom;
+        if (isGenerated && xTo >= state.dataset[0].length) addColumn(state)
         if (state.dataset[yTo] && state.dataset[yTo][xTo]) {
           const value = table[yFrom][xFrom].trim();
           const maxCol = state.maxCols[xTo];
