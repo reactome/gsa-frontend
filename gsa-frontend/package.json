@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "ng": "ng",
-    "watch": "npm-run-all --parallel watch-lib:* serve",
+    "watch": "rm -rf dist; npm-run-all --parallel watch-lib:* serve",
     "serve": "wait-on dist/reactome-table/public-api.d.ts && ng serve --proxy-config src/proxy.conf.json",
     "start-verbose": "ng serve --verbose",
     "build": "ng build",
