@@ -41,7 +41,7 @@
                       [style.min-width.px]="minColWidth()">
                     <div [attr.x]="x" [attr.y]="y" class="flex horizontal align-center justify-center">
                       <span [style.width.px]="rowHeight()"></span>
-                      <span class="flex-one text-align-center">{{ cell.value }}</span>
+                      <span class="flex-one text-align-center no-event">{{ cell.value }}</span>
                       <span [style.width.px]="rowHeight()">
                         @if (settings.deleteCol && x !== 0) {
                           <button (click)="deleteColumn(x)" class="bin-button" mat-icon-button>
@@ -86,7 +86,7 @@
                           <mat-icon>delete</mat-icon>
                         </button>
                       }
-                      <span class="flex-one">{{ cell.value }}</span>
+                      <span class="flex-one no-event">{{ cell.value }}</span>
                     </div>
                   </th>
                 }
