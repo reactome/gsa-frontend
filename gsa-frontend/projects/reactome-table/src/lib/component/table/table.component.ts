@@ -1,8 +1,11 @@
 import {
+  AfterViewInit,
   Component,
   computed,
+  effect,
   ElementRef,
   input,
+  linkedSignal,
   OnChanges,
   OnInit,
   Output,
@@ -49,7 +52,6 @@ type Direction = "up" | "down" | "left" | "right";
 type Coord = [number, number];
 type Range = { start: Coord, stop?: Coord };
 
-type Rect = { x: number; y: number, width: number, height: number };
 
 @UntilDestroy()
 @Component({
@@ -59,9 +61,10 @@ type Rect = { x: number; y: number, width: number, height: number };
   providers: [TableStore],
   standalone: false
 })
-export class TableComponent implements OnInit, OnChanges {
+export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   readonly input = viewChild.required<ElementRef<HTMLInputElement>>('flyingRename');
   readonly rootRef = viewChild.required<ElementRef<HTMLDivElement>>('root');
+  readonly cornerRef = viewChild<ElementRef<HTMLTableCellElement>>('corner');
   readonly viewport = viewChild.required<CdkVirtualScrollViewport>('scrollViewport');
   isDraggingMouse: boolean = false;
   isDraggingFile: boolean = false;
@@ -89,6 +92,21 @@ export class TableComponent implements OnInit, OnChanges {
     return height < this.maxHeight() ? height : this.maxHeight();
   });
   scrollOffset = signal(0)
+
+  cornerRect = linkedSignal(() => this.cornerRef()?.nativeElement.getBoundingClientRect())
+  resizeObserver = new ResizeObserver(() => this.cornerRect.set(this.cornerRef()?.nativeElement.getBoundingClientRect()))
+  stickyOffset = computed(() => {
+    const cornerRect = this.cornerRect();
+    const scrollPanel = this.viewport().elementRef.nativeElement;
+    return {
+      top: cornerRect?.height || 0,
+      left: cornerRect?.width || 0,
+      bottom: scrollPanel.offsetHeight - scrollPanel.clientHeight,
+      right: scrollPanel.offsetWidth - scrollPanel.clientWidth,
+    }
+  })
+
+  edgeVisibility = signal({top: true, bottom: true, left: true, right: true});
 
 
   data: Signal<Cell[][]>
@@ -147,6 +165,7 @@ export class TableComponent implements OnInit, OnChanges {
   );
 
   constructor(private clipboard: Clipboard, public readonly tableStore: TableStore) {
+    effect(() => this.cornerRef() && this.resizeObserver.observe(this.cornerRef()!.nativeElement));
     this.data = toSignal(this.tableStore.data$, {
       initialValue: [[{
         value: '',
@@ -155,6 +174,11 @@ export class TableComponent implements OnInit, OnChanges {
       }]]
     });
   }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => this.updateEdgeVisibility(this.viewport()))
+  }
+
 
   ngOnInit(): void {
     safeInput(this, 'table');
@@ -297,7 +321,7 @@ export class TableComponent implements OnInit, OnChanges {
     this.tableStore.clear();
   }
 
-  importFile(file: File, replace = true ): void {
+  importFile(file: File, replace = true): void {
     this.tableStore.importFile({file, replace});
   }
 
@@ -340,14 +364,28 @@ export class TableComponent implements OnInit, OnChanges {
     if (firstFile) this.importFile(firstFile)
   }
 
-  onDragEnter() {
-    this.isDraggingFile = true;
+  dragCounter = 0
+
+  onDragEnter($event: DragEvent) {
+    this.dragCounter++;
+    if ($event.dataTransfer && $event.dataTransfer.files)
+      this.isDraggingFile = true;
   }
 
-  onDragLeave($event: DragEvent, origin: any) {
-    if ($event.target === origin) {
+  onDragLeave() {
+    this.dragCounter--;
+    if (this.dragCounter === 0) {
       this.isDraggingFile = false
     }
+  }
+
+  updateEdgeVisibility(viewport: CdkVirtualScrollViewport) {
+    this.edgeVisibility.set({
+      top: viewport.measureScrollOffset('top') === 0,
+      bottom: viewport.measureScrollOffset('bottom') === 0,
+      right: viewport.measureScrollOffset('right') === 0,
+      left: viewport.measureScrollOffset('left') === 0,
+    })
   }
 }
 

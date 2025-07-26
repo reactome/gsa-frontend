@@ -1,13 +1,24 @@
 <ng-container *ngrxLet="settings$ as settings">
   <div #root class="table-container flex horizontal relative" (blur)="deselect()"
+       [style.--sticky-offset-top.px]="stickyOffset().top"
+       [style.--sticky-offset-left.px]="stickyOffset().left"
+       [style.--sticky-offset-bottom.px]="stickyOffset().bottom"
+       [style.--sticky-offset-right.px]="stickyOffset().right"
        (drop)="onDropFile($event)"
        (dragover)="$event.preventDefault()"
-       (dragenter)="onDragEnter()"
-       (dragleave)="onDragLeave($event, root)"
+       (dragenter)="onDragEnter($event)"
+       (dragleave)="onDragLeave()"
        (dragend)="isDraggingFile = false"
-       [class.dragging]="isDraggingFile"
   >
-    <cdk-virtual-scroll-viewport #scrollViewport (scrolledIndexChange)="adjustPlaceholder()"
+    <div class="drag-overlay" [class.dragging]="isDraggingFile"></div>
+    <div class="inset-shadow top" [class.visible]="!edgeVisibility().top && !isDraggingFile"></div>
+    <div class="inset-shadow bottom" [class.visible]="!edgeVisibility().bottom && !isDraggingFile"></div>
+    <div class="inset-shadow left" [class.visible]="!edgeVisibility().left && !isDraggingFile"></div>
+    <div class="inset-shadow right" [class.visible]="!edgeVisibility().right && !isDraggingFile"></div>
+
+    <cdk-virtual-scroll-viewport #scrollViewport
+                                 (scrolledIndexChange)="adjustPlaceholder()"
+                                 (scroll)="updateEdgeVisibility(scrollViewport)"
                                  [itemSize]="rowHeight()" [minBufferPx]="minBufferPx()" [maxBufferPx]="maxBufferPx()"
                                  [style.height.px]="height()" [style.--row-height.px]="rowHeight()" class="viewport">
       @if (startCoords$ | async; as start) {
@@ -72,9 +83,7 @@
             }
           </tr>
 
-          <tr *cdkVirtualFor="let row of data; let y = index; trackBy trackByIndex"
-              [style.--scroll-margin-top.px]="corner.clientHeight"
-              [style.--scroll-margin-left.px]="corner.clientWidth">
+          <tr *cdkVirtualFor="let row of data; let y = index; trackBy trackByIndex">
             <!-- BODY -->
             @if (y !== 0) {
               @for (cell of row; track $index; let x = $index) {

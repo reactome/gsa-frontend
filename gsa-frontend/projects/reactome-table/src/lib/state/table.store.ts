@@ -74,7 +74,6 @@ export class TableStore extends ComponentStore<TableState> {
       settings: {
         renameCols: true,
         renameRows: true,
-        extendOnImport: true,
         rowToBeAdded: 1,
         colToBeAdded: 1,
         changeCells: true,
@@ -321,7 +320,6 @@ export class TableStore extends ComponentStore<TableState> {
   readonly import = this.updater((state, {table, hasRowNames, hasColNames, fullImport = false}: {
     table: string[][], hasRowNames: boolean, hasColNames: boolean, fullImport?: boolean;
   }) => {
-    console.log('Importing file', table)
     if (state.settings.importMapHeaders) {
       const nameToRowI = new Map(state.dataset.map((row, i) => [row[0].value, i]));
       const nameToColI = new Map(state.dataset[0].map((cell, i) => [cell.value, i]));

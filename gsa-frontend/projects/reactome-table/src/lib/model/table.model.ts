@@ -17,8 +17,6 @@ export interface Settings {
   renameRows: boolean;
   changeCells: boolean;
 
-  extendOnImport: boolean;
-
   rowToBeAdded: number;
   colToBeAdded: number;
 

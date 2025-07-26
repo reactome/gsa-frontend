@@ -38,7 +38,6 @@ export class AnnotateDatasetComponent implements OnInit {
     this.tableSettings = {
       renameRows: false,
       addRow: false,
-      extendOnImport: false,
       deleteRow: false,
     };
     this.dataset$ = this.store.select(datasetFeature.selectDataset(this.datasetId()))
