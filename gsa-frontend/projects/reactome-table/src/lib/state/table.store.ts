@@ -100,8 +100,8 @@ export class TableStore extends ComponentStore<TableState> {
     if (state.numberOfColumns && state.numberOfRows) {
       const origin = Ranges.origin(state);
 
-      const firstEmptyRowIndex = table.findIndex((row) => row.at(origin.x + 1)?.value.length === 0);
-      const firstEmptyColIndex = table.at(origin.y + 1)?.findIndex((cell) => cell.value.length === 0) || -1;
+      const firstEmptyRowIndex = table.findIndex((row) => row.at(1)?.value.length === 0);
+      const firstEmptyColIndex = table.at(1)?.findIndex((cell) => cell.value.length === 0) || -1;
       table = table.slice(origin.y, firstEmptyRowIndex).map(row => row.slice(origin.x, firstEmptyColIndex));
     }
 
