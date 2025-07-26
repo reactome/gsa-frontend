@@ -18,7 +18,7 @@
 
     <cdk-virtual-scroll-viewport #scrollViewport
                                  (scrolledIndexChange)="adjustPlaceholder()"
-                                 (scroll)="updateEdgeVisibility(scrollViewport)"
+                                 (scroll)="updateEdgeVisibility()"
                                  [itemSize]="rowHeight()" [minBufferPx]="minBufferPx()" [maxBufferPx]="maxBufferPx()"
                                  [style.height.px]="height()" [style.--row-height.px]="rowHeight()" class="viewport">
       @if (startCoords$ | async; as start) {

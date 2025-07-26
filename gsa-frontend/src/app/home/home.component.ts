@@ -3,7 +3,7 @@ import {BreakpointObserver, BreakpointState} from "@angular/cdk/layout";
 import {Observable} from "rxjs";
 import {TourUtilsService} from "../services/tour-utils.service";
 import {HeightService} from "../services/height.service";
-import {Settings, numberToLetter} from "reactome-table";
+import {Settings} from "reactome-table";
 
 @Component({
   selector: 'gsa-home',

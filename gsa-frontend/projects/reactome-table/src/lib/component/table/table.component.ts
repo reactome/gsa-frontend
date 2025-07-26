@@ -2,11 +2,11 @@ import {
   AfterViewInit,
   Component,
   computed,
-  effect,
   ElementRef,
   input,
   linkedSignal,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   signal,
@@ -29,7 +29,7 @@ import {
   Observable,
   share,
   skip,
-  tap
+  tap,
 } from "rxjs";
 import {isDefined} from "../../model/utils.model";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
@@ -61,7 +61,7 @@ type Range = { start: Coord, stop?: Coord };
   providers: [TableStore],
   standalone: false
 })
-export class TableComponent implements OnInit, OnChanges, AfterViewInit {
+export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   readonly input = viewChild.required<ElementRef<HTMLInputElement>>('flyingRename');
   readonly rootRef = viewChild.required<ElementRef<HTMLDivElement>>('root');
   readonly cornerRef = viewChild<ElementRef<HTMLTableCellElement>>('corner');
@@ -70,12 +70,13 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   isDraggingFile: boolean = false;
 
   readonly userSettings = input<Partial<Settings>>({});
-  readonly table = input<string[][]>();
   readonly name = input<string>('default-name');
+  readonly table = input<string[][]>();
 
   readonly numberOfColumns = input<number | undefined>(undefined);
   readonly numberOfRows = input<number | undefined>(undefined);
 
+  // Virtual Viewport management
   readonly minColWidth = input<number>(12);
   readonly rowHeight = input<number>(25);
   readonly maxHeight = input<number>(500);
@@ -93,22 +94,34 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   });
   scrollOffset = signal(0)
 
-  cornerRect = linkedSignal(() => this.cornerRef()?.nativeElement.getBoundingClientRect())
-  resizeObserver = new ResizeObserver(() => this.cornerRect.set(this.cornerRef()?.nativeElement.getBoundingClientRect()))
-  stickyOffset = computed(() => {
-    const cornerRect = this.cornerRect();
+  // Styling logic reactive to resize
+  scrollDimensions = linkedSignal(() => this.getScrollDimensions());
+  scrollDimensionsObserver = new ResizeObserver(() => this.scrollDimensions.set(this.getScrollDimensions()));
+
+  getScrollDimensions() {
     const scrollPanel = this.viewport().elementRef.nativeElement;
+    return {
+      bottom: scrollPanel.offsetHeight - scrollPanel.clientHeight,
+      right: scrollPanel.offsetWidth - scrollPanel.clientWidth,
+    };
+  }
+
+  cornerRect = linkedSignal(() => this.cornerRef()?.nativeElement.getBoundingClientRect())
+  cornerObserver = new ResizeObserver(() => this.cornerRect.set(this.cornerRef()?.nativeElement.getBoundingClientRect()))
+
+  stickyOffset = linkedSignal(() => {
+    const cornerRect = this.cornerRect();
     return {
       top: cornerRect?.height || 0,
       left: cornerRect?.width || 0,
-      bottom: scrollPanel.offsetHeight - scrollPanel.clientHeight,
-      right: scrollPanel.offsetWidth - scrollPanel.clientWidth,
+      ...this.scrollDimensions()
     }
   })
 
   edgeVisibility = signal({top: true, bottom: true, left: true, right: true});
 
 
+  // Core logic
   data: Signal<Cell[][]>
   data$: Observable<Cell[][]> = this.tableStore.data$;
   start$: Observable<Coords> = this.tableStore.start$;
@@ -165,7 +178,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   );
 
   constructor(private clipboard: Clipboard, public readonly tableStore: TableStore) {
-    effect(() => this.cornerRef() && this.resizeObserver.observe(this.cornerRef()!.nativeElement));
     this.data = toSignal(this.tableStore.data$, {
       initialValue: [[{
         value: '',
@@ -176,7 +188,11 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => this.updateEdgeVisibility(this.viewport()))
+    setTimeout(() => {
+      this.updateEdgeVisibility();
+      this.scrollDimensionsObserver.observe(this.viewport()!.elementRef.nativeElement)
+      this.cornerObserver.observe(this.cornerRef()!.nativeElement)
+    })
   }
 
 
@@ -206,6 +222,11 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['userSettings'] && !changes['userSettings'].firstChange) this.tableStore.settings({settings: this.userSettings()});
+  }
+
+  ngOnDestroy(): void {
+    this.cornerObserver.disconnect()
+    this.scrollDimensionsObserver.disconnect()
   }
 
 
@@ -379,7 +400,8 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
-  updateEdgeVisibility(viewport: CdkVirtualScrollViewport) {
+  updateEdgeVisibility() {
+    const viewport = this.viewport();
     this.edgeVisibility.set({
       top: viewport.measureScrollOffset('top') === 0,
       bottom: viewport.measureScrollOffset('bottom') === 0,
