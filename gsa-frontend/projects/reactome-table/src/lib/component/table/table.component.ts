@@ -24,7 +24,7 @@ import {
   delay,
   distinctUntilChanged,
   filter,
-  first,
+  first, firstValueFrom,
   map,
   Observable,
   share,
@@ -36,6 +36,7 @@ import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 import {safeInput} from "../../utils/web-component-utils";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {CdkVirtualScrollViewport} from "@angular/cdk/scrolling";
+import {downloadTable} from "../download-table/download-table.component";
 
 
 interface SelectedCellRange {
@@ -88,8 +89,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
   maxBufferPx = computed(() => this.maxBufferRows() * this.rowHeight());
 
   height = computed(() => {
-    const BORDER_WIDTH = 1;
-    const height = this.data().length * (this.rowHeight() + BORDER_WIDTH) + BORDER_WIDTH;
+    const height = this.data().length * this.rowHeight() + this.scrollDimensions().bottom;
     return height < this.maxHeight() ? height : this.maxHeight();
   });
   scrollOffset = signal(0)
@@ -124,6 +124,8 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
   // Core logic
   data: Signal<Cell[][]>
   data$: Observable<Cell[][]> = this.tableStore.data$;
+  hasData$: Observable<boolean> = this.tableStore.hasData$;
+  cleanData$: Observable<string[][]> = this.tableStore.cleanData$;
   start$: Observable<Coords> = this.tableStore.start$;
   stop$: Observable<Coords> = this.tableStore.stop$;
   startCell$: Observable<HTMLTableCellElement> = this.start$.pipe(
@@ -172,9 +174,8 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
   settings$: Observable<Settings> = this.tableStore.settings$;
   value: string;
 
-  @Output() tableChange: Observable<string[][]> = this.data$.pipe(
-    skip(1),
-    map((data) => data.map(row => row.map(cell => cell.value)))
+  @Output() tableChange: Observable<string[][]> = this.cleanData$.pipe(
+    skip(1)
   );
 
   constructor(private clipboard: Clipboard, public readonly tableStore: TableStore) {
@@ -351,17 +352,12 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
   }
 
   exportFile(): void {
-    const dlink: HTMLAnchorElement = document.createElement('a');
-    dlink.download = `${this.name()}.csv`; // the file name
-    this.tableStore.rawData$.pipe(first()).subscribe(
-      table => {
-        dlink.href = encodeURI('data:text/tsv;charset=utf-8,' + table.map(row => row.join("\t")).join("\n"));
-        dlink.click(); // this will trigger the dialog window
-        dlink.remove();
-      }
-    )
+    this.tableStore.cleanData$.pipe(first()).subscribe(table => downloadTable(table, this.name()))
   }
 
+  async getCurrentData(): Promise<string[][]> {
+    return firstValueFrom(this.tableStore.cleanData$)
+  }
 
   adjustPlaceholder() {
     this.scrollOffset.set(this.viewport().getRenderedRange().start * this.rowHeight())

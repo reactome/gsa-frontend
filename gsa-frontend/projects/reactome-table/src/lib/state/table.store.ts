@@ -107,6 +107,9 @@ export class TableStore extends ComponentStore<TableState> {
 
     return table.map(row => row.map(cell => cell.value));
   });
+  readonly hasData$ = this.select(state => {
+    return !!state.dataset.at(1)?.at(1)?.value.length;
+  })
   readonly start$ = this.select(state => state.start);
   readonly stop$ = this.select(state => state.stop);
   readonly settings$ = this.select(state => state.settings);
