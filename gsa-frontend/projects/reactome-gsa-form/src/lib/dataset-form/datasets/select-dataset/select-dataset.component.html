@@ -2,7 +2,7 @@
   <div class="flex-container gap-one horizontal">
     <div tourAnchor="source.local" class="flex-one">
       <h2 >Local Dataset</h2>
-      @for (source of localSources$ | async; track source) {
+      @for (source of localSources$ | async; track source.id) {
         <div class="margin-bottom-10">
           <gsa-local-data [source]="source" [datasetId]="datasetId()"></gsa-local-data>
         </div>
@@ -11,7 +11,7 @@
 
     <div tourAnchor="source.example" class="flex-one">
       <h2>Example Dataset</h2>
-      @for (source of exampleSources$ | async; track source) {
+      @for (source of exampleSources$ | async; track source.id) {
         <div class="margin-bottom-10">
           <gsa-example-data [source]="source" [datasetId]="datasetId()" ></gsa-example-data>
         </div>
@@ -20,7 +20,7 @@
 
     <div tourAnchor="source.public" class="flex-one">
       <h2 >Public Dataset</h2>
-      @for (source of externalSources$ | async; track source) {
+      @for (source of externalSources$ | async; track source.id) {
         <div class="margin-bottom-10">
           @if (source.name !== 'Example datasets') {
             <gsa-external-data

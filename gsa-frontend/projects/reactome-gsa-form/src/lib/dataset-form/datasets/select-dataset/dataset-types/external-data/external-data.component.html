@@ -25,7 +25,7 @@
       <div [ngClass]="{'visible': isSelected$ | async}" class="invisible">
         <form>
           <div class="flex-container vertical gap-one align-center">
-            @for (param of source().parameters; track paramTracker($index, param)) {
+            @for (param of source().parameters; track param.name) {
               <gsa-method-parameter class="width-hundred"
                 [parameter]="param" [infoTooltip]="false"
                 (parameterChange)="updateParam($event)"/>

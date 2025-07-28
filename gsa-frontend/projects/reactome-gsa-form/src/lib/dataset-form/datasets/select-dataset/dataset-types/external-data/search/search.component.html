@@ -25,7 +25,7 @@
     @case ('finished') {
       <div>
         @if ((results$ | async)?.length !== 0) {
-          @for (result of results$ | async; track result; let last = $last) {
+          @for (result of results$ | async; track result.id; let last = $last) {
             <div (click)="select(result)" class="result-card">
               <p class="bold">{{result.title}}</p>
               {{result.resource_name}} - {{result.id}} - {{result.species}}

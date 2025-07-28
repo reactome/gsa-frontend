@@ -10,7 +10,7 @@
     <mat-form-field appearance="outline">
       <mat-select #groups [value]="vm.dataset?.statisticalDesign?.analysisGroup"
         (selectionChange)="changeComparisonFactor($event.value)">
-        @for (value of vm.analysisGroups | keyvalue; track value) {
+        @for (value of vm.analysisGroups | keyvalue; track value.key) {
           <mat-option [value]=value.key>
             {{ value.key }}
           </mat-option>
@@ -45,8 +45,7 @@
           <mat-select [value]="vm.dataset?.statisticalDesign!.comparisonGroup2"
             (selectionChange)="changeGroup2($event.value)">
             @for (value of comparisonGroup2Values(vm.analysisGroups[groups.value], group1?.value); track value) {
-              <mat-option
-                [value]=value>
+              <mat-option [value]=value>
                 {{ value }}
               </mat-option>
             }
@@ -90,7 +89,7 @@
               Select all
             </mat-checkbox>
             <section style="padding-left: 20px" class="flex-container vertical no-wrap">
-              @for (cov of vm.covariates; track cov) {
+              @for (cov of vm.covariates; track cov.name) {
                 <mat-checkbox class="example-margin"
                   class="primary" class="example-section"
                   [checked]="cov.value" (change)="setCovariance($event, cov.name)">

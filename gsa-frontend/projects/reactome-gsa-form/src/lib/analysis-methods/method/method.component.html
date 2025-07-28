@@ -13,7 +13,7 @@
     </mat-panel-description>
   </mat-expansion-panel-header>
   <div  class="grey-border flex-container vertical align-center justify-center">
-    @for (param of vm.parameters; track paramTracker($index, param)) {
+    @for (param of vm.parameters; track param.name) {
       <div class="param-line width-eighty">
         <gsa-method-parameter [parameter]="param" (parameterChange)="updateParam($event)"/>
       </div>

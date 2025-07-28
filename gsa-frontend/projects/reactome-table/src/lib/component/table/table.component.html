@@ -80,7 +80,7 @@
 
           <!-- Placeholder to push concrete rows to the right place and set columns width -->
           <tr class="virtual-placeholder" [style.height.px]="scrollOffset()">
-            @for (max of maxColumns$ | async; track max) {
+            @for (max of maxColumns$ | async; track max.coords.x) {
               <td class="cell">{{ max.value }}</td>
             }
             @if (settings.addColumn) {

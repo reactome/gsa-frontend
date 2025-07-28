@@ -3,7 +3,7 @@
   <h2 class="no-margin">Edit analysis parameters for "{{vm.name}}"</h2>
 
   <div class="flex vertical gap-one width-hundred">
-    @for (param of vm.parameters; track paramTracker($index, param)) {
+    @for (param of vm.parameters; track param.name) {
       <gsa-method-parameter [parameter]="param" (parameterChange)="updateParam($event, vm.parameters)"
         >
       </gsa-method-parameter>
