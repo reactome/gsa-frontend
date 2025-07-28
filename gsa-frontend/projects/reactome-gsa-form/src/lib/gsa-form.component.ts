@@ -17,10 +17,10 @@ import {HeightService} from "./global-services/height.service";
 import {AnalysisResult} from "./model/analysis-result.model";
 
 @Component({
-    selector: 'gsa-form',
-    templateUrl: './gsa-form.component.html',
-    styleUrls: ['./gsa-form.component.scss'],
-    standalone: false
+  selector: 'gsa-form',
+  templateUrl: './gsa-form.component.html',
+  styleUrls: ['./gsa-form.component.scss'],
+  standalone: false
 })
 export class GsaFormComponent implements AfterViewInit, OnInit, OnDestroy {
   readonly stepper = viewChild.required<MatStepper>('stepper');
@@ -35,7 +35,7 @@ export class GsaFormComponent implements AfterViewInit, OnInit, OnDestroy {
 
   methodParameters$ = this.selectedMethod$.pipe(map(method => method?.parameters))
   commonParameters$ = this.store.select(methodFeature.selectCommonParameters);
-  parameters$ = combineLatest([this.methodParameters$, this.commonParameters$]).pipe(map(([method, common]) => [...(method || []) , ...common]))
+  parameters$ = combineLatest([this.methodParameters$, this.commonParameters$]).pipe(map(([method, common]) => [...(method || []), ...common]))
 
   datasetIds$ = this.store.select(datasetFeature.selectIds) as Observable<number[]>;
   datasets$ = this.store.select(datasetFeature.selectAll) as Observable<Dataset[]>;
@@ -46,6 +46,8 @@ export class GsaFormComponent implements AfterViewInit, OnInit, OnDestroy {
   analysisResult = this.store.select(analysisFeature.selectAnalysisResult);
   @Output('reportsRequired')
   reportRequired$ = this.commonParameters$.pipe(map(parameters => (parameters?.find(parameter => parameter.name === 'create_reports')?.value || false) as boolean))
+  @Output()
+  analysisReports = this.store.select(analysisFeature.selectReports)
 
   seeResultAction = input<'link' | ((result: AnalysisResult) => void)>('link')
 
