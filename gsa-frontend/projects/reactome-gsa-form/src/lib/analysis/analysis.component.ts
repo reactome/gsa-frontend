@@ -1,4 +1,4 @@
-import {Component, OnInit, output, input} from '@angular/core';
+import {Component, OnInit, output, input, computed} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Store} from "@ngrx/store";
 import {analysisFeature} from "../state/analysis/analysis.selector";
@@ -7,13 +7,14 @@ import {methodFeature} from "../state/method/method.selector";
 import {combineLatest, map} from "rxjs";
 import {datasetFeature} from "../state/dataset/dataset.selector";
 import {isDefined} from "../utilities/utils";
+import {AnalysisResult} from "../model/analysis-result.model";
 
 
 @Component({
-    selector: 'gsa-analysis',
-    templateUrl: './analysis.component.html',
-    styleUrls: ['./analysis.component.scss'],
-    standalone: false
+  selector: 'gsa-analysis',
+  templateUrl: './analysis.component.html',
+  styleUrls: ['./analysis.component.scss'],
+  standalone: false
 })
 export class AnalysisComponent implements OnInit {
   analysisStep: FormGroup;
@@ -26,18 +27,20 @@ export class AnalysisComponent implements OnInit {
     this.store.select(methodFeature.selectSelectedMethod),
     this.store.select(datasetFeature.selectEntities)]
   ).pipe(
-      map(([method, datasets]) => {
-        const datasetString = Object.values(datasets)
-          .filter(isDefined)
-          .filter(dataset => dataset.saved)
-          .map(dataset => `${dataset.summary?.title} - ${dataset.statisticalDesign?.comparisonGroup1} vs ${dataset.statisticalDesign?.comparisonGroup2}`)
-          .join(" | ")
-        return `${method?.name} | ${datasetString}`
-      })
+    map(([method, datasets]) => {
+      const datasetString = Object.values(datasets)
+        .filter(isDefined)
+        .filter(dataset => dataset.saved)
+        .map(dataset => `${dataset.summary?.title} - ${dataset.statisticalDesign?.comparisonGroup1} vs ${dataset.statisticalDesign?.comparisonGroup2}`)
+        .join(" | ")
+      return `${method?.name} | ${datasetString}`
+    })
   )
 
   readonly datasetId = input<number>();
   readonly restart = output<void>();
+
+  seeResultAction = input.required<'link' | ((result: AnalysisResult) => void)>()
 
   constructor(private formBuilder: FormBuilder, public store: Store) {
     this.analysisStep = this.formBuilder.group({
@@ -57,5 +60,11 @@ export class AnalysisComponent implements OnInit {
 
   mail(statusString: string | null): string {
     return `mailto:help@reactome.org?subject=${encodeURIComponent(`Reactome GSA failed [${statusString || 'No status'}] on ${formatDate(new Date(), 'short', 'en-US')}`)}`
+  }
+
+  applyAction(result: AnalysisResult) {
+    const action = this.seeResultAction();
+    if (action === 'link') return;
+    action(result);
   }
 }

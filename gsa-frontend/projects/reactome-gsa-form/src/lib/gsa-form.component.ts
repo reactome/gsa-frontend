@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, Output, viewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, input, OnDestroy, OnInit, Output, viewChild} from '@angular/core';
 import {MatStepper} from "@angular/material/stepper";
 import {Store} from "@ngrx/store";
 import {methodFeature} from "./state/method/method.selector";
@@ -14,6 +14,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {CancelDialogComponent} from "./cancel-dialog/cancel-dialog.component";
 import {TourUtilsService} from "./global-services/tour-utils.service";
 import {HeightService} from "./global-services/height.service";
+import {AnalysisResult} from "./model/analysis-result.model";
 
 @Component({
     selector: 'gsa-form',
@@ -46,7 +47,7 @@ export class GsaFormComponent implements AfterViewInit, OnInit, OnDestroy {
   @Output('reportsRequired')
   reportRequired$ = this.commonParameters$.pipe(map(parameters => (parameters?.find(parameter => parameter.name === 'create_reports')?.value || false) as boolean))
 
-
+  seeResultAction = input<'link' | ((result: AnalysisResult) => void)>('link')
 
   editable = true;
 

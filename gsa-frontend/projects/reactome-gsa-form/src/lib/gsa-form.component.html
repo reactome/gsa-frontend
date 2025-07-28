@@ -125,7 +125,7 @@ datasetIds: datasetIds$
         </div>
       </div>
       <gsa-scrollable [bottomMargin]="57" innerClasses="height-hundred" class="width-seventy" name="results">
-        <gsa-analysis class="width-hundred height-hundred" (restart)="restartAnalysis()"
+        <gsa-analysis class="width-hundred height-hundred" (restart)="restartAnalysis()" [seeResultAction]="seeResultAction()"
         tourAnchor="results" style="border-radius: 4px"></gsa-analysis>
       </gsa-scrollable>
       <div class="nav-button-container align-center justify-center flex-container"></div>
