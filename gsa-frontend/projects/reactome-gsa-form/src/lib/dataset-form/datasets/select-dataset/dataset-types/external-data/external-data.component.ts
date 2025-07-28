@@ -6,7 +6,6 @@ import {datasetSourceActions} from "../../../../../state/dataset-source/dataset-
 import {datasetSourceFeature} from "../../../../../state/dataset-source/dataset-source.selector";
 import {datasetActions} from "../../../../../state/dataset/dataset.actions";
 import {Parameter} from "../../../../../model/parameter.model";
-import {paramTracker} from "../../../../../utilities/method-parameter/method-parameter.component";
 
 
 @Component({
@@ -45,7 +44,6 @@ export class ExternalDataComponent implements OnInit {
     this.store.dispatch(datasetSourceActions.setParameter({id: this.source().id, param}))
   }
 
-  protected readonly paramTracker = paramTracker;
 }
 
 

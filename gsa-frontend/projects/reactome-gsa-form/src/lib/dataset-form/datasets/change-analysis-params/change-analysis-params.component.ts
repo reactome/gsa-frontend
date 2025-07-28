@@ -5,7 +5,6 @@ import {filter, map, Observable} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {datasetActions} from "../../../state/dataset/dataset.actions";
 import {isDefined} from "../../../utilities/utils";
-import {paramTracker} from "../../../utilities/method-parameter/method-parameter.component";
 import {Parameter} from "../../../model/parameter.model";
 
 @Component({
@@ -44,6 +43,4 @@ export class ChangeAnalysisParamsComponent implements OnInit {
         parameters = parameters.map(srcParam => srcParam.name === param.name ? param : srcParam);
         this.store.dispatch(datasetActions.setSummaryParameters({id: this.data.datasetId, parameters}))
     }
-
-  protected readonly paramTracker = paramTracker;
 }

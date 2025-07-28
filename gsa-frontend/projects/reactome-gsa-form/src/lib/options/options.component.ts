@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Store} from "@ngrx/store";
 import {methodActions} from "../state/method/method.action";
-import {paramTracker} from "../utilities/method-parameter/method-parameter.component";
 import {Parameter} from "../model/parameter.model";
 import {Observable} from "rxjs";
 import {methodFeature} from "../state/method/method.selector";
@@ -28,5 +27,4 @@ export class OptionsComponent {
     this.store.dispatch(methodActions.updateCommonParam({param}));
   }
 
-  protected readonly paramTracker = paramTracker;
 }
