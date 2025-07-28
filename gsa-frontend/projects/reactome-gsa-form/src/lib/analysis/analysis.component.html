@@ -47,15 +47,13 @@
             <div class="flex-container horizontal gap-one justify-center">
               <a class="primary" [href]="vm.result?.reactome_links?.[0]?.url" mat-raised-button target="_blank">
                 <div class="flex-container horizontal align-center">
-                  <mat-icon class="padding-right-ten">
-                    <span class="material-symbols-outlined-outlined">visibility</span>
-                  </mat-icon>
+                  <mat-icon class="padding-right-ten material-symbols-outlined outlined">visibility</mat-icon>
                   <span>Results</span>
                 </div>
               </a>
 
               <button (click)="goToSelectMethod()" class="primary" mat-stroked-button>
-                <mat-icon class="primary">restart_alt</mat-icon>
+                <mat-icon class="primary material-symbols-outlined">restart_alt</mat-icon>
                 Start a new analysis
               </button>
             </div>
