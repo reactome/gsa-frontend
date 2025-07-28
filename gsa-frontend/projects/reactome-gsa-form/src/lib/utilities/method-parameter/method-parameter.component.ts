@@ -7,8 +7,6 @@ import {UntilDestroy} from "@ngneat/until-destroy";
 import {Parameter} from "../../model/parameter.model";
 
 
-export const paramTracker: TrackByFunction<Parameter> = (i, param) => param.value;
-
 @UntilDestroy()
 @Component({
     selector: 'gsa-method-parameter',

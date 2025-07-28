@@ -1,4 +1,4 @@
-import {Component, OnInit, input} from '@angular/core';
+import {Component, input, OnInit} from '@angular/core';
 import {ScrollService} from "../../services/scroll.service";
 import {Method} from "../../state/method/method.state";
 import {Store} from "@ngrx/store";
@@ -6,7 +6,6 @@ import {methodActions} from "../../state/method/method.action";
 import {filter, map, Observable} from "rxjs";
 import {methodFeature} from "../../state/method/method.selector";
 import {isDefined} from "../../utilities/utils";
-import {paramTracker} from "../../utilities/method-parameter/method-parameter.component";
 import {Parameter} from "../../model/parameter.model";
 
 @Component({
@@ -20,7 +19,6 @@ export class MethodComponent implements OnInit {
   selected$ = this.store.select(methodFeature.selectSelectedMethodName).pipe(map(name => name === this.methodName()));
   method$: Observable<Method>;
   parameters$: Observable<Parameter[]>;
-  paramTracker = paramTracker;
 
   ngOnInit(): void {
     this.method$ = this.store.select(methodFeature.selectMethod(this.methodName())).pipe(filter(isDefined))
