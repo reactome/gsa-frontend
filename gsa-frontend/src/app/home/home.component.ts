@@ -1,9 +1,8 @@
 import {Component} from '@angular/core';
 import {BreakpointObserver, BreakpointState} from "@angular/cdk/layout";
 import {Observable} from "rxjs";
-import {TourUtilsService} from "../services/tour-utils.service";
-import {HeightService} from "../services/height.service";
 import {Settings} from "reactome-table";
+import {TourUtilsService, HeightService} from "reactome-gsa-form";
 
 @Component({
   selector: 'gsa-home',

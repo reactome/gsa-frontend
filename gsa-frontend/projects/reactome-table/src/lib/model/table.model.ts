@@ -30,6 +30,7 @@ export interface Settings {
   deleteCol: boolean;
 
   importMapHeaders: boolean;
+  dropReplace: boolean;
 
   uploadButton: 'icon' | 'text' | false;
   downloadButton: 'icon' | 'text' | false;

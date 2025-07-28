@@ -17,18 +17,18 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatCardModule} from "@angular/material/card";
 import {MatIconModule, MatIconRegistry} from "@angular/material/icon";
 import {BackgroundComponent} from './background/background.component';
-import {TourComponent} from './tour/tour.component';
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {LetDirective} from "@ngrx/component";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {FormsModule} from "@angular/forms";
+import {GsaFormModule} from "../../projects/reactome-gsa-form/src/lib/gsa-form.module";
+import {environment} from "../environments/environment";
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    BackgroundComponent,
-    TourComponent
+    BackgroundComponent
   ],
   bootstrap: [
     AppComponent
@@ -58,7 +58,12 @@ import {FormsModule} from "@angular/forms";
     MatTooltipModule,
     LetDirective,
     MatSlideToggleModule,
-    FormsModule
+    FormsModule,
+    GsaFormModule.forRoot({
+      apiRoot: environment.ApiRoot,
+      apiSecretRoot: environment.ApiSecretRoot,
+      server: environment.server as "dev" | "production",
+    }),
   ], providers: [provideHttpClient(withInterceptorsFromDi())]
 })
 export class AppModule {

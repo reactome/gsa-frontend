@@ -84,6 +84,7 @@ export class TableStore extends ComponentStore<TableState> {
         deleteRow: true,
         deleteCol: true,
         importMapHeaders: true,
+        dropReplace: false,
         uploadButton: "text",
         downloadButton: "text"
       },

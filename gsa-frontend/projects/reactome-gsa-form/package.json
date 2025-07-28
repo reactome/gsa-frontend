@@ -1,0 +1,13 @@
+{
+  "name": "reactome-gsa-form",
+  "version": "19.0.0",
+  "peerDependencies": {
+    "@angular/common": "^19.2.0",
+    "@angular/core": "^19.2.0",
+    "reactome-table": "^19.0.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false
+}

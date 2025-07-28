@@ -1,7 +1,8 @@
-import {AfterViewInit, Component, ElementRef, viewChild, ViewChild} from '@angular/core';
-import {HeightService} from "./services/height.service";
+import {AfterViewInit, Component, viewChild} from '@angular/core';
+
 import {DarkService} from "./services/dark.service";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
+import {HeightService} from "reactome-gsa-form";
 
 @Component({
     selector: 'app-root',

@@ -18,6 +18,9 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "paths": {
+      "reactome-gsa-form": [
+        "dist/reactome-gsa-form"
+      ],
       "reactome-table": [
         "dist/reactome-table"
       ]

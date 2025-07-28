@@ -80,7 +80,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
   // Virtual Viewport management
   readonly minColWidth = input<number>(12);
   readonly rowHeight = input<number>(25);
-  readonly maxHeight = input<number>(500);
+  readonly maxHeight = input<number | undefined>(undefined);
 
   readonly minBufferRows = input<number>(50);
   readonly maxBufferRows = input<number>(100);
@@ -89,8 +89,9 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
   maxBufferPx = computed(() => this.maxBufferRows() * this.rowHeight());
 
   height = computed(() => {
-    const height = this.data().length * this.rowHeight() + this.scrollDimensions().bottom;
-    return height < this.maxHeight() ? height : this.maxHeight();
+    let height = (this.data().length + (this.settings()?.addRow ? 1 : 0)) * this.rowHeight() + this.scrollDimensions().bottom;
+    if (this.maxHeight()) height = height < this.maxHeight()! ? height : this.maxHeight()!;
+    return height;
   });
   scrollOffset = signal(0)
 
@@ -123,6 +124,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
 
   // Core logic
   data: Signal<Cell[][]>
+  settings: Signal<Settings | undefined>
   data$: Observable<Cell[][]> = this.tableStore.data$;
   hasData$: Observable<boolean> = this.tableStore.hasData$;
   cleanData$: Observable<string[][]> = this.tableStore.cleanData$;
@@ -186,6 +188,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
         visibility: 'visible'
       }]]
     });
+    this.settings = toSignal(this.tableStore.settings$);
   }
 
   ngAfterViewInit(): void {
@@ -367,10 +370,12 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
     return index
   }
 
-  onDropFile($event: DragEvent) {
+  async onDropFile($event: DragEvent) {
     $event.preventDefault();
     this.isDraggingFile = false;
     if (!$event.dataTransfer) return
+
+    const settings = await firstValueFrom(this.settings$);
 
     const firstFile = $event.dataTransfer.items ?
       Array.from($event.dataTransfer.items)
@@ -378,7 +383,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
         .map((item) => item.getAsFile()!)?.[0] :
       $event.dataTransfer.files?.[0];
 
-    if (firstFile) this.importFile(firstFile)
+    if (firstFile) this.importFile(firstFile, settings.dropReplace)
   }
 
   dragCounter = 0
@@ -399,10 +404,10 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
   updateEdgeVisibility() {
     const viewport = this.viewport();
     this.edgeVisibility.set({
-      top: viewport.measureScrollOffset('top') === 0,
-      bottom: viewport.measureScrollOffset('bottom') === 0,
-      right: viewport.measureScrollOffset('right') === 0,
-      left: viewport.measureScrollOffset('left') === 0,
+      top: viewport.measureScrollOffset('top') < 2,
+      bottom: viewport.measureScrollOffset('bottom') < 2,
+      right: viewport.measureScrollOffset('right') < 2,
+      left: viewport.measureScrollOffset('left') < 2,
     })
   }
 }

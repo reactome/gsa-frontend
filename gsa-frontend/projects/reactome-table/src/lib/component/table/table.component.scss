@@ -17,10 +17,11 @@
 
 .drag-overlay {
   position: absolute;
-  inset: 0 var(--sticky-offset-right, 0) var(--sticky-offset-bottom, 0) 0 ;
+  inset: 0 var(--sticky-offset-right, 0) var(--sticky-offset-bottom, 0) 0;
   transition: all 500ms ease-in-out;
   z-index: 10;
   pointer-events: none;
+
   &.dragging {
     border: 1px solid var(--primary);
     box-shadow: inset 0 0 5px 3px var(--primary);
@@ -72,14 +73,10 @@ table.spreadsheet {
     scroll-margin-left: var(--sticky-offset-left);
   }
 
-  th.columns, td.add-column-button-container {
+  th.columns {
     top: 0;
     border-width: 1px 1px 1px 0;
     border-color: var(--primary);
-
-    .bin-button {
-      margin-right: -7px;
-    }
 
     &:nth-child(2) {
       border-width: 1px 1px 1px 1px;
@@ -90,10 +87,6 @@ table.spreadsheet {
     left: 0;
     height: var(--row-height);
     border-width: 0 1px 1px 1px;
-
-    .bin-button {
-      margin-left: -7px;
-    }
 
     &[y='0'] { // Top left corner
       z-index: 6;
@@ -121,30 +114,60 @@ table.spreadsheet {
   //width: 100px;
   height: 100px;
   max-width: 5%;
+  border-color: var(--outline-variant);
+  border-style: solid;
+  border-top: 0;
+  border-left: 0;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
 }
 
 .add-row-button-container {
-  height: 50px;
+  height: var(--row-height, 25px);
   max-height: 5%;
+  box-sizing: border-box;
+  border-color: var(--outline-variant);
+  border-style: solid;
+  border-top: 0;
+  border-left: 0;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
 }
 
-.sticky {
-  --height: 30px;
-  height: var(--height);
+.sticky-column {
+
+  height: 0;
   position: sticky;
-  bottom: calc(50% - calc(var(--height) / 2));
-  top: calc(50% - calc(var(--height) / 2));
+  display: block;
+  bottom: 50%;
+  top: 50%;
 }
 
-.add-column-button {
+.sticky-row {
+  width: 0;
+  position: sticky;
+  display: block;
+  left: 50%;
+  right: 50%;
+}
+
+.add-column-button,
+.add-row-button {
   margin: 0px;
   border-radius: 0px;
   height: 100%;
   width: 100%;
-  //position: absolute;
-  //inset: 0;
+}
+
+.add-column-button {
   ::ng-deep .mdc-button__label {
     height: 100%;
+  }
+}
+
+.add-row-button {
+  ::ng-deep .mdc-button__label {
+    width: 100%;
   }
 }
 
@@ -159,16 +182,16 @@ table.spreadsheet {
 
 .bin-button {
   @include mat.icon-button-overrides((
-    icon-size: 18px,
-    state-layer-size: var(--row-height),
+    icon-size: 16px,
+    state-layer-size: calc(var(--row-height) - 4px),
     touch-target-display: none,
     icon-color: currentColor,
   ));
 
   .mat-icon {
-    width: 18px;
-    height: 18px;
-    font-size: 18px;
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
   }
 }
 
@@ -187,20 +210,19 @@ table.spreadsheet {
   text-align: end;
   color: var(--on-surface-variant);
   background: var(--surface-variant);
+  //position: sticky !important; //TODO Try to make the row rename not subject to scroll
+  //left: 0!important;
 }
 
 .columns {
   z-index: 3;
-  text-align: left;
-  //padding: 0 10px;
+  text-align: center;
+  padding: 0;
   font-weight: 700;
   color: var(--on-primary-container);
   background: var(--primary-container);
-}
-
-.delete-col-button {
-  height: 25px;
-  width: 25px;
+  //position: sticky !important; //TODO Try to make the col rename not subject to scroll
+  //top: 0!important;
 }
 
 .selected:after, .flying-rename:after {
@@ -253,13 +275,13 @@ table.spreadsheet {
   transition: opacity 200ms ease-in-out;
 
   &.top, &.bottom {
-    height: 20px;
+    height: 10px;
     left: 0;
     right: var(--sticky-offset-right, 0);
   }
 
   &.left, &.right {
-    width: 20px;
+    width: 10px;
     top: 0;
     bottom: var(--sticky-offset-bottom, 0);
   }

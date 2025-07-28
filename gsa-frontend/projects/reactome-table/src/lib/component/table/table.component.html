@@ -22,7 +22,7 @@
                                  [itemSize]="rowHeight()" [minBufferPx]="minBufferPx()" [maxBufferPx]="maxBufferPx()"
                                  [style.height.px]="height()" [style.--row-height.px]="rowHeight()" class="viewport">
       @if (startCoords$ | async; as start) {
-        <input #flyingRename (blur)="tableStore.blur()" (focus)="tableStore.focus()"
+        <input #flyingRename  (focus)="tableStore.focus()"
                (copy)="copyValues()" (paste)="pasteValues($event)"
                (mouseup)="mouseup()"
                [(ngModel)]="value"
@@ -41,6 +41,7 @@
                (keydown)="keydown($event, undefined)"
                class="relative align-center width-hundred spreadsheet"
         >
+          <thead>
           <tr>
             <!-- HEADER -->
             <th x="0" y="0" class="rows" #corner></th>
@@ -69,22 +70,28 @@
                   </th>
                 }
               }
-              @if (settings.addColumn) {
-                <td class="no-padding add-column-button-container"
-                    rowspan="0">
-                  <button #addCol (click)="addColumn()" (keydown.shift.tab)="focusLastCell($event)"
-                          class="add-column-button flex-container align-start primary"
-                          mat-stroked-button>
-                    <span class="sticky">Add {{ settings.colToBeAdded > 1 ? settings.colToBeAdded : '' }} column</span>
-                  </button>
-                </td>
-              }
+              <th class="button-header columns">...</th>
+
             }
           </tr>
+          </thead>
+          <tbody>
+
+
           <!-- Placeholder to push concrete rows to the right place and set columns width -->
           <tr class="virtual-placeholder" [style.height.px]="scrollOffset()">
             @for (max of maxColumns$ | async; track max) {
               <td class="cell">{{ max.value }}</td>
+            }
+            @if (settings.addColumn) {
+              <td class="no-padding add-column-button-container"
+                  rowspan="0">
+                <button #addCol (click)="addColumn()" (keydown.shift.tab)="focusLastCell($event)"
+                        class="add-column-button flex-container align-start primary"
+                        mat-button>
+                  <span class="sticky-column">Add {{ settings.colToBeAdded > 1 ? settings.colToBeAdded : '' }} column</span>
+                </button>
+              </td>
             }
           </tr>
 
@@ -113,17 +120,21 @@
               }
             }
           </tr>
-          @if (settings.addRow) {
-            <tr>
-              <td class="no-padding add-row-button-container" [colSpan]="data[0].length">
-                <button (click)="addRow()" (keydown.shift.tab)="focusLastCell($event)"
-                        class="add-column-button flex-container align-start primary"
-                        mat-stroked-button>
-                  <span class="sticky">Add {{ settings.rowToBeAdded > 1 ? settings.rowToBeAdded : '' }} row</span>
-                </button>
-              </td>
-            </tr>
-          }
+          </tbody>
+          <tfoot>
+            @if (settings.addRow) {
+              <tr>
+                <th class="rows">...</th>
+                <td class="no-padding add-row-button-container" [colSpan]="data[0].length">
+                  <button (click)="addRow()" (keydown.shift.tab)="focusLastCell($event)"
+                          class="add-row-button flex-container align-start primary"
+                          mat-button>
+                    <span class="sticky-row">Add {{ settings.rowToBeAdded > 1 ? settings.rowToBeAdded : '' }} row</span>
+                  </button>
+                </td>
+              </tr>
+            }
+          </tfoot>
         </table>
       }
     </cdk-virtual-scroll-viewport>
