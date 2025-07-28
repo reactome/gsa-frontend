@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, viewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, Output, viewChild} from '@angular/core';
 import {MatStepper} from "@angular/material/stepper";
 import {Store} from "@ngrx/store";
 import {methodFeature} from "./state/method/method.selector";
@@ -35,12 +35,18 @@ export class GsaFormComponent implements AfterViewInit, OnInit, OnDestroy {
   methodParameters$ = this.selectedMethod$.pipe(map(method => method?.parameters))
   commonParameters$ = this.store.select(methodFeature.selectCommonParameters);
   parameters$ = combineLatest([this.methodParameters$, this.commonParameters$]).pipe(map(([method, common]) => [...(method || []) , ...common]))
-  reportRequired$ = this.commonParameters$.pipe(map(parameters => (parameters?.find(parameter => parameter.name === 'create_reports')?.value || false) as boolean))
 
   datasetIds$ = this.store.select(datasetFeature.selectIds) as Observable<number[]>;
   datasets$ = this.store.select(datasetFeature.selectAll) as Observable<Dataset[]>;
   allSaved$: Observable<boolean> = this.store.select(datasetFeature.selectAllSaved);
+  @Output('analysisId')
   analysisId$: Observable<string> = this.store.select(analysisFeature.selectAnalysisId).pipe(filter(isDefined));
+  @Output()
+  analysisResult = this.store.select(analysisFeature.selectAnalysisResult);
+  @Output('reportsRequired')
+  reportRequired$ = this.commonParameters$.pipe(map(parameters => (parameters?.find(parameter => parameter.name === 'create_reports')?.value || false) as boolean))
+
+
 
   editable = true;
 
