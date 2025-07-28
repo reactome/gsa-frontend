@@ -98,7 +98,7 @@
       </button>
       @if (nestedStepper.selected == statisticalDesignStep) {
         <gsa-statistical-design [datasetId]="datasetId()"
-          class="width-hundred"/>
+          class="width-hundred margin-bottom-30"/>
       }
       <button (click)="saveData(); mep.expanded = false;"
         [disabled]="!statisticalDesignStep.completed" class="nav-button-margin"
