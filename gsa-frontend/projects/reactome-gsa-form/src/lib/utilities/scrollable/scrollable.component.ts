@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, input, viewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, input, OnDestroy, viewChild} from '@angular/core';
 import {ScrollService} from "../../services/scroll.service";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 import {map} from "rxjs";
@@ -12,14 +12,14 @@ import {HeightService} from "../../global-services/height.service";
     styleUrls: ['./scrollable.component.scss'],
     standalone: false
 })
-export class ScrollableComponent implements AfterViewInit {
+export class ScrollableComponent implements AfterViewInit, OnDestroy {
   readonly topMargin = input<number>(0);
   readonly bottomMargin = input<number>(0);
   readonly name = input<string>('');
   readonly innerClasses = input<string>('');
   readonly scrollable = viewChild.required<ElementRef<HTMLDivElement>>('scrollable');
 
-
+  observer = new ResizeObserver(() => this.updateShadows())
   tourVisible = this.tour.state$.pipe(map(state => state === 'on'))
 
   shadows = {top: false, bottom: true};
@@ -30,6 +30,11 @@ export class ScrollableComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.updateShadows();
+    this.observer.observe(this.scrollable().nativeElement)
+  }
+
+  ngOnDestroy(): void {
+    this.observer.disconnect();
   }
 
   scrolling() {
