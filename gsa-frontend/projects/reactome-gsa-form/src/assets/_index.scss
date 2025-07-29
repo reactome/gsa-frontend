@@ -1,0 +1,321 @@
+@use "@angular/material" as mat;
+
+@mixin configure-gsa-form-variables() {
+  html, body {
+    max-height: 100vh;
+    font: var(--mat-sys-body-medium);
+    --hover: rgb(0 0 0 / 7%);
+
+    &.dark {
+      --hover: rgb(255 255 255 / 7%);
+      --shadow-color: rgb(5, 3, 3);
+      --mat-sys-level5: 0px 7px 8px -4px color-mix(in srgb, var(--shadow-color), transparent 20%), 0px 12px 17px 2px color-mix(in srgb, var(--shadow-color), transparent 14%), 0px 5px 22px 4px color-mix(in srgb, var(--shadow-color), transparent 12%);
+      --mat-sys-level4: 0px 5px 5px -3px color-mix(in srgb, var(--shadow-color), transparent 20%), 0px 8px 10px 1px color-mix(in srgb, var(--shadow-color), transparent 14%), 0px 3px 14px 2px color-mix(in srgb, var(--shadow-color), transparent 12%);
+      --mat-sys-level3: 0px 3px 5px -1px color-mix(in srgb, var(--shadow-color), transparent 20%), 0px 6px 10px 0px color-mix(in srgb, var(--shadow-color), transparent 14%), 0px 1px 18px 0px color-mix(in srgb, var(--shadow-color), transparent 12%);
+      --mat-sys-level2: 0px 3px 3px -2px color-mix(in srgb, var(--shadow-color), transparent 20%), 0px 3px 4px 0px color-mix(in srgb, var(--shadow-color), transparent 14%), 0px 1px 8px 0px color-mix(in srgb, var(--shadow-color), transparent 12%);
+      --mat-sys-level1: 0px 2px 1px -1px color-mix(in srgb, var(--shadow-color), transparent 20%), 0px 1px 1px 0px color-mix(in srgb, var(--shadow-color), transparent 14%), 0px 1px 3px 0px color-mix(in srgb, var(--shadow-color), transparent 12%);
+      --mat-sys-level0: 0px 0px 0px 0px color-mix(in srgb, var(--shadow-color), transparent 20%), 0px 0px 0px 0px color-mix(in srgb, var(--shadow-color), transparent 14%), 0px 0px 0px 0px color-mix(in srgb, var(--shadow-color), transparent 12%);
+    }
+  }
+}
+
+
+@mixin configure-gsa-form() {
+  .primary:not([disabled]) {
+    color: var(--primary);
+    @include mat.icon-overrides((
+      color: var(--primary),
+    ));
+
+    @include mat.icon-button-overrides((
+      icon-color: var(--primary),
+    ));
+  }
+
+  .warn:not([disabled]) {
+    color: var(--error);
+    @include mat.icon-overrides((
+      color: var(--error),
+    ));
+    @include mat.icon-button-overrides((
+      icon-color: var(--error),
+    ));
+    @include mat.button-overrides((
+      protected-label-text-color: var(--error),
+      filled-label-text-color: var(--error),
+      outlined-label-text-color: var(--error),
+      text-label-text-color: var(--error),
+    ))
+  }
+
+  p {
+    margin: 0 0 12px;
+  }
+
+  .mat-expansion-panel-header {
+    border-radius: 0 !important;
+  }
+
+  a {
+    color: var(--primary)
+  }
+
+  body {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background-color: var(--surface);
+    color: black;
+    max-height: calc(100vh - 8px);
+    margin: 0 8px 8px;
+
+    @include mat.expansion-overrides((
+      header-text-size: var(--mat-sys-body-medium-size),
+      container-text-size: var(--mat-sys-body-medium-size),
+      container-text-weight: var(--mat-sys-body-medium-weight),
+    ));
+  }
+
+  .dark {
+    color: white;
+  }
+
+
+  .outline {
+    color: var(--outline);
+  }
+
+  .outline-variant {
+    color: var(--outline-variant)
+  }
+
+  .secondary {
+    color: var(--secondary);
+  }
+
+  .tertiary {
+    color: var(--tertiary);
+  }
+
+  .error {
+    color: var(--error) !important;
+  }
+
+  .mdc-tooltip__surface {
+    text-align: justify;
+  }
+
+  h1 {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    font-weight: bold !important;
+  }
+
+  h2 {
+    font-weight: 100 !important;
+  }
+
+  .no-margin {
+    margin: 0 !important;
+  }
+
+  .no-padding {
+    padding: 0 !important;
+  }
+
+  //Width
+
+  .width-forty {
+    width: 40%;
+  }
+
+  .width-fifty {
+    width: 50%;
+  }
+
+  .width-sixty {
+    width: 60%;
+  }
+
+  .width-seventy {
+    width: 70%;
+  }
+
+  .width-eighty {
+    width: 80%;
+  }
+
+  .width-hundred {
+    width: 100%;
+  }
+
+  .height-eighty {
+    height: 80%;
+  }
+
+  .height-hundred {
+    height: 100%;
+  }
+
+  .relative {
+    position: relative;
+  }
+
+  .margin-left-10 {
+    margin-left: 10px;
+  }
+
+  .primary-border {
+    border: 2px solid var(--primary) !important;
+  }
+
+  .surface {
+    background: var(--surface);
+  }
+
+  //Angular Material
+  mat-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+
+    &.outlined {
+      font-variation-settings: 'FILL' 0
+    }
+  }
+
+  .mat-vertical-content {
+    padding-right: 0 !important;
+  }
+
+  .expansion-panel-margin {
+    margin-top: 16px !important;
+  }
+
+  .dataset-card-content {
+    color: var(--primary);
+    //color: black;
+    padding: 10px;
+    margin: 3px !important;
+    border-radius: 10px;
+    border: 1px solid var(--primary);
+    background: var(--surface);
+
+    *:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .dataset-card-content:hover {
+    background: var(--surface2);
+    cursor: pointer;
+
+    &.no-hover {
+      background: var(--surface);
+    }
+  }
+
+  .warning-snackbar {
+    background-color: white;
+    color: coral;
+
+    .mat-simple-snackbar-action {
+      color: black !important;
+    }
+  }
+
+
+  .error-snackbar {
+    background-color: var(--error-container);
+    color: var(--on-error-container);
+
+    .mat-simple-snackbar-action {
+      color: black !important;
+    }
+  }
+
+  .mat-snack-bar-container {
+    max-width: 100% !important;
+    //background: white !important;
+
+  }
+
+  .mat-mdc-text-field-wrapper {
+    flex: 0 !important;
+  }
+
+  @media (max-height: 500px) {
+    .mat-horizontal-content-container {
+      padding-bottom: 0 !important;
+    }
+  }
+
+  .dark {
+    .no-tour .mat-expansion-panel, .no-tour .mat-mdc-card {
+      background: rgb(255 255 255 / 5%) !important;
+      backdrop-filter: blur(5px);
+    }
+
+    .mat-mdc-text-field-wrapper {
+      background: var(--surface);
+    }
+  }
+
+
+  mat-vertical-stepper, mat-horizontal-stepper {
+    background: transparent !important;
+  }
+
+  .mat-mdc-card.flat-bottom {
+    --mdc-elevated-card-container-shape: 4px 4px 0 0;
+    --mdc-outlined-card-container-shape: 4px 4px 0 0;
+  }
+
+  // Tour
+  .color-backdrop {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    pointer-events: auto;
+    background: rgba(black, 0.5);
+    opacity: 1 !important;
+    z-index: 998;
+
+    .dark {
+      background: rgba(black, 0.7);
+    }
+  }
+
+  .touranchor--is-active {
+    position: relative;
+    z-index: 999;
+
+    &[clickable] {
+      z-index: 1003;
+
+      &:is(button) {
+        box-sizing: content-box;
+        border: 5px solid var(--surface);
+        border-radius: 0 0 4px 4px;
+      }
+    }
+  }
+
+  .nav-button-area {
+    padding: 8px;
+    border-radius: 0 0 24px 24px;
+
+    &.touranchor--is-active {
+      background: var(--card);
+    }
+  }
+
+  div[tourAnchor="annotate.table"].touranchor--is-active {
+    background: var(--card);
+  }
+}
