@@ -117,7 +117,7 @@
             <div class="big-text text-align">Here are some nice reports</div>
             <div class="flex-container horizontal gap-one justify-center">
               <div *ngFor="let report of vm.reportLoadingStatus?.reports">
-                <a class="primary-color" [href]=report.url mat-flat-button target="_blank">
+                <a class="primary-color" [href]=report.url mat-stroked-button target="_blank">
                   <span [ngSwitch]="report.name" class="float-right">
                     <ng-template [ngSwitchCase]="'MS Excel Report (xlsx)'">
                       <div class="flex-container horizontal align-center">
