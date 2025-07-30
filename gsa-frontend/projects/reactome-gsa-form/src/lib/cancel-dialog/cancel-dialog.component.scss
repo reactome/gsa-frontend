@@ -1,4 +1,7 @@
 .actions {
   justify-content: space-between;
-  padding: 0 24px;
+}
+
+.error {
+  background-color: var(--error);
 }

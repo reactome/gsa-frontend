@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {TourService} from "ngx-ui-tour-md-menu";
 import {IMdStepOption} from "ngx-ui-tour-md-menu/lib/step-option.interface";
-import {HeightService} from "../global-services/height.service";
-import {TourUtilsService} from "../global-services/tour-utils.service";
+import {HeightService} from "../services/height.service";
+import {TourUtilsService} from "../services/tour-utils.service";
 
 @Component({
     selector: 'gsa-tour',
@@ -13,19 +13,7 @@ import {TourUtilsService} from "../global-services/tour-utils.service";
 export class TourComponent {
 
   constructor(public tourService: TourService, public tour: TourUtilsService, public height: HeightService) {
-    this.tourService.setDefaults({
-      placement: {yPosition: 'above', xPosition:'after'},
-      enableBackdrop: false,
-      smoothScroll: true,
-      centerAnchorOnScroll: true,
-      disablePageScrolling: true,
-      closeOnOutsideClick: false,
-      duplicateAnchorHandling: 'registerFirst',
-      showArrow: false,
-      popoverClass: 'no-radius'
-    });
-
-
+    console.log('init tour')
     this.tourService.initialize([
       {
         anchorId: 'Camera',

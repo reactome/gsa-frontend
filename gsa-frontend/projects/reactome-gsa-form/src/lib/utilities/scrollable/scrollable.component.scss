@@ -9,20 +9,14 @@
   margin-top: -20px;
 }
 
-.shadow-top-transition {
-  opacity: 0;
-  transition: opacity 0ms;
-  box-shadow: 0 10px 10px -10px #8d8c8c inset;
-}
-
 .shadow-top {
   opacity: 1;
-  box-shadow: 0 10px 10px -10px #8d8c8c inset;
+  box-shadow: 0 10px 10px -10px var(--outline) inset;
 }
 
 .shadow-bottom {
   opacity: 1;
-  box-shadow: 0 -10px 10px -10px #8d8c8c inset;
+  box-shadow: 0 -10px 10px -10px var(--outline) inset;
 }
 
 .scrollbar::-webkit-scrollbar {
@@ -43,7 +37,8 @@
 }
 
 .center-vertical {
-  height: calc(100vh - 233px); // No tour controller
+  height: calc(100cqh - 145px);
+  //height: calc(100vh - 233px); // No tour controller
   overflow-y: auto;
   overflow-x: hidden;
   //height: 100%;
@@ -52,11 +47,11 @@
 }
 
 .tour-active {
-  height: calc(100vh - 274px); // With tour controller
+  //height: calc(100vh - 274px); // With tour controller
 }
 
 .small-screen {
-  height: calc(100vh - 115px); // Small screen => without tour controller
+  //height: calc(100vh - 115px); // Small screen => without tour controller
 }
 
 

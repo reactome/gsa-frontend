@@ -1,4 +1,4 @@
-<div class="flex-container justify-center align-center height-hundred">
+<div class="container">
   @if (loadingStatus$ | async; as status) {
     <mat-dialog-content>
       <div>
@@ -29,12 +29,12 @@
             <div class="flex-container vertical justify-center align-center">
               <mat-icon class="warn big-size">error</mat-icon>
               <h2 class="text-margin text-center">{{status.description}}</h2>
-              <button class="primary" mat-dialog-close mat-raised-button>Cancel</button>
+              <button class="primary-color" mat-dialog-close mat-raised-button>Cancel</button>
             </div>
           }
           @case ('complete') {
             <div class="flex-container vertical justify-center align-center">
-              <div class="material-symbols-outlined big-size green">check_circle</div>
+              <mat-icon fontSet="gsa" class="big-size green">check_circle</mat-icon>
               <h2 class="text-margin text-center">Dataset loaded</h2>
             </div>
           }

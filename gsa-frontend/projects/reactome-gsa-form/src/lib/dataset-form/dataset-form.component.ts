@@ -12,7 +12,7 @@ import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 import {Parameter} from "../model/parameter.model";
 import {Method} from "../state/method/method.state";
 import {DownloadDatasetService} from "../services/download-dataset.service";
-import {TourUtilsService} from "../global-services/tour-utils.service";
+import {TourUtilsService} from "../services/tour-utils.service";
 
 @Component({
     selector: 'gsa-dataset-form',

@@ -1,4 +1,4 @@
-import {InjectionToken} from "@angular/core";
+import {InjectionToken, Signal, signal} from "@angular/core";
 
 export interface GsaConfig {
   apiRoot: string,
@@ -12,4 +12,10 @@ export const DEFAULT_GSA_CONFIG: GsaConfig = {
   server: "production"
 }
 
-export const REACTOME_GSA_CONFIG = new InjectionToken<GsaConfig>('REACTOME_GSA_CONFIG')
+export const REACTOME_GSA_CONFIG = new InjectionToken<ConfigProvider>('REACTOME_GSA_CONFIG', {
+  providedIn: 'root',
+  factory: () => config
+})
+
+export type ConfigProvider = Signal<GsaConfig>
+export const config = signal<GsaConfig>(DEFAULT_GSA_CONFIG);

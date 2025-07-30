@@ -5,8 +5,15 @@
 @use "reactome-table";
 @use "reactome-gsa-form";
 
-@include reactome-table.configure-table();
+@include reactome-table.configure-table-globals();
 @include ngx-reactome-style.theme();
-@include reactome-gsa-form.configure-gsa-form-variables();
 @include reactome-gsa-form.configure-gsa-form();
 
+body {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: var(--surface);
+  color: var(--on-surface);
+
+  max-height: calc(100vh - 8px);
+  margin: 0 8px 8px;
+}

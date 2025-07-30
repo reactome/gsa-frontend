@@ -21,8 +21,6 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {LetDirective} from "@ngrx/component";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {FormsModule} from "@angular/forms";
-import {GsaFormModule} from "../../projects/reactome-gsa-form/src/lib/gsa-form.module";
-import {environment} from "../environments/environment";
 
 
 @NgModule({
@@ -59,12 +57,9 @@ import {environment} from "../environments/environment";
     LetDirective,
     MatSlideToggleModule,
     FormsModule,
-    GsaFormModule.forRoot({
-      apiRoot: environment.ApiRoot,
-      apiSecretRoot: environment.ApiSecretRoot,
-      server: environment.server as "dev" | "production",
-    }),
-  ], providers: [provideHttpClient(withInterceptorsFromDi())]
+  ], providers: [
+    provideHttpClient(withInterceptorsFromDi()),
+  ]
 })
 export class AppModule {
   constructor(icons: MatIconRegistry) {

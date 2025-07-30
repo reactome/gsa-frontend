@@ -1,10 +1,10 @@
-import {Inject, Injectable} from '@angular/core';
+import {computed, Inject, Injectable} from '@angular/core';
 import {Method} from "../model/methods.model";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {catchError, Observable, throwError} from "rxjs";
 import {extractErrorMessage} from "../utilities/utils";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {GsaConfig, REACTOME_GSA_CONFIG} from "../config/gsa-config";
+import {ConfigProvider, REACTOME_GSA_CONFIG} from "../config/gsa-config";
 
 
 export const typeToParse: { [p: string]: (value: string) => any } = {
@@ -19,17 +19,18 @@ export const typeToParse: { [p: string]: (value: string) => any } = {
   providedIn: 'root'
 })
 export class AnalysisMethodsService {
-  methodsUrl = `${this.config.apiRoot}/methods`;
+  methodsUrl = computed(() =>`${this.config().apiRoot}/methods`);
 
   constructor(
     private http: HttpClient,
     private snackBar: MatSnackBar,
-    @Inject(REACTOME_GSA_CONFIG) private config: GsaConfig
+    @Inject(REACTOME_GSA_CONFIG) private config: ConfigProvider
   ) {
   }
 
   getAll(): Observable<Method[]> {
-    return this.http.get<Method[]>(this.methodsUrl)
+    console.log(this.methodsUrl());
+    return this.http.get<Method[]>(this.methodsUrl())
       .pipe(catchError((err: HttpErrorResponse) => {
           this.snackBar.open("The methods couldn't be loaded: \n" + extractErrorMessage(err), "Close", {
             panelClass: ['warning-snackbar']

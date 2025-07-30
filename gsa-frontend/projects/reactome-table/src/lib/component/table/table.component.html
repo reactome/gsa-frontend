@@ -62,7 +62,7 @@
                       @if (canDelete) {
                         <span [style.width.px]="rowHeight()">
                           <button (click)="deleteColumn(x)" class="bin-button" mat-icon-button>
-                            <mat-icon>delete</mat-icon>
+                            <mat-icon fontSet="gsa">delete</mat-icon>
                           </button>
                          </span>
                       }
@@ -87,7 +87,7 @@
               <td class="no-padding add-column-button-container"
                   rowspan="0">
                 <button #addCol (click)="addColumn()" (keydown.shift.tab)="focusLastCell($event)"
-                        class="add-column-button flex-container align-start primary"
+                        class="add-column-button flex-container align-start primary-color"
                         mat-button>
                   <span class="sticky-column">Add {{ settings.colToBeAdded > 1 ? settings.colToBeAdded : '' }} column</span>
                 </button>
@@ -104,7 +104,7 @@
                     <div class="flex horizontal align-center justify-between">
                       @if (settings.deleteRow) {
                         <button (click)="deleteRow(y)" class="bin-button" mat-icon-button>
-                          <mat-icon>delete</mat-icon>
+                          <mat-icon fontSet="gsa">delete</mat-icon>
                         </button>
                       }
                       <span class="flex-one no-event">{{ cell.value }}</span>
@@ -127,7 +127,7 @@
                 <th class="rows">...</th>
                 <td class="no-padding add-row-button-container" [colSpan]="data[0].length">
                   <button (click)="addRow()" (keydown.shift.tab)="focusLastCell($event)"
-                          class="add-row-button flex-container align-start primary"
+                          class="add-row-button flex-container align-start primary-color"
                           mat-button>
                     <span class="sticky-row">Add {{ settings.rowToBeAdded > 1 ? settings.rowToBeAdded : '' }} row</span>
                   </button>

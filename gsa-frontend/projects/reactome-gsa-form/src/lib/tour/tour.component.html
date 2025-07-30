@@ -8,19 +8,17 @@
         <div class="header-group">
           <mat-card-title>
             @if (step.icon) {
-              <mat-icon style="vertical-align: sub">{{step.icon}}</mat-icon>
+              <mat-icon fontSet="gsa" style="vertical-align: sub">{{step.icon}}</mat-icon>
             }
             {{step.title}}
           </mat-card-title>
-          <button mat-icon-button (click)="tour.pause()" class="close">
-            <mat-icon>close</mat-icon>
+          <button mat-icon-button (click)="tour.pause()">
+            <mat-icon fontSet="gsa" class="reactome-gsa-form-icon">close</mat-icon>
           </button>
         </div>
       </mat-card-header>
 
-      <mat-card-content class="mat-body"
-        [innerHTML]="step.content"
-        />
+      <mat-card-content class="mat-body" [innerHTML]="step.content"/>
 
       @if (!step.nextOnAnchorClick) {
         <mat-card-actions align="end">
@@ -46,17 +44,17 @@
   <div id="tour-controls-wrapper" class="flex-container justify-center">
     <div id="tour-controls" class="flex-container gap-one">
       @if (tour.paused) {
-        <button mat-icon-button class="primary" (click)="tour.resume()" matTooltip="Resume guided tour">
-          <mat-icon>play_arrow</mat-icon>
+        <button mat-icon-button class="primary-color" (click)="tour.resume()" matTooltip="Resume guided tour">
+          <mat-icon fontSet="gsa">play_arrow</mat-icon>
         </button>
       }
       @if (!tour.paused) {
-        <button mat-icon-button class="primary" (click)="tour.pause()" matTooltip="Pause guided tour">
-          <mat-icon>pause</mat-icon>
+        <button mat-icon-button class="primary-color" (click)="tour.pause()" matTooltip="Pause guided tour">
+          <mat-icon fontSet="gsa">pause</mat-icon>
         </button>
       }
-      <button mat-icon-button class="primary" (click)="tour.end()" matTooltip="End guided tour">
-        <mat-icon>stop</mat-icon>
+      <button mat-icon-button class="primary-color" (click)="tour.end()" matTooltip="End guided tour">
+        <mat-icon fontSet="gsa">stop</mat-icon>
       </button>
     </div>
   </div>

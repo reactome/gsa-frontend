@@ -85,13 +85,13 @@
           </h2>
           <div class="flex-container vertical width-hundred">
             <mat-checkbox (change)="changeAllCovariates($event.checked)" [checked]="vm.all"
-              [indeterminate]="vm.some && ! vm.all" class="primary">
+              [indeterminate]="vm.some && ! vm.all" class="primary-color">
               Select all
             </mat-checkbox>
             <section style="padding-left: 20px" class="flex-container vertical no-wrap">
               @for (cov of vm.covariates; track cov.name) {
                 <mat-checkbox class="example-margin"
-                  class="primary" class="example-section"
+                  class="primary-color" class="example-section"
                   [checked]="cov.value" (change)="setCovariance($event, cov.name)">
                   {{ cov.name }}
                 </mat-checkbox>

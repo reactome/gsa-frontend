@@ -1,4 +1,14 @@
-import {AfterViewInit, ChangeDetectorRef, Component, input, OnDestroy, OnInit, Output, viewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  effect,
+  input,
+  OnDestroy,
+  OnInit,
+  Output,
+  viewChild
+} from '@angular/core';
 import {MatStepper} from "@angular/material/stepper";
 import {Store} from "@ngrx/store";
 import {methodFeature} from "./state/method/method.selector";
@@ -12,10 +22,15 @@ import {analysisFeature} from "./state/analysis/analysis.selector";
 import {isDefined} from "./utilities/utils";
 import {MatDialog} from "@angular/material/dialog";
 import {CancelDialogComponent} from "./cancel-dialog/cancel-dialog.component";
-import {TourUtilsService} from "./global-services/tour-utils.service";
-import {HeightService} from "./global-services/height.service";
+import {TourUtilsService} from "./services/tour-utils.service";
+import {HeightService} from "./services/height.service";
 import {AnalysisResult} from "./model/analysis-result.model";
+import {MatIconRegistry} from "@angular/material/icon";
+import {ActivatedRoute, Params} from "@angular/router";
+import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
+import {TourComponent} from "./tour/tour.component";
 
+@UntilDestroy()
 @Component({
   selector: 'gsa-form',
   templateUrl: './gsa-form.component.html',
@@ -50,10 +65,20 @@ export class GsaFormComponent implements AfterViewInit, OnInit, OnDestroy {
   analysisReports = this.store.select(analysisFeature.selectReports)
 
   seeResultAction = input<'link' | ((result: AnalysisResult) => void)>('link')
-
+  tourComponent = viewChild.required(TourComponent);
   editable = true;
 
-  constructor(private cdr: ChangeDetectorRef, private store: Store, public tour: TourUtilsService, public height: HeightService, private dialog: MatDialog) {
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private store: Store,
+    public tour: TourUtilsService,
+    public height: HeightService,
+    private dialog: MatDialog,
+    private icons: MatIconRegistry,
+    private route: ActivatedRoute,
+  ) {
+    effect(() => this.tourComponent() && this.route.snapshot.queryParams['gsa-tour'] && this.tour.start())
+    icons.registerFontClassAlias('gsa', 'reactome-gsa-form-icon')
   }
 
   ngAfterViewInit() {

@@ -1,5 +1,5 @@
 <div *ngrxLet="{methods: methods$, names: methodNames$} as vm">
-  <mat-accordion multi="false" class="flex-container gap-one no-wrap vertical">
+  <mat-accordion multi="false" class="flex-container gap-one no-wrap vertical" style="margin: 8px 0">
     @for (name of vm.names; track name) {
       <div class="flex-one" >
         <gsa-method [methodName]="name" [tourAnchor]="name" clickable></gsa-method>

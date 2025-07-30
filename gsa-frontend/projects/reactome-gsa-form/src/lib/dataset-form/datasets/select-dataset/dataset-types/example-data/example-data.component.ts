@@ -4,7 +4,7 @@ import {Store} from "@ngrx/store";
 import {datasetSourceActions} from "../../../../../state/dataset-source/dataset-source.action";
 import {datasetActions} from "../../../../../state/dataset/dataset.actions";
 import {DownloadDatasetService} from "../../../../../services/download-dataset.service";
-import {TourUtilsService} from "../../../../../global-services/tour-utils.service";
+import {TourUtilsService} from "../../../../../services/tour-utils.service";
 
 @Component({
     selector: 'gsa-example-data',

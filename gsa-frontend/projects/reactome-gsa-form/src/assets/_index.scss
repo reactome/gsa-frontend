@@ -1,10 +1,10 @@
 @use "@angular/material" as mat;
 
-@mixin configure-gsa-form-variables() {
+@mixin configure-gsa-form() {
   html, body {
-    max-height: 100vh;
     font: var(--mat-sys-body-medium);
     --hover: rgb(0 0 0 / 7%);
+    --card: var(--mat-sys-surface-container-low);
 
     &.dark {
       --hover: rgb(255 255 255 / 7%);
@@ -17,56 +17,8 @@
       --mat-sys-level0: 0px 0px 0px 0px color-mix(in srgb, var(--shadow-color), transparent 20%), 0px 0px 0px 0px color-mix(in srgb, var(--shadow-color), transparent 14%), 0px 0px 0px 0px color-mix(in srgb, var(--shadow-color), transparent 12%);
     }
   }
-}
-
-
-@mixin configure-gsa-form() {
-  .primary:not([disabled]) {
-    color: var(--primary);
-    @include mat.icon-overrides((
-      color: var(--primary),
-    ));
-
-    @include mat.icon-button-overrides((
-      icon-color: var(--primary),
-    ));
-  }
-
-  .warn:not([disabled]) {
-    color: var(--error);
-    @include mat.icon-overrides((
-      color: var(--error),
-    ));
-    @include mat.icon-button-overrides((
-      icon-color: var(--error),
-    ));
-    @include mat.button-overrides((
-      protected-label-text-color: var(--error),
-      filled-label-text-color: var(--error),
-      outlined-label-text-color: var(--error),
-      text-label-text-color: var(--error),
-    ))
-  }
-
-  p {
-    margin: 0 0 12px;
-  }
-
-  .mat-expansion-panel-header {
-    border-radius: 0 !important;
-  }
-
-  a {
-    color: var(--primary)
-  }
 
   body {
-    font-family: Roboto, "Helvetica Neue", sans-serif;
-    background-color: var(--surface);
-    color: black;
-    max-height: calc(100vh - 8px);
-    margin: 0 8px 8px;
-
     @include mat.expansion-overrides((
       header-text-size: var(--mat-sys-body-medium-size),
       container-text-size: var(--mat-sys-body-medium-size),
@@ -74,220 +26,48 @@
     ));
   }
 
-  .dark {
-    color: white;
-  }
-
-
-  .outline {
-    color: var(--outline);
-  }
-
-  .outline-variant {
-    color: var(--outline-variant)
-  }
-
-  .secondary {
-    color: var(--secondary);
-  }
-
-  .tertiary {
-    color: var(--tertiary);
-  }
-
-  .error {
-    color: var(--error) !important;
-  }
-
-  .mdc-tooltip__surface {
-    text-align: justify;
-  }
-
-  h1 {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
-    font-weight: bold !important;
-  }
-
-  h2 {
-    font-weight: 100 !important;
-  }
-
-  .no-margin {
-    margin: 0 !important;
-  }
-
-  .no-padding {
-    padding: 0 !important;
-  }
-
-  //Width
-
-  .width-forty {
-    width: 40%;
-  }
-
-  .width-fifty {
-    width: 50%;
-  }
-
-  .width-sixty {
-    width: 60%;
-  }
-
-  .width-seventy {
-    width: 70%;
-  }
-
-  .width-eighty {
-    width: 80%;
-  }
-
-  .width-hundred {
-    width: 100%;
-  }
-
-  .height-eighty {
-    height: 80%;
-  }
-
-  .height-hundred {
-    height: 100%;
-  }
-
-  .relative {
-    position: relative;
-  }
-
-  .margin-left-10 {
-    margin-left: 10px;
-  }
-
-  .primary-border {
-    border: 2px solid var(--primary) !important;
-  }
-
-  .surface {
-    background: var(--surface);
-  }
-
-  //Angular Material
-  mat-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .material-symbols-outlined {
-    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  .reactome-gsa-form-icon {
+    font-family: var(--reactome-symbols-font-family, 'Material Symbols Outlined');
+    font-variation-settings: var(--reactome-symbols-variation-settings, 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24);
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
 
     &.outlined {
       font-variation-settings: 'FILL' 0
     }
   }
 
-  .mat-vertical-content {
-    padding-right: 0 !important;
-  }
-
-  .expansion-panel-margin {
-    margin-top: 16px !important;
-  }
-
-  .dataset-card-content {
-    color: var(--primary);
-    //color: black;
-    padding: 10px;
-    margin: 3px !important;
-    border-radius: 10px;
-    border: 1px solid var(--primary);
-    background: var(--surface);
-
-    *:last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  .dataset-card-content:hover {
-    background: var(--surface2);
-    cursor: pointer;
-
-    &.no-hover {
-      background: var(--surface);
-    }
-  }
-
-  .warning-snackbar {
-    background-color: white;
-    color: coral;
-
-    .mat-simple-snackbar-action {
-      color: black !important;
-    }
-  }
-
-
-  .error-snackbar {
-    background-color: var(--error-container);
-    color: var(--on-error-container);
-
-    .mat-simple-snackbar-action {
-      color: black !important;
-    }
-  }
-
-  .mat-snack-bar-container {
-    max-width: 100% !important;
-    //background: white !important;
-
-  }
-
-  .mat-mdc-text-field-wrapper {
-    flex: 0 !important;
-  }
-
-  @media (max-height: 500px) {
-    .mat-horizontal-content-container {
-      padding-bottom: 0 !important;
-    }
-  }
-
-  .dark {
-    .no-tour .mat-expansion-panel, .no-tour .mat-mdc-card {
-      background: rgb(255 255 255 / 5%) !important;
-      backdrop-filter: blur(5px);
-    }
-
-    .mat-mdc-text-field-wrapper {
-      background: var(--surface);
-    }
-  }
-
-
-  mat-vertical-stepper, mat-horizontal-stepper {
-    background: transparent !important;
-  }
-
-  .mat-mdc-card.flat-bottom {
-    --mdc-elevated-card-container-shape: 4px 4px 0 0;
-    --mdc-outlined-card-container-shape: 4px 4px 0 0;
-  }
-
   // Tour
-  .color-backdrop {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    pointer-events: auto;
-    background: rgba(black, 0.5);
-    opacity: 1 !important;
-    z-index: 998;
+  .mat-mdc-menu-panel.tour-step {
+    border-radius: 12px;
 
-    .dark {
-      background: rgba(black, 0.7);
+    &.mat-menu-above.mat-menu-before,
+    &.mat-menu-above.mat-menu-before .mat-mdc-card {
+      border-bottom-right-radius: 0;
+    }
+
+    &.mat-menu-above.mat-menu-after,
+    &.mat-menu-above.mat-menu-after .mat-mdc-card {
+      border-bottom-left-radius: 0;
+    }
+
+    &.mat-menu-below.mat-menu-before,
+    &.mat-menu-below.mat-menu-before .mat-mdc-card {
+      border-top-right-radius: 0;
+    }
+
+    &.mat-menu-below.mat-menu-after,
+    &.mat-menu-below.mat-menu-after .mat-mdc-card {
+      border-top-left-radius: 0;
     }
   }
 
@@ -306,16 +86,213 @@
     }
   }
 
-  .nav-button-area {
-    padding: 8px;
-    border-radius: 0 0 24px 24px;
-
-    &.touranchor--is-active {
-      background: var(--card);
-    }
+  .warning-snackbar {
+    @include mat.snack-bar-overrides((
+      container-color: var(--error-container),
+      supporting-text-color: var(--on-error-container),
+      button-color: var(--on-error-container),
+    ));
   }
 
-  div[tourAnchor="annotate.table"].touranchor--is-active {
-    background: var(--card);
+
+  .error-snackbar {
+    @include mat.snack-bar-overrides((
+      container-color: var(--error),
+      supporting-text-color: var(--on-error),
+      button-color: var(--on-error)
+    ));
+  }
+
+  .outline-color:not([disabled]) {
+    color: var(--outline);
+  }
+
+  .outline-variant-color:not([disabled]) {
+    color: var(--outline-variant)
+  }
+
+  .secondary-color:not([disabled]) {
+    color: var(--secondary);
+  }
+
+  .tertiary-color:not([disabled]) {
+    color: var(--tertiary);
+  }
+
+  .error-color:not([disabled]) {
+    color: var(--error) !important;
+  }
+
+  .mat-snack-bar-container {
+    max-width: 100% !important;
+  }
+
+  gsa-form {
+
+    .primary-color:not([disabled]) {
+      color: var(--primary);
+    }
+
+    p {
+      margin: 0 0 12px;
+    }
+
+    .mat-expansion-panel-header {
+      border-radius: 0 !important;
+    }
+
+    a {
+      color: var(--primary)
+    }
+
+    .mdc-tooltip__surface {
+      text-align: justify;
+    }
+
+    h1 {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 10px;
+      font-weight: bold !important;
+    }
+
+    h2 {
+      font-weight: 100 !important;
+    }
+
+    .no-margin {
+      margin: 0 !important;
+    }
+
+    .no-padding {
+      padding: 0 !important;
+    }
+
+    //Width
+
+    .width-forty {
+      width: 40%;
+    }
+
+    .width-fifty {
+      width: 50%;
+    }
+
+    .width-sixty {
+      width: 60%;
+    }
+
+    .width-seventy {
+      width: 70%;
+    }
+
+    .width-eighty {
+      width: 80%;
+    }
+
+    .width-hundred {
+      width: 100%;
+    }
+
+    .height-eighty {
+      height: 80%;
+    }
+
+    .height-hundred {
+      height: 100%;
+    }
+
+    .relative {
+      position: relative;
+    }
+
+    .margin-left-10 {
+      margin-left: 10px;
+    }
+
+    .primary-border {
+      border: 2px solid var(--primary) !important;
+    }
+
+    .surface {
+      background: var(--surface);
+    }
+
+    //Angular Material
+
+    .mat-vertical-content {
+      padding-right: 0 !important;
+    }
+
+    .expansion-panel-margin {
+      margin-top: 16px !important;
+    }
+
+    .dataset-card-content {
+      color: var(--primary);
+      padding: 10px;
+      margin: 3px !important;
+      border-radius: 10px;
+      border: 1px solid var(--primary);
+      background: var(--surface);
+
+      *:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .dataset-card-content:hover {
+      background: var(--surface2);
+      cursor: pointer;
+
+      &.no-hover {
+        background: var(--surface);
+      }
+    }
+
+    .mat-mdc-text-field-wrapper {
+      flex: 0 !important;
+    }
+
+    @media (max-height: 500px) {
+      .mat-horizontal-content-container {
+        padding-bottom: 0 !important;
+      }
+    }
+
+    .dark {
+      .no-tour .mat-expansion-panel, .no-tour .mat-mdc-card {
+        background: rgb(255 255 255 / 5%) !important;
+        backdrop-filter: blur(5px);
+      }
+
+      .mat-mdc-text-field-wrapper {
+        background: var(--surface);
+      }
+    }
+
+
+    mat-vertical-stepper, mat-horizontal-stepper {
+      background: transparent !important;
+    }
+
+    .mat-mdc-card.flat-bottom {
+      --mdc-elevated-card-container-shape: 4px 4px 0 0;
+      --mdc-outlined-card-container-shape: 4px 4px 0 0;
+    }
+
+    // Tour
+    .nav-button-area {
+      padding: 8px;
+      border-radius: 0 0 24px 24px;
+
+      &.touranchor--is-active {
+        background: var(--card);
+      }
+    }
+
+    div[tourAnchor="annotate.table"].touranchor--is-active {
+      background: var(--card);
+    }
   }
 }

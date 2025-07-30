@@ -1,14 +1,25 @@
 import {RouterModule, Routes} from "@angular/router";
 import {NgModule} from "@angular/core";
-import {GsaFormModule} from "../../projects/reactome-gsa-form/src/lib/gsa-form.module";
+import {environment} from "../environments/environment";
 
 export const routes: Routes = [
   {path: 'home', loadChildren: () => import('./home/home.module').then(m => m.HomeModule)},
-  {path: 'form', loadChildren: () => GsaFormModule},
-  {path: '',  redirectTo: '/home', pathMatch: 'full'}
+  {
+    path: 'form',
+    loadChildren: () => import('reactome-gsa-form').then(m => m.GsaFormModule.forChild(
+      {
+        apiRoot: environment.ApiRoot,
+        apiSecretRoot: environment.ApiSecretRoot,
+        server: environment.server as "dev" | "production",
+      }
+    )),
+  },
+  {path: '', redirectTo: '/home', pathMatch: 'full'}
 ]
+
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

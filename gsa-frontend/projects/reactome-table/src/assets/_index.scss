@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-@mixin configure-table {
+@mixin configure-table-globals {
   @font-face {
     font-family: "Roboto Mono";
     src: url("./fonts/RobotoMono.ttf") format("truetype");
@@ -57,7 +57,7 @@
   }
 
   .flex-zero {
-    flex: 0 0 auto
+    flex: 0 0 auto;
   }
 
   .gap-one {
@@ -105,6 +105,6 @@
   }
 
   .no-radius {
-    border-radius: 0 !important;
+    border-radius: 0 ;
   }
 }

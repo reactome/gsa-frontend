@@ -47,7 +47,10 @@ h2 {
 }
 
 .big-error {
-  font-size: 60px;
+  --size: 60px;
+  font-size: var(--size);
+  width: var(--size);
+  height: var(--size);
   color: var(--error);
 }
 

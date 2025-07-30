@@ -25,7 +25,7 @@ import {
 import {
   ChangeAnalysisParamsComponent
 } from "../../dataset-form/datasets/change-analysis-params/change-analysis-params.component";
-import {TourUtilsService} from "../../global-services/tour-utils.service";
+import {TourUtilsService} from "../../services/tour-utils.service";
 
 
 

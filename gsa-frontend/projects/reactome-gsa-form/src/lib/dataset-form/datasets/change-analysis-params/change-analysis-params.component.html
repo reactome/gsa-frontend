@@ -4,14 +4,12 @@
 
   <div class="flex vertical gap-one width-hundred">
     @for (param of vm.parameters; track param.name) {
-      <gsa-method-parameter [parameter]="param" (parameterChange)="updateParam($event, vm.parameters)"
-        >
-      </gsa-method-parameter>
+      <gsa-method-parameter [parameter]="param" (parameterChange)="updateParam($event, vm.parameters)"/>
     }
   </div>
 
   <div class="flex-container horizontal gap-one justify-between width-hundred">
-    <button (click)="reset()" class="primary" mat-stroked-button>Reset</button>
-    <button class="primary" mat-dialog-close mat-raised-button>Finish</button>
+    <button (click)="reset()" class="primary-color" mat-stroked-button>Reset</button>
+    <button class="primary-color" mat-dialog-close mat-flat-button>Finish</button>
   </div>
 </div>

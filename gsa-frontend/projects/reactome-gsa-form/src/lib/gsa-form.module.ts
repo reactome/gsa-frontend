@@ -1,4 +1,4 @@
-import {InjectionToken, ModuleWithProviders, NgModule} from '@angular/core';
+import {ModuleWithProviders, NgModule} from '@angular/core';
 import {AnalysisMethodsComponent} from "./analysis-methods/analysis-methods.component";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatCardModule} from '@angular/material/card';
@@ -67,7 +67,8 @@ import {SpeciesPipe} from './utilities/species/species.pipe';
 import {ReactomeTableModule} from "reactome-table";
 import {TourAnchorMatMenuDirective, TourStepTemplateComponent} from "ngx-ui-tour-md-menu";
 import {TourComponent} from "./tour/tour.component";
-import {DEFAULT_GSA_CONFIG, GsaConfig, REACTOME_GSA_CONFIG} from "./config/gsa-config";
+import {config, DEFAULT_GSA_CONFIG, GsaConfig} from "./config/gsa-config";
+import {CdkScrollable} from "@angular/cdk/scrolling";
 
 
 @NgModule({
@@ -94,8 +95,7 @@ import {DEFAULT_GSA_CONFIG, GsaConfig, REACTOME_GSA_CONFIG} from "./config/gsa-c
     TourComponent
   ],
   exports: [
-    GsaFormComponent,
-    TourComponent
+    GsaFormComponent
   ],
   imports: [
     GsaFormRoutingModule,
@@ -137,22 +137,29 @@ import {DEFAULT_GSA_CONFIG, GsaConfig, REACTOME_GSA_CONFIG} from "./config/gsa-c
     LetDirective,
     TourAnchorMatMenuDirective,
     TourStepTemplateComponent,
+    CdkScrollable,
   ],
   bootstrap: [GsaFormComponent]
 })
 export class GsaFormModule {
-  static forChild(): ModuleWithProviders<GsaFormModule> {
-    return {
-      ngModule: GsaFormModule,
-    }
+
+  constructor() {}
+
+  private static configure( c: Partial<GsaConfig>) {
+    config.set({...DEFAULT_GSA_CONFIG, ...c});
+  }
+
+
+  static forChild(c: Partial<GsaConfig>): typeof GsaFormModule {
+    GsaFormModule.configure(c)
+    return GsaFormModule;
   }
 
   static forRoot(config: Partial<GsaConfig>): ModuleWithProviders<GsaFormModule> {
+    GsaFormModule.configure(config);
     return {
       ngModule: GsaFormModule,
-      providers: [
-        {provide: REACTOME_GSA_CONFIG, useValue: {...DEFAULT_GSA_CONFIG, ...config}},
-      ]
+      providers: []
     }
   }
 }

@@ -4,7 +4,7 @@ import {AnalysisMethodsService, typeToParse} from "../../services/analysis-metho
 import {methodActions} from "./method.action";
 import {catchError, exhaustMap, map, of} from "rxjs";
 import {ParameterType} from "../../model/methods.model";
-import {GsaConfig, REACTOME_GSA_CONFIG} from "../../config/gsa-config";
+import {ConfigProvider, GsaConfig, REACTOME_GSA_CONFIG} from "../../config/gsa-config";
 
 @Injectable({providedIn: 'root'})
 export class MethodEffects {
@@ -19,7 +19,7 @@ export class MethodEffects {
                 param.default = typeToParse[param.type](param.default);
               })
               const server = method.parameters.find(param => param.name === "reactome_server");
-              if (server) server.value = this.config.server
+              if (server) server.value = this.config().server
             });
             return methodActions.loadSuccess({methods})
           }),
@@ -32,7 +32,7 @@ export class MethodEffects {
   constructor(
     private actions$: Actions,
     private methodService: AnalysisMethodsService,
-    @Inject(REACTOME_GSA_CONFIG) private config: GsaConfig
+    @Inject(REACTOME_GSA_CONFIG) private config: ConfigProvider
   ) {
   }
 }

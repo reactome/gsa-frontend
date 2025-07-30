@@ -1,4 +1,4 @@
-import {Inject, Injectable} from '@angular/core';
+import {computed, Inject, Injectable} from '@angular/core';
 import {LoadingStatus} from "../model/load-dataset.model";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {AnalysisResult} from "../model/analysis-result.model";
@@ -9,28 +9,23 @@ import {Method} from "../state/method/method.state";
 import {Dataset} from "../state/dataset/dataset.state";
 import {Parameter} from "../model/parameter.model";
 import {extractErrorMessage} from "../utilities/utils";
-import {GsaConfig, REACTOME_GSA_CONFIG} from "../config/gsa-config";
+import {ConfigProvider, REACTOME_GSA_CONFIG} from "../config/gsa-config";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AnalysisService {
 
-  submitAnalysisUrl = `${this.config.apiRoot}/analysis`;
-  analysisStatusUrl = `${this.config.apiRoot}/status/`;
-  analysisResultUrl = `${this.config.apiRoot}/result/`;
-  reportStatusUrl = `${this.config.apiRoot}/report_status/`;
+  submitAnalysisUrl = computed(() => `${this.config().apiRoot}/analysis`);
+  analysisStatusUrl = computed(() => `${this.config().apiRoot}/status/`);
+  analysisResultUrl = computed(() => `${this.config().apiRoot}/result/`);
+  reportStatusUrl = computed(() => `${this.config().apiRoot}/report_status/`);
 
   constructor(
     private http: HttpClient,
     private snackBar: MatSnackBar,
-    @Inject(REACTOME_GSA_CONFIG) private config: GsaConfig
+    @Inject(REACTOME_GSA_CONFIG) private config: ConfigProvider
   ) {
-    if (!config) {
-      throw new Error(
-        'REACTOME_GSA_CONFIG was not provided. Make sure to call GsaFormModule.forRoot({...}) in your AppModule.'
-      );
-    }
   }
 
   submitQuery(method: Method, parameters: Parameter[], datasets: Dataset[]): Observable<string> {
@@ -62,7 +57,7 @@ export class AnalysisService {
         },
       })),
     };
-    return this.http.post(this.submitAnalysisUrl, query, {responseType: 'text'})
+    return this.http.post(this.submitAnalysisUrl(), query, {responseType: 'text'})
   }
 
   cancelAnalysis(analysisId: string): Observable<never> {
@@ -70,7 +65,7 @@ export class AnalysisService {
   }
 
   getAnalysisLoadingStatus(analysisId: string): Observable<LoadingStatus> {
-    return this.http.get<LoadingStatus>(this.analysisStatusUrl + analysisId)
+    return this.http.get<LoadingStatus>(this.analysisStatusUrl() + analysisId)
       .pipe(catchError((err: HttpErrorResponse) => {
         this.snackBar.open("The analysis could not be performed: \n" + extractErrorMessage(err), "Close", {
           panelClass: ['warning-snackbar']
@@ -80,7 +75,7 @@ export class AnalysisService {
   }
 
   getAnalysisResults(analysisId: string): Observable<AnalysisResult> {
-    return this.http.get<AnalysisResult>(this.analysisResultUrl + analysisId)
+    return this.http.get<AnalysisResult>(this.analysisResultUrl() + analysisId)
       .pipe(catchError((err: HttpErrorResponse) => {
         this.snackBar.open("The analysis could not been performed: \n" + extractErrorMessage(err), "Close", {
           panelClass: ['warning-snackbar']
@@ -90,7 +85,7 @@ export class AnalysisService {
   }
 
   getReportLoadingStatus(analysisId: string): Observable<LoadingStatus> {
-    return this.http.get<LoadingStatus>(this.reportStatusUrl + analysisId)
+    return this.http.get<LoadingStatus>(this.reportStatusUrl() + analysisId)
       .pipe(catchError((err: HttpErrorResponse) => {
         this.snackBar.open("The reports could not been loaded: \n" + extractErrorMessage(err), "Close", {
           panelClass: ['warning-snackbar']

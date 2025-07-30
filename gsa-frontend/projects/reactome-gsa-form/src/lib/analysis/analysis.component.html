@@ -12,8 +12,8 @@
               <mat-spinner class="padding-right-ten" diameter="100"></mat-spinner>
             </div>
             <div class="big-text">Requesting Analysis</div>
-            <div class="outline description">
-              {{vm.analysisLoadingStatus?.description}}
+            <div class="outline-color description">
+              {{ vm.analysisLoadingStatus?.description }}
             </div>
           </div>
         </div>
@@ -23,22 +23,22 @@
             <div class="spinner-box">
               <mat-spinner class="padding-right-ten" diameter="100"></mat-spinner>
             </div>
-            <div class="big-text">Analysis loading: {{vm.analysisLoadingStatus?.completed! * 100 | number: '1.0-0'}}%
+            <div class="big-text">Analysis loading: {{ vm.analysisLoadingStatus?.completed! * 100 | number: '1.0-0' }}%
             </div>
-            <div class="outline description">
-              <span>{{vm.analysisLoadingStatus?.description}}</span>
+            <div class="outline-color description">
+              <span>{{ vm.analysisLoadingStatus?.description }}</span>
             </div>
           </div>
         </div>
 
         <div *ngSwitchCase="'failed'" class="flex-container vertical align-center gap-one justify-center">
-          <div class="material-symbols-outlined mat-error big-error">error</div>
+          <mat-icon fontSet="gsa" class="big-error">error</mat-icon>
           <span class="big-text failed">Oops! An error has occurred</span>
           <span class="text failed">Analysis failed, please contact
             <a [href]="mail(statusString$ | async)">help&#64;reactome.org</a>
             if the problem persist
           </span>
-          <div class="text-margin error-message">{{vm.analysisLoadingStatus!.description}}</div>
+          <div class="text-margin error-message">{{ vm.analysisLoadingStatus!.description }}</div>
         </div>
 
         <div *ngSwitchCase="'complete'">
@@ -47,32 +47,32 @@
             <div class="flex-container horizontal gap-one justify-center">
               @if (seeResultAction() === 'link') {
                 @if (vm.result?.reactome_links?.[0]?.url; as url) {
-                  <a class="primary" [href]="url" mat-raised-button target="_blank">
+                  <a [href]="url" mat-flat-button target="_blank">
                     <div class="flex-container horizontal align-center">
-                      <mat-icon class="padding-right-ten material-symbols-outlined outlined">visibility</mat-icon>
+                      <mat-icon fontSet="gsa" class="padding-right-ten outlined">visibility</mat-icon>
                       <span>Results</span>
                     </div>
                   </a>
                 }
               } @else {
                 @if (vm.result) {
-                  <a class="primary" (click)="applyAction(vm.result!)"  mat-raised-button target="_blank">
+                  <a (click)="applyAction(vm.result!)" mat-flat-button target="_blank">
                     <div class="flex-container horizontal align-center">
-                      <mat-icon class="padding-right-ten material-symbols-outlined outlined">visibility</mat-icon>
+                      <mat-icon fontSet="gsa" class="padding-right-ten outlined">visibility</mat-icon>
                       <span>Results</span>
                     </div>
                   </a>
                 }
               }
 
-              <button (click)="goToSelectMethod()" class="primary" mat-stroked-button>
-                <mat-icon class="primary material-symbols-outlined">restart_alt</mat-icon>
+              <button (click)="goToSelectMethod()" class="primary-color" mat-stroked-button>
+                <mat-icon fontSet="gsa" class="primary-color">restart_alt</mat-icon>
                 Start a new analysis
               </button>
             </div>
             <br>
             <div *ngIf="vm.reportsRequired && vm.reportLoadingStatus?.status !== 'complete'"
-                 class="outline description">
+                 class="outline-color description">
               Don't hesitate! You can already analyse while the reports are loading.
             </div>
           </div>
@@ -99,17 +99,17 @@
             <div class="spinner-box">
               <mat-spinner class="padding-right-ten" diameter="100"></mat-spinner>
             </div>
-            <div class="big-text">Report loading: {{vm.reportLoadingStatus?.completed! * 100}}%</div>
-            <div class="outline description"><span
-              *ngIf="vm.reportLoadingStatus?.status === 'running'">{{vm.reportLoadingStatus?.description}}</span>
+            <div class="big-text">Report loading: {{ vm.reportLoadingStatus?.completed! * 100 }}%</div>
+            <div class="outline-color description"><span
+              *ngIf="vm.reportLoadingStatus?.status === 'running'">{{ vm.reportLoadingStatus?.description }}</span>
             </div>
           </div>
         </div>
 
         <div *ngSwitchCase="'failed'" class="flex-container vertical align-center">
-          <div class="material-symbols-outlined mat-error big-error">error</div>
+          <mat-icon fontSet="gsa" class="big-error">error</mat-icon>
           <span class="big-text">Report generation failed, please contact help&#64;reactome.org</span>
-          <div class="text-margin">{{vm.reportLoadingStatus!.description}}</div>
+          <div class="text-margin">{{ vm.reportLoadingStatus!.description }}</div>
         </div>
 
         <div *ngSwitchCase="'complete'">
@@ -117,7 +117,7 @@
             <div class="big-text text-align">Here are some nice reports</div>
             <div class="flex-container horizontal gap-one justify-center">
               <div *ngFor="let report of vm.reportLoadingStatus?.reports">
-                <a class="primary" [href]=report.url mat-raised-button target="_blank">
+                <a class="primary-color" [href]=report.url mat-flat-button target="_blank">
                   <span [ngSwitch]="report.name" class="float-right">
                     <ng-template [ngSwitchCase]="'MS Excel Report (xlsx)'">
                       <div class="flex-container horizontal align-center">
@@ -129,13 +129,13 @@
                     <ng-template [ngSwitchCase]="'PDF Report'">
                         <div class="flex-container horizontal align-center">
                       <mat-icon class="padding-right-ten">picture_as_pdf</mat-icon>
-                       <span>{{report.name}}</span>
+                       <span>{{ report.name }}</span>
                        </div>
                     </ng-template>
                     <ng-template [ngSwitchCase]="'R Script'">
                          <div class="flex-container horizontal align-center">
                       <mat-icon class="padding-right-ten">code_blocks</mat-icon>
-                       <span>{{report.name}}</span>
+                       <span>{{ report.name }}</span>
                           </div>
                     </ng-template>
                   </span>

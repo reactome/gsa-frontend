@@ -25,6 +25,17 @@ export class TourUtilsService {
   );
 
   constructor(private tourService: TourService) {
+    this.tourService.setDefaults({
+      placement: {yPosition: 'above', xPosition:'after'},
+      enableBackdrop: false,
+      smoothScroll: true,
+      centerAnchorOnScroll: true,
+      disablePageScrolling: true,
+      closeOnOutsideClick: false,
+      duplicateAnchorHandling: 'registerFirst',
+      showArrow: false,
+    });
+
     this.tourService.start$.pipe(untilDestroyed(this)).subscribe(() => {
       this.on = true;
       this.paused = false;

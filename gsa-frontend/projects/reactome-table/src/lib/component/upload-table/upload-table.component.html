@@ -3,10 +3,10 @@
 @if ((type$| async) === 'icon') {
   <button (click)="fileUpload.click()" color="accent" mat-icon-button
     matTooltip="Upload your own table data as a csv or tsv">
-    <mat-icon>cloud_download</mat-icon>
+    <mat-icon fontSet="gsa">cloud_download</mat-icon>
   </button>
 } @else {
-  <button (click)="fileUpload.click()" class="primary" mat-stroked-button>
+  <button (click)="fileUpload.click()" class="primary-color" mat-stroked-button>
     Upload table
   </button>
 }

@@ -1,3 +1,7 @@
+.container {
+  position: absolute;
+  inset: 0px;
+}
 img {
   width: 200px;
   display: block;
@@ -12,15 +16,6 @@ img {
   margin: 0 20px;
 }
 
-:host {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-
-  gsa-form {
-    flex: 1 1 auto;
-  }
-}
 
 .reactome {
   font-weight: 400;

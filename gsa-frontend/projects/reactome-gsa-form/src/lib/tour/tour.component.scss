@@ -7,7 +7,7 @@
 }
 
 #tour-controls-wrapper {
-  position: absolute;
+  position: relative;
   bottom: 10px;
   left: 0;
   right: 0;
@@ -19,6 +19,22 @@
   z-index: 9000;
   * {
     z-index: 9000;
+  }
+}
+
+.color-backdrop {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  pointer-events: auto;
+  background: rgba(black, 0.5);
+  opacity: 1 !important;
+  z-index: 998;
+
+  .dark {
+    background: rgba(black, 0.7);
   }
 }
 

@@ -69,12 +69,12 @@
     </mat-card-content>
 
     <mat-card-actions class="gap-one" align="end">
-      <button mat-stroked-button class="primary" (click)="startTour()" style="vertical-align: sub"
+      <button mat-stroked-button class="primary-color" routerLink="/form" [queryParams]="{'gsa-tour': true}" style="vertical-align: sub"
               class="justify-center">
         Guided Tour
-        <mat-icon class="primary">explore</mat-icon>
+        <mat-icon class="primary-color">explore</mat-icon>
       </button>
-      <button mat-raised-button class="primary" routerLink="/form" tourAnchor="start">START</button>
+      <button mat-flat-button class="primary-color" routerLink="/form" tourAnchor="start">START</button>
     </mat-card-actions>
   </mat-card>
 </div>

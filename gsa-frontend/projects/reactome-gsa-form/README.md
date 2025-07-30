@@ -1,63 +1,98 @@
-# GsaForm
+# Reactome Gsa Form
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.0.
+[![npm version](https://badge.fury.io/js/reactome-gsa-form.svg)](https://badge.fury.io/js/reactome-gsa-form)
+[![npm downloads a month](https://img.shields.io/npm/dm/reactome-gsa-form.svg)](https://img.shields.io/npm/dm/reactome-gsa-form.svg)
 
-## Code scaffolding
+This Angular library embeds UI to query Reactome GSA APIs and create reactome analysis.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Compatibility
 
-```bash
-ng generate component component-name
+| reactome-gsa-form version | angular version |
+|---------------------------|-----------------|
+| 19.X.X                    | 19.X.X          |
+
+## Install
+
+```
+npm install --save reactome-gsa-form
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Usage
 
-```bash
-ng generate --help
+### styles.scss
+ ```scss
+@use "reactome-gsa-form";
+
+@include reactome-gsa-form.configure-gsa-form();
+// If You want to use a different symbol version from the default
+body {
+  --reactome-table-symbols-font-family: 'Material Symbols Outlined';
+  --reactome-symbols-variation-settings:  'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
 ```
 
-## Building
+### Importing module
+#### Eager loading
 
-To build the library, run:
+```ts
+import {NgModule} from '@angular/core';
+import {GsaFormModule} from "reactome-gsa-form";
 
-```bash
-ng build gsa-form
+
+@NgModule({
+  imports: [
+    GsaFormModule.forRoot({
+      apiRoot: environment.ApiRoot, // Needs proxy to access API
+      apiSecretRoot: environment.ApiSecretRoot, // Needs proxy to access API
+      server: environment.server as "dev" | "production",
+    }),
+  ]
+})
+export class AppModule {
+}
+
 ```
 
-This command will compile your project, and the build artifacts will be placed in the `dist/` directory.
+#### Lazy loading
+```ts
+import {RouterModule, Routes} from "@angular/router";
+import {NgModule} from "@angular/core";
+import {environment} from "../environments/environment";
 
-### Publishing the Library
+export const routes: Routes = [{
+    path: 'form',
+    loadChildren: () => import('reactome-gsa-form').then(m => m.GsaFormModule.forChild(
+      {
+        apiRoot: environment.ApiRoot, // Needs proxy to access API
+        apiSecretRoot: environment.ApiSecretRoot, // Needs proxy to access API
+        server: environment.server as "dev" | "production",
+      }
+    )),
+  },
+]
 
-Once the project is built, you can publish your library by following these steps:
-
-1. Navigate to the `dist` directory:
-   ```bash
-   cd dist/gsa-form
-   ```
-
-2. Run the `npm publish` command to publish your library to the npm registry:
-   ```bash
-   npm publish
-   ```
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class RoutingModule {
+}
 ```
 
-## Running end-to-end tests
+### Main component
+The main component is `<gsa-form>`.  
 
-For end-to-end (e2e) testing, run:
+### Tour
+If gsa-tour is available in the URL at instantiation time, then a tour will be started automatically.
 
-```bash
-ng e2e
+It can also be triggered manually after having been instantiated by using the `TourUtilsService`
+
+```ts
+import {Inject} from "@angular/core";
+import {TourUtilsService} from "reactome-gsa-form";
+
+@Inject(TourUtilsService)
+const tourService: TourUtilsService;
+
+tourService.start()
 ```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

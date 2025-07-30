@@ -4,7 +4,7 @@
   @if (screenIsSmall || !infoTooltip()) {
     <div [class.no-wrap]="!infoTooltip()" [matTooltip]="parameter().description">{{parameter().display_name}}</div>
   } @else {
-    <i class="material-symbols-outlined outlined outline" [matTooltip]="parameter().description">info</i>
+    <mat-icon fontSet="gsa" class="outlined outline-color" [matTooltip]="parameter().description">info</mat-icon>
     <div>{{parameter().display_name}}</div>
   }
 
@@ -27,7 +27,7 @@
         @switch (parameter().type) {
           @case (types.bool) {
             <mat-slide-toggle [formControl]="control"
-            class="primary"></mat-slide-toggle>
+            class="primary-color"></mat-slide-toggle>
           }
           @case (types.string) {
             <mat-form-field appearance="outline" subscriptSizing="dynamic" class="width-hundred">

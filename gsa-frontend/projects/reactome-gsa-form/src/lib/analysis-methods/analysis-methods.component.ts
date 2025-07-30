@@ -1,17 +1,18 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, effect, Inject, OnInit} from '@angular/core';
 import {UntilDestroy} from "@ngneat/until-destroy";
 import {Store} from "@ngrx/store";
 import {Observable} from "rxjs";
 import {Method} from "../state/method/method.state";
 import {methodFeature} from "../state/method/method.selector";
 import {methodActions} from "../state/method/method.action";
+import {ConfigProvider, REACTOME_GSA_CONFIG} from "../config/gsa-config";
 
 @UntilDestroy()
 @Component({
-    selector: 'gsa-analysis-methods',
-    templateUrl: './analysis-methods.component.html',
-    styleUrls: ['./analysis-methods.component.scss'],
-    standalone: false
+  selector: 'gsa-analysis-methods',
+  templateUrl: './analysis-methods.component.html',
+  styleUrls: ['./analysis-methods.component.scss'],
+  standalone: false
 })
 export class AnalysisMethodsComponent implements OnInit {
 
@@ -22,7 +23,7 @@ export class AnalysisMethodsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(methodActions.load())
+    this.store.dispatch(methodActions.load());
   }
 }
 

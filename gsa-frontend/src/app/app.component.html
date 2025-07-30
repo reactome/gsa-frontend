@@ -1,8 +1,8 @@
-<div>
+<div class="container flex vertical ">
   <header class="header flex-container justify-between align-center" [class.padding-top-24]="height.medium$ | async">
 
     <a href="/" mat-button class="reactome" #reactome>
-      <mat-icon class="primary">home</mat-icon>
+      <mat-icon class="primary-color">home</mat-icon>
       Reactome
     </a>
 
@@ -17,14 +17,15 @@
     }
 
     <span [style.width]="reactome._elementRef.nativeElement.offsetWidth + 'px'" style="text-align: end">
-      <mat-slide-toggle #darkToggle [(ngModel)]="dark.isDark" class="primary"></mat-slide-toggle>
+      <mat-slide-toggle #darkToggle [(ngModel)]="dark.isDark" class="primary-color"></mat-slide-toggle>
     </span>
 
   </header>
 
   <gsa-background></gsa-background>
-  <gsa-tour></gsa-tour>
-  <router-outlet></router-outlet>
+  <div class="flex vertical flex-one">
+    <router-outlet></router-outlet>
+  </div>
 
 </div>
 
