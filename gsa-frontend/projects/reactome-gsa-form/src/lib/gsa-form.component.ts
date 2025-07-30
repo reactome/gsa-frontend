@@ -26,11 +26,9 @@ import {TourUtilsService} from "./services/tour-utils.service";
 import {HeightService} from "./services/height.service";
 import {AnalysisResult} from "./model/analysis-result.model";
 import {MatIconRegistry} from "@angular/material/icon";
-import {ActivatedRoute, Params} from "@angular/router";
-import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
+import {ActivatedRoute} from "@angular/router";
 import {TourComponent} from "./tour/tour.component";
 
-@UntilDestroy()
 @Component({
   selector: 'gsa-form',
   templateUrl: './gsa-form.component.html',
@@ -78,7 +76,7 @@ export class GsaFormComponent implements AfterViewInit, OnInit, OnDestroy {
     private route: ActivatedRoute,
   ) {
     effect(() => this.tourComponent() && this.route.snapshot.queryParams['gsa-tour'] && this.tour.start())
-    icons.registerFontClassAlias('gsa', 'reactome-gsa-form-icon')
+    icons.registerFontClassAlias('gsa', 'reactome-icon')
   }
 
   ngAfterViewInit() {
