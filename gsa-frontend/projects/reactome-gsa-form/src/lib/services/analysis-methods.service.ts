@@ -29,7 +29,6 @@ export class AnalysisMethodsService {
   }
 
   getAll(): Observable<Method[]> {
-    console.log(this.methodsUrl());
     return this.http.get<Method[]>(this.methodsUrl())
       .pipe(catchError((err: HttpErrorResponse) => {
           this.snackBar.open("The methods couldn't be loaded: \n" + extractErrorMessage(err), "Close", {

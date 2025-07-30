@@ -31,10 +31,6 @@ export class HomeComponent {
     ]);
   }
 
-
-  onTableChange($event: string[][]) {
-    console.log($event);
-  }
 }
 
 function range(from: number, to: number) {

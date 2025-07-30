@@ -13,7 +13,6 @@ import {TourUtilsService} from "../services/tour-utils.service";
 export class TourComponent {
 
   constructor(public tourService: TourService, public tour: TourUtilsService, public height: HeightService) {
-    console.log('init tour')
     this.tourService.initialize([
       {
         anchorId: 'Camera',
