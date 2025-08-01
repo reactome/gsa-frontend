@@ -1,18 +1,19 @@
-import {Component, input} from '@angular/core';
+import {Component, computed, input} from '@angular/core';
 import {PDatasetSource} from "../../../../../state/dataset-source/dataset-source.state";
 import {datasetSourceActions} from "../../../../../state/dataset-source/dataset-source.action";
 import {Store} from "@ngrx/store";
 import {datasetActions} from "../../../../../state/dataset/dataset.actions";
 
 @Component({
-    selector: 'gsa-local-data',
-    templateUrl: './local-data.component.html',
-    styleUrls: ['./local-data.component.scss'],
-    standalone: false
+  selector: 'gsa-local-data',
+  templateUrl: './local-data.component.html',
+  styleUrls: ['./local-data.component.scss'],
+  standalone: false
 })
 export class LocalDataComponent {
   readonly source = input.required<PDatasetSource>();
   readonly datasetId = input.required<number>();
+  readonly isRiboSeq = computed(() => this.source().name === 'Ribo-seq');
 
   showPopup: boolean = false;
   loadLocalFiles: boolean = true;
@@ -49,14 +50,13 @@ export class LocalDataComponent {
 
   async uploadRiboData() {
     if (this.fileRibo && this.fileRNA) {
-      let fileRNA_ = this.fileRNA
-      let fileRibo_ = this.fileRibo
-      this.store.dispatch(datasetActions.uploadRibo({id: this.datasetId(), fileRibo: fileRibo_, fileRNA: fileRNA_,typeId: this.source().id}))
+      this.store.dispatch(datasetActions.uploadRibo({
+        id: this.datasetId(),
+        fileRibo: this.fileRibo,
+        fileRNA: this.fileRNA,
+        typeId: this.source().id
+      }))
     }
-  }
-
-  isRiboSeq(): boolean {
-    return this.source().name === 'Ribo-seq';
   }
 
   closePopUp() {
@@ -72,20 +72,20 @@ export class LocalDataComponent {
     }
 
     if (this.fileRibo && this.fileRNA) {
-       this.filesLoaded = true;
-       this.fileMatching = await this.checkFirstLinesMatch(this.fileRNA, this.fileRibo);
+      this.filesLoaded = true;
+      this.fileMatching = await this.checkFirstLinesMatch(this.fileRNA, this.fileRibo);
     }
   }
 
   async uploadRiboFile(event: any) {
     this.fileRibo = event.target.files[0];
     if (this.fileRibo) {
-       this.fileValid = await this.checkValidFile(this.fileRibo);
-       this.riboFileName = this.fileRibo.name
+      this.fileValid = await this.checkValidFile(this.fileRibo);
+      this.riboFileName = this.fileRibo.name
     }
     if (this.fileRibo && this.fileRNA) {
-       this.filesLoaded = true;
-       this.fileMatching = await this.checkFirstLinesMatch(this.fileRNA, this.fileRibo);
+      this.filesLoaded = true;
+      this.fileMatching = await this.checkFirstLinesMatch(this.fileRNA, this.fileRibo);
     }
   }
 

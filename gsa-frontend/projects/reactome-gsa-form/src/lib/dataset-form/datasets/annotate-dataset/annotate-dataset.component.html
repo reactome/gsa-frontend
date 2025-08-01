@@ -11,13 +11,13 @@
       </div>
       <p class="outline-color">Please add the annotations for the given dataset. The minimum requirement is to specify one
       annotation (comparison group). For example, "Group" with values "Treatment" and "Control").</p>
-      @if (isRibo) {
+      @if (isRibo$ | async) {
         <p class="outline">By performing RiboSeq analysis both of the matching files will be annotated</p>
       }
       <div class="align-center flex-container justify-center gap-one vertical width-hundred"
         tourAnchor="annotate.table">
         @if ((dataset$ | async); as dataset) {
-          <reactome-table [userSettings]="tableSettings" [table]="dataset?.annotations || [['']]"
+          <reactome-table [userSettings]="tableSettings" [table]="dataset.annotations"
           (tableChange)="onTableUpdate($event)" [name]="dataset.summary?.title + '_metadata'" class="width-hundred"></reactome-table>
         }
       </div>

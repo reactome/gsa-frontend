@@ -1,5 +1,5 @@
 <div class="flex-container justify-center align-center height-hundred width-hundred vertical gap-one no-tour"
-     *ngrxLet="screenSize$ as screenSize">
+  *ngrxLet="screenSize$ as screenSize">
   <mat-card>
     <mat-card-header>
       <mat-card-title>Welcome to Reactome Pathway Analysis</mat-card-title>
@@ -11,11 +11,10 @@
         ReactomeGSA is a powerful tool for understanding the biological significance of gene sets and their
         expression.
         It allows researchers to uncover the functional relevance of a list of genes, associated with quantitative data,
-        in the context of biological pathways and processes.</p>
+      in the context of biological pathways and processes.</p>
 
-      <ng-container *ngIf="screenSize.breakpoints[sizes.Medium]">
-
-        <ng-container *ngIf="(height.big$ | async)">
+      @if (screenSize.breakpoints[sizes.Medium]) {
+        @if ((height.big$ | async)) {
           <h2>Key Features:</h2>
           <ul>
             <li>Pathway Analysis: Identifies Reactome pathways that are significantly enriched in input datasets.</li>
@@ -32,8 +31,7 @@
             <li>Statistical Insights: Utilizes statistical methods to assess the significance of pathway enrichment.
             </li>
           </ul>
-        </ng-container>
-
+        }
         <h2>How to Get Started:</h2>
         <ol>
           <li>
@@ -48,35 +46,34 @@
           <li>Interpret Findings: Interpret the findings in the context of your research goals and biological questions.
           </li>
         </ol>
+      }
 
-      </ng-container>
-
-      <ng-container *ngIf="screenSize.breakpoints[sizes.Small] && (height.big$ | async)">
+      @if (screenSize.breakpoints[sizes.Small] && (height.big$ | async)) {
         <p>ReactomeGSA is a valuable resource for researchers in genomics, systems biology, and
           bioinformatics.
           It can help you uncover the hidden biological connections within your gene sets and enhance your understanding
-          of complex biological systems.</p>
-      </ng-container>
+        of complex biological systems.</p>
+      }
 
       <p>Get started with ReactomeGSA analysis today and unlock the power of pathway enrichment analysis!</p>
 
       <p>
         <i>For detailed information, please see <a
           href="https://europepmc.org/article/MED/32907876"
-          target="_blank">[ Griss J et al, MCP, 2020 ]</a>.
-        </i>
-      </p>
-    </mat-card-content>
+        target="_blank">[ Griss J et al, MCP, 2020 ]</a>.
+      </i>
+    </p>
+  </mat-card-content>
 
-    <mat-card-actions class="gap-one" align="end">
-      <button mat-stroked-button class="primary-color" routerLink="/form" [queryParams]="{'gsa-tour': true}" style="vertical-align: sub"
-              class="justify-center">
-        Guided Tour
-        <mat-icon class="primary-color">explore</mat-icon>
-      </button>
-      <button mat-flat-button class="primary-color" routerLink="/form" tourAnchor="start">START</button>
-    </mat-card-actions>
-  </mat-card>
+  <mat-card-actions class="gap-one" align="end">
+    <button mat-stroked-button class="primary-color" routerLink="/form" [queryParams]="{'gsa-tour': true}" style="vertical-align: sub"
+      class="justify-center">
+      Guided Tour
+      <mat-icon class="primary-color">explore</mat-icon>
+    </button>
+    <button mat-flat-button class="primary-color" routerLink="/form" tourAnchor="start">START</button>
+  </mat-card-actions>
+</mat-card>
 </div>
 
 

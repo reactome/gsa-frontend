@@ -17,6 +17,7 @@ export class LoadDatasetService {
   loadingStatusUrl = computed(() => `${this.config().apiRoot}/data/status/`);
   summaryDataUrl = computed(() => `${this.config().apiRoot}/data/summary/`);
   uploadDataUrl = computed(() => `${this.config().apiSecretRoot}/upload`);
+  uploadRiboDataUrl = computed(() => `${this.config().apiSecretRoot}/uploadRibo`);
 
   constructor(
     private http: HttpClient,
@@ -66,6 +67,21 @@ export class LoadDatasetService {
     return this.http.post<UploadData>(this.uploadDataUrl(), formData)
       .pipe(catchError((err: HttpErrorResponse) => {
         this.snackBar.open("The chosen dataset could not been uploaded: \n" + extractErrorMessage(err), "Close", {
+          panelClass: ['warning-snackbar'],
+          duration: 10000
+        });
+        return throwError(() => err);    //Rethrow it back to component
+      }))
+  }
+
+
+  uploadRiboFiles(fileRNA: File, fileRibo: File): Observable<UploadData>{
+    const formData = new FormData();
+    formData.append('fileRNA', fileRNA, fileRNA.name);
+    formData.append('fileRibo', fileRibo, fileRibo.name);
+    return this.http.post<UploadData>(this.uploadRiboDataUrl(), formData)
+      .pipe(catchError((err: HttpErrorResponse) => {
+        this.snackBar.open("The chosen dataset could not been uploaded: \n"  + extractErrorMessage(err), "Close", {
           panelClass: ['warning-snackbar'],
           duration: 10000
         });

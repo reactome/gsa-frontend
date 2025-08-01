@@ -216,6 +216,10 @@
       border: 1px solid var(--primary);
       background: var(--surface);
 
+      input {
+        display: none;
+      }
+
       *:last-child {
         margin-bottom: 0;
       }
