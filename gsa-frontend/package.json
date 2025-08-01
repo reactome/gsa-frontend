@@ -15,10 +15,11 @@
     "yalc:table": "rm -rf dist/reactome-table && npm run build-lib:table && yalc push dist/reactome-table",
     "yalc:gsa-form": "rm -rf dist/reactome-gsa-form && npm run yalc:table && npm run build-lib:gsa-form && yalc push dist/reactome-gsa-form",
     "build-table-wc": "npm run build-lib:table && ng build reactome-table-wc --output-hashing none && node projects/reactome-table-wc/build-wc.js",
-    "deploy-gh": "ng deploy --base-href=/gsa/",
-    "deploy-dev": "ng build --configuration=dev --base-href=/gsa/ && rsync --chown=www-data:reactome --chmod=775 -rpIgoDvhP dist/gsa/browser/ dev:site/gsa --delete",
-    "deploy-release": "ng build --configuration=release --base-href=/gsa/ && rsync --chown=www-data:reactome --chmod=775 -rpIgoDvhP dist/gsa/browser/ release:site/gsa --delete",
-    "deploy-prod": "ng build --configuration=production --base-href=/gsa/ && rsync --chown=www-data:reactome --chmod=775 -rpIgoDvhP dist/gsa/browser/ prod:site/gsa --delete"
+    "build-libs": "npm-run-all --parallel build-lib:* && wait-on dist/reactome-gsa-form/public-api.d.ts",
+    "deploy-gh": "npm run build-libs && ng deploy --base-href=/gsa/",
+    "deploy-dev": "npm run build-libs && ng build --configuration=dev --base-href=/gsa/ && rsync --chown=www-data:reactome --chmod=775 -rpIgoDvhP dist/gsa/browser/ dev:site/gsa --delete",
+    "deploy-release": "npm run build-libs && ng build --configuration=release --base-href=/gsa/ && rsync --chown=www-data:reactome --chmod=775 -rpIgoDvhP dist/gsa/browser/ release:site/gsa --delete",
+    "deploy-prod": "npm run build-libs && ng build --configuration=production --base-href=/gsa/ && rsync --chown=www-data:reactome --chmod=775 -rpIgoDvhP dist/gsa/browser/ prod:site/gsa --delete"
   },
   "private": true,
   "dependencies": {

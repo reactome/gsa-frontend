@@ -1,8 +1,6 @@
 import {Component} from '@angular/core';
 import {BreakpointObserver, BreakpointState} from "@angular/cdk/layout";
 import {Observable} from "rxjs";
-import {Settings} from "reactome-table";
-import {TourUtilsService, HeightService} from "reactome-gsa-form";
 
 @Component({
   selector: 'gsa-home',
@@ -14,17 +12,11 @@ export class HomeComponent {
 
   screenSize$: Observable<BreakpointState>;
   sizes = {
-    Small: '(min-width: 600px)',
-    Medium: '(min-width: 960px)'
-  };
-  settings: Partial<Settings> = {
-    importMapHeaders: false,
-    deleteCol: false,
-    deleteRow: false,
-    renameRows: false,
+    Small: '(min-width: 600px) and (min-height:500px)',
+    Medium: '(min-width: 960px) and (min-height:800px)'
   };
 
-  constructor(breakpointObserver: BreakpointObserver, private tour: TourUtilsService, public height: HeightService) {
+  constructor(breakpointObserver: BreakpointObserver) {
     this.screenSize$ = breakpointObserver.observe([
       this.sizes.Small,
       this.sizes.Medium
