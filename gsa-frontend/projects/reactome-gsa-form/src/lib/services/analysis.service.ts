@@ -33,7 +33,7 @@ export class AnalysisService {
       methodName: method.name || "Method name",
       parameters: parameters.map(param => ({
         name: param.name,
-        value: param.value
+        value: param.value + ''
       })) || [],
       datasets: datasets.map((dataset: Dataset) => ({
         data: dataset.summary!.id,
@@ -41,7 +41,7 @@ export class AnalysisService {
         type: dataset.summary!.type,
         parameters: dataset.summary!.parameters?.filter(para => para.scope !== "common").map(param => ({
           name: param.name,
-          value: param.value
+          value: param.value + ''
         })),
         design: {
           analysisGroup: dataset.annotationColumns.get(dataset.statisticalDesign.analysisGroup!)!,
