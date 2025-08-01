@@ -2,7 +2,6 @@ import {AfterViewInit, Component, viewChild} from '@angular/core';
 
 import {DarkService} from "./services/dark.service";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
-import {HeightService} from "reactome-gsa-form";
 
 @Component({
     selector: 'app-root',
@@ -12,7 +11,7 @@ import {HeightService} from "reactome-gsa-form";
 })
 export class AppComponent implements AfterViewInit {
   title = 'gsa';
-  constructor(public height: HeightService, public dark: DarkService) {
+  constructor( public dark: DarkService) {
   }
 
   darkToggle = viewChild.required(MatSlideToggle);

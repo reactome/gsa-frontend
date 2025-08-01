@@ -37,23 +37,10 @@
 }
 
 .center-vertical {
-  height: calc(100cqh - 145px);
-  //height: calc(100vh - 233px); // No tour controller
+  height: calc(100cqh - 105px);
   overflow-y: auto;
   overflow-x: hidden;
-  //height: 100%;
-  //-ms-overflow-style: none; __<<ngThemingMigrationEscapedComment0>>__
-  //scrollbar-width: none;
 }
-
-.tour-active {
-  //height: calc(100vh - 274px); // With tour controller
-}
-
-.small-screen {
-  //height: calc(100vh - 115px); // Small screen => without tour controller
-}
-
 
 .overflow-hide {
   overflow: hidden;

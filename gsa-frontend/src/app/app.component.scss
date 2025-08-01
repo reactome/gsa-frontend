@@ -2,22 +2,51 @@
   position: absolute;
   inset: 0px;
 }
+
 img {
   width: 200px;
   display: block;
   margin: auto;
 }
 
-.padding-top-24 {
-  padding-top: 24px;
-}
 
 .header {
   margin: 0 20px;
+}
+
+.home-link {
+  color: var(--on-surface);
+  text-decoration: none;
+  margin-top: 5px;
+
+  > img {
+    display: none;
+  }
+}
+
+@media (height > 500px) {
+  .header {
+    padding-top: 24px;
+  }
+
+  .home-link {
+    color: var(--on-surface);
+    text-decoration: none;
+    margin-top: 5px;
+
+    > img {
+      display: block;
+    }
+    > h1 {
+      display: none;
+    }
+  }
+
 }
 
 
 .reactome {
   font-weight: 400;
 }
+
 
