@@ -37,9 +37,13 @@
 }
 
 .center-vertical {
-  height: calc(100cqh - 105px);
+  height: calc(100cqh - 145px);
   overflow-y: auto;
   overflow-x: hidden;
+
+  @media (height < 500px) {
+    height: calc(100cqh - 90px);
+  }
 }
 
 .overflow-hide {
