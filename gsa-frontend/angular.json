@@ -15,19 +15,21 @@
       "prefix": "gsa",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/gsa",
+            "outputPath": {
+              "base": "dist/gsa"
+            },
             "index": "src/index.html",
-            "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
+            "polyfills": [
+              "src/polyfills.ts"
+            ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
-              "src/theme/custom-theme.scss",
               "src/styles.scss"
             ],
             "scripts": [],
@@ -36,7 +38,8 @@
                 "node_modules/",
                 "dist/"
               ]
-            }
+            },
+            "browser": "src/main.ts"
           },
           "configurations": {
             "production": {
@@ -79,9 +82,7 @@
               "outputHashing": "all"
             },
             "development": {
-              "buildOptimizer": false,
               "optimization": false,
-              "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
@@ -93,10 +94,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "gsa-frontend:build:production"
+              "buildTarget": "gsa-frontend:build:production"
             },
             "development": {
-              "browserTarget": "gsa-frontend:build:development"
+              "buildTarget": "gsa-frontend:build:development"
             }
           },
           "defaultConfiguration": "development",
@@ -107,7 +108,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "gsa-frontend:build"
+            "buildTarget": "gsa-frontend:build"
           }
         },
         "test": {
@@ -180,11 +181,12 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/reactome-table-wc",
+            "outputPath": {
+              "base": "dist/reactome-table-wc"
+            },
             "index": "projects/reactome-table-wc/src/index.html",
-            "main": "projects/reactome-table-wc/src/main.ts",
             "polyfills": [
               "zone.js"
             ],
@@ -194,7 +196,8 @@
             "styles": [
               "projects/reactome-table/src/assets/_index.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "browser": "projects/reactome-table-wc/src/main.ts"
           },
           "configurations": {
             "production": {
@@ -213,9 +216,7 @@
               "outputHashing": "all"
             },
             "development": {
-              "buildOptimizer": false,
               "optimization": false,
-              "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
@@ -227,10 +228,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "reactome-table-wc:build:production"
+              "buildTarget": "reactome-table-wc:build:production"
             },
             "development": {
-              "browserTarget": "reactome-table-wc:build:development"
+              "buildTarget": "reactome-table-wc:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -238,7 +239,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "reactome-table-wc:build"
+            "buildTarget": "reactome-table-wc:build"
           }
         },
         "test": {
@@ -252,6 +253,39 @@
             "inlineStyleLanguage": "scss",
             "styles": [],
             "scripts": []
+          }
+        }
+      }
+    },
+    "reactome-gsa-form": {
+      "projectType": "library",
+      "root": "projects/reactome-gsa-form",
+      "sourceRoot": "projects/reactome-gsa-form/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/reactome-gsa-form/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/reactome-gsa-form/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/reactome-gsa-form/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/reactome-gsa-form/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
           }
         }
       }

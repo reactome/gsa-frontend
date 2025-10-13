@@ -18,7 +18,7 @@ import {MatIconModule} from "@angular/material/icon";
     MatButtonModule,
     LetDirective,
     TourAnchorMatMenuDirective,
-    MatIconModule,
+    MatIconModule
   ]
 })
 export class HomeModule {

@@ -1,0 +1,27 @@
+.disabled {
+  color: lightgray;
+}
+
+.card-design {
+  color: var(--primary);
+  padding: 10px;
+  margin: 3px !important;
+  border-radius: 10px;
+  border: 1px solid var(--outline);
+  background: var(--surface);
+}
+
+h2 {
+  min-width: 180px;
+  margin: 0px !important;
+  text-align: center;
+
+  mat-icon {
+    font-size: 18px;
+  }
+}
+
+.margin-bottom-15 {
+  margin-bottom: 15px !important;
+}
+

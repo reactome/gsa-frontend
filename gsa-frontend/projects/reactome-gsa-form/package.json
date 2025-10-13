@@ -1,0 +1,22 @@
+{
+  "name": "reactome-gsa-form",
+  "version": "19.1.0",
+  "peerDependencies": {
+    "@angular/common": "^19.0.0",
+    "@angular/core": "^19.0.0",
+    "@angular/forms": "^19.0.0",
+    "@angular/material": "^19.0.0",
+
+    "reactome-table": "^19.0.0",
+    "@ngneat/until-destroy": "^10.0.0",
+    "@ngrx/component": "^19.0.0",
+    "@ngrx/effects": "^19.0.0",
+    "@ngrx/entity": "^19.0.0",
+    "@ngrx/store": "^19.0.0",
+    "ngx-ui-tour-md-menu": "^14.0.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false
+}

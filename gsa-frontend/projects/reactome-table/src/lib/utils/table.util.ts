@@ -1,3 +1,5 @@
+import {Cell, cell} from "../state/table.store";
+
 export enum TableOrder {
   COLUMN_BY_COLUMN,
   ROW_BY_ROW
@@ -24,3 +26,21 @@ export const numberToLetter = (nb: number) => {
 
   return letters;
 };
+
+export function generateTable(numberOfColumns: number, numberOfRows: number): string[][] {
+  return new Array(numberOfRows).fill(0).map((_, y) => new Array(numberOfColumns).fill(0).map((_, x) => {
+    if (x === 0 && y === 0) return '';
+    if (x === 0) return y + '';
+    if (y === 0) return numberToLetter(x);
+    return '';
+  }));
+}
+
+export function generateTableCell(numberOfColumns: number, numberOfRows: number): Cell[][] {
+  return new Array(numberOfRows).fill(0).map((_, y) => new Array(numberOfColumns).fill(0).map((_, x) => {
+    if (x === 0 && y === 0) return cell();
+    if (x === 0) return cell(y + '');
+    if (y === 0) return cell(numberToLetter(x));
+    return cell();
+  }));
+}

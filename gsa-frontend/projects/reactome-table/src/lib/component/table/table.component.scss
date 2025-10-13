@@ -1,10 +1,49 @@
+@use '@angular/material' as mat;
+
 .table-container {
-  overflow: auto;
+  //overflow: auto;
   //max-height: 20vh;
 
   //border: 1px solid var(--outline);
 
   //justify-content: safe center;
+  position: relative;
+  scrollbar-color: var(--primary) transparent;
+
+  .viewport {
+    width: 100%;
+  }
+}
+
+.drag-overlay {
+  position: absolute;
+  inset: 0 var(--sticky-offset-right, 0) var(--sticky-offset-bottom, 0) 0;
+  transition: all 500ms ease-in-out;
+  z-index: 10;
+  pointer-events: none;
+
+  &.dragging {
+    border: 1px solid var(--primary);
+    box-shadow: inset 0 0 5px 3px var(--primary);
+  }
+}
+
+:host {
+  ::ng-deep .cdk-virtual-scroll-content-wrapper {
+    transform: translateY(0px) !important;
+  }
+}
+
+.virtual-placeholder {
+  .cell {
+    height: 0 !important;
+    visibility: collapse;
+    line-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin: 0;
+    border-bottom: 0 !important;
+  }
 }
 
 table.spreadsheet {
@@ -28,9 +67,13 @@ table.spreadsheet {
   td.cell, th.rows, th.columns {
     border-color: var(--outline-variant);
     border-style: solid;
+    height: var(--row-height);
+    box-sizing: border-box;
+    scroll-margin-top: var(--sticky-offset-top);
+    scroll-margin-left: var(--sticky-offset-left);
   }
 
-  th.columns, td.add-column-button-container {
+  th.columns {
     top: 0;
     border-width: 1px 1px 1px 0;
     border-color: var(--primary);
@@ -42,12 +85,14 @@ table.spreadsheet {
 
   th.rows {
     left: 0;
-    height: 23px;
+    height: var(--row-height);
     border-width: 0 1px 1px 1px;
+
     &[y='0'] { // Top left corner
       z-index: 6;
       top: 0;
       border-width: 1px 1px 1px 1px;
+
       * {
         visibility: hidden;
       }
@@ -61,7 +106,6 @@ table.spreadsheet {
 }
 
 
-
 .no-padding {
   padding: 0px;
 }
@@ -70,25 +114,62 @@ table.spreadsheet {
   //width: 100px;
   height: 100px;
   max-width: 5%;
+  border-color: var(--outline-variant);
+  border-style: solid;
+  border-top: 0;
+  border-left: 0;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
 }
 
 .add-row-button-container {
-  height: 50px;
+  height: var(--row-height, 25px);
   max-height: 5%;
+  box-sizing: border-box;
+  border-color: var(--outline-variant);
+  border-style: solid;
+  border-top: 0;
+  border-left: 0;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
 }
 
-.sticky {
-  height: 10px;
+.sticky-column {
+
+  height: 0;
   position: sticky;
-  bottom: calc(50% - 10px);
-  top: calc(50% - 10px);
+  display: block;
+  bottom: 50%;
+  top: 50%;
+}
+
+.sticky-row {
+  width: 0;
+  position: sticky;
+  display: block;
+  left: 50%;
+  right: 50%;
+}
+
+.add-column-button,
+.add-row-button {
+  background: var(--surface);
+  margin: 0px;
+  border-radius: 0px;
+  height: 100%;
+  width: 100%;
 }
 
 .add-column-button {
-  width: 100%;
-  height: 100%;
-  margin: 0px;
-  border-radius: 0px;
+  ::ng-deep .mdc-button__label {
+    height: 100%;
+  }
+}
+
+.add-row-button {
+  ::ng-deep .mdc-button__label {
+    width: 100%;
+  }
 }
 
 .add-column-button:focus-visible {
@@ -98,6 +179,21 @@ table.spreadsheet {
 
 .bin-button:focus-visible {
   outline: none !important;
+}
+
+.bin-button {
+  @include mat.icon-button-overrides((
+    icon-size: 16px,
+    state-layer-size: calc(var(--row-height) - 4px),
+    touch-target-display: none,
+    icon-color: currentColor,
+  ));
+
+  .mat-icon {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+  }
 }
 
 .cell {
@@ -115,20 +211,19 @@ table.spreadsheet {
   text-align: end;
   color: var(--on-surface-variant);
   background: var(--surface-variant);
+  //position: sticky !important; //TODO Try to make the row rename not subject to scroll
+  //left: 0!important;
 }
 
 .columns {
   z-index: 3;
-  text-align: left;
-  padding: 0 10px;
+  text-align: center;
+  padding: 0;
   font-weight: 700;
   color: var(--on-primary-container);
   background: var(--primary-container);
-}
-
-.delete-col-button {
-  height: 25px;
-  width: 25px;
+  //position: sticky !important; //TODO Try to make the col rename not subject to scroll
+  //top: 0!important;
 }
 
 .selected:after, .flying-rename:after {
@@ -169,4 +264,51 @@ table.spreadsheet {
 
 .margin-top-20 {
   margin-top: 20px;
+}
+
+// Inset shadows
+.inset-shadow {
+  position: absolute;
+  z-index: 8;
+  //visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease-in-out;
+
+  &.top, &.bottom {
+    height: 10px;
+    left: 0;
+    right: var(--sticky-offset-right, 0);
+  }
+
+  &.left, &.right {
+    width: 10px;
+    top: 0;
+    bottom: var(--sticky-offset-bottom, 0);
+  }
+
+  &.top {
+    top: var(--sticky-offset-top, 0);
+    background: linear-gradient(to bottom, var(--surface) 0%, transparent 100%);
+  }
+
+  &.bottom {
+    bottom: var(--sticky-offset-bottom, 0);
+    background: linear-gradient(to top, var(--surface) 0%, transparent 100%);
+  }
+
+  &.left {
+    left: var(--sticky-offset-left, 0);
+    background: linear-gradient(to right, var(--surface) 0%, transparent 100%);
+  }
+
+  &.right {
+    right: var(--sticky-offset-right, 0);
+    background: linear-gradient(to left, var(--surface) 0%, transparent 100%);
+  }
+
+  &.visible {
+    opacity: 1;
+  }
+
 }

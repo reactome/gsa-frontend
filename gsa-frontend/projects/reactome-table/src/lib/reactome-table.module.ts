@@ -9,6 +9,7 @@ import {UploadTableComponent} from "./component/upload-table/upload-table.compon
 import {DownloadTableComponent} from "./component/download-table/download-table.component";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatIconModule} from "@angular/material/icon";
+import {FixedSizeVirtualScrollStrategy, ScrollingModule, VIRTUAL_SCROLL_STRATEGY} from '@angular/cdk/scrolling';
 
 
 @NgModule({
@@ -17,17 +18,18 @@ import {MatIconModule} from "@angular/material/icon";
     UploadTableComponent,
     DownloadTableComponent
   ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatButtonModule,
-    MatSnackBarModule,
-    LetDirective,
-    MatTooltipModule,
-    MatIconModule,
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatButtonModule,
+        MatSnackBarModule,
+        LetDirective,
+        MatTooltipModule,
+        MatIconModule,
+        ScrollingModule,
+    ],
   exports: [
     TableComponent
-  ]
+  ],
 })
 export class ReactomeTableModule { }

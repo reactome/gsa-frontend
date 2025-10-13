@@ -1,7 +1,0 @@
-<div *ngrxLet="{methods: methods$, names: methodNames$} as vm">
-  <mat-accordion multi="false" class="flex-container gap-one no-wrap vertical">
-    <div *ngFor="let name of vm.names" class="flex-one" >
-      <gsa-method [methodName]="name" [tourAnchor]="name" clickable></gsa-method>
-    </div>
-  </mat-accordion>
-</div>

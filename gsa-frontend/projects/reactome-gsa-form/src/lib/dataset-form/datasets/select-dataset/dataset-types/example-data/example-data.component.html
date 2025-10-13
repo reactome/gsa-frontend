@@ -1,0 +1,26 @@
+<div (click)="select()">
+  @if (source().id === 'EXAMPLE_MEL_RNA') {
+    <div class="dataset-card-content" tourAnchor="source.example.1" clickable>
+      <p class="bold no-wrap">
+        <span>{{source().title}}</span>
+        <a mat-icon-button matTooltip="Download data" class="float-right offset-ten primary-color"
+          download [href]="download.url(source().id)" (click)="$event.stopPropagation()">
+          <mat-icon fontSet="gsa">download</mat-icon>
+        </a>
+      </p>
+      <p>{{source().description}}</p>
+    </div>
+  } @else {
+    <div class="dataset-card-content">
+      <p class="bold no-wrap">
+        <span>{{source().title}}</span>
+        <a mat-icon-button matTooltip="Download data" class="float-right offset-ten primary-color"
+          download [href]="download.url(source().id)" (click)="$event.stopPropagation()">
+          <mat-icon fontSet="gsa">download</mat-icon>
+        </a>
+      </p>
+      <p>{{source().description}}</p>
+    </div>
+  }
+
+</div>

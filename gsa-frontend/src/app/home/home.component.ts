@@ -1,31 +1,30 @@
 import {Component} from '@angular/core';
-import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
-import {Observable, tap} from "rxjs";
-import {TourService} from "ngx-ui-tour-md-menu";
-import {TourUtilsService} from "../services/tour-utils.service";
-import {HeightService} from "../services/height.service";
+import {BreakpointObserver, BreakpointState} from "@angular/cdk/layout";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'gsa-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
+  standalone: false
 })
 export class HomeComponent {
 
   screenSize$: Observable<BreakpointState>;
   sizes = {
-    Small: '(min-width: 600px)',
-    Medium: '(min-width: 960px)'
+    Small: '(min-width: 600px) and (min-height:500px)',
+    Medium: '(min-width: 960px) and (min-height:800px)'
   };
 
-  constructor(breakpointObserver: BreakpointObserver, private tour: TourUtilsService, public height: HeightService) {
+  constructor(breakpointObserver: BreakpointObserver) {
     this.screenSize$ = breakpointObserver.observe([
       this.sizes.Small,
       this.sizes.Medium
     ]);
   }
 
-  startTour() {
-    this.tour.start();
-  }
+}
+
+function range(from: number, to: number) {
+  return new Array(to - from).fill(0).map((_, i) => from + i);
 }

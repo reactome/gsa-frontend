@@ -1,0 +1,29 @@
+.hover-opponent {
+  color: var(--primary);
+  padding: 10px;
+  margin: 3px !important;
+  border-radius: 10px;
+  border: 2px solid var(--primary);
+}
+
+.invisible {
+  visibility: hidden;
+  height: 0;
+  max-height: 0;
+}
+
+.visible {
+  visibility: visible;
+  height: fit-content;
+  max-height: fit-content;
+}
+
+.contrast {
+  //color: var(--on-surface);
+  //border: 4px double var(--on-surface);
+}
+
+.open-link {
+  font-size: inherit;
+  vertical-align: text-top;
+}

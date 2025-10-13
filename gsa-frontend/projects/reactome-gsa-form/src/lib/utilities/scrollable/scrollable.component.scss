@@ -1,0 +1,55 @@
+.shadow {
+  position: sticky;
+  z-index: 10;
+  top: 0px;
+  left: 1%;
+  right: 1%;
+  bottom: 0px;
+  height: 20px;
+  margin-top: -20px;
+}
+
+.shadow-top {
+  opacity: 1;
+  box-shadow: 0 10px 10px -10px var(--outline) inset;
+}
+
+.shadow-bottom {
+  opacity: 1;
+  box-shadow: 0 -10px 10px -10px var(--outline) inset;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 4px;
+  background-color: var(--surface);
+  transition: background-color ease 3s;
+}
+
+
+.scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: var(--outline-variant);
+  //background-color: inherit;
+}
+
+.overflow-hide.scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--outline-variant);
+}
+
+.center-vertical {
+  height: calc(100cqh - 145px);
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  @media (height < 500px) {
+    height: calc(100cqh - 90px);
+  }
+}
+
+.overflow-hide {
+  overflow: hidden;
+}
+
+.width-98 {
+  width: 98%;
+}

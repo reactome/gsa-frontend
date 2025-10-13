@@ -1,0 +1,40 @@
+.header-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: -8px;
+  width: 100%;
+}
+
+#tour-controls-wrapper {
+  position: relative;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+}
+
+#tour-controls {
+  background: var(--surface);
+  border-radius: 21px;
+  z-index: 9000;
+  * {
+    z-index: 9000;
+  }
+}
+
+.color-backdrop {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  pointer-events: auto;
+  background: rgba(black, 0.5);
+  opacity: 1 !important;
+  z-index: 998;
+
+  .dark {
+    background: rgba(black, 0.7);
+  }
+}
+

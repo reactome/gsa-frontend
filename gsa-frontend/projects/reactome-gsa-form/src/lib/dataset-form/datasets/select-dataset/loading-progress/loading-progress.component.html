@@ -1,0 +1,45 @@
+<div class="container">
+  @if (loadingStatus$ | async; as status) {
+    <mat-dialog-content>
+      <div>
+        @switch (status.status) {
+          @case ('pending') {
+            <div class="flex-container vertical justify-center align-center">
+              <div class="spinner-box">
+                <mat-spinner diameter="140"></mat-spinner>
+              </div>
+              <h2 class="text-margin">Sending request</h2>
+              <div class="grey">
+                <span>{{status.description}}</span>
+              </div>
+            </div>
+          }
+          @case ('running') {
+            <div class="flex-container vertical justify-center align-center">
+              <div class="spinner-box">
+                <mat-spinner diameter="140"></mat-spinner>
+              </div>
+              <h2 class="text-margin">Loading Dataset</h2>
+              <div class="grey">
+                <span>{{status.description}}</span>
+              </div>
+            </div>
+          }
+          @case ('failed') {
+            <div class="flex-container vertical justify-center align-center">
+              <mat-icon class="warn big-size">error</mat-icon>
+              <h2 class="text-margin text-center">{{status.description}}</h2>
+              <button class="primary-color" mat-dialog-close mat-raised-button>Cancel</button>
+            </div>
+          }
+          @case ('complete') {
+            <div class="flex-container vertical justify-center align-center">
+              <mat-icon fontSet="gsa" class="big-size green">check_circle</mat-icon>
+              <h2 class="text-margin text-center">Dataset loaded</h2>
+            </div>
+          }
+        }
+      </div>
+    </mat-dialog-content>
+  }
+</div>

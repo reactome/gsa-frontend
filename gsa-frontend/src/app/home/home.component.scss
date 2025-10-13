@@ -3,5 +3,7 @@ mat-card {
 }
 
 :host {
-  height: calc(100vh - 90px);
+  display: flex;
+  flex: 1;
+  justify-content: center;
 }

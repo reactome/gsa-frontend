@@ -1,0 +1,65 @@
+<tour-step-template>
+  <ng-template let-step="step">
+    <mat-card (click)="$event.stopPropagation()"
+      [style.width]="step.stepDimensions?.width"
+      [style.min-width]="step.stepDimensions?.minWidth"
+      [style.max-width]="step.stepDimensions?.maxWidth" class="flat-bottom">
+      <mat-card-header>
+        <div class="header-group">
+          <mat-card-title>
+            @if (step.icon) {
+              <mat-icon fontSet="gsa" style="vertical-align: sub">{{step.icon}}</mat-icon>
+            }
+            {{step.title}}
+          </mat-card-title>
+          <button mat-icon-button (click)="tour.pause()">
+            <mat-icon fontSet="gsa" class="reactome-icon">close</mat-icon>
+          </button>
+        </div>
+      </mat-card-header>
+
+      <mat-card-content class="mat-body" [innerHTML]="step.content"/>
+
+      @if (!step.nextOnAnchorClick) {
+        <mat-card-actions align="end">
+          @if (tour.hasNext(step) && !step.nextOnAnchorClick) {
+            <button class="next"
+              (click)="tour.next()" mat-button>
+              {{step.nextBtnTitle}}
+              <mat-icon iconPositionEnd>chevron_right</mat-icon>
+            </button>
+          }
+          @if (!tour.hasNext(step)) {
+            <button mat-button (click)="tour.end()">
+              {{step.endBtnTitle}}
+            </button>
+          }
+        </mat-card-actions>
+      }
+    </mat-card>
+  </ng-template>
+</tour-step-template>
+
+@if (tour.on && (height.medium$ | async)) {
+  <div id="tour-controls-wrapper" class="flex-container justify-center">
+    <div id="tour-controls" class="flex-container gap-one">
+      @if (tour.paused) {
+        <button mat-icon-button class="primary-color" (click)="tour.resume()" matTooltip="Resume guided tour">
+          <mat-icon fontSet="gsa">play_arrow</mat-icon>
+        </button>
+      }
+      @if (!tour.paused) {
+        <button mat-icon-button class="primary-color" (click)="tour.pause()" matTooltip="Pause guided tour">
+          <mat-icon fontSet="gsa">pause</mat-icon>
+        </button>
+      }
+      <button mat-icon-button class="primary-color" (click)="tour.end()" matTooltip="End guided tour">
+        <mat-icon fontSet="gsa">stop</mat-icon>
+      </button>
+    </div>
+  </div>
+}
+
+@if (tour.on && !tour.paused) {
+  <div class="color-backdrop"></div>
+}

@@ -1,0 +1,59 @@
+<div *ngrxLet="screenIsSmall$ as screenIsSmall" class="grid-container"
+  [ngClass]="{'no-information': screenIsSmall || !infoTooltip()}">
+  <!--  'background-grey': index % 2 === 1-->
+  @if (screenIsSmall || !infoTooltip()) {
+    <div [class.no-wrap]="!infoTooltip()" [matTooltip]="parameter().description">{{parameter().display_name}}</div>
+  } @else {
+    <mat-icon fontSet="gsa" class="outlined outline-color" [matTooltip]="parameter().description">info</mat-icon>
+    <div>{{parameter().display_name}}</div>
+  }
+
+
+  <div class="align-center justify-end width-hundred" style="min-width: 100%">
+    @if (parameter().values !== undefined) {
+      <div>
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="width-hundred">
+          <mat-select [formControl]="control" class="width-hundred">
+            @for (value of parameter().values; track value) {
+              <mat-option [value]="value">
+                {{value}}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+    } @else {
+      <span>
+        @switch (parameter().type) {
+          @case (types.bool) {
+            <mat-slide-toggle [formControl]="control"
+            class="primary-color"></mat-slide-toggle>
+          }
+          @case (types.string) {
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="width-hundred">
+              <input [formControl]="control" matInput type="text" class="width-hundred">
+            </mat-form-field>
+          }
+          @case (types.email) {
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="width-hundred">
+              <input [formControl]="control" matInput type="email">
+              @if (control.invalid) {
+                <mat-error>Please enter a valid email address</mat-error>
+              }
+            </mat-form-field>
+          }
+          @case (types.float) {
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="width-hundred">
+              <input [formControl]="control" matInput step="0.1" type="number">
+            </mat-form-field>
+          }
+          @case (types.int) {
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="width-hundred">
+              <input [formControl]="control" matInput type="number">
+            </mat-form-field>
+          }
+        }
+      </span>
+    }
+  </div>
+</div>

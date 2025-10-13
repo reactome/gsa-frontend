@@ -1,0 +1,35 @@
+
+mat-expansion-panel-header {
+  min-height: 48px !important;
+  height: 100% !important;
+}
+
+mat-expansion-panel {
+  border: 5px solid transparent;
+  border-radius: 5px;
+  box-shadow: var(--mat-sys-level2);
+
+
+  &:has(> mat-expansion-panel-header:hover):not(.chosen)  {
+    cursor: pointer;
+    border: 5px solid var(--hover);
+  }
+
+  &.chosen {
+    border: 5px solid var(--primary);
+  }
+}
+
+.grey-border {
+  border-top: 1px solid var(--outline-variant);
+}
+
+.param-line {
+  padding: 0 25px;
+  margin-top: 14px;
+}
+
+.margin-top-20 {
+  margin-top: 20px;
+}
+

@@ -1,15 +1,16 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit, input} from '@angular/core';
 import {TableStore} from "../../state/table.store";
 import {map, Observable} from "rxjs";
 
 
 @Component({
     selector: 'reactome-table-upload',
-    templateUrl:'./upload-table.component.html',
-    styleUrls: ['./upload-table.component.scss']
+    templateUrl: './upload-table.component.html',
+    styleUrls: ['./upload-table.component.scss'],
+    standalone: false
 })
 export class UploadTableComponent implements OnInit {
-    @Input() tableStore: TableStore;
+    readonly tableStore = input.required<TableStore>();
 
     type$: Observable<false | 'icon' | 'text'>
 
@@ -17,10 +18,11 @@ export class UploadTableComponent implements OnInit {
     }
 
     ngOnInit(): void {
-      this.type$ = this.tableStore.settings$.pipe(map(s => s.uploadButton))
+      this.type$ = this.tableStore().settings$.pipe(map(s => s.uploadButton))
     }
 
     uploadFile(input: HTMLInputElement) {
-        if (input?.files?.[0]) this.tableStore.importFile(input.files[0])
+      const file = input?.files?.[0];
+      if (file) this.tableStore().importFile({file})
     }
 }

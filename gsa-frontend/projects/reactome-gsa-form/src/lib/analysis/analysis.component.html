@@ -1,0 +1,157 @@
+<div [formGroup]="analysisStep" class="container"
+     *ngrxLet="{analysisLoadingStatus: analysisLoadingStatus$, reportLoadingStatus: reportLoadingStatus$, reportsRequired: reportsRequired$, result: result$} as vm">
+  <div class="flex-container horizontal gap-one height-hundred">
+    <mat-card class="flex-one height-hundred justify-between">
+      <mat-card-title>Analysis</mat-card-title>
+
+      <div [ngSwitch]="vm.analysisLoadingStatus?.status" class="card-body">
+
+        <div *ngSwitchCase="'pending'">
+          <div class="flex-container vertical justify-center align-center gap-three">
+            <div class="spinner-box">
+              <mat-spinner class="padding-right-ten" diameter="100"></mat-spinner>
+            </div>
+            <div class="big-text">Requesting Analysis</div>
+            <div class="outline-color description">
+              {{ vm.analysisLoadingStatus?.description }}
+            </div>
+          </div>
+        </div>
+
+        <div *ngSwitchCase="'running'">
+          <div class="flex-container vertical justify-center align-center gap-three">
+            <div class="spinner-box">
+              <mat-spinner class="padding-right-ten" diameter="100"></mat-spinner>
+            </div>
+            <div class="big-text">Analysis loading: {{ vm.analysisLoadingStatus?.completed! * 100 | number: '1.0-0' }}%
+            </div>
+            <div class="outline-color description">
+              <span>{{ vm.analysisLoadingStatus?.description }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div *ngSwitchCase="'failed'" class="flex-container vertical align-center gap-one justify-center">
+          <mat-icon fontSet="gsa" class="big-error">error</mat-icon>
+          <span class="big-text failed">Oops! An error has occurred</span>
+          <span class="text failed">Analysis failed, please contact
+            <a [href]="mail(statusString$ | async)">help&#64;reactome.org</a>
+            if the problem persist
+          </span>
+          <div class="text-margin error-message">{{ vm.analysisLoadingStatus!.description }}</div>
+        </div>
+
+        <div *ngSwitchCase="'complete'">
+          <div class="flex-container vertical align-center gap-one">
+            <div class="big-text text-align">Congratulations, your analysis has finished!</div>
+            <div class="flex-container horizontal gap-one justify-center">
+              @if (seeResultAction() === 'link') {
+                @if (vm.result?.reactome_links?.[0]?.url; as url) {
+                  <a [href]="url" mat-flat-button target="_blank">
+                    <div class="flex-container horizontal align-center">
+                      <mat-icon fontSet="gsa" class="padding-right-ten outlined">visibility</mat-icon>
+                      <span>Results</span>
+                    </div>
+                  </a>
+                }
+              } @else {
+                @if (vm.result) {
+                  <a (click)="applyAction(vm.result!)" mat-flat-button target="_blank">
+                    <div class="flex-container horizontal align-center">
+                      <mat-icon fontSet="gsa" class="padding-right-ten outlined">visibility</mat-icon>
+                      <span>Results</span>
+                    </div>
+                  </a>
+                }
+              }
+
+              <button (click)="goToSelectMethod()" class="primary-color" mat-stroked-button>
+                <mat-icon fontSet="gsa" class="primary-color">restart_alt</mat-icon>
+                Start a new analysis
+              </button>
+            </div>
+            <br>
+            <div *ngIf="vm.reportsRequired && vm.reportLoadingStatus?.status !== 'complete'"
+                 class="outline-color description">
+              Don't hesitate! You can already analyse while the reports are loading.
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!--      </div>-->
+      <mat-card-footer>
+        <mat-progress-bar class="progress-bar" mode="determinate" [value]="vm.analysisLoadingStatus?.completed! * 100">
+        </mat-progress-bar>
+      </mat-card-footer>
+    </mat-card>
+
+    <mat-card *ngIf="vm.reportsRequired" class="flex-one height-hundred justify-between">
+      <mat-card-title>Report</mat-card-title>
+      <div [ngSwitch]="vm.reportLoadingStatus?.status" class="card-body">
+
+        <div *ngSwitchCase=undefined class="big-text text-align">
+          Waiting for analysis results...
+        </div>
+
+        <div *ngSwitchCase="'running'">
+          <div class="flex-container vertical justify-center align-center gap-three">
+            <div class="spinner-box">
+              <mat-spinner class="padding-right-ten" diameter="100"></mat-spinner>
+            </div>
+            <div class="big-text">Report loading: {{ vm.reportLoadingStatus?.completed! * 100 }}%</div>
+            <div class="outline-color description"><span
+              *ngIf="vm.reportLoadingStatus?.status === 'running'">{{ vm.reportLoadingStatus?.description }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div *ngSwitchCase="'failed'" class="flex-container vertical align-center">
+          <mat-icon fontSet="gsa" class="big-error">error</mat-icon>
+          <span class="big-text">Report generation failed, please contact help&#64;reactome.org</span>
+          <div class="text-margin">{{ vm.reportLoadingStatus!.description }}</div>
+        </div>
+
+        <div *ngSwitchCase="'complete'">
+          <div class="flex-container vertical align-center gap-one">
+            <div class="big-text text-align">Here are some nice reports</div>
+            <div class="flex-container horizontal gap-one justify-center">
+              <div *ngFor="let report of vm.reportLoadingStatus?.reports">
+                <a class="primary-color" [href]=report.url mat-stroked-button target="_blank">
+                  <span [ngSwitch]="report.name" class="float-right">
+                    <ng-template [ngSwitchCase]="'MS Excel Report (xlsx)'">
+                      <div class="flex-container horizontal align-center">
+                        <mat-icon class="padding-right-ten">table_view</mat-icon>
+                        <span>Excel Report</span>
+                        </div>
+                    </ng-template>
+
+                    <ng-template [ngSwitchCase]="'PDF Report'">
+                        <div class="flex-container horizontal align-center">
+                      <mat-icon class="padding-right-ten">picture_as_pdf</mat-icon>
+                       <span>{{ report.name }}</span>
+                       </div>
+                    </ng-template>
+                    <ng-template [ngSwitchCase]="'R Script'">
+                         <div class="flex-container horizontal align-center">
+                      <mat-icon class="padding-right-ten">code_blocks</mat-icon>
+                       <span>{{ report.name }}</span>
+                          </div>
+                    </ng-template>
+                  </span>
+                </a>
+              </div>
+            </div>
+            <br>
+          </div>
+        </div>
+
+      </div>
+
+      <mat-card-footer>
+        <mat-progress-bar class="progress-bar" mode="determinate" [value]=vm.reportLoadingStatus?.completed! * 100>
+        </mat-progress-bar>
+      </mat-card-footer>
+    </mat-card>
+  </div>
+</div>

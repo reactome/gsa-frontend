@@ -1,28 +1,27 @@
-import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
-import {HeightService} from "./services/height.service";
+import {AfterViewInit, Component, viewChild} from '@angular/core';
+
 import {DarkService} from "./services/dark.service";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    standalone: false
 })
 export class AppComponent implements AfterViewInit {
   title = 'gsa';
-  constructor(public height: HeightService, public dark: DarkService) {
+  constructor( public dark: DarkService) {
   }
 
-  @ViewChild('darkToggle') darkToggle: MatSlideToggle;
-
+  darkToggle = viewChild.required(MatSlideToggle);
 
   sun = 'M12 15.5q1.45 0 2.475-1.025Q15.5 13.45 15.5 12q0-1.45-1.025-2.475Q13.45 8.5 12 8.5q-1.45 0-2.475 1.025Q8.5 10.55 8.5 12q0 1.45 1.025 2.475Q10.55 15.5 12 15.5Zm0 1.5q-2.075 0-3.537-1.463T7 12q0-2.075 1.463-3.537T12 7q2.075 0 3.537 1.463T17 12q0 2.075-1.463 3.537T12 17ZM1.75 12.75q-.325 0-.538-.213Q1 12.325 1 12q0-.325.212-.537Q1.425 11.25 1.75 11.25h2.5q.325 0 .537.213Q5 11.675 5 12q0 .325-.213.537-.213.213-.537.213Zm18 0q-.325 0-.538-.213Q19 12.325 19 12q0-.325.212-.537.212-.213.538-.213h2.5q.325 0 .538.213Q23 11.675 23 12q0 .325-.212.537-.212.213-.538.213ZM12 5q-.325 0-.537-.213Q11.25 4.575 11.25 4.25v-2.5q0-.325.213-.538Q11.675 1 12 1q.325 0 .537.212 .213.212 .213.538v2.5q0 .325-.213.537Q12.325 5 12 5Zm0 18q-.325 0-.537-.212-.213-.212-.213-.538v-2.5q0-.325.213-.538Q11.675 19 12 19q.325 0 .537.212 .213.212 .213.538v2.5q0 .325-.213.538Q12.325 23 12 23ZM6 7.05l-1.425-1.4q-.225-.225-.213-.537.013-.312.213-.537.225-.225.537-.225t.537.225L7.05 6q.2.225 .2.525 0 .3-.2.5-.2.225-.513.225-.312 0-.537-.2Zm12.35 12.375L16.95 18q-.2-.225-.2-.538t.225-.512q.2-.225.5-.225t.525.225l1.425 1.4q.225.225 .212.538-.012.313-.212.538-.225.225-.538.225t-.538-.225ZM16.95 7.05q-.225-.225-.225-.525 0-.3.225-.525l1.4-1.425q.225-.225.538-.213.313 .013.538 .213.225 .225.225 .537t-.225.537L18 7.05q-.2.2-.512.2-.312 0-.538-.2ZM4.575 19.425q-.225-.225-.225-.538t.225-.538L6 16.95q.225-.225.525-.225.3 0 .525.225 .225.225 .225.525 0 .3-.225.525l-1.4 1.425q-.225.225-.537.212-.312-.012-.537-.212ZM12 12Z'
   moon = 'M12.5 19.5001C10.4167 19.5001 8.646 18.7708 7.188 17.3121C5.72933 15.8541 5 14.0834 5 12.0001C5 10.1254 5.57633 8.51775 6.729 7.17708C7.88167 5.83708 9.361 5.00042 11.167 4.66708C11.6943 4.56975 12.0797 4.66342 12.323 4.94808C12.5663 5.23275 12.549 5.63908 12.271 6.16708C12.1043 6.48642 11.9757 6.81975 11.885 7.16708C11.795 7.51442 11.75 7.87542 11.75 8.25008C11.75 9.50008 12.1873 10.5627 13.062 11.4381C13.9373 12.3127 15 12.7501 16.25 12.7501C16.6247 12.7501 16.9857 12.7051 17.333 12.6151C17.6803 12.5244 18.0137 12.3958 18.333 12.2291C18.875 11.9511 19.2883 11.9234 19.573 12.1461C19.8577 12.3681 19.9513 12.7431 19.854 13.2711C19.5487 15.0491 18.7327 16.5318 17.406 17.7191C16.08 18.9064 14.4447 19.5001 12.5 19.5001Z'
+
   ngAfterViewInit(): void {
-    if (this.darkToggle) {
-      this.darkToggle._elementRef.nativeElement.querySelector('.mdc-switch__icon--on').firstChild?.setAttribute('d', this.moon);
-      this.darkToggle._elementRef.nativeElement.querySelector('.mdc-switch__icon--off').firstChild?.setAttribute('d', this.sun);
-    }
+    this.darkToggle()._switchElement.nativeElement?.querySelector('.mdc-switch__icon--on')?.querySelector('path')?.setAttribute('d', this.moon);
+    this.darkToggle()._switchElement.nativeElement?.querySelector('.mdc-switch__icon--off')?.querySelector('path')?.setAttribute('d', this.sun);
   }
 
 }
