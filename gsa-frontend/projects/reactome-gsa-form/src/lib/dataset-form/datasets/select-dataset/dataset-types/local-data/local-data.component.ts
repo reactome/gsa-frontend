@@ -1,4 +1,4 @@
-import {Component, computed, input} from '@angular/core';
+import {AfterViewInit, Component, computed, input} from '@angular/core';
 import {PDatasetSource} from "../../../../../state/dataset-source/dataset-source.state";
 import {datasetSourceActions} from "../../../../../state/dataset-source/dataset-source.action";
 import {Store} from "@ngrx/store";
@@ -13,7 +13,7 @@ import {datasetActions} from "../../../../../state/dataset/dataset.actions";
 export class LocalDataComponent {
   readonly source = input.required<PDatasetSource>();
   readonly datasetId = input.required<number>();
-  readonly isRiboSeq = computed(() => this.source().name === 'Ribo-seq');
+  readonly isRiboSeq = computed(() => this.source().id === 'ribo_rna_seq');
 
   showPopup: boolean = false;
   loadLocalFiles: boolean = true;

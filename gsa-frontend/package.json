@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "watch": "rm -rf dist; npm-run-all --parallel watch-lib:* serve",
-    "serve": "wait-on dist/reactome-gsa-form/public-api.d.ts && ng serve --proxy-config src/proxy.conf.json",
+    "serve": "wait-on dist/reactome-gsa-form/public-api.d.ts && ng serve",
     "start-verbose": "ng serve --verbose",
     "build": "ng build",
     "test": "ng test",

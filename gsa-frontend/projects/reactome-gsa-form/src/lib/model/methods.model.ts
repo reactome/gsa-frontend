@@ -58,7 +58,7 @@ export enum ParameterType {
 export class Method {
   parameters: MethodParameter[];
 
-  constructor(public name: string, public description: string, parameters: ParameterJSON[]) {
+  constructor(public name: string, public description: string, parameters: ParameterJSON[], public data_types: string[]) {
     this.name = name;
     this.description = description;
     this.parameters = parameters.map(param => new MethodParameter(param));
