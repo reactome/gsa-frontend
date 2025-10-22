@@ -92,8 +92,7 @@
             <mat-icon fontSet="gsa">keyboard_arrow_up</mat-icon>
           </button>
           @if (nestedStepper.selected == statisticalDesignStep) {
-            <gsa-statistical-design [datasetId]="datasetId()"
-                                    class="width-hundred margin-bottom-30"/>
+            <gsa-statistical-design [datasetId]="datasetId()" class="width-hundred"/>
           }
           <div class="nav-button-area nav-button-margin" tourAnchor="annotate.done" clickable>
             <button [disabled]="!statisticalDesignStep.completed" color="accent" mat-fab matStepperNext>
@@ -102,7 +101,7 @@
           </div>
         </div>
       </mat-step>
-      <mat-step #parameterStep [completed]="(parametersComplete$ | async) || false">
+      <mat-step #parameterStep [completed]="(parametersComplete$ | async) && statisticalDesignStep.completed">
         <ng-template matStepLabel>Parameters</ng-template>
         <div class="flex-container align-center vertical" style="padding: 0 35px 0 0 !important">
           <button class="nav-button-margin" color="accent" mat-fab matStepperPrevious>

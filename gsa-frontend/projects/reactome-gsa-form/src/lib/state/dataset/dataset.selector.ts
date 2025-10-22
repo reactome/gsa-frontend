@@ -123,8 +123,8 @@ export const datasetFeature = createFeature({
             name: column[0],
             values: column.slice(1),
           }))
-          .filter((group) => dataset!.statisticalDesign!.analysisGroup !== group.name) // Remove analysis group
-          .filter((group) => {
+          .filter((column) => dataset!.statisticalDesign!.analysisGroup !== column.name) // Remove analysis group
+          .filter((column) => {
             const group1Values = new Set<string>()
             const group2Values = new Set<string>()
             for (let i = 0; i < analysisColumn.length; i++) {
@@ -134,13 +134,12 @@ export const datasetFeature = createFeature({
                 [dataset!.statisticalDesign!.comparisonGroup2, group2Values]
               ] as [string, Set<string>][]) {
                 if (analysedValue === comparisonGroup) {
-                  const value = group.values[i];
+                  const value = column.values[i];
                   if (values.has(value)) return false; // remove columns where a "pair" is associated more than once to the same condition
                   values.add(value)
                 }
               }
             }
-            console.error(group1Values, group2Values)
 
             return setsEqual(group1Values, group2Values) // Sample group columns should have one distinct value for each comparison value,
             // and those values should be the same in each group to form pairs
