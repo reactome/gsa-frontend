@@ -23,7 +23,7 @@ export class MethodComponent implements OnInit {
   ngOnInit(): void {
     this.method$ = this.store.select(methodFeature.selectMethod(this.methodName())).pipe(filter(isDefined))
     this.parameters$ = this.method$.pipe(
-      map(method => Object.values(method.parameters).filter(p => p.scope === 'analysis' || p.scope === 'dataset'))
+      map(method => Object.values(method.parameters).filter(p => p.scope === 'analysis'))
     )
   }
 

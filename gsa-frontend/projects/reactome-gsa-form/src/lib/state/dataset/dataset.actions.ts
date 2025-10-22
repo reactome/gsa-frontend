@@ -48,8 +48,6 @@ export const datasetActions = createActionGroup({
         'set covariates value': props<{ value: boolean, id: number }>(),
 
         'set summary parameters': props<{ id :number, parameters: Parameter[]}>(),
-        'open summary parameters': props<{ id : number }>(),
-        'open summary parameters success': props<{ id : number }>(),
         'reset summary parameters' : props<{ id : number }>(),
         'finish summary parameters' : props<{ id : number }>(),
 

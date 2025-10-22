@@ -1,0 +1,7 @@
+<div class="param-dataset" *ngrxLet="parameters$ as parameters">
+  @for (parameter of parameters; track parameter.id) {
+    @if (!(parameter.values && parameter.values.length === 0)) {
+      <gsa-method-parameter [parameter]="parameter" (parameterChange)="updateParam($event, parameters)"/>
+    }
+  }
+</div>

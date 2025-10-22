@@ -52,9 +52,6 @@ import {
   LoadingProgressComponent
 } from "./dataset-form/datasets/select-dataset/loading-progress/loading-progress.component";
 import {StatisticalDesignComponent} from "./dataset-form/datasets/statistical-design/statistical-design.component";
-import {
-  ChangeAnalysisParamsComponent
-} from "./dataset-form/datasets/change-analysis-params/change-analysis-params.component";
 import {DatasetFormComponent} from "./dataset-form/dataset-form.component";
 import {GsaFormRoutingModule} from "./gsa-form-routing.module";
 import {CommonModule} from "@angular/common";
@@ -69,6 +66,7 @@ import {TourAnchorMatMenuDirective, TourStepTemplateComponent} from "ngx-ui-tour
 import {TourComponent} from "./tour/tour.component";
 import {config, DEFAULT_GSA_CONFIG, GsaConfig} from "./config/gsa-config";
 import {CdkScrollable} from "@angular/cdk/scrolling";
+import {ParamDatasetComponent} from "./dataset-form/datasets/param-dataset/param-dataset.component";
 
 
 @NgModule({
@@ -79,6 +77,7 @@ import {CdkScrollable} from "@angular/cdk/scrolling";
     SelectDatasetComponent,
     ExampleDataComponent,
     AnnotateDatasetComponent,
+    ParamDatasetComponent,
     GsaFormComponent,
     LocalDataComponent,
     ExternalDataComponent,
@@ -88,14 +87,10 @@ import {CdkScrollable} from "@angular/cdk/scrolling";
     DatasetFormComponent,
     OptionsComponent,
     AnalysisComponent,
-    ChangeAnalysisParamsComponent,
     ScrollableComponent,
     SearchComponent,
     SpeciesPipe,
-    TourComponent
-  ],
-  exports: [
-    GsaFormComponent
+    TourComponent,
   ],
   imports: [
     GsaFormRoutingModule,

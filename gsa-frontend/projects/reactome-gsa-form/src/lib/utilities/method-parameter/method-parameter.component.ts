@@ -1,4 +1,4 @@
-import {Component, OnChanges, OnInit, Output, SimpleChanges, TrackByFunction, input} from '@angular/core';
+import {Component, input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {ParameterType} from "../../model/methods.model";
 import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
 import {FormControl, Validators} from "@angular/forms";

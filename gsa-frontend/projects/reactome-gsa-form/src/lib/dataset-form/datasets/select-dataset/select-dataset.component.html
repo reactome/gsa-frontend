@@ -1,34 +1,43 @@
 <div [formGroup]="selectDatasetStep" class="flex-container vertical">
   <div class="flex-container gap-one horizontal">
-    <div tourAnchor="source.local" class="flex-one">
-      <h2 >Local Dataset</h2>
-      @for (source of localSources$ | async; track source.id) {
-        <div class="margin-bottom-10">
-          <gsa-local-data [source]="source" [datasetId]="datasetId()"></gsa-local-data>
-        </div>
-      }
-    </div>
+    @let localSources = localSources$ | async;
+    @if (localSources?.length) {
+      <div tourAnchor="source.local" class="flex-one">
+        <h2>Local Dataset</h2>
+        @for (source of localSources; track source.id) {
+          <div class="margin-bottom-10">
+            <gsa-local-data [source]="source" [datasetId]="datasetId()"></gsa-local-data>
+          </div>
+        }
+      </div>
+    }
 
-    <div tourAnchor="source.example" class="flex-one">
-      <h2>Example Dataset</h2>
-      @for (source of exampleSources$ | async; track source.id) {
-        <div class="margin-bottom-10">
-          <gsa-example-data [source]="source" [datasetId]="datasetId()" ></gsa-example-data>
-        </div>
-      }
-    </div>
+    @let exampleSources = exampleSources$ | async;
+    @if (exampleSources?.length) {
+      <div tourAnchor="source.example" class="flex-one">
+        <h2>Example Dataset</h2>
+        @for (source of exampleSources$ | async; track source.id) {
+          <div class="margin-bottom-10">
+            <gsa-example-data [source]="source" [datasetId]="datasetId()"></gsa-example-data>
+          </div>
+        }
+      </div>
+    }
 
-    <div tourAnchor="source.public" class="flex-one">
-      <h2 >Public Dataset</h2>
-      @for (source of externalSources$ | async; track source.id) {
-        <div class="margin-bottom-10">
-          @if (source.name !== 'Example datasets') {
-            <gsa-external-data
-              [source]="source"
-            [datasetId]="datasetId()"></gsa-external-data>
-          }
-        </div>
-      }
-    </div>
+    @let externalSources = externalSources$ | async;
+    @if (externalSources?.length) {
+      <div tourAnchor="source.public" class="flex-one">
+        <h2>Public Dataset</h2>
+        @for (source of externalSources$ | async; track source.id) {
+          <div class="margin-bottom-10">
+            @if (source.name !== 'Example datasets') {
+              <gsa-external-data
+                [source]="source"
+                [datasetId]="datasetId()"></gsa-external-data>
+            }
+          </div>
+        }
+      </div>
+    }
   </div>
 </div>

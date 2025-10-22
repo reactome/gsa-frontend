@@ -22,9 +22,6 @@ import {methodFeature} from "../method/method.selector";
 import {
   LoadingProgressComponent
 } from "../../dataset-form/datasets/select-dataset/loading-progress/loading-progress.component";
-import {
-  ChangeAnalysisParamsComponent
-} from "../../dataset-form/datasets/change-analysis-params/change-analysis-params.component";
 import {TourUtilsService} from "../../services/tour-utils.service";
 
 
@@ -252,20 +249,7 @@ export class DatasetEffects {
   );
 
 
-  openParameters = createEffect(() =>
-    this.actions$.pipe(
-      ofType(datasetActions.openSummaryParameters),
-      map(({id}) => {
-        this.changeAnalysisParamsDialogRef = this.dialog.open(ChangeAnalysisParamsComponent, {data: {datasetId: id}})
-        return datasetActions.openSummaryParametersSuccess({id})
-      }),
-    ))
-
-
   dialogRef: MatDialogRef<LoadingProgressComponent>;
-
-  changeAnalysisParamsDialogRef: MatDialogRef<ChangeAnalysisParamsComponent>;
-
 
   constructor(
     private actions$: Actions,
