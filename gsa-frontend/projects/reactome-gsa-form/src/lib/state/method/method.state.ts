@@ -6,6 +6,7 @@ export interface Method {
   name: string;
   description: string;
   parameters: Parameter[];
+  data_types: string[];
 }
 
 export interface MethodState extends EntityState<Method> {
