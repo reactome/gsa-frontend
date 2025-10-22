@@ -3,7 +3,6 @@ import {BrowserModule} from '@angular/platform-browser';
 import {TableComponent} from "../../../reactome-table/src/lib/component/table/table.component";
 import {ReactomeTableModule} from "../../../reactome-table/src/lib/reactome-table.module";
 import {createCustomElement} from "@angular/elements";
-import {MatIcon} from "@angular/material/icon";
 
 @NgModule({
   imports: [
