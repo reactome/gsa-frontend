@@ -9,11 +9,12 @@ export const datasetSourceFeature = createFeature({
   reducer: datasetSourceReducer,
   extraSelectors: ({selectDatasetSourceState, selectEntities, selectIds, selectSelectedSourceId}) => ({
     ...datasetSourceAdapter.getSelectors(selectDatasetSourceState),
-    selectBySource: (source: Source, method: Method) => createSelector(selectEntities, selectIds, (entities, ids) => {
-      return ids?.map(id => entities[id])
-        .filter(entity => entity?.source === source)
+    selectBySource: (source: Source, method: Method) => createSelector(selectEntities, selectIds, (datasetSources, ids) => {
+      return ids?.map(id => datasetSources[id])
+        .filter(datasetSource => datasetSource?.source === source)
         .filter(isDefined)
-        .filter(entity => entity.types?.some(type => method.data_types.includes(type)) || method.data_types.includes(entity.id!));
+        .filter(datasetSource => !(datasetSource.source === 'External' && datasetSource.id === 'example_datasets'))// Remove example datasets as they are not displayed as external anyway, but in their specific column
+        .filter(datasetSource => datasetSource.data_types?.some(type => method.data_types.includes(type)) || method.data_types.includes(datasetSource.type!) || method.data_types.includes(datasetSource.id!))
     }),
     selectDatasetSource: (id: string) => createSelector(selectEntities, entities => entities[id]),
     selectSelectedSource: createSelector(selectEntities, selectSelectedSourceId, (entities, selectedSourceId) => selectedSourceId != null ? entities[selectedSourceId] : null),

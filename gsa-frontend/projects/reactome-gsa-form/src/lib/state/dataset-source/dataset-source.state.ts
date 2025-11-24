@@ -10,7 +10,9 @@ export interface DatasetSource {
   name: string;
   group: string;
   title: string;
-  types: string[];
+  data_types: string[];
+  type: string;
+  doc_link: string;
   parameters: Parameter[];
   source: Source;
   url: string;

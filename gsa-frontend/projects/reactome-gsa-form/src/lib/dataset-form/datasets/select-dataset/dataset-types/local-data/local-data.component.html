@@ -7,7 +7,14 @@
     >
   <div (click)="isRiboSeq() || fileUpload.click()">
     <div>
-      <p class="bold no-wrap">{{ source().name }}</p>
+      <p class="bold no-wrap">
+        {{ source().name }}
+        @if (source().doc_link) {
+          <a [href]="source().doc_link" target="_blank" (click)="$event.stopPropagation()" >
+            <mat-icon fontSet="gsa" class="title-icon" matTooltip="Open doc explaining how to structure input">info</mat-icon>
+          </a>
+        }
+      </p>
       <p>{{ source().description }}</p>
     </div>
   </div>
