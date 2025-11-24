@@ -34,6 +34,7 @@ export const initialState: DatasetSourceState = datasetSourceAdapter.getInitialS
       id: 'search',
       name: 'Search',
       description: 'Search across Expression Atlas and GREIN dataset',
+      data_types: ['rnaseq_counts', 'proteomics_int', 'microarray_norm'],
       source: 'External'
     }
   },
