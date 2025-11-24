@@ -21,7 +21,7 @@ export class DatasetSourceEffects {
     take(1),
     exhaustMap(() => this.service.fetchExampleDataSources().pipe(
       map(datasetSources => datasetSourceActions.loadExamplesSuccess({examples: datasetSources})),
-      catchError((err) => of(datasetSourceActions.loadLocalsFailure({error: err})))
+      catchError((err) => of(datasetSourceActions.loadExamplesFailure({error: err})))
     )),
   ))
 
@@ -41,7 +41,7 @@ export class DatasetSourceEffects {
         datasetSourceActions.loadExternalSuccess({externals: datasetSources}),
        // parameterActions.addMany({parameters: datasetSources.flatMap(source => source.parameters)})
       ]),
-      catchError((err) => of(datasetSourceActions.loadLocalsFailure({error: err})))
+      catchError((err) => of(datasetSourceActions.loadExternalFailure({error: err})))
     )),
   ))
 
