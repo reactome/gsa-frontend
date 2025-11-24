@@ -35,7 +35,6 @@ export class SelectDatasetComponent implements OnInit {
     });
 
     effect(() => {
-      console.log('method changed: ', this.method(), ' | ', this.method().name, ' | ', this.method().name.split(' ').join(''))
       this.localSources$ = this.store.select(datasetSourceFeature.selectBySource('Local', this.method()));
       this.externalSources$ = this.store.select(datasetSourceFeature.selectBySource('External', this.method()));
       this.exampleSources$ = this.store.select(datasetSourceFeature.selectBySource('Example', this.method()))

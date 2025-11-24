@@ -41,7 +41,6 @@ export class DatasetFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log(this.datasetId());
     this.dataset$ = this.store.select(datasetFeature.selectDataset(this.datasetId()));
     this.summaryComplete$ = this.store.select(datasetFeature.selectSummaryComplete(this.datasetId())).pipe(distinctUntilChanged(), share());
     this.summaryComplete$.pipe(delay(0), untilDestroyed(this)).subscribe(() => this.stepper().next());
