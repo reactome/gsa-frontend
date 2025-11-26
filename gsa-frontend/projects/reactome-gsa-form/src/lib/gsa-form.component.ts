@@ -84,9 +84,6 @@ export class GsaFormComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.datasets$
-      .pipe(take(1))
-      .subscribe(datasets => datasets.length === 0 ? this.addDataset() : null)
   }
 
   ngOnDestroy(): void {
@@ -100,8 +97,10 @@ export class GsaFormComponent implements AfterViewInit, OnInit, OnDestroy {
   async stepChange($event: StepperSelectionEvent, vm: any) {
     switch ($event.selectedStep) {
       case this.setMethodStep():
+        this.store.dispatch(datasetActions.reset())
         break;
       case this.addDataStep():
+        this.initDatasetFormIfNone();
         break;
       case this.optionStep():
         this.store.dispatch(datasetActions.initAnnotationColumns())
@@ -111,6 +110,12 @@ export class GsaFormComponent implements AfterViewInit, OnInit, OnDestroy {
         this.editable = false;
         break;
     }
+  }
+
+  private initDatasetFormIfNone() {
+    this.datasets$
+      .pipe(take(1))
+      .subscribe(datasets => datasets.length === 0 ? this.addDataset() : null)
   }
 
   async cancel() {

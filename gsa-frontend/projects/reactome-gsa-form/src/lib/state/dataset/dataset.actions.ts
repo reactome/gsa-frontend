@@ -10,6 +10,7 @@ export const datasetActions = createActionGroup({
     source: 'GSA Dataset',
     events: {
         'add': emptyProps(),
+        'reset': emptyProps(),
         'clear': props<{ id: number }>(),
         'delete': props<{ id: number }>(),
         'save': props<{ id: number }>(),
