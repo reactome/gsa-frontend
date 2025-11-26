@@ -134,6 +134,9 @@ import {ParamDatasetComponent} from "./dataset-form/datasets/param-dataset/param
     TourStepTemplateComponent,
     CdkScrollable,
   ],
+  exports: [
+    GsaFormComponent
+  ],
   bootstrap: [GsaFormComponent]
 })
 export class GsaFormModule {
