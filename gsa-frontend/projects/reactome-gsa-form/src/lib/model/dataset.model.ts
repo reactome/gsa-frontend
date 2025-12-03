@@ -26,6 +26,7 @@ export interface StatisticalDesign {
 export interface Covariate {
   name: string;
   value: boolean;
+  locked?: boolean;
 }
 
 export interface Dataset {

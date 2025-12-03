@@ -12,18 +12,17 @@ import {
   of,
   switchMap,
   tap,
-  timer
+  timer, withLatestFrom
 } from "rxjs";
 import {datasetActions} from "./dataset.actions";
 import {LoadDatasetService} from "../../services/load-dataset.service";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
-import { Store, Action } from '@ngrx/store';
+import {Store, Action} from '@ngrx/store';
 import {methodFeature} from "../method/method.selector";
 import {
   LoadingProgressComponent
 } from "../../dataset-form/datasets/select-dataset/loading-progress/loading-progress.component";
 import {TourUtilsService} from "../../services/tour-utils.service";
-
 
 
 @Injectable()
@@ -230,6 +229,17 @@ export class DatasetEffects {
       ofType(datasetActions.setAnalysisGroup),
       map(({id}) => datasetActions.initCovariances({id})),
     ),
+  );
+
+  initTerapadogCovariates = createEffect(() =>
+    this.actions$.pipe(
+      ofType(datasetActions.initCovariances),
+      withLatestFrom(this.store.select(methodFeature.selectSelectedMethod)),
+      filter(([_, method]) => method?.name.toLowerCase() === 'terapadog'),
+      map(([{id}, _]) =>
+        datasetActions.lockCovariateValue({group: 'SeqType', value: true, locked: true, id})
+      )
+    )
   );
 
   summaryAndMethodToParameters = createEffect(() =>

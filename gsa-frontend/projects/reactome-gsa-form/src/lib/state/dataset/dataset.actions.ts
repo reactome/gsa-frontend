@@ -46,6 +46,7 @@ export const datasetActions = createActionGroup({
         'set comparison group 1': props<{ group: string, id: number }>(),
         'set comparison group 2': props<{ group: string, id: number }>(),
         'set covariate value': props<{ group: string, value: boolean, id: number }>(),
+        'lock covariate value': props<{ group: string, value: boolean, locked: boolean, id: number }>(),
         'set covariates value': props<{ value: boolean, id: number }>(),
 
         'set summary parameters': props<{ id :number, parameters: Parameter[]}>(),

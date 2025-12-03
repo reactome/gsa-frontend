@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, input} from '@angular/core';
+import {AfterViewInit, Component, input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {PDataset} from '../../../state/dataset/dataset.state';
@@ -6,7 +6,6 @@ import {Store} from '@ngrx/store';
 import {AnalysisGroups, datasetFeature,} from '../../../state/dataset/dataset.selector';
 import {datasetActions} from '../../../state/dataset/dataset.actions';
 import {Covariate} from "../../../model/dataset.model";
-import {MatCheckboxChange} from "@angular/material/checkbox";
 
 @Component({
     selector: 'gsa-statistical-design',
@@ -68,10 +67,10 @@ export class StatisticalDesignComponent implements OnInit, AfterViewInit {
         this.store.dispatch(datasetActions.setComparisonGroup2({group, id: this.datasetId(),}));
     }
 
-    setCovariance($event: MatCheckboxChange, group: string) {
+    setCovariance(value: boolean, group: string) {
         this.store.dispatch(datasetActions.setCovariateValue({
             group,
-            value: $event.checked,
+            value,
             id: this.datasetId(),
         }));
     }

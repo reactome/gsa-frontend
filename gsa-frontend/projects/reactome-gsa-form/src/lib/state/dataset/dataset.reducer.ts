@@ -195,11 +195,19 @@ export const datasetReducer: ActionReducer<DatasetState> = createReducer(
       }
     }))),
 
+  on(datasetActions.lockCovariateValue, (state, {group, value, id, locked}) =>
+    helper.update(id, state, dataset => ({
+      statisticalDesign: {
+        ...dataset.statisticalDesign!,
+        covariances: dataset.statisticalDesign!!.covariances.map(cov => cov.name === group ? {...cov, value, locked} : cov)
+      }
+    }))),
+
   on(datasetActions.setCovariatesValue, (state, {value, id}) =>
     helper.update(id, state, dataset => ({
       statisticalDesign: {
         ...dataset.statisticalDesign!,
-        covariances: dataset.statisticalDesign!.covariances.map(cov => ({...cov, value}))
+        covariances: dataset.statisticalDesign!.covariances.map(cov => ({...cov, value: cov.locked ? cov.value : value}))
       }
     }))),
 
