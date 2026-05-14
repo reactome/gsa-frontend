@@ -38,3 +38,6 @@ To make sure that it works, please install the latest version of rsync using the
 brew install rsync
 ```
 
+
+## Pipeline workflow 
+https://www.figma.com/board/VWRkaUt8hX3eV2UjFNIaq5/GSA-FrontEnd-Flowchart?node-id=0-1&t=vq6n45j4uRw0DkO5-1
